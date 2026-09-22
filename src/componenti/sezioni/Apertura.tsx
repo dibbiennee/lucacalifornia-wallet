@@ -1,65 +1,44 @@
 import { Pila } from "@/componenti/Pila";
+import { VideoApertura } from "@/componenti/VideoApertura";
 
 /**
  * L'apertura, col video del Room 26 tagliato e in loop.
  *
- * È un webp animato e non un mp4: parte da solo anche su iPhone in risparmio
- * energetico, non chiede javascript, e pesa un decimo del video originale.
+ * Sotto c'è sempre il fotogramma fermo, nelle due versioni: è quello che si
+ * vede subito, è quello che resta a chi ha chiesto meno movimento, ed è
+ * quello che resta se javascript non parte. Il video ci si appoggia sopra
+ * quando è pronto.
  */
+
 export function Apertura() {
   return (
-    <section style={{ position: "relative", minHeight: "88svh", display: "flex", alignItems: "flex-end" }}>
+    <section className="apertura">
+      <VideoApertura />
+
       <picture>
-        <source srcSet="/video/hero-desktop.webp" media="(min-width: 800px)" />
+        <source srcSet="/video/apertura-computer.jpg" media="(min-width: 52rem)" />
         <img
-          src="/video/hero-mobile.webp"
+          src="/video/apertura-telefono.jpg"
           alt=""
           aria-hidden
-          fetchPriority="high"
-          style={{
-            position: "absolute",
-            inset: 0,
-            width: "100%",
-            height: "100%",
-            objectFit: "cover",
-          }}
+          className="apertura-media apertura-fermo"
         />
       </picture>
 
-      <div
-        aria-hidden
-        style={{
-          position: "absolute",
-          inset: 0,
-          background: "linear-gradient(to top, rgba(20,12,92,0.95) 12%, rgba(20,12,92,0.35) 55%, rgba(20,12,92,0.6))",
-        }}
-      />
+      <div aria-hidden className="apertura-velo" />
 
-      <div
-        className="dentro"
-        style={{ position: "relative", width: "100%", padding: "0 var(--margine) 3rem" }}
-      >
-        <p
-          className="debole"
-          style={{ fontSize: "0.6875rem", letterSpacing: "0.2em", fontWeight: 700, margin: "0 0 0.9rem" }}
-        >
-          GIOVEDÌ, VENERDÌ, SABATO, DOMENICA
+      <div className="dentro apertura-testo">
+        <p className="debole apertura-giorni">GIOVEDÌ, VENERDÌ, SABATO, DOMENICA</p>
+
+        <Pila righe={["LA NOTTE", "TI DÀ LIBERTÀ"]} livello={1} />
+
+        <p className="testo-lungo apertura-sottotitolo">
+          Ciao, sono Luca. Liste e tavoli al Room 26 di Roma, da giovedì a domenica, con la
+          navetta per arrivarci.
         </p>
 
-        <Pila righe={["LA NOTTE", "TI DÀ LIBERTÀ"]} />
-
-        <p className="testo-lungo" style={{ margin: "1.5rem 0 1.75rem" }}>
-          Ciao, sono Luca.
-          <br />
-          Liste e tavoli al Room 26 di Roma,
-          <br />
-          da giovedì a domenica,
-          <br />
-          con la navetta per arrivarci.
-        </p>
-
-        <div style={{ display: "flex", flexWrap: "wrap", gap: "0.7rem" }}>
-          <a href="#prenota" className="bottone">
+        <div className="apertura-azioni">
+          <a href="?tipo=lista#prenota" className="bottone">
             Entra in lista o prenota
           </a>
           <a href="/serate" className="bottone bottone-vuoto">
