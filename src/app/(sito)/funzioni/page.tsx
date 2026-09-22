@@ -19,13 +19,6 @@ const BIGLIETTO = [
   "Resta nel telefono anche dopo, con il tuo nome sopra",
 ] as const;
 
-const PROVENIENZE = [
-  { nome: "Storie Instagram", quota: 58 },
-  { nome: "Bio Instagram", quota: 21 },
-  { nome: "Link dei tuoi PR", quota: 14 },
-  { nome: "Google e altro", quota: 7 },
-] as const;
-
 export default function PaginaFunzioni() {
   return (
     <>
@@ -98,29 +91,6 @@ export default function PaginaFunzioni() {
 
           <p className="debole" style={{ margin: "1.4rem 0 0", fontSize: "0.875rem" }}>
             Su Android la stessa cosa con Google Wallet.
-          </p>
-        </div>
-      </section>
-
-      <section className="fascia" style={{ background: "var(--blu-scuro)" }}>
-        <div className="dentro">
-          <Pila occhiello="SAI COSA FUNZIONA" righe={["DA DOVE", "ARRIVANO"]} />
-          <ul style={{ listStyle: "none", padding: 0, margin: "1.8rem 0 1.2rem", display: "grid", gap: "0.9rem" }}>
-            {PROVENIENZE.map((p) => (
-              <li key={p.nome}>
-                <span style={{ display: "flex", justifyContent: "space-between", fontWeight: 700, marginBottom: "0.35rem" }}>
-                  <span>{p.nome}</span>
-                  <span>{p.quota}%</span>
-                </span>
-                <span style={{ display: "block", height: "0.4rem", background: "rgba(255,255,255,0.2)" }}>
-                  <span style={{ display: "block", height: "100%", width: `${p.quota}%`, background: "#fff" }} />
-                </span>
-              </li>
-            ))}
-          </ul>
-          <p className="debole testo-lungo" style={{ margin: 0, fontSize: "0.9375rem" }}>
-            Ogni canale ha il suo link, quindi sai quale porta gente davvero e dove vale la pena
-            spingere.
           </p>
         </div>
       </section>
