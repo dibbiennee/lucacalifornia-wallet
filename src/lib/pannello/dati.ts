@@ -24,6 +24,12 @@ export interface RichiestaPannello {
   readonly budget?: string;
   readonly occasione?: string;
   readonly messaggio?: string;
+  /*
+   * Da dove è arrivata la richiesta. Nel pannello non si mostra più da
+   * nessuna parte: Edoardo l'ha tolta perché in mezzo alle altre
+   * informazioni faceva rumore. Il dato resta perché il conteggio per
+   * canale è una funzione promessa, e quando tornerà si leggerà da qui.
+   */
   readonly provenienza: string;
   readonly stato: StatoRichiesta;
   readonly notePrivate?: string;
@@ -134,11 +140,6 @@ export interface Compleanno {
   readonly telefono: string;
 }
 
-export interface Provenienza {
-  readonly nome: string;
-  readonly quota: number;
-}
-
 export interface Ingresso {
   readonly nome: string;
   readonly ora: string;
@@ -205,15 +206,6 @@ export function compleanni(): readonly Compleanno[] {
       annoScorso: "Lista, domenica Báilame",
       telefono: "393400000005",
     },
-  ];
-}
-
-export function provenienze(): readonly Provenienza[] {
-  return [
-    { nome: "Storie Instagram", quota: 58 },
-    { nome: "Bio Instagram", quota: 21 },
-    { nome: "Link dei PR", quota: 14 },
-    { nome: "Google e altro", quota: 7 },
   ];
 }
 

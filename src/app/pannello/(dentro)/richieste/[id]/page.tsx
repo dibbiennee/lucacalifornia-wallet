@@ -15,7 +15,6 @@ export default async function Dettaglio({ params }: { params: Promise<{ id: stri
     ["Serata", [r.serata, r.sala].filter(Boolean).join(", ")],
     ["Tipo", r.tipo === "tavolo" ? `Tavolo, ${r.gruppo?.toLowerCase() ?? ""}` : "Lista"],
     ...(r.budget === undefined ? [] : [["Budget a testa", r.budget]]),
-    ["Arrivata da", r.provenienza],
     ...(r.occasione === undefined ? [] : [["Occasione", r.occasione]]),
   ] as const;
 

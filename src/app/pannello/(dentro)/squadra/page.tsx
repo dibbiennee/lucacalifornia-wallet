@@ -1,5 +1,5 @@
 import { CopiaLink } from "@/componenti/pannello/CopiaLink";
-import { compleanni, provenienze, squadra } from "@/lib/pannello/dati";
+import { compleanni, squadra } from "@/lib/pannello/dati";
 
 export const metadata = { title: "Squadra, pannello Luca California" };
 
@@ -63,26 +63,9 @@ export default function Squadra() {
         ))}
       </section>
 
-      <section style={{ marginTop: "2.4rem" }}>
-        <h2 className="etichetta-campo">Da dove arrivano</h2>
-        <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "grid", gap: "0.9rem" }}>
-          {provenienze().map((p) => (
-            <li key={p.nome}>
-              <span style={{ display: "flex", justifyContent: "space-between", fontWeight: 700, marginBottom: "0.35rem" }}>
-                <span>{p.nome}</span>
-                <span>{p.quota}%</span>
-              </span>
-              <span style={{ display: "block", height: "0.4rem", background: "rgba(255,255,255,0.2)" }}>
-                <span style={{ display: "block", height: "100%", width: `${p.quota}%`, background: "#fff" }} />
-              </span>
-            </li>
-          ))}
-        </ul>
-      </section>
-
       <p className="pannello-nota">
-        Anteprima: squadra, compleanni e provenienze sono di esempio. I link personali dei PR
-        non tracciano ancora niente, perché non c&apos;è il database dove segnare chi arriva da chi.
+        Anteprima: squadra e compleanni sono di esempio. I link personali dei PR non tracciano
+        ancora niente, perché non c&apos;è il database dove segnare chi arriva da chi.
       </p>
     </main>
   );
