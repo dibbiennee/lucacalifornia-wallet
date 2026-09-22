@@ -2,12 +2,7 @@ import { Buffer } from "node:buffer";
 import { PKPass, PassType } from "passkit-generator";
 
 import { certificati } from "./certificati";
-import {
-  INSTAGRAM,
-  NOME_ORGANIZZAZIONE,
-  TESTO_LOGO,
-  leggiConfigurazionePass,
-} from "./configurazione";
+import { INSTAGRAM, NOME_ORGANIZZAZIONE, leggiConfigurazionePass } from "./configurazione";
 import { immagini } from "./immagini";
 import type { DatiBiglietto } from "./tipi";
 
@@ -33,7 +28,9 @@ export async function creaBiglietto(dati: DatiBiglietto): Promise<Buffer> {
     serialNumber: dati.serialNumber,
     organizationName: NOME_ORGANIZZAZIONE,
     description: `Biglietto ${dati.serata}`,
-    logoText: TESTO_LOGO,
+    // Niente logoText: il nome sta dentro l'immagine del logo. iOS scrive
+    // logoText e il campo intestazione sulla stessa riga, e con un nome lungo
+    // si toccano: sul telefono si leggeva "LUCA CALIFORNIA26 Sep 2026".
     backgroundColor: SFONDO,
     foregroundColor: TESTO,
     labelColor: ETICHETTE,
@@ -68,6 +65,16 @@ export async function creaBiglietto(dati: DatiBiglietto): Promise<Buffer> {
   if (dati.sala !== undefined && dati.sala !== "") {
     biglietto.auxiliaryFields.push({ key: "sala", label: "SALA", value: dati.sala });
   }
+
+  // L'ora sta qui e non nell'intestazione: riempie la riga che resterebbe
+  // mezza vuota, e a chi legge serve più del giorno, che è già in alto.
+  biglietto.auxiliaryFields.push({
+    key: "ora",
+    label: "DALLE",
+    value: dati.inizioSerata,
+    dateStyle: "PKDateStyleNone",
+    timeStyle: "PKDateStyleShort",
+  });
 
   biglietto.backFields.push(
     {

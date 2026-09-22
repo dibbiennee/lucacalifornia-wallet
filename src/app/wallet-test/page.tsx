@@ -72,11 +72,11 @@ export default function PaginaProvaWallet() {
 
       <div style={scheda}>
         <span style={etichetta}>SERATA</span>
-        <p style={valore}>BAILAME</p>
+        <p style={valore}>BÁILAME</p>
 
         <span style={etichetta}>QUANDO</span>
         <p style={valore}>
-          Sabato 26 settembre 2026
+          Domenica 27 settembre 2026
           <br />
           ore 23:30
         </p>

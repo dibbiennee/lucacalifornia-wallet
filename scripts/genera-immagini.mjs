@@ -1,5 +1,9 @@
 /**
- * Genera le immagini del pass dal marchio Luca California.
+ * Genera le ICONE del pass dal marchio Luca California.
+ *
+ * Il logo non si tocca qui: lo compone scripts/genera-logo.mjs, perché porta
+ * anche il nome scritto. Questo script lo rigenerava a ogni build e glielo
+ * cancellava sopra.
  *
  * Il marchio è un quadrato pieno con due tagli triangolari trasparenti,
  * descritto una volta sola qui sotto come path SVG in viewBox 0 0 100 100.
@@ -53,16 +57,6 @@ async function iconaSuBlu(nomeFile, lato) {
   console.log(`  ${nomeFile} (${lato}x${lato})`);
 }
 
-/** Logo: marchio bianco su fondo trasparente, sta sopra il backgroundColor del pass. */
-async function logoTrasparente(nomeFile, lato) {
-  await sharp(marchioSvg("#FFFFFF"))
-    .resize(lato, lato)
-    .png({ compressionLevel: 9 })
-    .toFile(path.join(CARTELLA, nomeFile));
-
-  console.log(`  ${nomeFile} (${lato}x${lato})`);
-}
-
 /** Strip: per ora un segnaposto blu pieno, da sostituire con la grafica della serata. */
 async function stripSegnaposto(nomeFile, larghezza, altezza) {
   const percorso = path.join(CARTELLA, nomeFile);
@@ -84,11 +78,6 @@ console.log("Icone:");
 await iconaSuBlu("icon.png", 29);
 await iconaSuBlu("icon@2x.png", 58);
 await iconaSuBlu("icon@3x.png", 87);
-
-console.log("Logo:");
-await logoTrasparente("logo.png", 50);
-await logoTrasparente("logo@2x.png", 100);
-await logoTrasparente("logo@3x.png", 150);
 
 console.log("Strip:");
 await stripSegnaposto("strip.png", 375, 123);

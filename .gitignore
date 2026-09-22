@@ -27,3 +27,6 @@ next-env.d.ts
 # il file di esempio, che invece deve stare nel repository: è l'elenco delle
 # variabili da compilare, e senza quello chi clona non sa cosa serve.
 !.env.example
+
+# cache di tsc --noEmit
+tsconfig.tsbuildinfo

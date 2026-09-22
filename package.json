@@ -5,10 +5,12 @@
   "type": "module",
   "scripts": {
     "dev": "next dev",
-    "build": "npm run immagini && next build",
+    "build": "next build",
     "start": "next start",
     "immagini": "node scripts/genera-immagini.mjs",
-    "tipi": "tsc --noEmit"
+    "tipi": "tsc --noEmit",
+    "logo": "node scripts/genera-logo.mjs",
+    "strip": "node scripts/genera-strip.mjs"
   },
   "dependencies": {
     "next": "16.3.6",

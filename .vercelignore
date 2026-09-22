@@ -7,5 +7,6 @@ certs
 .env
 .env.local
 .env*.local
+materiale
 node_modules
 .next

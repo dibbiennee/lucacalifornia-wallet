@@ -24,8 +24,11 @@ export function leggiConfigurazionePass(): ConfigurazionePass {
 /** Nome dell'emittente, mostrato da iOS nelle notifiche del pass. */
 export const NOME_ORGANIZZAZIONE = "Luca California";
 
-/** Testo accanto al logo, in alto a sinistra sul biglietto. */
-export const TESTO_LOGO = "LUCA CALIFORNIA";
+/*
+ * Il nome accanto al marchio non è una costante del codice: è disegnato
+ * dentro assets/pass/logo.png da scripts/genera-logo.mjs. Se cambia il nome,
+ * si cambia lì e si rigenera.
+ */
 
 /** Profilo Instagram mostrato sul retro. */
 export const INSTAGRAM = "@lucacurella_ninfeo";
