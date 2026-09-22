@@ -1,5 +1,4 @@
-import { randomUUID } from "node:crypto";
-
+import { nuovoSerialNumber } from "./token";
 import type { DatiBiglietto } from "./tipi";
 
 /**
@@ -11,7 +10,7 @@ import type { DatiBiglietto } from "./tipi";
  */
 export function bigliettoDiProva(): DatiBiglietto {
   return {
-    serialNumber: randomUUID(),
+    serialNumber: nuovoSerialNumber(),
     serata: "BÁILAME",
     // Domenica 27 settembre 2026, 23:30, ora di Roma.
     // Báilame è la serata della domenica: il sabato al Room 26 sono
@@ -19,8 +18,7 @@ export function bigliettoDiProva(): DatiBiglietto {
     inizioSerata: new Date("2026-09-27T23:30:00+02:00"),
     tipo: "TAVOLO, MISTO",
     nomeCliente: "Mario Rossi",
-    locale: "Room 26, Roma",
-    indirizzo: "Piazza Guglielmo Marconi 31, 00144 Roma",
+    locale: "room26",
     token: "DEMO-FASE-1-TOKEN-NON-VALIDO",
   };
 }

@@ -4,7 +4,7 @@ import { PKPass, PassType } from "passkit-generator";
 import { certificati } from "./certificati";
 import { INSTAGRAM, NOME_ORGANIZZAZIONE, leggiConfigurazionePass } from "./configurazione";
 import { immagini } from "./immagini";
-import type { DatiBiglietto } from "./tipi";
+import { LOCALI, type DatiBiglietto } from "./tipi";
 
 /** Colori del biglietto. Apple li vuole in questa forma, non esadecimali. */
 const SFONDO = "rgb(43,27,176)";
@@ -19,6 +19,7 @@ const ETICHETTE = "rgb(201,195,255)";
  */
 export async function creaBiglietto(dati: DatiBiglietto): Promise<Buffer> {
   const { passTypeIdentifier, teamIdentifier } = leggiConfigurazionePass();
+  const locale = LOCALI[dati.locale];
   const [file, certs] = await Promise.all([immagini(), certificati()]);
 
   const pass = new PKPass({ ...file }, certs, {
@@ -60,7 +61,7 @@ export async function creaBiglietto(dati: DatiBiglietto): Promise<Buffer> {
     { key: "nome", label: "NOME", value: dati.nomeCliente },
   );
 
-  biglietto.auxiliaryFields.push({ key: "locale", label: "LOCALE", value: dati.locale });
+  biglietto.auxiliaryFields.push({ key: "locale", label: "LOCALE", value: locale.nome });
 
   if (dati.sala !== undefined && dati.sala !== "") {
     biglietto.auxiliaryFields.push({ key: "sala", label: "SALA", value: dati.sala });
@@ -80,7 +81,7 @@ export async function creaBiglietto(dati: DatiBiglietto): Promise<Buffer> {
     {
       key: "indirizzo",
       label: "DOVE",
-      value: dati.indirizzo,
+      value: locale.indirizzo,
       dataDetectorTypes: ["PKDataDetectorTypeAddress"],
     },
     { key: "instagram", label: "INSTAGRAM", value: INSTAGRAM },
