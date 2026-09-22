@@ -72,7 +72,7 @@ export const SERATE: readonly SerataSito[] = [
     nome: "DUE SALE",
     musica: "HOUSE E REGGAETON",
     etichetta: "POCHI TAVOLI",
-    copertina: "/foto/flyer-sabato-room26.png",
+    copertina: "/foto/copertine/sabato.jpg",
     descrizione:
       "Il sabato il Room 26 apre due sale: house nella prima, reggaeton nella seconda. Dimmi dove vuoi stare e ti sistemo io.",
     quando: "OGNI SABATO",
