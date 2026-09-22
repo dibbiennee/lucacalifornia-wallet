@@ -261,6 +261,7 @@ button {
 .testata-marchio {
   display: flex;
   align-items: center;
+  min-height: 44px;
   text-decoration: none;
 }
 
@@ -274,7 +275,10 @@ button {
   font-size: 0.75rem;
   font-weight: 700;
   letter-spacing: 0.16em;
-  padding: 0.5rem 0;
+  display: flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 0.25rem;
 }
 
 .menu-stretto summary::-webkit-details-marker {
@@ -335,6 +339,9 @@ button {
   }
 
   .menu-voce {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
     text-decoration: none;
     font-weight: 600;
     font-size: 0.9375rem;
@@ -414,6 +421,17 @@ button {
 }
 
 /* --- Il fuoco si deve vedere, anche sopra il bianco --- */
+
+/*
+ * Area toccabile minima: 44 px.
+ * Un link di testo alto venti pixel, di notte, con una mano sola, si sbaglia.
+ * La classe allarga la zona sensibile senza cambiare come appare il testo.
+ */
+.tocco {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+}
 
 :focus-visible {
   outline: 3px solid #ffd84d;

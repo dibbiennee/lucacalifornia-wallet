@@ -21,15 +21,19 @@ export function PiePagina() {
         </p>
 
         <p style={{ margin: "0 0 1.5rem" }}>
-          <a href={INSTAGRAM_URL} style={{ fontWeight: 600 }}>
+          <a href={INSTAGRAM_URL} className="tocco" style={{ fontWeight: 600 }}>
             Instagram @{INSTAGRAM}
           </a>
         </p>
 
         <p className="debole" style={{ margin: 0, fontSize: "0.9375rem" }}>
-          <Link href="/privacy">Privacy</Link>
-          {"  ·  "}
-          <Link href="/cookie">Cookie</Link>
+          <Link href="/privacy" className="tocco">
+            Privacy
+          </Link>
+          <span aria-hidden>{"\u00a0\u00a0·\u00a0\u00a0"}</span>
+          <Link href="/cookie" className="tocco">
+            Cookie
+          </Link>
         </p>
 
         <p className="debole" style={{ margin: "0.4rem 0 0", fontSize: "0.9375rem", opacity: 0.7 }}>

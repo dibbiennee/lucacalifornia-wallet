@@ -56,7 +56,7 @@ export function ChiELuca() {
             sizes="110px"
             style={{ width: "6.5rem", height: "8rem", objectFit: "cover", objectPosition: "center 20%" }}
           />
-          <a href="/chi-sono" style={{ fontWeight: 700, letterSpacing: "0.06em" }}>
+          <a href="/chi-sono" className="tocco" style={{ fontWeight: 700, letterSpacing: "0.06em" }}>
             Chi è Luca →
           </a>
         </div>
