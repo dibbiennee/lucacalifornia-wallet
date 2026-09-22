@@ -15,11 +15,15 @@ export function Pila({
   occhiello,
   righe,
   scuro = false,
+  livello = 2,
 }: {
   readonly occhiello?: string;
   readonly righe: readonly string[];
   readonly scuro?: boolean;
+  /** 1, 2 o 3: il titolo esce come h1, h2 o h3. L'aspetto non cambia. */
+  readonly livello?: 1 | 2 | 3;
 }) {
+  const Titolo = `h${livello}` as "h1" | "h2" | "h3";
   const rif = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -52,15 +56,17 @@ export function Pila({
           {occhiello}
         </span>
       )}
-      {righe.map((riga, i) => (
-        <span
-          key={riga}
-          className={`pila-riga titolo${scuro ? " titolo-scuro" : ""}`}
-          style={ritardo(i + (occhiello === undefined ? 0 : 1))}
-        >
-          {riga}
-        </span>
-      ))}
+      <Titolo className="pila-titolo">
+        {righe.map((riga, i) => (
+          <span
+            key={riga}
+            className={`pila-riga titolo${scuro ? " titolo-scuro" : ""}`}
+            style={ritardo(i + (occhiello === undefined ? 0 : 1))}
+          >
+            {riga}
+          </span>
+        ))}
+      </Titolo>
     </div>
   );
 }

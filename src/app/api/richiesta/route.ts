@@ -59,8 +59,31 @@ export async function POST(richiesta: Request): Promise<Response> {
     return Response.json({ errore: "Il numero di telefono non sembra giusto" }, { status: 400 });
   }
 
+  const tavolo = tipo === "tavolo";
+
+  /*
+   * Rimando indietro la richiesta come l'ho capita. Non la salvo, ma così
+   * si può verificare che arrivi completa, occasione e note comprese, senza
+   * dover guardare dentro un database che qui non c'è.
+   */
+  const ricevuta = {
+    tipo,
+    nome,
+    cognome,
+    telefono,
+    serata,
+    ...(tavolo
+      ? {
+          gruppo: testo(c.gruppo, 40) ?? "",
+          budget: testo(c.budget, 40) ?? "",
+          occasione: testo(c.occasione, 60) ?? "",
+          note: testo(c.note, 300) ?? "",
+        }
+      : {}),
+  };
+
   return Response.json(
-    { salvata: false, nota: "Anteprima: la richiesta non viene salvata." },
+    { salvata: false, nota: "Anteprima del sito: la richiesta non viene conservata.", ricevuta },
     { headers: { "Cache-Control": "no-store" } },
   );
 }
