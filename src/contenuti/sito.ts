@@ -50,7 +50,7 @@ export const SERATE: readonly SerataSito[] = [
     nome: "MILKSHAKE",
     musica: "AFRO E REGGAETON",
     etichetta: "LISTA APERTA",
-    copertina: "/video/frame2.jpg",
+    copertina: "/foto/copertine/milkshake.jpg",
     descrizione:
       "Il giovedì è Milkshake: afro e reggaeton tutta la sera. Prenota qui e ti ricontatto io con disponibilità e prezzo.",
     quando: "OGNI GIOVEDÌ",
@@ -61,7 +61,7 @@ export const SERATE: readonly SerataSito[] = [
     nome: "COMMERCIALE",
     musica: "E REGGAETON",
     etichetta: "LISTA APERTA",
-    copertina: "/video/frame20.jpg",
+    copertina: "/foto/copertine/venerdi.jpg",
     descrizione:
       "Il venerdì si balla commerciale e reggaeton. Prenota qui e ti ricontatto io con disponibilità e prezzo.",
     quando: "OGNI VENERDÌ",
@@ -83,7 +83,7 @@ export const SERATE: readonly SerataSito[] = [
     nome: "BÁILAME",
     musica: "SOLO REGGAETON",
     etichetta: "LISTA APERTA",
-    copertina: "/video/frame30.jpg",
+    copertina: "/foto/copertine/bailame.jpg",
     descrizione:
       "La domenica si chiude la settimana con Báilame: tutta la sera solo reggaeton. Prenota qui e ti ricontatto io con disponibilità e prezzo.",
     quando: "OGNI DOMENICA",

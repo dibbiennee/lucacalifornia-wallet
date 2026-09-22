@@ -14,8 +14,9 @@ export default function PaginaChiSono() {
         <Image
           src="/foto/luca-bailame-media.jpg"
           alt="Luca al Room 26"
-          width={1069}
-          height={1600}
+          width={533}
+          height={800}
+          sizes="(min-width: 52rem) 34rem, 100vw"
           style={{ width: "100%", height: "auto", margin: "2rem 0" }}
         />
 

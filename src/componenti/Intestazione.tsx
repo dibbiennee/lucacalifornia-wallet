@@ -20,6 +20,9 @@ export function Intestazione() {
           width={667}
           height={310}
           priority
+          /* Senza sizes, Next serve la misura più grande che ha: qui il
+             riquadro è alto due centimetri e arrivava un file da 1920 px. */
+          sizes="130px"
           style={{ width: "auto", height: "1.85rem", objectFit: "contain" }}
         />
       </Link>

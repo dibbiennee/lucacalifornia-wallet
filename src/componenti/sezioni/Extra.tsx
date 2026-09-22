@@ -51,8 +51,9 @@ export function ChiELuca() {
           <Image
             src="/foto/luca-bailame-media.jpg"
             alt="Luca al Room 26"
-            width={1069}
-            height={1600}
+            width={533}
+            height={800}
+            sizes="110px"
             style={{ width: "6.5rem", height: "8rem", objectFit: "cover", objectPosition: "center 20%" }}
           />
           <a href="/chi-sono" style={{ fontWeight: 700, letterSpacing: "0.06em" }}>

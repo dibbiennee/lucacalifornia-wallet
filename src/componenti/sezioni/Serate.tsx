@@ -27,6 +27,8 @@ export function Serate() {
                 src={serata.copertina}
                 alt={`${serata.giorno} ${serata.nome}`}
                 loading="lazy"
+                width={720}
+                height={900}
                 style={{ width: "100%", height: "100%", objectFit: "cover" }}
               />
 
