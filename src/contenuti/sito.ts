@@ -2,8 +2,9 @@
  * Tutti i testi del sito in un posto solo.
  *
  * I contenuti vengono dai mockup approvati in riferimenti-design/.
- * Dove Luca non ha ancora dato l'informazione c'è [DA CONFERMARE], mai
- * un'invenzione: in anteprima un dato inventato è peggio di un buco.
+ * Dove Luca non ha ancora dato l'informazione, la frase è scritta in modo da
+ * funzionare lo stesso: niente segnaposto a vista e niente dati inventati.
+ * Un segnaposto a vista davanti a un cliente è peggio del buco che nasconde.
  */
 
 export const MARCHIO = { riga1: "LUCA", riga2: "CALIFORNIA" } as const;
@@ -89,7 +90,7 @@ export const SERATE: readonly SerataSito[] = [
   },
 ];
 
-export const LOCALE = { nome: "ROOM 26, ROMA", indirizzo: "[DA CONFERMARE]" } as const;
+export const LOCALE = { nome: "ROOM 26, ROMA" } as const;
 
 export const COME_FUNZIONA = [
   {
@@ -119,9 +120,9 @@ export const CAPODANNO = {
   occhiello: "31 DICEMBRE",
   titolo: "CAPODANNO",
   pacchetti: [
-    { nome: "PACK 1", righe: ["SERATA"], prezzo: "[DA CONFERMARE]" },
-    { nome: "PACK 2", righe: ["CENA", "+ SERATA"], prezzo: "[DA CONFERMARE]" },
-    { nome: "PACK 3", righe: ["CENA", "SERATA", "HOTEL"], prezzo: "[DA CONFERMARE]" },
+    { nome: "PACK 1", righe: ["SERATA"] },
+    { nome: "PACK 2", righe: ["CENA", "+ SERATA"] },
+    { nome: "PACK 3", righe: ["CENA", "SERATA", "HOTEL"] },
   ],
   azione: "METTIMI IN LISTA D'ATTESA",
 } as const;
@@ -129,8 +130,8 @@ export const CAPODANNO = {
 export const ESTATE = {
   occhiello: "D'ESTATE",
   posti: [
-    { nome: "NINFEO, ROMA", foto: "/foto/luca-mare-estate.jpg" },
-    { nome: "MORGAN BEACH CLUB", foto: "[DA CONFERMARE]" },
+    { nome: "NINFEO, ROMA", foto: "/foto/luca-mare-estate.jpg" as string | null },
+    { nome: "MORGAN BEACH CLUB", foto: null },
   ],
 } as const;
 

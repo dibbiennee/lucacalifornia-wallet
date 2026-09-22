@@ -125,9 +125,6 @@ export function Capodanno() {
               >
                 {pacchetto.righe.join(" ")}
               </p>
-              <p className="debole" style={{ margin: 0, fontSize: "0.875rem" }}>
-                Prezzo {pacchetto.prezzo}
-              </p>
             </div>
           ))}
         </div>
@@ -164,7 +161,7 @@ export function Estate() {
         <div style={{ display: "grid", gap: "0.9rem", marginTop: "1.8rem" }}>
           {ESTATE.posti.map((posto) => (
             <div key={posto.nome} style={{ position: "relative", aspectRatio: "16 / 9", overflow: "hidden" }}>
-              {posto.foto.startsWith("/") ? (
+              {posto.foto !== null ? (
                 <img
                   src={posto.foto}
                   alt={posto.nome}
@@ -172,20 +169,9 @@ export function Estate() {
                   style={{ width: "100%", height: "100%", objectFit: "cover" }}
                 />
               ) : (
-                <div
-                  style={{
-                    width: "100%",
-                    height: "100%",
-                    display: "grid",
-                    placeItems: "center",
-                    background: "var(--blu-scuro)",
-                    color: "var(--testo-debole)",
-                    fontSize: "0.8125rem",
-                    letterSpacing: "0.12em",
-                  }}
-                >
-                  FOTO {posto.foto}
-                </div>
+                /* Foto non ancora arrivata: riquadro pieno e basta. Meglio un
+                   blocco di colore che una scritta che dice cosa manca. */
+                <div style={{ width: "100%", height: "100%", background: "var(--blu-scuro)" }} />
               )}
               <span
                 style={{

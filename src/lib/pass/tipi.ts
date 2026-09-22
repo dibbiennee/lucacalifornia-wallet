@@ -6,11 +6,11 @@ export const LOCALI = {
   },
   ninfeo: {
     nome: "Ninfeo, Roma",
-    indirizzo: "[DA CONFERMARE]",
+    indirizzo: "",
   },
   morgan: {
     nome: "Morgan Beach Club, Civitavecchia",
-    indirizzo: "[DA CONFERMARE]",
+    indirizzo: "",
   },
 } as const;
 

@@ -77,13 +77,18 @@ export async function creaBiglietto(dati: DatiBiglietto): Promise<Buffer> {
     timeStyle: "PKDateStyleShort",
   });
 
-  biglietto.backFields.push(
-    {
+  // L'indirizzo compare solo se c'è: un campo con scritto "da confermare"
+  // sul biglietto di un cliente è peggio di un campo che non c'è.
+  if (locale.indirizzo !== "") {
+    biglietto.backFields.push({
       key: "indirizzo",
       label: "DOVE",
       value: locale.indirizzo,
       dataDetectorTypes: ["PKDataDetectorTypeAddress"],
-    },
+    });
+  }
+
+  biglietto.backFields.push(
     { key: "instagram", label: "INSTAGRAM", value: INSTAGRAM },
     { key: "ingresso", label: "ALL'INGRESSO", value: "Mostra questo QR all'ingresso" },
   );

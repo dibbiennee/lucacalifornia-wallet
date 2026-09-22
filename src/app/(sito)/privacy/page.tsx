@@ -7,16 +7,10 @@ export default function PaginaPRIVACY() {
     <section className="fascia">
       <div className="dentro">
         <Pila righe={["PRIVACY"]} />
-        <p
-          style={{
-            border: "2px dashed rgba(255,255,255,0.4)",
-            padding: "1.2rem",
-            margin: "2rem 0 0",
-            color: "var(--testo-debole)",
-          }}
-        >
-          Testo segnaposto. L&apos;informativa vera va scritta prima di pubblicare il sito
-          davvero: [DA CONFERMARE].
+        <p className="testo-lungo" style={{ margin: "2rem 0 0" }}>
+          Questa è un&apos;anteprima del sito. L&apos;informativa completa viene pubblicata
+          insieme al sito vero, prima che il modulo di prenotazione raccolga dati di persone
+          reali.
         </p>
       </div>
     </section>
