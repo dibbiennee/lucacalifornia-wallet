@@ -22,7 +22,10 @@ interface Richiesta {
   readonly budget?: string;
   readonly occasione?: string;
   readonly note?: string;
+  readonly zona?: string;
 }
+
+const TIPI = ["lista", "tavolo", "navetta"] as const;
 
 function testo(valore: unknown, massimo: number): string | null {
   if (typeof valore !== "string") {
@@ -48,11 +51,25 @@ export async function POST(richiesta: Request): Promise<Response> {
   const serata = testo(c.serata, 60);
   const tipo = testo(c.tipo, 20);
 
-  if (nome === null || cognome === null || telefono === null || serata === null || tipo === null) {
-    return Response.json(
-      { errore: "Servono nome, cognome, telefono e la serata" },
-      { status: 400 },
-    );
+  if (tipo === null || !TIPI.includes(tipo as (typeof TIPI)[number])) {
+    return Response.json({ errore: "Tipo di richiesta sconosciuto" }, { status: 400 });
+  }
+
+  // La navetta si chiede con nome, telefono, serata e zona: il cognome no,
+  // perché è un modulo corto che si compila mentre si sta già uscendo.
+  const navetta = tipo === "navetta";
+  const zona = testo(c.zona, 80);
+
+  if (nome === null || telefono === null || serata === null) {
+    return Response.json({ errore: "Servono nome, telefono e la serata" }, { status: 400 });
+  }
+
+  if (!navetta && cognome === null) {
+    return Response.json({ errore: "Serve anche il cognome" }, { status: 400 });
+  }
+
+  if (navetta && zona === null) {
+    return Response.json({ errore: "Serve la zona da cui parti" }, { status: 400 });
   }
 
   if (telefono.replace(/\D/g, "").length < 9) {
@@ -69,9 +86,10 @@ export async function POST(richiesta: Request): Promise<Response> {
   const ricevuta = {
     tipo,
     nome,
-    cognome,
+    ...(cognome === null ? {} : { cognome }),
     telefono,
     serata,
+    ...(zona === null ? {} : { zona }),
     ...(tavolo
       ? {
           gruppo: testo(c.gruppo, 40) ?? "",

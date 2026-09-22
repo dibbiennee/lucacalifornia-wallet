@@ -1,7 +1,11 @@
 import Image from "next/image";
 
+import { ModuloBreve } from "@/componenti/ModuloBreve";
 import { Pila } from "@/componenti/Pila";
-import { CAPODANNO, DIVENTA_PR, ESTATE, MOTTO, NAVETTA, SPECIAL_GUEST } from "@/contenuti/sito";
+import { CAPODANNO, DIVENTA_PR, ESTATE, MOTTO, NAVETTA, SERATE, SPECIAL_GUEST } from "@/contenuti/sito";
+
+/** Le serate, come scelta nel modulo della navetta. */
+const SERATE_NAVETTA = SERATE.map((s) => `${s.giorno.charAt(0)}${s.giorno.slice(1).toLowerCase()} ${s.nome}`);
 
 /** Il riquadro dello special guest, con la lista d'attesa. */
 export function SpecialGuest() {
@@ -14,9 +18,23 @@ export function SpecialGuest() {
         <p className="debole" style={{ margin: "0 0 1.3rem" }}>
           {SPECIAL_GUEST.testo}
         </p>
-        <a href="#prenota" className="bottone bottone-vuoto">
-          {SPECIAL_GUEST.azione}
-        </a>
+        <ModuloBreve
+          azione="/api/lista-attesa"
+          etichettaBottone={SPECIAL_GUEST.azione}
+          titoloModulo="Ti avviso appena esce il nome"
+          corpoFisso={{ tipo: "special_guest" }}
+          conferma="Sei in lista: ti avviso io."
+          campi={[
+            { nome: "nome", etichetta: "Nome", obbligatorio: true },
+            {
+              nome: "contatto",
+              etichetta: "Telefono o email",
+              tipo: "text",
+              obbligatorio: true,
+              segnaposto: "334 854 8735",
+            },
+          ]}
+        />
       </div>
     </section>
   );
@@ -54,9 +72,24 @@ export function Navetta() {
         <p className="debole testo-lungo" style={{ margin: "1.6rem 0 1.6rem" }}>
           {NAVETTA.testo}
         </p>
-        <a href="#prenota" className="bottone bottone-vuoto">
-          {NAVETTA.azione}
-        </a>
+        <ModuloBreve
+          azione="/api/richiesta"
+          etichettaBottone={NAVETTA.azione}
+          titoloModulo="Dimmi da dove parti"
+          corpoFisso={{ tipo: "navetta" }}
+          conferma="Richiesta ricevuta: Luca ti scrive con orari e posti."
+          campi={[
+            { nome: "nome", etichetta: "Nome", obbligatorio: true },
+            { nome: "telefono", etichetta: "Telefono", tipo: "tel", obbligatorio: true },
+            { nome: "serata", etichetta: "Serata", obbligatorio: true, opzioni: SERATE_NAVETTA },
+            {
+              nome: "zona",
+              etichetta: "Da dove parti",
+              obbligatorio: true,
+              segnaposto: "Zona o quartiere",
+            },
+          ]}
+        />
       </div>
     </section>
   );
@@ -99,9 +132,24 @@ export function Capodanno() {
           ))}
         </div>
 
-        <a href="#prenota" className="bottone">
-          {CAPODANNO.azione}
-        </a>
+        <ModuloBreve
+          azione="/api/lista-attesa"
+          etichettaBottone={CAPODANNO.azione}
+          titoloModulo="Ti avviso appena escono prezzi e strutture"
+          corpoFisso={{ tipo: "capodanno" }}
+          conferma="Sei in lista d'attesa: ti avviso io."
+          bottonePieno
+          campi={[
+            { nome: "nome", etichetta: "Nome", obbligatorio: true },
+            {
+              nome: "contatto",
+              etichetta: "Telefono o email",
+              tipo: "text",
+              obbligatorio: true,
+              segnaposto: "334 854 8735",
+            },
+          ]}
+        />
       </div>
     </section>
   );
