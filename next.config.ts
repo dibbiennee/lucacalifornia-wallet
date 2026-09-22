@@ -14,6 +14,7 @@ const config: NextConfig = {
    */
   outputFileTracingIncludes: {
     "/api/pass/demo": ["./assets/pass/**/*"],
+    "/api/pass/[token]": ["./assets/pass/**/*"],
   },
 };
 
