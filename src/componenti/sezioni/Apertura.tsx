@@ -32,9 +32,14 @@ export function Apertura() {
 
         <Pila righe={["LA NOTTE", "TI DÀ LIBERTÀ"]} livello={1} />
 
+        {/*
+          Niente a capo forzati: la riga la decide la larghezza in caratteri.
+          Gli spazi indivisibili servono solo a non far finire una riga su una
+          preposizione o un articolo staccati da quello che reggono.
+        */}
         <p className="testo-lungo apertura-sottotitolo">
-          Ciao, sono Luca. Liste e tavoli al Room 26 di Roma, da giovedì a domenica, con la
-          navetta per arrivarci.
+          Ciao, sono Luca. Liste e tavoli al&nbsp;Room&nbsp;26 di&nbsp;Roma, da&nbsp;giovedì a
+          domenica, con&nbsp;la&nbsp;navetta per&nbsp;arrivarci.
         </p>
 
         <div className="apertura-azioni">

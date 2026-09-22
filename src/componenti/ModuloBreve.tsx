@@ -114,13 +114,12 @@ export function ModuloBreve({
 
   if (fatto) {
     return (
-      <p role="status" style={{ margin: 0, fontWeight: 700 }}>
-        {conferma}
-        <br />
-        <span className="debole" style={{ fontWeight: 400, fontSize: "0.875rem" }}>
+      <div role="status">
+        <p style={{ margin: 0, fontWeight: 700 }}>{conferma}</p>
+        <p className="debole" style={{ margin: "0.4rem 0 0", fontSize: "0.875rem" }}>
           Anteprima del sito: il contatto non viene conservato.
-        </span>
-      </p>
+        </p>
+      </div>
     );
   }
 

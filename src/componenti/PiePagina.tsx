@@ -30,8 +30,10 @@ export function PiePagina() {
           <Link href="/privacy">Privacy</Link>
           {"  ·  "}
           <Link href="/cookie">Cookie</Link>
-          <br />
-          <span style={{ opacity: 0.7 }}>Sito di satoshiweb.it</span>
+        </p>
+
+        <p className="debole" style={{ margin: "0.4rem 0 0", fontSize: "0.9375rem", opacity: 0.7 }}>
+          Sito di satoshiweb.it
         </p>
       </div>
     </footer>

@@ -54,7 +54,7 @@ export default async function PaginaSerata({ params }: { params: Promise<{ codic
 
           <Pila righe={[serata.nome, serata.musica]} />
 
-          <p style={{ margin: "1.6rem 0 2rem" }}>{serata.descrizione}</p>
+          <p className="testo-lungo" style={{ margin: "1.6rem 0 2rem" }}>{serata.descrizione}</p>
 
           <dl style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1.2rem", margin: 0 }}>
             <div>

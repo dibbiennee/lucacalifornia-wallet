@@ -31,7 +31,7 @@ export default function PaginaFunzioni() {
       <section className="fascia">
         <div className="dentro">
           <Pila occhiello="OLTRE AL SITO" righe={["COSA C'È", "DIETRO"]} />
-          <p style={{ margin: "1.6rem 0 0" }}>
+          <p className="testo-lungo" style={{ margin: "1.6rem 0 0" }}>
             Il sito è la parte che vede la gente. Dietro c&apos;è il pannello da cui gestisci
             tutto, il biglietto che finisce nel telefono dei clienti e gli strumenti per la tua
             squadra.
@@ -42,7 +42,7 @@ export default function PaginaFunzioni() {
       <section className="fascia" style={{ background: "var(--blu-scuro)" }}>
         <div className="dentro">
           <Pila occhiello="DAL TUO TELEFONO" righe={["IL PANNELLO"]} />
-          <p className="debole" style={{ margin: "1.6rem 0" }}>
+          <p className="debole testo-lungo" style={{ margin: "1.6rem 0" }}>
             Le richieste non arrivano più sparse tra DM e messaggi: entrano qui, divise per
             serata. Tocca una schermata per provarla.
           </p>
@@ -95,7 +95,7 @@ export default function PaginaFunzioni() {
       <section className="fascia">
         <div className="dentro">
           <Pila occhiello="QUANDO CONFERMI" righe={["IL BIGLIETTO", "NEL TELEFONO"]} />
-          <p className="debole" style={{ margin: "1.6rem 0" }}>
+          <p className="debole testo-lungo" style={{ margin: "1.6rem 0" }}>
             Il cliente aggiunge il biglietto all&apos;app Wallet, accanto alla carta di credito e
             alla carta d&apos;imbarco. Provalo adesso: è un biglietto vero.
           </p>
@@ -135,7 +135,7 @@ export default function PaginaFunzioni() {
               </li>
             ))}
           </ul>
-          <p className="debole" style={{ margin: 0, fontSize: "0.9375rem" }}>
+          <p className="debole testo-lungo" style={{ margin: 0, fontSize: "0.9375rem" }}>
             Ogni canale ha il suo link, quindi sai quale porta gente davvero e dove vale la pena
             spingere.
           </p>

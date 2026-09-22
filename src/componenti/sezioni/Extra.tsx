@@ -15,7 +15,7 @@ export function SpecialGuest() {
         <p style={{ fontWeight: 700, letterSpacing: "0.1em", margin: "0 0 0.4rem" }}>
           {SPECIAL_GUEST.titolo}
         </p>
-        <p className="debole" style={{ margin: "0 0 1.3rem" }}>
+        <p className="debole testo-lungo" style={{ margin: "0 0 1.3rem" }}>
           {SPECIAL_GUEST.testo}
         </p>
         <ModuloBreve
@@ -202,7 +202,7 @@ export function DiventaPr() {
     <section className="fascia" style={{ background: "var(--blu-scuro)" }}>
       <div className="dentro">
         <Pila occhiello={DIVENTA_PR.occhiello} righe={[...DIVENTA_PR.titolo]} />
-        <p className="debole" style={{ margin: "1.6rem 0" }}>
+        <p className="debole testo-lungo" style={{ margin: "1.6rem 0" }}>
           {DIVENTA_PR.testo}
         </p>
         <a href="/diventa-pr" className="bottone">

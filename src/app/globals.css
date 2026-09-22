@@ -152,6 +152,18 @@ button {
   color: var(--testo-debole);
 }
 
+/*
+ * La misura di una riga si dà in caratteri, non spezzando il testo a mano:
+ * un a capo forzato che sta bene su un telefono cade in mezzo a una frase
+ * su un altro. Cinquantadue caratteri è la lunghezza oltre la quale l'occhio
+ * fatica a ritrovare l'inizio della riga dopo.
+ */
+.testo-lungo {
+  max-width: 52ch;
+  /* Evita che l'ultima riga resti con una parola sola. */
+  text-wrap: pretty;
+}
+
 .bottone {
   display: inline-flex;
   align-items: center;
@@ -345,10 +357,6 @@ button {
   /* Le quattro serate stanno in fila. */
   .griglia-serate {
     grid-template-columns: repeat(4, 1fr);
-  }
-
-  .testo-lungo {
-    max-width: 52ch;
   }
 
   .storia {
