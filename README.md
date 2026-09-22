@@ -7,21 +7,33 @@ Stack: Next.js (App Router), TypeScript, `passkit-generator` 3, deploy su Vercel
 
 ---
 
-## Fase 1: fatta e provata
+## A che punto siamo
 
-Biglietto aggiunto a un iPhone vero il 22 settembre 2026, firma verificata.
+**Fase 1, fatta e provata.** Biglietto aggiunto a un iPhone vero il 22 settembre 2026,
+firma verificata contro la catena di Apple.
 
-### Cosa c'è adesso
+**Fase 2, versione anteprima.** Il giro completo si può far vedere:
 
-- `GET /api/pass/demo` genera un `.pkpass` firmato di stile `eventTicket`, con dati finti.
-- `/wallet-test` è la pagina con il pulsante "Aggiungi a Apple Wallet".
-- Il QR contiene un token finto. Il token vero, firmato, arriva nella fase 2.
-- La rotta demo è **spenta di default**: risponde 404 finché non imposti `ABILITA_PASS_DEMO=1`.
+| Pagina | Cosa fa |
+|---|---|
+| `/` | Indice dei tre passi |
+| `/pannello` | La conferma, come la farà Luca: scegli serata e tipo, esce il messaggio WhatsApp già scritto |
+| `/api/pass/<token>` | Il biglietto vero di quella prenotazione |
+| `/staff/scan` | La porta: inquadri il QR e sai subito se passa |
+| `/wallet-test` | Biglietto di prova con dati finti, acceso da `ABILITA_PASS_DEMO` |
 
-Manca, e arriva dopo: prenotazioni su Supabase, token firmato, pagina di scansione
-all'ingresso, Google Wallet.
+**Come sta insieme senza database.** Il token dentro il QR **è** la prenotazione:
+i dati viaggiano cifrati con AES-256-GCM e una chiave che sta solo sul server.
+Chi inquadra il QR vede una sequenza illeggibile, e senza la chiave non se ne può
+fabbricare uno. Per questo non serve nessun archivio per sapere chi è quel biglietto.
 
----
+**Quello che questa versione non fa, e va detto a Luca:**
+
+- **Non sa se un biglietto è già passato.** Scansionandolo due volte dice verde due
+  volte. Il "già entrato alle 00:42" richiede un archivio, e arriva col Supabase del sito.
+- **Non conserva le prenotazioni.** Il pannello non salva: fa vedere il gesto.
+- **La pagina della porta è aperta**, difesa solo dal firewall. Quando si deciderà chi
+  ci entra, si aggiungono password e blocco dei tentativi.
 
 ## 1. Preparare i certificati
 
@@ -108,6 +120,7 @@ direttamente da `certs/`, quindi bastano quattro righe:
 PASS_TYPE_IDENTIFIER=pass.it.satoshiweb.lucacalifornia
 APPLE_TEAM_IDENTIFIER=CYZ7XKRGWR
 PASS_SIGNER_KEY_PASSPHRASE=la-password-della-chiave
+SEGRETO_BIGLIETTO=una-frase-lunga-almeno-16-caratteri
 ABILITA_PASS_DEMO=1
 ```
 
@@ -119,6 +132,7 @@ ABILITA_PASS_DEMO=1
 | `PASS_SIGNER_CERT_BASE64` | Solo su Vercel: `signerCert.pem` in base64 |
 | `PASS_SIGNER_KEY_BASE64` | Solo su Vercel: `signerKey.pem` in base64 |
 | `PASS_WWDR_BASE64` | Solo su Vercel: `wwdr.pem` in base64 |
+| `SEGRETO_BIGLIETTO` | Chiave con cui si cifrano i token del QR. Se cambia, i biglietti già consegnati non si aprono più |
 | `ABILITA_PASS_DEMO` | `1` accende `/api/pass/demo`. Senza, risponde 404 |
 
 Il codice cerca prima la variabile in base64, e solo se manca legge il file da `certs/`.
@@ -276,20 +290,36 @@ assets/pass/            immagini del .pkpass (generate)
 certs/                  certificati, fuori da git
 scripts/
   genera-immagini.mjs   marchio SVG -> PNG con sharp
-src/lib/pass/
-  tipi.ts               i dati di un biglietto
-  configurazione.ts     Pass Type ID e Team ID dalle variabili d'ambiente
-  certificati.ts        legge i PEM da base64 o da certs/
-  immagini.ts           legge le immagini da assets/pass
-  biglietto.ts          costruisce e firma il .pkpass
-  demo.ts               dati finti della fase 1, si cancella alla fase 2
+src/lib/
+  serate.ts             le quattro serate e il calcolo della prossima data
+  pass/
+    tipi.ts             prenotazione, biglietto, elenco dei locali
+    token.ts            cifratura e lettura del token del QR
+    configurazione.ts   Pass Type ID e Team ID dalle variabili d'ambiente
+    certificati.ts      legge i PEM da base64 o da certs/
+    immagini.ts         legge le immagini da assets/pass
+    biglietto.ts        costruisce e firma il .pkpass
+    demo.ts             dati finti, solo per /api/pass/demo
 src/app/
-  wallet-test/page.tsx  pagina con il pulsante
+  page.tsx              indice dei tre passi
+  pannello/page.tsx     la conferma
+  staff/scan/page.tsx   la porta
+  wallet-test/page.tsx  il biglietto di prova
   api/pass/demo/route.ts
+  api/pass/[token]/route.ts
+  api/conferma/route.ts
+  api/verifica/route.ts
 ```
 
-L'aspetto del biglietto sta tutto in `biglietto.ts`. La fase 2 cambierà da dove
-arrivano i dati, non quel file.
+L'aspetto del biglietto sta tutto in `biglietto.ts`, e da dove arrivano i dati sta
+in `token.ts`. Quando questo codice verrà portato nel progetto del sito, `src/lib/`
+si sposta così com'è: non dipende da nient'altro di questo progetto.
+
+Per provare il token senza costruire il progetto:
+
+```bash
+SEGRETO_BIGLIETTO=una-frase-lunga-abbastanza node scripts/prova-token.ts
+```
 
 ---
 

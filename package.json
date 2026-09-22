@@ -13,6 +13,7 @@
     "strip": "node scripts/genera-strip.mjs"
   },
   "dependencies": {
+    "jsqr": "^1.4.0",
     "next": "16.3.6",
     "passkit-generator": "3.6.1",
     "react": "19.2.0",
