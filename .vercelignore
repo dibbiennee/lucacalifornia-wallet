@@ -1,0 +1,11 @@
+# Quando esiste questo file, Vercel ignora .gitignore: qui dentro deve
+# esserci TUTTO quello che non deve salire, certificati in testa.
+certs
+*.p12
+*.cer
+*.pem
+.env
+.env.local
+.env*.local
+node_modules
+.next

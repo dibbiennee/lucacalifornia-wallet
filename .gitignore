@@ -1,0 +1,29 @@
+# dipendenze
+node_modules/
+
+# build
+.next/
+out/
+next-env.d.ts
+
+# certificati del pass: non devono MAI finire nel repository
+/certs/
+*.p12
+*.cer
+*.pem
+*.key
+
+# variabili d'ambiente
+.env
+.env.local
+.env*.local
+
+# varie
+.DS_Store
+.vercel
+.env*
+
+# La riga ".env*" qui sopra l'ha aggiunta "vercel link", e si mangiava anche
+# il file di esempio, che invece deve stare nel repository: è l'elenco delle
+# variabili da compilare, e senza quello chi clona non sa cosa serve.
+!.env.example
