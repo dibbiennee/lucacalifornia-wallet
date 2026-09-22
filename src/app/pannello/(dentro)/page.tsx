@@ -59,9 +59,11 @@ export default function Oggi() {
               <span className="debole" style={{ display: "block", fontSize: "0.9375rem", marginTop: "0.3rem" }}>
                 {descrizione(r.tipo, r.gruppo, r.budget, r.occasione)}
               </span>
-              <span style={{ display: "flex", justifyContent: "space-between", gap: "1rem", marginTop: "0.5rem", fontSize: "0.8125rem" }}>
-                <span>{[r.serata, r.sala].filter(Boolean).join(", ")}</span>
-                <span className="debole">da {r.provenienza.toLowerCase()}</span>
+              {/* La provenienza non sta qui: in questa schermata serve sapere
+                  chi è e cosa vuole, non da che link è arrivato. Resta nel
+                  dettaglio, dove è un dato che si va a cercare. */}
+              <span style={{ display: "block", marginTop: "0.5rem", fontSize: "0.8125rem" }}>
+                {[r.serata, r.sala].filter(Boolean).join(", ")}
               </span>
             </Link>
           </li>
