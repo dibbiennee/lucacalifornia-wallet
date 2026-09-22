@@ -7,6 +7,15 @@
  * Un segnaposto a vista davanti a un cliente è peggio del buco che nasconde.
  */
 
+/*
+ * Il nome della serata della domenica si scrive "Báilame", con l'accento.
+ * È come sta scritto nel logo della serata, quello che si vede nelle foto
+ * dentro al locale, ed è anche come si scrive in spagnolo.
+ *
+ * Senza accento restano solo l'indirizzo della pagina (/serate/bailame) e i
+ * nomi dei file: lì un accento crea solo problemi.
+ */
+
 export const MARCHIO = { riga1: "LUCA", riga2: "CALIFORNIA" } as const;
 
 export const MOTTO = ["NON IMPORTA CHI TU SIA", "IMPORTA CHE TI", "SAPPIA DIVERTIRE"] as const;
