@@ -5,10 +5,11 @@ import { Pila } from "@/componenti/Pila";
 export const metadata = { title: "Funzioni - Luca California" };
 
 const PANNELLO = [
-  { nome: "OGGI", testo: "Liste, tavoli ed entrati della serata in corso", dove: null },
-  { nome: "RICHIESTE", testo: "Confermi e parte il messaggio già scritto", dove: "/biglietto/conferma" },
-  { nome: "PORTA", testo: "Chi è entrato e chi manca", dove: "/staff/scan" },
-  { nome: "SERATE", testo: "Decidi cosa vede la gente sul sito", dove: null },
+  { nome: "OGGI", testo: "Liste, tavoli ed entrati della serata in corso", dove: "/pannello" },
+  { nome: "RICHIESTE", testo: "Confermi e parte il messaggio già scritto", dove: "/pannello/richieste" },
+  { nome: "PORTA", testo: "Chi è entrato e chi manca", dove: "/pannello/porta" },
+  { nome: "SERATE", testo: "Decidi cosa vede la gente sul sito", dove: "/pannello/serate" },
+  { nome: "SQUADRA", testo: "I tuoi PR, le provvigioni e i compleanni", dove: "/pannello/squadra" },
 ] as const;
 
 const BIGLIETTO = [
@@ -44,50 +45,32 @@ export default function PaginaFunzioni() {
           <Pila occhiello="DAL TUO TELEFONO" righe={["IL PANNELLO"]} />
           <p className="debole testo-lungo" style={{ margin: "1.6rem 0" }}>
             Le richieste non arrivano più sparse tra DM e messaggi: entrano qui, divise per
-            serata. Tocca una schermata per provarla.
+            serata. Tocca una schermata per provarla: serve la password del pannello.
           </p>
 
           <div style={{ display: "grid", gap: "0.7rem" }}>
-            {PANNELLO.map((voce) => {
-              const contenuto = (
-                <>
-                  <strong style={{ display: "block", letterSpacing: "0.1em", marginBottom: "0.2rem" }}>
-                    {voce.nome}
-                  </strong>
-                  <span className="debole" style={{ fontSize: "0.9375rem" }}>
-                    {voce.testo}
-                  </span>
-                </>
-              );
-
-              return voce.dove === null ? (
-                <div
-                  key={voce.nome}
-                  style={{ border: "2px solid rgba(255,255,255,0.18)", padding: "1rem 1.1rem", opacity: 0.65 }}
-                >
-                  {contenuto}
-                  <span className="debole" style={{ display: "block", marginTop: "0.5rem", fontSize: "0.8125rem" }}>
-                    In arrivo
-                  </span>
-                </div>
-              ) : (
-                <Link
-                  key={voce.nome}
-                  href={voce.dove}
-                  style={{
-                    display: "block",
-                    border: "2px solid rgba(255,255,255,0.45)",
-                    padding: "1rem 1.1rem",
-                    textDecoration: "none",
-                  }}
-                >
-                  {contenuto}
-                  <span style={{ display: "block", marginTop: "0.5rem", fontSize: "0.8125rem", fontWeight: 700 }}>
-                    Provala →
-                  </span>
-                </Link>
-              );
-            })}
+            {PANNELLO.map((voce) => (
+              <Link
+                key={voce.nome}
+                href={voce.dove}
+                style={{
+                  display: "block",
+                  border: "2px solid rgba(255,255,255,0.45)",
+                  padding: "1rem 1.1rem",
+                  textDecoration: "none",
+                }}
+              >
+                <strong style={{ display: "block", letterSpacing: "0.1em", marginBottom: "0.2rem" }}>
+                  {voce.nome}
+                </strong>
+                <span className="debole" style={{ fontSize: "0.9375rem" }}>
+                  {voce.testo}
+                </span>
+                <span style={{ display: "block", marginTop: "0.5rem", fontSize: "0.8125rem", fontWeight: 700 }}>
+                  Provala →
+                </span>
+              </Link>
+            ))}
           </div>
         </div>
       </section>
