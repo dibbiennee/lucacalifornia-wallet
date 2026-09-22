@@ -48,14 +48,24 @@ export function Apertura() {
 
         <Pila righe={["LA NOTTE", "TI DÀ LIBERTÀ"]} />
 
-        <p style={{ margin: "1.5rem 0 1.75rem", maxWidth: "26rem" }}>
-          Ciao, sono Luca. Liste e tavoli al Room 26 di Roma,
-          <br />e la navetta per arrivarci.
+        <p className="testo-lungo" style={{ margin: "1.5rem 0 1.75rem" }}>
+          Ciao, sono Luca.
+          <br />
+          Liste e tavoli al Room 26 di Roma,
+          <br />
+          da giovedì a domenica,
+          <br />
+          con la navetta per arrivarci.
         </p>
 
-        <a href="#prenota" className="bottone">
-          Entra in lista o prenota
-        </a>
+        <div style={{ display: "flex", flexWrap: "wrap", gap: "0.7rem" }}>
+          <a href="#prenota" className="bottone">
+            Entra in lista o prenota
+          </a>
+          <a href="/serate" className="bottone bottone-vuoto">
+            Vedi le serate
+          </a>
+        </div>
       </div>
     </section>
   );

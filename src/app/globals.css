@@ -173,3 +173,192 @@ button {
   color: var(--testo);
   border: 2px solid rgba(255, 255, 255, 0.55);
 }
+
+/* --- La galleria che scorre di lato --- */
+
+.scorrevole {
+  display: flex;
+  gap: 0.6rem;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  padding: 1.6rem var(--margine);
+  scrollbar-width: none;
+}
+
+.scorrevole::-webkit-scrollbar {
+  display: none;
+}
+
+.storia {
+  flex: 0 0 auto;
+  width: 9.5rem;
+  height: 16.9rem;
+  object-fit: cover;
+  scroll-snap-align: start;
+}
+
+/* --- Barra fissa in basso --- */
+
+.barra-fissa {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 30;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  background: rgba(255, 255, 255, 0.25);
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+.barra-fissa a {
+  padding: 1.05rem 0;
+  text-align: center;
+  text-decoration: none;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  font-size: 0.875rem;
+}
+
+.barra-pieno {
+  background: #ffffff;
+  color: var(--blu-scuro);
+}
+
+.barra-vuoto {
+  background: var(--blu-scuro);
+  color: var(--testo);
+}
+
+/* --- Intestazione --- */
+
+.testata {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.1rem var(--margine);
+  max-width: var(--larghezza);
+  margin: 0 auto;
+}
+
+.testata-marchio {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+}
+
+.menu-largo {
+  display: none;
+}
+
+.menu-stretto summary {
+  list-style: none;
+  cursor: pointer;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  padding: 0.5rem 0;
+}
+
+.menu-stretto summary::-webkit-details-marker {
+  display: none;
+}
+
+.menu-stretto details {
+  position: relative;
+}
+
+.menu-stretto ul {
+  position: absolute;
+  right: 0;
+  top: 2.4rem;
+  z-index: 20;
+  margin: 0;
+  padding: 0.6rem 0;
+  min-width: 11rem;
+  list-style: none;
+  background: var(--blu-scuro);
+}
+
+.menu-stretto a {
+  display: block;
+  padding: 0.7rem 1.1rem;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+/* --- Schermi larghi --- */
+
+@media (min-width: 52rem) {
+  :root {
+    --margine: 2.5rem;
+    --larghezza: 66rem;
+  }
+
+  body {
+    font-size: 1.125rem;
+  }
+
+  .fascia {
+    padding: 5rem var(--margine);
+  }
+
+  .titolo {
+    font-size: clamp(2.8rem, 4.6vw, 4.4rem);
+  }
+
+  .menu-stretto {
+    display: none;
+  }
+
+  .menu-largo {
+    display: flex;
+    align-items: center;
+    gap: 1.6rem;
+  }
+
+  .menu-voce {
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.9375rem;
+  }
+
+  .menu-prenota {
+    background: #ffffff;
+    color: var(--blu-scuro);
+    text-decoration: none;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-size: 0.8125rem;
+    padding: 0.8rem 1.4rem;
+  }
+
+  /* La barra fissa è un gesto da telefono: sul computer sparisce. */
+  .barra-fissa {
+    display: none;
+  }
+
+  /* Le quattro serate stanno in fila. */
+  .griglia-serate {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .testo-lungo {
+    max-width: 52ch;
+  }
+
+  .storia {
+    width: 12rem;
+    height: 21.3rem;
+  }
+}
+
+@media (min-width: 52rem) {
+  .griglia-pacchetti {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}

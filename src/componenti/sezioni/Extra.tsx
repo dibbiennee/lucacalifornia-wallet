@@ -51,7 +51,7 @@ export function Navetta() {
     <section className="fascia" style={{ background: "var(--blu-scuro)" }} id="navetta">
       <div className="dentro">
         <Pila occhiello={NAVETTA.occhiello} righe={[NAVETTA.titolo]} />
-        <p className="debole" style={{ margin: "1.6rem 0 1.6rem" }}>
+        <p className="debole testo-lungo" style={{ margin: "1.6rem 0 1.6rem" }}>
           {NAVETTA.testo}
         </p>
         <a href="#prenota" className="bottone bottone-vuoto">
@@ -68,7 +68,11 @@ export function Capodanno() {
       <div className="dentro">
         <Pila occhiello={CAPODANNO.occhiello} righe={[CAPODANNO.titolo]} />
 
-        <div style={{ display: "grid", gap: "0.9rem", margin: "2rem 0 1.6rem" }}>
+        <p className="debole testo-lungo" style={{ margin: "1.6rem 0 0" }}>
+          Solo a Capodanno lavoro con più strutture. Prezzi e strutture a breve.
+        </p>
+
+        <div className="griglia-pacchetti" style={{ display: "grid", gap: "0.9rem", margin: "2rem 0 1.6rem" }}>
           {CAPODANNO.pacchetti.map((pacchetto) => (
             <div
               key={pacchetto.nome}

@@ -1,6 +1,7 @@
 import { Nastro } from "@/componenti/Nastro";
 import { Apertura } from "@/componenti/sezioni/Apertura";
 import { ComeFunziona } from "@/componenti/sezioni/ComeFunziona";
+import { Galleria } from "@/componenti/sezioni/Galleria";
 import {
   Capodanno,
   ChiELuca,
@@ -19,6 +20,7 @@ export default function Home() {
       <Nastro />
       <Serate />
       <SpecialGuest />
+      <Galleria />
       <ChiELuca />
       <Navetta />
       <Capodanno />

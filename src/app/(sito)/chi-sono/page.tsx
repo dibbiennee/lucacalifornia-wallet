@@ -19,17 +19,10 @@ export default function PaginaChiSono() {
           style={{ width: "100%", height: "auto", margin: "2rem 0" }}
         />
 
-        <p
-          style={{
-            border: "2px dashed rgba(255,255,255,0.4)",
-            padding: "1.2rem",
-            margin: 0,
-            color: "var(--testo-debole)",
-          }}
-        >
-          Il testo di questa pagina lo scrive Luca: [DA CONFERMARE].
-          <br />
-          In anteprima non lo inventiamo.
+        <p className="testo-lungo" style={{ margin: 0 }}>
+          Sono Luca Curella, PR e organizzatore di eventi a Roma. Ogni stagione scelgo un locale
+          solo e ci porto tutta la mia lista: d&apos;inverno il Room 26, d&apos;estate il Ninfeo e
+          il Morgan Beach Club.
         </p>
       </div>
     </section>

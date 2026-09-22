@@ -10,7 +10,7 @@ export function Serate() {
       <div className="dentro">
         <Pila occhiello="TUTTE" righe={["LE SERATE ROOM26"]} />
 
-        <div style={{ display: "grid", gap: "1rem", marginTop: "2rem" }}>
+        <div className="griglia-serate" style={{ display: "grid", gap: "1rem", marginTop: "2rem" }}>
           {SERATE.map((serata) => (
             <Link
               key={serata.codice}
