@@ -52,7 +52,7 @@ export default async function PaginaSerata({ params }: { params: Promise<{ codic
             {serata.quando} AL ROOM 26
           </p>
 
-          <Pila righe={[serata.nome, serata.musica]} />
+          <Pila righe={[serata.nome, serata.musica]} livello={1} />
 
           <p className="testo-lungo" style={{ margin: "1.6rem 0 2rem" }}>{serata.descrizione}</p>
 

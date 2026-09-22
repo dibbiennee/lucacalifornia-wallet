@@ -9,7 +9,7 @@ export default function PaginaSerate() {
     <>
       <section className="fascia" style={{ paddingBottom: 0 }}>
         <div className="dentro">
-          <Pila occhiello="DA GIOVEDÌ A DOMENICA" righe={["QUATTRO", "SERATE"]} />
+          <Pila occhiello="DA GIOVEDÌ A DOMENICA" righe={["QUATTRO", "SERATE"]} livello={1} />
           <p className="debole" style={{ margin: "1.5rem 0 0" }}>
             Ogni sera ha la sua musica e il suo pubblico. Scegli la tua e prenota.
           </p>

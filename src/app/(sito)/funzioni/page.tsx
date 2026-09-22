@@ -30,7 +30,7 @@ export default function PaginaFunzioni() {
     <>
       <section className="fascia">
         <div className="dentro">
-          <Pila occhiello="OLTRE AL SITO" righe={["COSA C'È", "DIETRO"]} />
+          <Pila occhiello="OLTRE AL SITO" righe={["COSA C'È", "DIETRO"]} livello={1} />
           <p className="testo-lungo" style={{ margin: "1.6rem 0 0" }}>
             Il sito è la parte che vede la gente. Dietro c&apos;è il pannello da cui gestisci
             tutto, il biglietto che finisce nel telefono dei clienti e gli strumenti per la tua

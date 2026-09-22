@@ -6,7 +6,7 @@ export const metadata = { title: "Servizio navetta - Luca California" };
 export default function PaginaNavetta() {
   return (
     <>
-      <Navetta />
+      <Navetta livello={1} />
       <Modulo />
     </>
   );

@@ -25,7 +25,7 @@ export default function PaginaDiventaPr() {
           <p className="debole" style={{ fontSize: "0.6875rem", letterSpacing: "0.2em", fontWeight: 700, margin: "0 0 0.9rem" }}>
             ALL WE HAVE IS NOW
           </p>
-          <Pila occhiello="APERTE LE CANDIDATURE" righe={["PER LA FIGURA DI", "PR"]} />
+          <Pila occhiello="APERTE LE CANDIDATURE" righe={["PER LA FIGURA DI", "PR"]} livello={1} />
           <p className="testo-lungo" style={{ margin: "1.6rem 0 0" }}>
             Cerco nuovi PR per la mia squadra, a Roma e sul litorale. Non serve esperienza: la
             formazione la faccio io, di persona.

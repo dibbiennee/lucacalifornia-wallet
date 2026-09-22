@@ -12,9 +12,9 @@ export function SpecialGuest() {
   return (
     <section className="fascia" style={{ paddingTop: 0 }}>
       <div className="dentro" style={{ border: "2px solid rgba(255,255,255,0.3)", padding: "1.6rem" }}>
-        <p style={{ fontWeight: 700, letterSpacing: "0.1em", margin: "0 0 0.4rem" }}>
+        <h2 style={{ fontFamily: "inherit", fontSize: "1rem", fontWeight: 700, letterSpacing: "0.1em", margin: "0 0 0.4rem", textTransform: "none", lineHeight: 1.4 }}>
           {SPECIAL_GUEST.titolo}
-        </p>
+        </h2>
         <p className="debole testo-lungo" style={{ margin: "0 0 1.3rem" }}>
           {SPECIAL_GUEST.testo}
         </p>
@@ -65,11 +65,11 @@ export function ChiELuca() {
   );
 }
 
-export function Navetta() {
+export function Navetta({ livello = 2 }: { readonly livello?: 1 | 2 }) {
   return (
     <section className="fascia" style={{ background: "var(--blu-scuro)" }} id="navetta">
       <div className="dentro">
-        <Pila occhiello={NAVETTA.occhiello} righe={[NAVETTA.titolo]} />
+        <Pila occhiello={NAVETTA.occhiello} righe={[NAVETTA.titolo]} livello={livello} />
         <p className="debole testo-lungo" style={{ margin: "1.6rem 0 1.6rem" }}>
           {NAVETTA.testo}
         </p>
@@ -96,11 +96,11 @@ export function Navetta() {
   );
 }
 
-export function Capodanno() {
+export function Capodanno({ livello = 2 }: { readonly livello?: 1 | 2 }) {
   return (
     <section className="fascia" id="capodanno">
       <div className="dentro">
-        <Pila occhiello={CAPODANNO.occhiello} righe={[CAPODANNO.titolo]} />
+        <Pila occhiello={CAPODANNO.occhiello} righe={[CAPODANNO.titolo]} livello={livello} />
 
         <p className="debole testo-lungo" style={{ margin: "1.6rem 0 0" }}>
           Solo a Capodanno lavoro con più strutture. Prezzi e strutture a breve.

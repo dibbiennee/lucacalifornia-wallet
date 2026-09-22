@@ -69,17 +69,16 @@ export function Serate() {
                 >
                   {serata.giorno}
                 </span>
-                <span
+                <h3
                   style={{
                     display: "block",
-                    fontFamily: "var(--carattere-titoli), Impact, sans-serif",
                     fontSize: "clamp(2rem, 9vw, 2.75rem)",
                     lineHeight: 1,
-                    textTransform: "uppercase",
+                    margin: 0,
                   }}
                 >
                   {serata.nome}
-                </span>
+                </h3>
                 <span className="debole" style={{ display: "block", fontSize: "0.8125rem", letterSpacing: "0.1em", marginTop: "0.3rem" }}>
                   {serata.musica}
                 </span>

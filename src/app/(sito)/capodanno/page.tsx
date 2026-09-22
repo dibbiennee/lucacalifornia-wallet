@@ -6,7 +6,7 @@ export const metadata = { title: "Capodanno al Room 26 - Luca California" };
 export default function PaginaCapodanno() {
   return (
     <>
-      <Capodanno />
+      <Capodanno livello={1} />
       <Modulo />
     </>
   );

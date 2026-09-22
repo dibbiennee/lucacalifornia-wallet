@@ -9,7 +9,7 @@ export default function PaginaChiSono() {
   return (
     <section className="fascia">
       <div className="dentro">
-        <Pila occhiello="CHI SONO" righe={[...MOTTO]} />
+        <Pila occhiello="CHI SONO" righe={[...MOTTO]} livello={1} />
 
         <Image
           src="/foto/luca-bailame-media.jpg"
