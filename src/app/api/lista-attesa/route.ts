@@ -1,3 +1,7 @@
+import { cookies } from "next/headers";
+
+import { BISCOTTO_PROVENIENZA, nomeProvenienza } from "@/contenuti/canali";
+
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
@@ -56,7 +60,12 @@ export async function POST(richiesta: Request): Promise<Response> {
     {
       salvata: false,
       nota: "Anteprima del sito: il contatto non viene conservato.",
-      ricevuta: { tipo, nome, contatto },
+      ricevuta: {
+        tipo,
+        nome,
+        contatto,
+        provenienza: nomeProvenienza((await cookies()).get(BISCOTTO_PROVENIENZA)?.value),
+      },
     },
     { headers: { "Cache-Control": "no-store" } },
   );

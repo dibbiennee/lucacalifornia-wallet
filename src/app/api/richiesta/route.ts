@@ -1,3 +1,7 @@
+import { cookies } from "next/headers";
+
+import { BISCOTTO_PROVENIENZA, nomeProvenienza } from "@/contenuti/canali";
+
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
@@ -83,6 +87,13 @@ export async function POST(richiesta: Request): Promise<Response> {
    * si può verificare che arrivi completa, occasione e note comprese, senza
    * dover guardare dentro un database che qui non c'è.
    */
+  /*
+   * Da dove arriva chi prenota. Non lo chiede il modulo: lo sa il sito,
+   * perché chi è entrato da /ig o da /marco si porta dietro un biscotto.
+   * Chi arriva digitando l'indirizzo risulta "Diretto", che è la verità.
+   */
+  const provenienza = nomeProvenienza((await cookies()).get(BISCOTTO_PROVENIENZA)?.value);
+
   const ricevuta = {
     tipo,
     nome,
@@ -90,6 +101,7 @@ export async function POST(richiesta: Request): Promise<Response> {
     telefono,
     serata,
     ...(zona === null ? {} : { zona }),
+    provenienza,
     ...(tavolo
       ? {
           gruppo: testo(c.gruppo, 40) ?? "",
