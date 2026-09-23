@@ -106,9 +106,21 @@ export default function PaginaFunzioni() {
             alla carta d&apos;imbarco. Provalo adesso: è un biglietto vero.
           </p>
 
-          <a href="/biglietto/prova" className="bottone" style={{ marginBottom: "1.6rem" }}>
-            Aggiungi il biglietto di prova
-          </a>
+          <div className="biglietto-mostra">
+            <img
+              src="/foto/biglietto.webp"
+              alt="Il biglietto nel Wallet: in alto il logo Luca California e la data, poi la fascia con la foto della sala e sopra il nome della serata, sotto tipo, nome, locale e orario, e in fondo il QR"
+              width={780}
+              height={1180}
+              loading="lazy"
+            />
+
+            <div>
+              <a href="/biglietto/prova" className="bottone">
+                Aggiungi il biglietto di prova
+              </a>
+            </div>
+          </div>
 
           <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "grid", gap: "0.8rem" }}>
             {BIGLIETTO.map((riga) => (

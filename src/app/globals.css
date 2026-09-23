@@ -678,3 +678,29 @@ button {
     width: 13rem;
   }
 }
+
+/* --- Il biglietto mostrato nella pagina Funzioni --- */
+
+.biglietto-mostra {
+  display: grid;
+  gap: 1.6rem;
+  align-items: center;
+  margin-bottom: 1.6rem;
+}
+
+.biglietto-mostra img {
+  width: min(16rem, 70%);
+  height: auto;
+  justify-self: center;
+}
+
+@media (min-width: 52rem) {
+  .biglietto-mostra {
+    grid-template-columns: 16rem 1fr;
+    gap: 2.4rem;
+  }
+
+  .biglietto-mostra img {
+    width: 100%;
+  }
+}
