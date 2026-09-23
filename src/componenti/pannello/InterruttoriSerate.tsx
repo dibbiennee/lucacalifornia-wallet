@@ -2,53 +2,58 @@
 
 import { useState } from "react";
 
+import { cambiaEtichetta } from "@/app/pannello/azioni";
 import type { EtichettaSerata, SerataPannello } from "@/lib/pannello/dati";
+
+import { Avviso } from "./Avviso";
+import { Riquadro, Scelta, VoceScelta } from "./Scelta";
 
 const ETICHETTE: readonly EtichettaSerata[] = ["Lista aperta", "Pochi tavoli", "Tutto pieno"];
 
 /**
- * Gli interruttori delle etichette dal vivo.
+ * Le etichette che la gente vede sul sito, una per serata.
  *
- * Funzionano a schermo, ma senza database la scelta non arriva al sito e non
- * resta dopo un aggiornamento della pagina: sotto c'è scritto, invece di far
- * credere il contrario.
+ * Il cambio si vede subito a schermo e poi viene salvato: chi tocca non deve
+ * aspettare il server per sapere di aver toccato. L'avviso dice com'e'
+ * andata, e finche' non c'e' il database dice anche che non e' arrivata al
+ * sito, invece di lasciarlo credere.
  */
 export function InterruttoriSerate({ serate }: { readonly serate: readonly SerataPannello[] }) {
   const [scelte, setScelte] = useState<Record<string, EtichettaSerata>>(
     Object.fromEntries(serate.map((s) => [s.codice, s.etichetta])),
   );
+  const [avviso, setAvviso] = useState("");
+
+  async function scegli(serata: SerataPannello, etichetta: EtichettaSerata) {
+    setScelte((prima) => ({ ...prima, [serata.codice]: etichetta }));
+
+    try {
+      setAvviso(await cambiaEtichetta(serata.codice, etichetta, serata.nome));
+    } catch {
+      // Torna com'era: meglio vedere il vecchio valore che crederne uno falso.
+      setScelte((prima) => ({ ...prima, [serata.codice]: serata.etichetta }));
+      setAvviso("Non sono riuscito a cambiarla, riprova");
+    }
+  }
 
   return (
     <>
       {serate.map((serata) => (
-        <div key={serata.codice} className="pannello-riquadro">
-          <p id={`s-${serata.codice}`} style={{ margin: "0 0 0.7rem", fontWeight: 700, letterSpacing: "0.04em" }}>
-            {serata.nome}
-          </p>
-          <div role="radiogroup" aria-labelledby={`s-${serata.codice}`} style={{ display: "flex", flexWrap: "wrap", gap: "0.5rem" }}>
-            {ETICHETTE.map((etichetta) => {
-              const attiva = scelte[serata.codice] === etichetta;
-              return (
-                <button
-                  key={etichetta}
-                  type="button"
-                  role="radio"
-                  aria-checked={attiva}
-                  onClick={() => setScelte({ ...scelte, [serata.codice]: etichetta })}
-                  className={`scelta${attiva ? " scelta-attiva" : ""}`}
-                >
-                  {etichetta}
-                </button>
-              );
-            })}
-          </div>
-        </div>
+        <Riquadro key={serata.codice} titolo={serata.nome} id={`serata-${serata.codice}`}>
+          <Scelta etichettatoDa={`serata-${serata.codice}`}>
+            {ETICHETTE.map((etichetta) => (
+              <VoceScelta
+                key={etichetta}
+                testo={etichetta}
+                scelta={scelte[serata.codice] === etichetta}
+                premi={() => void scegli(serata, etichetta)}
+              />
+            ))}
+          </Scelta>
+        </Riquadro>
       ))}
 
-      <p className="pannello-nota">
-        Gli interruttori si muovono, ma senza database la scelta non arriva al sito e si perde
-        aggiornando la pagina.
-      </p>
+      <Avviso testo={avviso} chiudi={() => setAvviso("")} />
     </>
   );
 }
