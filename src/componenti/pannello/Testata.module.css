@@ -22,7 +22,7 @@
   color: var(--muted);
 }
 
-.titolo {
+.titolo.titolo {
   margin: 0;
   max-width: 100%;
   font-size: clamp(30px, 9vw, 42px);

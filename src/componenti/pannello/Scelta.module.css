@@ -40,7 +40,7 @@
   gap: var(--s-3);
 }
 
-.riquadro-titolo {
+.riquadro-titolo.riquadro-titolo {
   margin: 0;
   font-size: 17px;
   font-weight: 700;
