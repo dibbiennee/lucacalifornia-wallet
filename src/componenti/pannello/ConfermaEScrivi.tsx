@@ -1,6 +1,17 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { useState } from "react";
+
+import { cambiaStato } from "@/app/pannello/azioni";
+import type { RichiestaPannello } from "@/lib/pannello/dati";
+import { tipoBiglietto } from "@/lib/pannello/testi";
+import { giornoDellaSerata, prossimaSerata } from "@/lib/serate";
+
+import { Avviso } from "./Avviso";
+import { Conferma } from "./Conferma";
+import { Errore } from "./Campo";
+import { DuePulsanti, Pulsante, PulsanteLink } from "./Pulsante";
 
 /**
  * Il gesto che chiude la richiesta.
@@ -9,53 +20,42 @@ import { useState } from "react";
  * messaggio già scritto. È una regola del brief, ogni messaggio al cliente
  * parte da Luca.
  *
- * Il biglietto è quello vero: la rotta /api/conferma crea il token cifrato e
+ * Il biglietto è quello vero: /api/conferma crea il token cifrato e
  * restituisce il link al .pkpass, lo stesso che il cliente aggiunge al
- * Wallet. Questa è l'unica parte del pannello che non è di esempio.
+ * Wallet. È l'unica parte del pannello che non è di esempio.
  */
-export function ConfermaEScrivi({
-  nome,
-  telefono,
-  serata,
-  sala,
-  tipo,
-  giaConfermata,
-  inviatoAlle,
-}: {
-  readonly nome: string;
-  readonly telefono: string;
-  readonly serata: string;
-  readonly sala?: string;
-  readonly tipo: string;
-  readonly giaConfermata: boolean;
-  readonly inviatoAlle?: string;
-}) {
+export function ConfermaEScrivi({ r }: { readonly r: RichiestaPannello }) {
+  const router = useRouter();
   const [inCorso, setInCorso] = useState(false);
   const [errore, setErrore] = useState("");
-  const [fatto, setFatto] = useState<{ linkWhatsapp: string; linkBiglietto: string } | null>(null);
+  const [avviso, setAvviso] = useState("");
+  const [chiedo, setChiedo] = useState(false);
+  const [pronto, setPronto] = useState<{ whatsapp: string; biglietto: string } | null>(null);
 
   async function conferma() {
     setErrore("");
     setInCorso(true);
 
     try {
-      // La serata di prova è la prossima domenica alle 23:30: senza database
-      // non c'è una data vera da cui partire.
-      const inizio = new Date();
-      inizio.setHours(23, 30, 0, 0);
-      inizio.setDate(inizio.getDate() + ((7 - inizio.getDay()) % 7 || 7));
-
       const risposta = await fetch("/api/conferma", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          nomeCliente: nome,
-          telefono,
-          serata: serata.toUpperCase(),
-          inizioSerata: inizio.toISOString(),
-          tipo,
+          nomeCliente: r.nome,
+          telefono: r.telefono,
+          /*
+           * Il nome della serata, non il giorno: il messaggio diceva "sei
+           * dentro per SABATO di sabato 27 settembre".
+           */
+          serata: r.nomeSerata,
+          /*
+           * La prossima volta che cade quella serata, ora di Roma. Prima era
+           * sempre "la prossima domenica", per tutte le richieste.
+           */
+          inizioSerata: prossimaSerata(giornoDellaSerata(r.codiceSerata)).toISOString(),
+          tipo: tipoBiglietto(r),
           locale: "room26",
-          ...(sala === undefined ? {} : { sala }),
+          ...(r.sala === undefined ? {} : { sala: r.sala }),
         }),
       });
 
@@ -65,7 +65,11 @@ export function ConfermaEScrivi({
         return;
       }
 
-      setFatto((await risposta.json()) as { linkWhatsapp: string; linkBiglietto: string });
+      const d = (await risposta.json()) as { linkWhatsapp: string; linkBiglietto: string };
+      setPronto({ whatsapp: d.linkWhatsapp, biglietto: d.linkBiglietto });
+
+      await cambiaStato(r.id, "confermata");
+      router.refresh();
     } catch {
       setErrore("Non sono riuscito a preparare il biglietto");
     } finally {
@@ -73,52 +77,86 @@ export function ConfermaEScrivi({
     }
   }
 
-  if (fatto !== null) {
+  async function segna(stato: "in attesa" | "rifiutata") {
+    setChiedo(false);
+    setErrore("");
+    setInCorso(true);
+
+    try {
+      setAvviso(await cambiaStato(r.id, stato));
+      router.refresh();
+    } catch {
+      setErrore("Non sono riuscito a cambiare lo stato");
+    } finally {
+      setInCorso(false);
+    }
+  }
+
+  if (pronto !== null) {
     return (
-      <section style={{ marginTop: "2rem" }} role="status">
-        <p style={{ fontWeight: 700, margin: "0 0 1rem" }}>Biglietto pronto.</p>
-        <a href={fatto.linkWhatsapp} className="bottone" style={{ width: "100%", background: "#25D366", color: "#04250f", marginBottom: "0.8rem" }}>
+      <section className="sezione" role="status">
+        <p className="testo" style={{ fontWeight: 700, color: "var(--text)" }}>
+          Biglietto pronto.
+        </p>
+        <PulsanteLink aspetto="whatsapp" href={pronto.whatsapp} esterno>
           Apri WhatsApp col messaggio
-        </a>
-        <a href={fatto.linkBiglietto} className="bottone bottone-vuoto" style={{ width: "100%" }}>
+        </PulsanteLink>
+        <PulsanteLink aspetto="vuoto" href={pronto.biglietto} esterno>
           Guarda il biglietto
-        </a>
+        </PulsanteLink>
       </section>
     );
   }
 
+  const confermata = r.stato === "confermata";
+
   return (
-    <section style={{ marginTop: "2rem" }}>
-      <h2 className="etichetta-campo">Quando confermi</h2>
-      <p className="debole" style={{ margin: "0 0 1.2rem", fontSize: "0.9375rem" }}>
+    <section className="sezione" aria-labelledby="quando-confermi">
+      <h2 className="titolo-sezione" id="quando-confermi">
+        Quando confermi
+      </h2>
+      <p className="testo">
         Si apre WhatsApp con il messaggio già scritto e il link al biglietto da aggiungere al
         Wallet. Niente parte da solo.
       </p>
 
-      {giaConfermata && inviatoAlle !== undefined && (
-        <p className="debole" style={{ margin: "0 0 1rem", fontSize: "0.875rem" }}>
-          Biglietto già inviato alle {inviatoAlle}.
-        </p>
+      {confermata && r.bigliettoInviatoAlle !== undefined && (
+        <p className="testo-piccolo">Biglietto già inviato alle {r.bigliettoInviatoAlle}.</p>
       )}
 
-      {errore !== "" && (
-        <p role="alert" className="pannello-errore" style={{ margin: "0 0 1rem" }}>
-          {errore}
-        </p>
-      )}
+      {errore !== "" && <Errore>{errore}</Errore>}
 
-      <button onClick={() => void conferma()} disabled={inCorso} className="bottone" style={{ width: "100%", opacity: inCorso ? 0.6 : 1 }}>
-        {inCorso ? "Preparo il biglietto..." : giaConfermata ? "Rimanda il biglietto" : "Conferma e scrivi"}
-      </button>
+      <Pulsante onClick={() => void conferma()} disabled={inCorso}>
+        {inCorso ? "Preparo il biglietto..." : confermata ? "Rimanda il biglietto" : "Conferma e scrivi"}
+      </Pulsante>
 
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.6rem", marginTop: "0.8rem" }}>
-        <button type="button" className="scelta">
+      <DuePulsanti>
+        <Pulsante
+          aspetto="vuoto"
+          onClick={() => void segna("in attesa")}
+          disabled={inCorso || r.stato === "in attesa"}
+        >
           In attesa
-        </button>
-        <button type="button" className="scelta">
+        </Pulsante>
+        <Pulsante
+          aspetto="vuoto"
+          onClick={() => setChiedo(true)}
+          disabled={inCorso || r.stato === "rifiutata"}
+        >
           Rifiuta
-        </button>
-      </div>
+        </Pulsante>
+      </DuePulsanti>
+
+      <Conferma
+        aperta={chiedo}
+        titolo={`Rifiuti ${r.nome.split(" ")[0]}?`}
+        testo="La richiesta resta nell'elenco, segnata come rifiutata. Nessun messaggio parte da solo."
+        azione="Rifiuta la richiesta"
+        procedi={() => void segna("rifiutata")}
+        annulla={() => setChiedo(false)}
+      />
+
+      <Avviso testo={avviso} chiudi={() => setAvviso("")} />
     </section>
   );
 }

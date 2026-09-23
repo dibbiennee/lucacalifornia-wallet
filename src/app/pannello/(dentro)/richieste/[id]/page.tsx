@@ -1,69 +1,86 @@
 import { notFound } from "next/navigation";
 
 import { ConfermaEScrivi } from "@/componenti/pannello/ConfermaEScrivi";
+import { Etichetta } from "@/componenti/pannello/Etichetta";
+import { Testata } from "@/componenti/pannello/Testata";
 import { richiesta } from "@/lib/pannello/dati";
+import { serataSala, tipoEsteso } from "@/lib/pannello/testi";
 
-export default async function Dettaglio({ params }: { params: Promise<{ id: string }> }) {
+import stili from "./dettaglio.module.css";
+
+/**
+ * Una richiesta, con tutto quello che serve a rispondere.
+ *
+ * Il ritorno indietro sa da dove sei arrivato: dall'elenco filtrato torna a
+ * quel filtro, da Stasera torna a Stasera. Prima non c'era proprio, e si
+ * usciva solo col gesto del browser.
+ */
+export default async function Dettaglio({
+  params,
+  searchParams,
+}: {
+  params: Promise<{ id: string }>;
+  searchParams: Promise<{ stato?: string; da?: string }>;
+}) {
   const { id } = await params;
+  const { stato, da } = await searchParams;
   const r = richiesta(id);
 
   if (r === undefined) {
     notFound();
   }
 
-  const righe = [
-    ["Serata", [r.serata, r.sala].filter(Boolean).join(", ")],
-    ["Tipo", r.tipo === "tavolo" ? `Tavolo, ${r.gruppo?.toLowerCase() ?? ""}` : "Lista"],
-    ...(r.budget === undefined ? [] : [["Budget a testa", r.budget]]),
-    ...(r.occasione === undefined ? [] : [["Occasione", r.occasione]]),
-  ] as const;
+  const indietro =
+    da === "stasera"
+      ? { testo: "Stasera", dove: "/pannello/stasera" }
+      : {
+          testo: "Richieste",
+          dove:
+            stato === undefined || stato === ""
+              ? "/pannello/richieste"
+              : `/pannello/richieste?stato=${stato}`,
+        };
+
+  const voci: readonly (readonly [string, string])[] = [
+    ["Serata", serataSala(r)],
+    ["Tipo", tipoEsteso(r)],
+    ...(r.budget === undefined ? [] : [["Budget a testa", r.budget] as const]),
+    ...(r.occasione === undefined ? [] : [["Occasione", r.occasione] as const]),
+  ];
 
   return (
-    <main className="pannello-pagina">
-      <p className="pannello-occhiello">RICHIESTA · OGGI {r.quando}</p>
-      <h1 className="pannello-titolo">{r.nome}</h1>
+    <main className="pagina">
+      <Testata
+        occhiello={`Richiesta, oggi ${r.quando}`}
+        titolo={r.nome}
+        indietro={indietro}
+      />
 
-      <p style={{ margin: "0.8rem 0 1.6rem" }}>
-        <a href={`tel:${r.telefono.replace(/\s/g, "")}`} className="tocco" style={{ fontWeight: 600 }}>
-          {r.telefono}
-        </a>
-      </p>
+      <Etichetta stato={r.stato} />
 
-      <dl style={{ margin: 0, display: "grid", gap: "1rem" }}>
-        {righe.map(([voce, valore]) => (
+      <a className={stili.telefono} href={`tel:${r.telefono.replace(/\s/g, "")}`}>
+        {r.telefono}
+      </a>
+
+      <dl className={stili.voci}>
+        {voci.map(([voce, valore]) => (
           <div key={voce}>
-            <dt className="etichetta-campo" style={{ margin: 0 }}>
-              {voce}
-            </dt>
-            <dd style={{ margin: "0.2rem 0 0", fontWeight: 700 }}>{valore}</dd>
+            <dt>{voce}</dt>
+            <dd>{valore}</dd>
           </div>
         ))}
       </dl>
 
-      {r.messaggio !== undefined && (
-        <p className="pannello-riquadro" style={{ marginTop: "1.4rem", fontStyle: "italic" }}>
-          “{r.messaggio}”
-        </p>
-      )}
+      {r.messaggio !== undefined && <p className={stili.citazione}>{`“${r.messaggio}”`}</p>}
 
-      <ConfermaEScrivi
-        nome={r.nome}
-        telefono={r.telefono}
-        serata={r.serata}
-        tipo={r.tipo === "tavolo" ? `TAVOLO, ${(r.gruppo ?? "").toUpperCase()}` : "LISTA"}
-        {...(r.sala === undefined ? {} : { sala: r.sala })}
-        giaConfermata={r.stato === "confermata"}
-        {...(r.bigliettoInviatoAlle === undefined ? {} : { inviatoAlle: r.bigliettoInviatoAlle })}
-      />
+      <ConfermaEScrivi r={r} />
 
       {r.notePrivate !== undefined && (
-        <section style={{ marginTop: "2rem" }}>
-          <h2 className="etichetta-campo">
-            Note private <span className="debole">· solo tu</span>
+        <section className="sezione" aria-labelledby="note-private">
+          <h2 className="titolo-sezione" id="note-private">
+            Note private, solo tu
           </h2>
-          <p className="pannello-riquadro" style={{ margin: 0 }}>
-            {r.notePrivate}
-          </p>
+          <p className={`${stili.citazione} ${stili["nota-privata"]}`}>{r.notePrivate}</p>
         </section>
       )}
     </main>
