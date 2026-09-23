@@ -1,3 +1,4 @@
+import { DatiStrutturati } from "@/componenti/DatiStrutturati";
 import { Nastro } from "@/componenti/Nastro";
 import { Apertura } from "@/componenti/sezioni/Apertura";
 import { ComeFunziona } from "@/componenti/sezioni/ComeFunziona";
@@ -16,6 +17,7 @@ import { Serate } from "@/componenti/sezioni/Serate";
 export default function Home() {
   return (
     <>
+      <DatiStrutturati />
       <Apertura />
       <Nastro />
       <Serate />

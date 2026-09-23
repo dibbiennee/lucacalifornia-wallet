@@ -2,6 +2,8 @@ import type { Metadata, Viewport } from "next";
 import { Anton, Hanken_Grotesk } from "next/font/google";
 import type { ReactNode } from "react";
 
+import { INDIRIZZO, SITO_PUBBLICO } from "@/lib/pubblico";
+
 import "./globals.css";
 
 /** Anton per i titoli: è il carattere delle scritte nei reel di Luca. */
@@ -12,12 +14,31 @@ const testo = Hanken_Grotesk({
   variable: "--carattere-testo",
 });
 
+const TITOLO = "Luca California, liste e tavoli al Room 26 di Roma";
+const DESCRIZIONE =
+  "Liste e tavoli al Room 26 di Roma, da giovedì a domenica, con la navetta per arrivarci. Prenoti in mezzo minuto e il biglietto ti arriva nel telefono.";
+
 export const metadata: Metadata = {
-  title: "Luca California, liste e tavoli al Room 26 di Roma",
-  description:
-    "Liste e tavoli al Room 26 di Roma, da giovedì a domenica, con la navetta per arrivarci. Prenoti in mezzo minuto e il biglietto ti arriva nel telefono.",
-  // Anteprima: non deve finire nelle ricerche finché non è il sito vero.
-  robots: { index: false, follow: false },
+  metadataBase: new URL(INDIRIZZO),
+  title: TITOLO,
+  description: DESCRIZIONE,
+  alternates: { canonical: "/" },
+  openGraph: {
+    type: "website",
+    siteName: "Luca California",
+    title: TITOLO,
+    description: DESCRIZIONE,
+    url: "/",
+    locale: "it_IT",
+    /*
+     * Senza questa immagine il link condiviso su WhatsApp arriva nudo, e un
+     * link nudo sembra sospetto. Luca lo manderà centinaia di volte: è la
+     * prima cosa che vede la gente, prima ancora del sito.
+     */
+    images: [{ url: "/anteprima.jpg", width: 1200, height: 630, alt: TITOLO }],
+  },
+  twitter: { card: "summary_large_image", title: TITOLO, description: DESCRIZIONE, images: ["/anteprima.jpg"] },
+  robots: SITO_PUBBLICO ? { index: true, follow: true } : { index: false, follow: false },
 };
 
 export const viewport: Viewport = {
