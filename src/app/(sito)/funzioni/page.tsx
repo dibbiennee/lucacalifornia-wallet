@@ -49,6 +49,12 @@ const PANNELLO = [
   },
 ] as const;
 
+const SQUADRA = [
+  "Prenotazioni del mese per ogni PR",
+  "Provvigioni già calcolate",
+  "Un argomento in più quando cerchi nuovi PR",
+] as const;
+
 const BIGLIETTO = [
   "Il tuo logo, i tuoi colori e la grafica della serata",
   "Compare da solo sulla schermata di blocco la sera giusta",
@@ -134,6 +140,38 @@ export default function PaginaFunzioni() {
           <p className="debole" style={{ margin: "1.4rem 0 0", fontSize: "0.875rem" }}>
             Su Android la stessa cosa con Google Wallet.
           </p>
+        </div>
+      </section>
+
+      <section className="fascia" style={{ background: "var(--blu-scuro)" }}>
+        <div className="dentro">
+          <Pila occhiello="PER LA TUA SQUADRA" righe={["OGNI PR HA", "IL SUO LINK"]} />
+
+          <p className="link-pr">lucacalifornia.satoshiweb.it/marco</p>
+
+          <p className="debole testo-lungo" style={{ margin: "0 0 1.4rem" }}>
+            Marco manda questo link o il suo QR. Ogni lista e ogni tavolo che arriva da lì viene
+            contato come suo, senza che nessuno debba segnare niente a mano.
+          </p>
+
+          <ul style={{ listStyle: "none", padding: 0, margin: "0 0 1.4rem", display: "grid", gap: "0.8rem" }}>
+            {SQUADRA.map((riga) => (
+              <li key={riga} style={{ display: "flex", gap: "0.7rem" }}>
+                <span aria-hidden>•</span>
+                <span className="debole">{riga}</span>
+              </li>
+            ))}
+          </ul>
+
+          <p className="debole testo-lungo" style={{ margin: "0 0 1.6rem", fontSize: "0.9375rem" }}>
+            Funziona allo stesso modo per i tuoi canali: <strong>/ig</strong> nella bio,
+            <strong> /s</strong> nelle storie, <strong> /tiktok</strong> sul profilo. Chi entra da
+            lì se lo porta dietro fino alla prenotazione.
+          </p>
+
+          <Link href="/pannello/squadra" className="bottone bottone-vuoto">
+            Vedi la schermata
+          </Link>
         </div>
       </section>
 
