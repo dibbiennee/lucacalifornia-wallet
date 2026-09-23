@@ -1,5 +1,5 @@
 import { InterruttoriSerate } from "@/componenti/pannello/InterruttoriSerate";
-import { NotaEsempio } from "@/componenti/pannello/Messaggi";
+import { NotaEsempio, Testo } from "@/componenti/pannello/Messaggi";
 import { ModuloRapido, PulsanteAzione } from "@/componenti/pannello/ModuloRapido";
 import { Testata } from "@/componenti/pannello/Testata";
 import { nuovoOspite, pubblica } from "@/app/pannello/azioni";
@@ -20,7 +20,7 @@ export default function Serate() {
         <h2 className="titolo-sezione" id="special-guest">
           Special guest, {attesa.specialGuest} in attesa
         </h2>
-        <p className="testo">Quando aggiungi un ospite, chi è in attesa riceve l&apos;avviso.</p>
+        <Testo>Quando aggiungi un ospite, chi è in attesa riceve l&apos;avviso.</Testo>
         <ModuloRapido
           apri="Aggiungi un ospite"
           etichetta="Nome dell'ospite"
@@ -33,7 +33,7 @@ export default function Serate() {
         <h2 className="titolo-sezione" id="capodanno">
           Capodanno, {attesa.capodanno} in attesa
         </h2>
-        <p className="testo">Pacchetti non ancora pubblicati.</p>
+        <Testo>Pacchetti non ancora pubblicati.</Testo>
         <PulsanteAzione testo="Pubblica i pacchetti" azione={pubblica} />
       </section>
 

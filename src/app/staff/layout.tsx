@@ -7,6 +7,7 @@ import "@/stili/pannello.css";
 export const metadata: Metadata = {
   title: "Ingresso, Luca California",
   robots: { index: false, follow: false },
+  icons: { icon: "/loghi/icona-192.png", apple: "/loghi/icona-192.png" },
 };
 
 export const viewport: Viewport = {

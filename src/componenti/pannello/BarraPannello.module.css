@@ -49,17 +49,18 @@
 
 .badge {
   position: absolute;
-  top: 6px;
+  top: 4px;
   left: calc(50% + 20px);
   display: grid;
   place-items: center;
-  min-width: 18px;
-  height: 18px;
-  padding: 0 5px;
-  border-radius: 9px;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 4px;
+  border-radius: 10px;
   background: var(--magenta);
   color: var(--ink);
-  font-size: 11px;
+  /* 12 px: sotto, un numero su fondo colorato non si legge di sfuggita. */
+  font-size: 12px;
   font-weight: 900;
   line-height: 1;
 }

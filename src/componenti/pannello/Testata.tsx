@@ -1,4 +1,6 @@
 import Link from "next/link";
+
+import { legaParole } from "@/lib/tipografia";
 import type { ReactNode } from "react";
 
 import stili from "./Testata.module.css";
@@ -73,7 +75,9 @@ export function Testata({
         ))}
       </h1>
 
-      {sottotitolo !== undefined && <p className={stili.sottotitolo}>{sottotitolo}</p>}
+      {sottotitolo !== undefined && (
+        <p className={stili.sottotitolo}>{legaParole(sottotitolo)}</p>
+      )}
     </div>
   );
 }

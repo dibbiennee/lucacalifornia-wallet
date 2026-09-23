@@ -1,6 +1,8 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 
+import { legaParole } from "@/lib/tipografia";
+
 import stili from "./CardRichiesta.module.css";
 
 /**
@@ -31,7 +33,9 @@ export function CardRichiesta({
       {riassunto !== undefined && riassunto !== "" && (
         <span className={stili.riga}>{riassunto}</span>
       )}
-      {messaggio !== undefined && <span className={stili.messaggio}>{messaggio}</span>}
+      {messaggio !== undefined && (
+        <span className={stili.messaggio}>{legaParole(messaggio)}</span>
+      )}
       {nota !== undefined && <span className={stili["riga-piccola"]}>{nota}</span>}
     </Link>
   );

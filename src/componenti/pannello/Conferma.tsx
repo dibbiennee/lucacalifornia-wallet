@@ -4,6 +4,7 @@ import { useEffect, useRef } from "react";
 
 import { Pulsante } from "./Pulsante";
 import stili from "./Conferma.module.css";
+import { Testo } from "./Messaggi";
 
 /**
  * La domanda prima di rifiutare.
@@ -59,7 +60,7 @@ export function Conferma({
     >
       <div className={stili.dentro}>
         <h2>{titolo}</h2>
-        <p className="testo">{testo}</p>
+        <Testo>{testo}</Testo>
         <Pulsante onClick={procedi}>{azione}</Pulsante>
         <Pulsante aspetto="vuoto" onClick={annulla}>
           Annulla

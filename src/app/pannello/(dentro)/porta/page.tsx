@@ -1,5 +1,5 @@
 import { LettoreQr } from "@/componenti/LettoreQr";
-import { AvvisoExtra } from "@/componenti/pannello/Messaggi";
+import { AvvisoExtra, TestoPiccolo } from "@/componenti/pannello/Messaggi";
 import { PulsanteLink } from "@/componenti/pannello/Pulsante";
 import { Testata } from "@/componenti/pannello/Testata";
 import { stasera, ultimiIngressi } from "@/lib/pannello/dati";
@@ -62,10 +62,8 @@ export default function Porta() {
         </div>
       </section>
 
-      <p className="testo-piccolo">
-        Il lettore è vero e riconosce i biglietti veri. Il conteggio e gli ultimi ingressi sono di
-        esempio: per ricordare chi è già passato serve il database.
-      </p>
+      <TestoPiccolo>Il lettore è vero e riconosce i biglietti veri. Il conteggio e gli ultimi ingressi sono di
+        esempio: per ricordare chi è già passato serve il database.</TestoPiccolo>
     </main>
   );
 }

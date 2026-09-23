@@ -1,6 +1,6 @@
 import { nuovoPr } from "@/app/pannello/azioni";
 import { CopiaLink } from "@/componenti/pannello/CopiaLink";
-import { NotaEsempio } from "@/componenti/pannello/Messaggi";
+import { NotaEsempio, Testo } from "@/componenti/pannello/Messaggi";
 import { ModuloRapido } from "@/componenti/pannello/ModuloRapido";
 import { Numeri, Numero } from "@/componenti/pannello/Numero";
 import { PulsanteLink } from "@/componenti/pannello/Pulsante";
@@ -63,7 +63,7 @@ export default function Squadra() {
                 <b className={stili["nome-persona"]}>{c.nome}</b>
                 <span>{c.fra}</span>
               </p>
-              <p className="testo">L&apos;anno scorso: {c.annoScorso.toLowerCase()}</p>
+              <Testo>L&apos;anno scorso: {c.annoScorso.toLowerCase()}</Testo>
               <PulsanteLink
                 aspetto="vuoto"
                 href={`https://wa.me/${c.telefono}?text=${encodeURIComponent(auguri(c.nome))}`}

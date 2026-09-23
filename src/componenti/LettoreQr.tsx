@@ -7,6 +7,7 @@ import { Esito, type DatiEsito } from "@/componenti/pannello/Esito";
 import { Pulsante } from "@/componenti/pannello/Pulsante";
 
 import stili from "./LettoreQr.module.css";
+import { Testo } from "@/componenti/pannello/Messaggi";
 
 /**
  * Il lettore del QR all'ingresso.
@@ -147,7 +148,7 @@ export function LettoreQr({ intestazione }: { readonly intestazione?: ReactNode 
 
         {stato === "errore" && (
           <>
-            <p className="testo">{errore}</p>
+            <Testo>{errore}</Testo>
             <Pulsante aspetto="pillola" onClick={() => void accendi()}>
               Riprova
             </Pulsante>

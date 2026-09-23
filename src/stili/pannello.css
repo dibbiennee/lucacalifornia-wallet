@@ -141,3 +141,9 @@ html:has(.pannello) {
 .pagina-accesso {
   padding-top: calc(var(--s-7) + env(safe-area-inset-top, 0px));
 }
+
+/* "Biglietto pronto.": una riga che deve staccare da quelle intorno. */
+.pronto {
+  font-weight: 700;
+  color: var(--text);
+}

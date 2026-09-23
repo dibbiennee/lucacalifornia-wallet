@@ -12,6 +12,7 @@ import { Avviso } from "./Avviso";
 import { Conferma } from "./Conferma";
 import { Errore } from "./Campo";
 import { DuePulsanti, Pulsante, PulsanteLink } from "./Pulsante";
+import { Testo, TestoPiccolo } from "./Messaggi";
 
 /**
  * Il gesto che chiude la richiesta.
@@ -95,9 +96,7 @@ export function ConfermaEScrivi({ r }: { readonly r: RichiestaPannello }) {
   if (pronto !== null) {
     return (
       <section className="sezione" role="status">
-        <p className="testo" style={{ fontWeight: 700, color: "var(--text)" }}>
-          Biglietto pronto.
-        </p>
+        <p className="testo pronto">Biglietto pronto.</p>
         <PulsanteLink aspetto="whatsapp" href={pronto.whatsapp} esterno>
           Apri WhatsApp col messaggio
         </PulsanteLink>
@@ -115,13 +114,11 @@ export function ConfermaEScrivi({ r }: { readonly r: RichiestaPannello }) {
       <h2 className="titolo-sezione" id="quando-confermi">
         Quando confermi
       </h2>
-      <p className="testo">
-        Si apre WhatsApp con il messaggio già scritto e il link al biglietto da aggiungere al
-        Wallet. Niente parte da solo.
-      </p>
+      <Testo>Si apre WhatsApp con il messaggio già scritto e il link al biglietto da aggiungere al
+        Wallet. Niente parte da solo.</Testo>
 
       {confermata && r.bigliettoInviatoAlle !== undefined && (
-        <p className="testo-piccolo">Biglietto già inviato alle {r.bigliettoInviatoAlle}.</p>
+        <TestoPiccolo>Biglietto già inviato alle {r.bigliettoInviatoAlle}.</TestoPiccolo>
       )}
 
       {errore !== "" && <Errore>{errore}</Errore>}

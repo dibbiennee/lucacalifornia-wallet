@@ -7,6 +7,11 @@ import "@/stili/pannello.css";
 export const metadata: Metadata = {
   title: "Pannello, Luca California",
   robots: { index: false, follow: false },
+  /*
+   * L'icona per la schermata home dell'iPhone: il pannello si installa, e
+   * senza questa iOS ci mette uno scatto sbiadito della pagina.
+   */
+  icons: { icon: "/loghi/icona-192.png", apple: "/loghi/icona-192.png" },
 };
 
 export const viewport: Viewport = {

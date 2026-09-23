@@ -1,7 +1,7 @@
 .campo {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: var(--s-2);
 }
 
 .campo label {
@@ -20,7 +20,7 @@
   border: 1.5px solid var(--line);
   background: var(--surface);
   color: var(--text);
-  padding: 0 14px;
+  padding: 0 var(--s-4);
   font: inherit;
   /* 16 px esatti: sotto, iOS ingrandisce la pagina appena tocchi il campo. */
   font-size: 16px;

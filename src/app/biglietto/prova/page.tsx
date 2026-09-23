@@ -1,7 +1,9 @@
 import { PulsanteLink } from "@/componenti/pannello/Pulsante";
 import { Testata } from "@/componenti/pannello/Testata";
+import { legaParole } from "@/lib/tipografia";
 
 import stili from "./biglietto.module.css";
+import { TestoPiccolo } from "@/componenti/pannello/Messaggi";
 
 /**
  * Pagina di prova del biglietto.
@@ -31,7 +33,7 @@ export default function PaginaProvaWallet() {
         {VOCI.map(([voce, valore]) => (
           <div key={voce}>
             <dt>{voce}</dt>
-            <dd>{valore}</dd>
+            <dd>{legaParole(valore, { vedova: true })}</dd>
           </div>
         ))}
       </dl>
@@ -40,10 +42,8 @@ export default function PaginaProvaWallet() {
         Aggiungi a Apple Wallet
       </PulsanteLink>
 
-      <p className="testo-piccolo">
-        Dall&apos;iPhone apri questa pagina con Safari. Su computer il file si scarica e basta, e
-        negli altri browser dell&apos;iPhone non si apre.
-      </p>
+      <TestoPiccolo>Dall&apos;iPhone apri questa pagina con Safari. Su computer il file si scarica e basta, e
+        negli altri browser dell&apos;iPhone non si apre.</TestoPiccolo>
     </main>
   );
 }
