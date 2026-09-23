@@ -5,7 +5,7 @@ import { carattere } from "@/lib/carattere";
 import "@/stili/pannello.css";
 
 export const metadata: Metadata = {
-  title: "Pannello, Luca California",
+  title: "Il tuo biglietto, Luca California",
   robots: { index: false, follow: false },
 };
 
@@ -13,7 +13,11 @@ export const viewport: Viewport = {
   themeColor: "#000000",
 };
 
-/** Il pannello non ha il guscio del sito: è uno strumento, non una pagina. */
-export default function LayoutPannello({ children }: { children: ReactNode }) {
+/**
+ * Il biglietto lo apre il cliente, non Luca, ma la grafica è quella dello
+ * strumento: arriva da un link di WhatsApp e non deve sembrare una pagina
+ * del sito in cui navigare.
+ */
+export default function LayoutBiglietto({ children }: { children: ReactNode }) {
   return <div className={`pannello ${carattere.variable}`}>{children}</div>;
 }

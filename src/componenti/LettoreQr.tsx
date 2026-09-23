@@ -3,6 +3,11 @@
 import jsQR from "jsqr";
 import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
 
+import { Esito, type DatiEsito } from "@/componenti/pannello/Esito";
+import { Pulsante } from "@/componenti/pannello/Pulsante";
+
+import stili from "./LettoreQr.module.css";
+
 /**
  * Il lettore del QR all'ingresso.
  *
@@ -11,20 +16,15 @@ import { useCallback, useEffect, useRef, useState, type ReactNode } from "react"
  *
  * Pensata per essere usata al buio, con una mano, da qualcuno che ha gente
  * che spinge alle spalle: fondo nero, esito a tutto schermo, e un tocco
- * qualsiasi per passare al prossimo. Nessun bottone piccolo.
+ * qualsiasi per passare al prossimo. Nessun pulsante piccolo.
  *
  * iOS non ha BarcodeDetector, quindi il QR si legge dai fotogrammi con jsqr:
  * senza, sull'iPhone non funzionerebbe niente.
+ *
+ * Il riquadro sta dentro la pagina e non più sopra tutto: da fisso che era,
+ * finiva sotto la sezione che gli sta sotto e non si riusciva nemmeno ad
+ * accendere la fotocamera.
  */
-
-interface Esito {
-  readonly valido: boolean;
-  readonly nome?: string;
-  readonly tipo?: string;
-  readonly serata?: string;
-  readonly sala?: string;
-  readonly locale?: string;
-}
 
 type Stato = "spenta" | "cerco" | "esito" | "errore";
 
@@ -38,7 +38,7 @@ export function LettoreQr({ intestazione }: { readonly intestazione?: ReactNode 
   const attivo = useRef(false);
 
   const [stato, setStato] = useState<Stato>("spenta");
-  const [esito, setEsito] = useState<Esito | null>(null);
+  const [esito, setEsito] = useState<DatiEsito | null>(null);
   const [errore, setErrore] = useState("");
 
   const verifica = useCallback(async (token: string) => {
@@ -48,7 +48,7 @@ export function LettoreQr({ intestazione }: { readonly intestazione?: ReactNode 
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ token }),
       });
-      setEsito((await risposta.json()) as Esito);
+      setEsito((await risposta.json()) as DatiEsito);
     } catch {
       setEsito({ valido: false });
     }
@@ -109,21 +109,19 @@ export function LettoreQr({ intestazione }: { readonly intestazione?: ReactNode 
       attivo.current = true;
       requestAnimationFrame(cerca);
     } catch {
-      setErrore("Non riesco ad accendere la fotocamera. Serve un indirizzo https e il permesso del telefono.");
+      setErrore(
+        "Non riesco ad accendere la fotocamera. Serve un indirizzo https e il permesso del telefono.",
+      );
       setStato("errore");
     }
   }, [cerca]);
 
   const prossimo = useCallback(() => {
-    if (stato !== "esito") {
-      return;
-    }
-
     setEsito(null);
     setStato("cerco");
     attivo.current = true;
     requestAnimationFrame(cerca);
-  }, [cerca, stato]);
+  }, [cerca]);
 
   useEffect(() => {
     return () => {
@@ -132,100 +130,40 @@ export function LettoreQr({ intestazione }: { readonly intestazione?: ReactNode 
     };
   }, []);
 
-  const fondo = stato === "esito" ? (esito?.valido === true ? "#0B7A2F" : "#8E0B2B") : "#000";
-
   return (
-    <main
-      onClick={prossimo}
-      style={{
-        position: "fixed",
-        inset: 0,
-        background: fondo,
-        color: "#fff",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center",
-        padding: "2rem 1.5rem calc(2rem + env(safe-area-inset-bottom))",
-        textAlign: "center",
-        transition: "background 120ms linear",
-      }}
-    >
-      <video ref={video} playsInline muted style={{ display: "none" }} />
-      <canvas ref={tela} style={{ display: "none" }} />
+    <>
+      <div className={stili.lettore}>
+        <video ref={video} playsInline muted style={{ display: "none" }} />
+        <canvas ref={tela} style={{ display: "none" }} />
 
-      {stato === "spenta" && (
-        <>
-          <p style={{ fontSize: "0.75rem", letterSpacing: "0.22em", color: "#8f8fb5", margin: "0 0 1.5rem" }}>
-            INGRESSO
-          </p>
-          <button
-            onClick={() => void accendi()}
-            style={{
-              minHeight: "4.5rem",
-              padding: "0 2.5rem",
-              borderRadius: "999px",
-              border: "none",
-              background: "#fff",
-              color: "#000",
-              fontSize: "1.375rem",
-              fontWeight: 700,
-              fontFamily: "inherit",
-            }}
-          >
-            Accendi la fotocamera
-          </button>
-        </>
-      )}
+        {stato === "spenta" && (
+          <>
+            <p className={stili.occhiello}>Ingresso</p>
+            <Pulsante aspetto="pillola" onClick={() => void accendi()}>
+              Accendi la fotocamera
+            </Pulsante>
+          </>
+        )}
 
-      {stato === "errore" && (
-        <p style={{ fontSize: "1.25rem", lineHeight: 1.5, maxWidth: "22rem" }}>{errore}</p>
-      )}
+        {stato === "errore" && (
+          <>
+            <p className="testo">{errore}</p>
+            <Pulsante aspetto="pillola" onClick={() => void accendi()}>
+              Riprova
+            </Pulsante>
+          </>
+        )}
 
-      {stato === "cerco" && (
-        <>
-          {intestazione}
-          <div
-            style={{
-              width: "min(62vw, 15rem)",
-              aspectRatio: "1",
-              border: "3px solid rgba(255,255,255,0.5)",
-              borderRadius: "1.5rem",
-              marginBottom: "2rem",
-            }}
-          />
-          <p style={{ fontSize: "1.5rem", fontWeight: 600, margin: 0 }}>Inquadra il QR</p>
-        </>
-      )}
+        {(stato === "cerco" || stato === "esito") && (
+          <>
+            {intestazione}
+            <div className={stili.mira} />
+            <p className={stili.inquadra}>Inquadra il QR</p>
+          </>
+        )}
+      </div>
 
-      {stato === "esito" && esito !== null && (
-        <>
-          <p style={{ fontSize: "clamp(3rem, 18vw, 5.5rem)", fontWeight: 800, margin: "0 0 1rem", lineHeight: 1 }}>
-            {esito.valido ? "ENTRA" : "NO"}
-          </p>
-
-          {esito.valido ? (
-            <>
-              <p style={{ fontSize: "clamp(1.75rem, 8vw, 2.75rem)", fontWeight: 700, margin: "0 0 0.75rem", lineHeight: 1.1 }}>
-                {esito.nome}
-              </p>
-              <p style={{ fontSize: "1.5rem", fontWeight: 600, margin: 0 }}>{esito.tipo}</p>
-              {esito.sala !== undefined && (
-                <p style={{ fontSize: "1.25rem", margin: "0.5rem 0 0", opacity: 0.85 }}>{esito.sala}</p>
-              )}
-              <p style={{ fontSize: "1.125rem", margin: "0.75rem 0 0", opacity: 0.75 }}>{esito.serata}</p>
-            </>
-          ) : (
-            <p style={{ fontSize: "1.5rem", fontWeight: 600, margin: 0, maxWidth: "20rem" }}>
-              Biglietto non valido
-            </p>
-          )}
-
-          <p style={{ position: "absolute", bottom: "calc(2rem + env(safe-area-inset-bottom))", fontSize: "1.125rem", opacity: 0.8, margin: 0 }}>
-            Tocca per il prossimo
-          </p>
-        </>
-      )}
-    </main>
+      {stato === "esito" && esito !== null && <Esito esito={esito} avanti={prossimo} />}
+    </>
   );
 }

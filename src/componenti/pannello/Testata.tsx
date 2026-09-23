@@ -26,12 +26,15 @@ function inRighe(titolo: string): readonly string[] {
 export function Testata({
   occhiello,
   titolo,
+  titoloNascosto = false,
   sottotitolo,
   azione,
   indietro,
 }: {
   readonly occhiello?: string;
   readonly titolo: string;
+  /** Vero quando a schermo il titolo è sostituito da altro, come il conteggio della porta. */
+  readonly titoloNascosto?: boolean;
   readonly sottotitolo?: string;
   readonly azione?: ReactNode;
   readonly indietro?: { readonly testo: string; readonly dove: string };
@@ -58,7 +61,7 @@ export function Testata({
         Il fuoco arriva qui quando si cambia schermata: chi legge con la voce
         sente il titolo nuovo invece di ripartire dall'inizio della pagina.
       */}
-      <h1 className={stili.titolo} tabIndex={-1}>
+      <h1 className={titoloNascosto ? "sr" : stili.titolo} tabIndex={-1}>
         {righe.map((riga, i) => (
           <span
             key={riga}

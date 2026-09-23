@@ -5,7 +5,7 @@ import { carattere } from "@/lib/carattere";
 import "@/stili/pannello.css";
 
 export const metadata: Metadata = {
-  title: "Pannello, Luca California",
+  title: "Ingresso, Luca California",
   robots: { index: false, follow: false },
 };
 
@@ -13,7 +13,7 @@ export const viewport: Viewport = {
   themeColor: "#000000",
 };
 
-/** Il pannello non ha il guscio del sito: è uno strumento, non una pagina. */
-export default function LayoutPannello({ children }: { children: ReactNode }) {
+/** La porta senza password: stesso guscio del pannello, niente barra. */
+export default function LayoutStaff({ children }: { children: ReactNode }) {
   return <div className={`pannello ${carattere.variable}`}>{children}</div>;
 }
