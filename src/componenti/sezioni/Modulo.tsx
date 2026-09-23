@@ -249,8 +249,20 @@ export function Modulo({ serataIniziale }: { readonly serataIniziale?: string })
           </button>
 
           <p className="debole" style={{ margin: "1rem 0 0", fontSize: "0.875rem" }}>
-            La richiesta arriva direttamente a Luca. Quando conferma, ricevi il biglietto da
-            aggiungere al Wallet.
+            La richiesta arriva direttamente a Luca. Quando conferma, ricevi il biglietto da
+            aggiungere al Wallet.
+          </p>
+
+          {/*
+            Il modulo raccoglie nome e telefono: chi li lascia deve poter
+            sapere che fine fanno, senza doverla cercare nel piè di pagina.
+          */}
+          <p className="debole" style={{ margin: "0.6rem 0 0", fontSize: "0.8125rem" }}>
+            I tuoi dati servono solo a ricontattarti: 
+            <a href="/privacy" className="tocco" style={{ fontWeight: 600 }}>
+              come li trattiamo
+            </a>
+            .
           </p>
         </form>
       </div>

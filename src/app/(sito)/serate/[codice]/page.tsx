@@ -48,7 +48,7 @@ export default async function PaginaSerata({ params }: { params: Promise<{ codic
 
       <section className="fascia" style={{ paddingTop: "1rem" }}>
         <div className="dentro">
-          <p className="debole" style={{ fontSize: "0.6875rem", letterSpacing: "0.18em", fontWeight: 700, margin: "0 0 0.9rem" }}>
+          <p className="debole" style={{ fontSize: "0.75rem", letterSpacing: "0.18em", fontWeight: 700, margin: "0 0 0.9rem" }}>
             {serata.quando} AL ROOM 26
           </p>
 
@@ -58,13 +58,13 @@ export default async function PaginaSerata({ params }: { params: Promise<{ codic
 
           <dl style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1.2rem", margin: 0 }}>
             <div>
-              <dt className="debole" style={{ fontSize: "0.6875rem", letterSpacing: "0.16em", fontWeight: 700 }}>
+              <dt className="debole" style={{ fontSize: "0.75rem", letterSpacing: "0.16em", fontWeight: 700 }}>
                 QUANDO
               </dt>
               <dd style={{ margin: "0.3rem 0 0", fontWeight: 700 }}>{serata.quando}</dd>
             </div>
             <div>
-              <dt className="debole" style={{ fontSize: "0.6875rem", letterSpacing: "0.16em", fontWeight: 700 }}>
+              <dt className="debole" style={{ fontSize: "0.75rem", letterSpacing: "0.16em", fontWeight: 700 }}>
                 DOVE
               </dt>
               <dd style={{ margin: "0.3rem 0 0", fontWeight: 700 }}>{LOCALE.nome}</dd>

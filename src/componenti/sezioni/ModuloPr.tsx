@@ -19,7 +19,7 @@ const campo: CSSProperties = {
 
 const etichetta: CSSProperties = {
   display: "block",
-  fontSize: "0.6875rem",
+  fontSize: "0.75rem",
   fontWeight: 700,
   letterSpacing: "0.16em",
   margin: "0 0 0.6rem",

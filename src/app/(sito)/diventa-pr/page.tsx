@@ -22,7 +22,7 @@ export default function PaginaDiventaPr() {
     <>
       <section className="fascia">
         <div className="dentro">
-          <p className="debole" style={{ fontSize: "0.6875rem", letterSpacing: "0.2em", fontWeight: 700, margin: "0 0 0.9rem" }}>
+          <p className="debole" style={{ fontSize: "0.75rem", letterSpacing: "0.2em", fontWeight: 700, margin: "0 0 0.9rem" }}>
             ALL WE HAVE IS NOW
           </p>
           <Pila occhiello="APERTE LE CANDIDATURE" righe={["PER LA FIGURA DI", "PR"]} livello={1} />

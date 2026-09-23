@@ -48,18 +48,23 @@ export function ChiELuca() {
       <div className="dentro">
         <Pila righe={[...MOTTO]} />
 
-        <div style={{ display: "flex", gap: "1rem", alignItems: "center", marginTop: "1.8rem" }}>
+        <div className="blocco-luca">
           <Image
             src="/foto/luca-bailame-media.jpg"
             alt="Luca al Room 26"
             width={533}
             height={800}
-            sizes="110px"
-            style={{ width: "6.5rem", height: "8rem", objectFit: "cover", objectPosition: "center 20%" }}
+            sizes="(min-width: 52rem) 18rem, 45vw"
+            className="foto-luca"
           />
-          <a href="/chi-sono" className="tocco" style={{ fontWeight: 700, letterSpacing: "0.06em" }}>
-            Chi è Luca →
-          </a>
+          <div>
+            <p className="debole" style={{ margin: "0 0 0.9rem" }}>
+              Sono Luca Curella. Ogni stagione scelgo un locale solo, e ci porto tutta la mia lista.
+            </p>
+            <a href="/chi-sono" className="bottone bottone-vuoto">
+              Chi è Luca
+            </a>
+          </div>
         </div>
       </div>
     </section>

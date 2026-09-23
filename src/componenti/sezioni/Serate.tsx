@@ -15,6 +15,7 @@ export function Serate() {
             <Link
               key={serata.codice}
               href={`/serate/${serata.codice}`}
+              className="copertina"
               style={{
                 position: "relative",
                 display: "block",
@@ -48,7 +49,7 @@ export function Serate() {
                   left: "0.9rem",
                   background: serata.etichetta === "TUTTO PIENO" ? "#8E0B2B" : "#ffffff",
                   color: serata.etichetta === "TUTTO PIENO" ? "#fff" : "var(--blu-scuro)",
-                  fontSize: "0.6875rem",
+                  fontSize: "0.75rem",
                   fontWeight: 700,
                   letterSpacing: "0.12em",
                   padding: "0.4em 0.7em",
@@ -69,16 +70,12 @@ export function Serate() {
                 >
                   {serata.giorno}
                 </span>
-                <h3
-                  style={{
-                    display: "block",
-                    fontSize: "clamp(2rem, 9vw, 2.75rem)",
-                    lineHeight: 1,
-                    margin: 0,
-                  }}
-                >
-                  {serata.nome}
-                </h3>
+                {/*
+                  La misura si adatta alla larghezza della scheda, non allo
+                  schermo: in quattro colonne la scheda è 252 px e
+                  "COMMERCIALE" a 44 px veniva tagliato dal contenitore.
+                */}
+                <h3 className="copertina-titolo">{serata.nome}</h3>
                 <span className="debole" style={{ display: "block", fontSize: "0.8125rem", letterSpacing: "0.1em", marginTop: "0.3rem" }}>
                   {serata.musica}
                 </span>

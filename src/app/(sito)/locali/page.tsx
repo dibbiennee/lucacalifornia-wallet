@@ -31,7 +31,7 @@ export default function Locali() {
                   textDecoration: "none",
                 }}
               >
-                <span className="debole" style={{ display: "block", fontSize: "0.6875rem", letterSpacing: "0.16em", fontWeight: 700, marginBottom: "0.4rem" }}>
+                <span className="debole" style={{ display: "block", fontSize: "0.75rem", letterSpacing: "0.16em", fontWeight: 700, marginBottom: "0.4rem" }}>
                   {l.occhiello}
                 </span>
                 <span

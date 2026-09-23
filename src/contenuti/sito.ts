@@ -109,12 +109,12 @@ export const COME_FUNZIONA = [
   },
   {
     titolo: "LUCA CONFERMA",
-    testo: "Ti scrive su WhatsApp con disponibilità e prezzo.",
+    testo: "Ti scrive su WhatsApp con disponibilità e prezzo.",
   },
   {
     titolo: "IL BIGLIETTO NEL TELEFONO",
     testo:
-      "Lo aggiungi ad Apple Wallet o Google Wallet. All'ingresso mostri il QR, niente nomi da cercare in lista.",
+      "Lo aggiungi ad Apple Wallet o Google Wallet. All'ingresso mostri il QR, niente nomi da cercare in lista.",
   },
 ] as const;
 
@@ -153,7 +153,7 @@ export const ESTATE = {
 export const DIVENTA_PR = {
   occhiello: "APERTE LE CANDIDATURE",
   titolo: ["PER LA FIGURA DI", "PR"],
-  testo: "Formazione con me in due giorni: teoria e pratica dentro il locale.",
+  testo: "Formazione con me in due giorni: teoria e pratica dentro il locale.",
   azione: "CANDIDATI",
 } as const;
 
