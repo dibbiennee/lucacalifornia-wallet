@@ -268,6 +268,39 @@ Per mettere la grafica vera della serata, sovrascrivi i file `strip*.png` in
 
 ---
 
+## 5.bis Da anteprima a sito vero
+
+Un interruttore solo, `SITO_PUBBLICO`, comanda insieme il `noindex` delle
+pagine e `robots.txt`. Senza, il sito dice a tutti di stare fuori.
+
+```bash
+npx vercel env add SITO_PUBBLICO production
+```
+
+Scrivi `1` quando chiede il valore. **Poi ripubblica**, e non è un dettaglio:
+la variabile viene letta **quando il sito viene costruito**, non quando gira.
+Cambiarla su Vercel senza ripubblicare non produce nessun effetto, e si
+perde mezza giornata a chiedersi perché Google continua a ignorare il sito.
+
+```bash
+npx vercel --prod
+```
+
+Misurato con Lighthouse sul telefono, a interruttore spento e acceso:
+
+| | anteprima | pubblico |
+|---|---|---|
+| Accessibilità | 100 | 100 |
+| Best Practices | 100 | 100 |
+| SEO | 69 | **100** |
+| Agentic Browsing | 100 | 100 |
+| controlli falliti | 1 | **0** |
+
+L'unico controllo che falliva era "pagina esclusa dalle ricerche". Tutto il
+resto era già a posto.
+
+---
+
 ## 6. Rinnovo dei certificati
 
 Il certificato del pass **scade il 22 ottobre 2027**. Quando scade, i biglietti
