@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 
 import { ModuloBreve } from "@/componenti/ModuloBreve";
 import { Pila } from "@/componenti/Pila";
@@ -159,37 +160,17 @@ export function Estate() {
       <div className="dentro">
         <Pila occhiello={ESTATE.occhiello} righe={["NINFEO", "E MORGAN"]} />
 
-        <div style={{ display: "grid", gap: "0.9rem", marginTop: "1.8rem" }}>
+        <p className="debole testo-lungo" style={{ margin: "1.6rem 0 0" }}>
+          D&apos;estate ci spostiamo all&apos;aperto: il Ninfeo all&apos;EUR e il Morgan sul mare a
+          Civitavecchia.
+        </p>
+
+        <div className="griglia-estate">
           {ESTATE.posti.map((posto) => (
-            <div key={posto.nome} style={{ position: "relative", aspectRatio: "16 / 9", overflow: "hidden" }}>
-              {posto.foto !== null ? (
-                <img
-                  src={posto.foto}
-                  alt={posto.nome}
-                  loading="lazy"
-                  style={{ width: "100%", height: "100%", objectFit: "cover" }}
-                />
-              ) : (
-                /* Foto non ancora arrivata: riquadro pieno e basta. Meglio un
-                   blocco di colore che una scritta che dice cosa manca. */
-                <div style={{ width: "100%", height: "100%", background: "var(--blu-scuro)" }} />
-              )}
-              <span
-                style={{
-                  position: "absolute",
-                  left: "0.9rem",
-                  bottom: "0.9rem",
-                  background: "#ffffff",
-                  color: "var(--blu-scuro)",
-                  fontWeight: 700,
-                  fontSize: "0.8125rem",
-                  letterSpacing: "0.1em",
-                  padding: "0.4em 0.7em",
-                }}
-              >
-                {posto.nome}
-              </span>
-            </div>
+            <Link key={posto.nome} href={`/locali/${posto.codice}`} className="tessera-estate">
+              <span className="tessera-estate-nome">{posto.nome}</span>
+              <span className="tessera-estate-dove">{posto.dove}</span>
+            </Link>
           ))}
         </div>
       </div>

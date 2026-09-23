@@ -138,15 +138,15 @@ export const CAPODANNO = {
 } as const;
 
 /*
- * Delle due sedi estive non c'è ancora una foto giusta: quella che c'era per
- * il Ninfeo era un ritratto di Luca al mare, che del locale non diceva
- * niente. Meglio nessuna foto che una foto sbagliata.
+ * Delle due sedi estive non c'è ancora una foto giusta, e online esistono
+ * solo immagini di giornali e social, tutte protette. Invece di un riquadro
+ * vuoto che sembra un'immagine non caricata, sono due tessere disegnate.
  */
 export const ESTATE = {
   occhiello: "D'ESTATE",
   posti: [
-    { nome: "NINFEO, ROMA", foto: null as string | null },
-    { nome: "MORGAN BEACH CLUB", foto: null },
+    { nome: "NINFEO", dove: "Roma, all'EUR", codice: "ninfeo" },
+    { nome: "MORGAN", dove: "Civitavecchia, sul mare", codice: "morgan" },
   ],
 } as const;
 

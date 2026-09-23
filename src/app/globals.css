@@ -717,3 +717,50 @@ button {
   margin: 1.6rem 0 1.2rem;
   word-break: break-all;
 }
+
+/* --- Le due sedi estive: tessere disegnate, non riquadri vuoti --- */
+
+.griglia-estate {
+  display: grid;
+  gap: 0.9rem;
+  margin-top: 1.6rem;
+}
+
+.tessera-estate {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  min-height: 9.5rem;
+  padding: 1.2rem 1.3rem;
+  text-decoration: none;
+  overflow: hidden;
+  background:
+    /* il marchio, grande e appena accennato: dice che è grafica, non una foto mancante */
+    url("/loghi/marchio-filigrana.svg") right -2.5rem top -2.5rem / 11rem no-repeat,
+    linear-gradient(135deg, #3a22d6, #140c5c 70%);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+.tessera-estate-nome {
+  font-family: var(--carattere-titoli), Impact, sans-serif;
+  font-size: clamp(1.9rem, 9vw, 2.6rem);
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.tessera-estate-dove {
+  color: var(--testo-debole);
+  font-size: 0.9375rem;
+  margin-top: 0.3rem;
+}
+
+@media (min-width: 52rem) {
+  .griglia-estate {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .tessera-estate {
+    min-height: 12rem;
+  }
+}

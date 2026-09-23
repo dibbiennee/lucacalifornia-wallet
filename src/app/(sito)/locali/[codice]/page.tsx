@@ -52,7 +52,10 @@ export default async function PaginaLocale({ params }: { params: Promise<{ codic
       <section className="fascia" style={l.foto === undefined ? {} : { paddingTop: "1rem" }}>
         <div className="dentro">
           <Pila occhiello={l.occhiello} righe={[...l.titolo]} livello={1} />
-          <p className="testo-lungo" style={{ margin: "1.6rem 0 0" }}>
+          <p className="debole" style={{ margin: "1.2rem 0 0", fontWeight: 600 }}>
+            {l.sottotitolo}
+          </p>
+          <p className="testo-lungo" style={{ margin: "1rem 0 0" }}>
             {l.testo}
           </p>
         </div>
