@@ -1,9 +1,21 @@
-import Link from "next/link";
-
-import { DATI_DI_ESEMPIO, richieste } from "@/lib/pannello/dati";
+import { CardRichiesta } from "@/componenti/pannello/CardRichiesta";
+import { Esci } from "@/componenti/pannello/Esci";
+import { Etichetta } from "@/componenti/pannello/Etichetta";
+import { NotaEsempio, Vuoto } from "@/componenti/pannello/Messaggi";
+import { Filtri, Filtro } from "@/componenti/pannello/Scelta";
+import { Testata } from "@/componenti/pannello/Testata";
+import { richieste } from "@/lib/pannello/dati";
+import { riassunto } from "@/lib/pannello/testi";
 
 export const metadata = { title: "Richieste, pannello Luca California" };
 
+/**
+ * Le richieste: la schermata da cui si parte.
+ *
+ * Il filtro sta nell'indirizzo e non nello stato del browser: così si può
+ * mandare a qualcuno, resta dopo un ricaricamento, e il ritorno dalla
+ * singola richiesta sa dove tornare.
+ */
 export default async function Richieste({
   searchParams,
 }: {
@@ -13,73 +25,56 @@ export default async function Richieste({
   const tutte = richieste();
   const nuove = tutte.filter((r) => r.stato === "nuova");
   const confermate = tutte.filter((r) => r.stato === "confermata");
-  const mostrate = stato === "nuova" ? nuove : stato === "confermata" ? confermate : tutte;
-
-  const filtri = [
-    { testo: `Nuove ${nuove.length}`, valore: "nuova" },
-    { testo: `Confermate ${confermate.length}`, valore: "confermata" },
-    { testo: "Tutte", valore: "" },
-  ];
+  const mostrate =
+    stato === "nuova" ? nuove : stato === "confermata" ? confermate : tutte;
 
   return (
-    <main className="pannello-pagina">
-      <p className="pannello-occhiello">QUESTA SETTIMANA</p>
-      <h1 className="pannello-titolo">Richieste</h1>
+    <main className="pagina">
+      <Testata occhiello="Questa settimana" titolo="Richieste" azione={<Esci />} />
 
-      <div style={{ display: "flex", flexWrap: "wrap", gap: "0.5rem", margin: "1.4rem 0" }}>
-        {filtri.map((f) => {
-          const attivo = (stato ?? "") === f.valore;
-          return (
-            <Link
-              key={f.testo}
-              href={f.valore === "" ? "/pannello/richieste" : `/pannello/richieste?stato=${f.valore}`}
-              className={`scelta${attivo ? " scelta-attiva" : ""}`}
-              style={{ display: "inline-flex", alignItems: "center", textDecoration: "none" }}
-              aria-current={attivo ? "true" : undefined}
-            >
-              {f.testo}
-            </Link>
-          );
-        })}
+      <Filtri>
+        <Filtro
+          testo={`Nuove ${nuove.length}`}
+          dove="/pannello/richieste?stato=nuova"
+          attivo={stato === "nuova"}
+        />
+        <Filtro
+          testo={`Confermate ${confermate.length}`}
+          dove="/pannello/richieste?stato=confermata"
+          attivo={stato === "confermata"}
+        />
+        <Filtro
+          testo="Tutte"
+          dove="/pannello/richieste"
+          attivo={stato === undefined || stato === ""}
+        />
+      </Filtri>
+
+      <div className="lista">
+        {mostrate.length === 0 ? (
+          <Vuoto>
+            {stato === "nuova"
+              ? "Nessuna richiesta nuova. Appena qualcuno prenota dal sito, la trovi qui."
+              : "Nessuna richiesta con questo stato."}
+          </Vuoto>
+        ) : (
+          mostrate.map((r) => (
+            <CardRichiesta
+              key={r.id}
+              dove={`/pannello/richieste/${r.id}${stato === undefined || stato === "" ? "" : `?stato=${stato}`}`}
+              nome={r.nome}
+              destra={<Etichetta stato={r.stato} />}
+              riassunto={riassunto(r)}
+              {...(r.messaggio === undefined ? {} : { messaggio: r.messaggio })}
+              {...(r.bigliettoInviatoAlle === undefined
+                ? {}
+                : { nota: `Biglietto inviato alle ${r.bigliettoInviatoAlle}` })}
+            />
+          ))
+        )}
       </div>
 
-      <ul style={{ listStyle: "none", margin: 0, padding: 0 }}>
-        {mostrate.map((r) => (
-          <li key={r.id}>
-            <Link
-              href={`/pannello/richieste/${r.id}`}
-              className="pannello-riquadro"
-              style={{ display: "block", textDecoration: "none" }}
-            >
-              <span style={{ display: "flex", justifyContent: "space-between", gap: "1rem", alignItems: "center" }}>
-                <b>{r.nome}</b>
-                <span className={`pannello-etichetta${r.stato === "nuova" ? "" : " pannello-etichetta-attesa"}`}>
-                  {r.stato.toUpperCase()}
-                </span>
-              </span>
-              <span className="debole" style={{ display: "block", fontSize: "0.9375rem", marginTop: "0.4rem" }}>
-                {[r.serata, r.sala, r.tipo === "tavolo" ? `tavolo ${r.gruppo?.toLowerCase() ?? ""}` : "lista", r.budget === undefined ? null : `${r.budget} a testa`]
-                  .filter(Boolean)
-                  .join(", ")}
-              </span>
-              {r.messaggio !== undefined && (
-                <span className="debole" style={{ display: "block", fontSize: "0.875rem", marginTop: "0.4rem", fontStyle: "italic" }}>
-                  {r.messaggio}
-                </span>
-              )}
-              {r.bigliettoInviatoAlle !== undefined && (
-                <span className="debole" style={{ display: "block", fontSize: "0.8125rem", marginTop: "0.4rem" }}>
-                  Biglietto inviato alle {r.bigliettoInviatoAlle}
-                </span>
-              )}
-            </Link>
-          </li>
-        ))}
-      </ul>
-
-      {DATI_DI_ESEMPIO && (
-        <p className="pannello-nota">Anteprima: queste richieste sono di esempio.</p>
-      )}
+      <NotaEsempio />
     </main>
   );
 }
