@@ -639,3 +639,42 @@ button {
   padding: 0.8rem 1rem;
   border: 1px dashed rgba(255, 255, 255, 0.3);
 }
+
+/* --- Le schermate del pannello dentro la pagina Funzioni --- */
+
+.scorrevole-schermate {
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.schermata {
+  display: block;
+  width: 11rem;
+  text-decoration: none;
+}
+
+.schermata img {
+  width: 100%;
+  height: auto;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  margin-bottom: 0.7rem;
+}
+
+.schermata strong {
+  display: block;
+  font-size: 0.8125rem;
+  letter-spacing: 0.1em;
+  margin-bottom: 0.2rem;
+}
+
+.schermata span {
+  display: block;
+  font-size: 0.875rem;
+  line-height: 1.4;
+}
+
+@media (min-width: 52rem) {
+  .schermata {
+    width: 13rem;
+  }
+}

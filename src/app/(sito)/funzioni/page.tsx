@@ -5,11 +5,48 @@ import { Pila } from "@/componenti/Pila";
 export const metadata = { title: "Funzioni - Luca California" };
 
 const PANNELLO = [
-  { nome: "OGGI", testo: "Liste, tavoli ed entrati della serata in corso", dove: "/pannello" },
-  { nome: "RICHIESTE", testo: "Confermi e parte il messaggio già scritto", dove: "/pannello/richieste" },
-  { nome: "PORTA", testo: "Chi è entrato e chi manca", dove: "/pannello/porta" },
-  { nome: "SERATE", testo: "Decidi cosa vede la gente sul sito", dove: "/pannello/serate" },
-  { nome: "SQUADRA", testo: "I tuoi PR, le provvigioni e i compleanni", dove: "/pannello/squadra" },
+  {
+    nome: "OGGI",
+    testo: "Liste, tavoli ed entrati della serata in corso",
+    dove: "/pannello",
+    foto: "oggi",
+    descrizione: "La schermata Oggi: quarantadue in lista, sette tavoli, e le richieste da confermare",
+  },
+  {
+    nome: "RICHIESTE",
+    testo: "Tutte quelle della settimana, divise per stato",
+    dove: "/pannello/richieste",
+    foto: "richieste",
+    descrizione: "L'elenco delle richieste, con i filtri fra nuove, confermate e tutte",
+  },
+  {
+    nome: "LA SINGOLA RICHIESTA",
+    testo: "Confermi e parte il messaggio già scritto, col biglietto dentro",
+    dove: "/pannello/richieste/giulia-marchetti",
+    foto: "dettaglio",
+    descrizione: "Il dettaglio di una richiesta, col pulsante Conferma e scrivi",
+  },
+  {
+    nome: "PORTA",
+    testo: "Inquadri il QR e sai subito se passa",
+    dove: "/pannello/porta",
+    foto: "porta",
+    descrizione: "La porta a schermo nero, col conteggio di chi è dentro",
+  },
+  {
+    nome: "SERATE",
+    testo: "Decidi cosa vede la gente sul sito",
+    dove: "/pannello/serate",
+    foto: "serate",
+    descrizione: "Gli interruttori delle etichette: lista aperta, pochi tavoli, tutto pieno",
+  },
+  {
+    nome: "SQUADRA",
+    testo: "I tuoi PR, le provvigioni e i compleanni",
+    dove: "/pannello/squadra",
+    foto: "squadra",
+    descrizione: "La squadra dei PR, con prenotazioni e provvigioni di ognuno",
+  },
 ] as const;
 
 const BIGLIETTO = [
@@ -41,30 +78,23 @@ export default function PaginaFunzioni() {
             serata. Tocca una schermata per provarla: serve la password del pannello.
           </p>
 
-          <div style={{ display: "grid", gap: "0.7rem" }}>
+          <ul className="scorrevole scorrevole-schermate">
             {PANNELLO.map((voce) => (
-              <Link
-                key={voce.nome}
-                href={voce.dove}
-                style={{
-                  display: "block",
-                  border: "2px solid rgba(255,255,255,0.45)",
-                  padding: "1rem 1.1rem",
-                  textDecoration: "none",
-                }}
-              >
-                <strong style={{ display: "block", letterSpacing: "0.1em", marginBottom: "0.2rem" }}>
-                  {voce.nome}
-                </strong>
-                <span className="debole" style={{ fontSize: "0.9375rem" }}>
-                  {voce.testo}
-                </span>
-                <span style={{ display: "block", marginTop: "0.5rem", fontSize: "0.8125rem", fontWeight: 700 }}>
-                  Provala →
-                </span>
-              </Link>
+              <li key={voce.nome}>
+                <Link href={voce.dove} className="schermata">
+                  <img
+                    src={`/foto/pannello/${voce.foto}.webp`}
+                    alt={voce.descrizione}
+                    loading="lazy"
+                    width={540}
+                    height={1169}
+                  />
+                  <strong>{voce.nome}</strong>
+                  <span className="debole">{voce.testo}</span>
+                </Link>
+              </li>
             ))}
-          </div>
+          </ul>
         </div>
       </section>
 
