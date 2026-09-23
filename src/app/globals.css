@@ -1,4 +1,11 @@
 /*
+ * I token nuovi, condivisi col pannello. Sono solo variabili con nomi loro:
+ * stanno qui senza cambiare niente del sito, e ci saranno già quando toccherà
+ * al sito passare a quelli.
+ */
+@import "../stili/token.css";
+
+/*
  * Sistema visivo, preso dai mockup approvati.
  * I riquadri sono a spigolo vivo: nel CSS dei mockup l'unico raggio è il 50%
  * dei cerchi, e quello smusso è parte del carattere del marchio.

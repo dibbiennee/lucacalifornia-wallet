@@ -12,8 +12,8 @@ export default function manifest(): MetadataRoute.Manifest {
     start_url: "/pannello",
     scope: "/pannello",
     display: "standalone",
-    background_color: "#0E0845",
-    theme_color: "#0E0845",
+    background_color: "#000000",
+    theme_color: "#000000",
     orientation: "portrait",
     icons: [
       { src: "/loghi/icona-192.png", sizes: "192x192", type: "image/png", purpose: "any" },

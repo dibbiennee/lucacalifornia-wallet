@@ -1,0 +1,121 @@
+/*
+ * L'impianto del pannello: la pagina, le sezioni, le utilità.
+ *
+ * Qui sta solo quello che non appartiene a un componente. L'aspetto dei
+ * pezzi (pulsanti, card, etichette) vive nel foglio del suo componente,
+ * accanto al componente stesso.
+ *
+ * Tutto è annidato sotto .pannello: il sito non deve accorgersi di niente.
+ */
+
+/* Il fondo nero deve arrivare anche oltre il bordo dello schermo, quando si
+   tira la pagina: sull'iPhone altrimenti spunta il blu del sito. */
+html:has(.pannello) {
+  background: var(--bg);
+  /* La barra in basso non deve mai coprire l'elemento che ha il fuoco. */
+  scroll-padding-bottom: calc(var(--nav-h) + 16px);
+}
+
+.pannello {
+  min-height: 100dvh;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--carattere-pannello), "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.pannello :focus-visible {
+  outline: 3px solid var(--magenta);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+.pannello [tabindex="-1"]:focus {
+  outline: none;
+}
+
+/* La pagina: una colonna sola, con lo spazio per la barra in fondo. */
+.pagina {
+  max-width: 560px;
+  margin: 0 auto;
+  overflow-x: clip;
+  padding: calc(var(--s-5) + env(safe-area-inset-top, 0px)) 20px calc(var(--nav-h) + var(--s-6));
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-4);
+}
+
+/* Le schermate fuori dalla barra: accesso, biglietto, lettore. */
+.pagina.senza-barra {
+  padding-bottom: calc(var(--s-6) + env(safe-area-inset-bottom, 0px));
+}
+
+.sezione {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-3);
+  margin-top: var(--s-2);
+}
+
+.lista {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-2);
+}
+
+.titolo-sezione {
+  margin: 0;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.testo {
+  margin: 0;
+  font-size: 15px;
+  color: var(--testo-2);
+}
+
+.testo-piccolo {
+  margin: 0;
+  font-size: 13px;
+  color: var(--dim);
+}
+
+/*
+ * Il gruppo che non si spezza: serve ai titoli, perché "Sabato, due sale"
+ * non vada a capo dentro "due sale". Lo mette la funzione che compone i
+ * titoli, non si scrive a mano nelle pagine.
+ */
+.ph {
+  white-space: nowrap;
+}
+
+/* Visibile solo a chi legge con la voce. */
+.sr {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+/* La crocetta di "annulla" nei campi di ricerca, su fondo scuro. */
+.pannello input[type="search"]::-webkit-search-cancel-button {
+  filter: invert(1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pannello *,
+  .pannello *::before,
+  .pannello *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition: none !important;
+  }
+}
