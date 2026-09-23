@@ -1,55 +1,60 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 
 /**
  * Il video dell'apertura.
  *
- * PERCHE' LA SORGENTE LA METTE JAVASCRIPT. Il taglio verticale e quello
- * orizzontale sono due file diversi, e mettendoli tutti e due nell'HTML con
- * uno nascosto dal CSS il browser li scarica lo stesso: misurato, 1070 KB
- * invece di 519. Nascondere una cosa non impedisce di scaricarla.
+ * NEL SORGENTE C'È IL TAGLIO DA TELEFONO, e non è un ripiego: da telefono
+ * arriva il 99% della gente, quindi quello è il caso normale. Sta scritto
+ * nell'HTML con le sue sorgenti, quindi parte anche se javascript non gira,
+ * e si legge nel sorgente senza eseguire niente.
  *
- * Così invece parte senza sorgenti: al primo istante c'è solo il fotogramma
- * fermo sotto, che è anche quello che vede chi ha javascript spento o ha
- * chiesto meno movimento. Poi si sceglie il taglio giusto e si scarica solo
- * quello.
+ * Su schermo largo javascript scambia le sorgenti col taglio orizzontale,
+ * perché il filmato è verticale e allargato si sgrana. Il prezzo è che su
+ * computer il taglio verticale comincia a scaricarsi prima dello scambio:
+ * qualche decina di kilobyte sprecati sull'1% delle visite, che è molto
+ * meno di quanto costava mettere tutti e due i video nell'HTML e
+ * nasconderne uno col CSS (1070 KB invece di 519, misurati).
  *
- * Il fotogramma fermo sta sotto e non sparisce mai: il video ci si appoggia
- * sopra quando è pronto, quindi non c'è nessun buco nero nel frattempo.
+ * Chi ha chiesto meno movimento nelle impostazioni non lo vede per niente:
+ * lo nasconde il CSS, e sotto resta il fotogramma fermo.
  */
 
 const LARGO = "(min-width: 52rem)";
 
 export function VideoApertura() {
   const video = useRef<HTMLVideoElement | null>(null);
-  const [taglio, setTaglio] = useState<string | null>(null);
 
   useEffect(() => {
-    // Chi ha chiesto meno movimento non vede il video per niente.
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    const elemento = video.current;
+
+    if (elemento === null || window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
       return;
     }
 
     const largo = window.matchMedia(LARGO);
-    const scegli = () => {
-      setTaglio(largo.matches ? "apertura-computer" : "apertura-telefono");
+
+    const scambia = () => {
+      const taglio = largo.matches ? "apertura-computer" : "apertura-telefono";
+
+      if (elemento.dataset["taglio"] === taglio) {
+        return;
+      }
+
+      elemento.dataset["taglio"] = taglio;
+      elemento.querySelectorAll("source").forEach((sorgente) => {
+        const tipo = sorgente.type === "video/webm" ? "webm" : "mp4";
+        sorgente.src = `/video/${taglio}.${tipo}`;
+      });
+      elemento.load();
     };
 
-    scegli();
-    largo.addEventListener("change", scegli);
-    return () => largo.removeEventListener("change", scegli);
+    elemento.dataset["taglio"] = "apertura-telefono";
+    scambia();
+    largo.addEventListener("change", scambia);
+    return () => largo.removeEventListener("change", scambia);
   }, []);
-
-  useEffect(() => {
-    if (taglio !== null) {
-      video.current?.load();
-    }
-  }, [taglio]);
-
-  if (taglio === null) {
-    return null;
-  }
 
   return (
     <video
@@ -60,11 +65,12 @@ export function VideoApertura() {
       loop
       playsInline
       preload="metadata"
+      poster="/video/apertura-telefono.jpg"
       aria-hidden
       tabIndex={-1}
     >
-      <source src={`/video/${taglio}.webm`} type="video/webm" />
-      <source src={`/video/${taglio}.mp4`} type="video/mp4" />
+      <source src="/video/apertura-telefono.webm" type="video/webm" />
+      <source src="/video/apertura-telefono.mp4" type="video/mp4" />
     </video>
   );
 }

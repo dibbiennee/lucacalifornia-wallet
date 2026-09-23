@@ -457,10 +457,14 @@ button {
 }
 
 /*
- * Il fotogramma fermo sta sempre sotto: si vede subito, resta a chi ha
- * chiesto meno movimento e resta se javascript non parte. Il video, quando
- * arriva, ci si appoggia sopra.
+ * Il fotogramma fermo sta sempre sotto: si vede subito ed è quello che resta
+ * a chi ha chiesto meno movimento. Il video ci si appoggia sopra.
  */
+@media (prefers-reduced-motion: reduce) {
+  .apertura-video {
+    display: none;
+  }
+}
 
 .apertura-velo {
   position: absolute;
