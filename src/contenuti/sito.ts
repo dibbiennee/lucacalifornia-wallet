@@ -28,6 +28,7 @@ export const WHATSAPP = "393348548735";
 
 export const MENU = [
   { testo: "Serate", dove: "/serate" },
+  { testo: "Locali", dove: "/locali" },
   { testo: "Navetta", dove: "/navetta" },
   { testo: "Capodanno", dove: "/capodanno" },
   { testo: "Funzioni", dove: "/funzioni" },
