@@ -1,0 +1,65 @@
+.barra {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 20;
+  background: var(--nav);
+  border-top: 1px solid var(--line);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+.barra ul {
+  list-style: none;
+  margin: 0 auto;
+  padding: 0;
+  max-width: 560px;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.voce {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 56px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--muted);
+  text-decoration: none;
+  white-space: nowrap;
+  position: relative;
+}
+
+.voce[aria-current="page"] {
+  color: var(--text);
+}
+
+/* La lineetta in alto, non un fondo pieno: la voce resta leggibile. */
+.voce[aria-current="page"]::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 24%;
+  right: 24%;
+  height: 3px;
+  border-radius: 0 0 3px 3px;
+  background: var(--magenta);
+}
+
+.badge {
+  position: absolute;
+  top: 6px;
+  left: calc(50% + 20px);
+  display: grid;
+  place-items: center;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  border-radius: 9px;
+  background: var(--magenta);
+  color: var(--ink);
+  font-size: 11px;
+  font-weight: 900;
+  line-height: 1;
+}

@@ -3,34 +3,51 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-/** Le cinque schermate, sempre a portata di pollice. */
+import stili from "./BarraPannello.module.css";
+
+/**
+ * Le quattro schermate, sempre a portata di pollice.
+ *
+ * Erano cinque, con "Oggi" davanti e "Porta" in fondo. Il pannello serve
+ * prima di tutto a ricevere e confermare le richieste, quindi ora si apre
+ * lì; i numeri di "Oggi" sono passati a "Stasera" e la porta è uscita dalla
+ * barra, perché forse non verrà mai usata.
+ */
 const VOCI = [
-  { testo: "Oggi", dove: "/pannello" },
   { testo: "Richieste", dove: "/pannello/richieste" },
-  { testo: "Porta", dove: "/pannello/porta" },
+  { testo: "Stasera", dove: "/pannello/stasera" },
   { testo: "Serate", dove: "/pannello/serate" },
   { testo: "Squadra", dove: "/pannello/squadra" },
 ] as const;
 
-export function BarraPannello() {
+export function BarraPannello({ nuove }: { readonly nuove: number }) {
   const percorso = usePathname();
 
   return (
-    <nav className="pannello-barra" aria-label="Schermate del pannello">
-      {VOCI.map((voce) => {
-        const qui = voce.dove === "/pannello" ? percorso === voce.dove : percorso.startsWith(voce.dove);
+    <nav className={stili.barra} aria-label="Schermate del pannello">
+      <ul>
+        {VOCI.map((voce) => {
+          const qui = percorso.startsWith(voce.dove);
 
-        return (
-          <Link
-            key={voce.dove}
-            href={voce.dove}
-            className={`pannello-voce${qui ? " pannello-voce-qui" : ""}`}
-            aria-current={qui ? "page" : undefined}
-          >
-            {voce.testo}
-          </Link>
-        );
-      })}
+          return (
+            <li key={voce.dove}>
+              <Link
+                href={voce.dove}
+                className={stili.voce}
+                aria-current={qui ? "page" : undefined}
+              >
+                {voce.testo}
+                {voce.dove === "/pannello/richieste" && nuove > 0 && (
+                  <span className={stili.badge}>
+                    {nuove}
+                    <span className="sr"> richieste nuove</span>
+                  </span>
+                )}
+              </Link>
+            </li>
+          );
+        })}
+      </ul>
     </nav>
   );
 }

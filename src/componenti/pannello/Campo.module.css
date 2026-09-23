@@ -1,0 +1,43 @@
+.campo {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.campo label {
+  /* Mai sotto i 12 px: sotto, un'etichetta di modulo si legge male e basta. */
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.campo input {
+  height: 52px;
+  width: 100%;
+  border-radius: var(--r-s);
+  border: 1.5px solid var(--line);
+  background: var(--surface);
+  color: var(--text);
+  padding: 0 14px;
+  font: inherit;
+  /* 16 px esatti: sotto, iOS ingrandisce la pagina appena tocchi il campo. */
+  font-size: 16px;
+}
+
+.campo input:focus {
+  outline: none;
+  border-color: var(--magenta);
+}
+
+.campo input[aria-invalid="true"] {
+  border-color: var(--errore);
+}
+
+.errore {
+  margin: 0;
+  color: var(--errore);
+  font-size: 14px;
+  font-weight: 700;
+}
