@@ -10,50 +10,6 @@ import { legaParole } from "@/lib/tipografia";
 import stili from "./Home.module.css";
 import { Titolo2 } from "@/componenti/sito/Pagina";
 
-/** La striscia dei quattro giorni, subito sotto l'apertura. */
-export function Settimana() {
-  return (
-    <nav className={stili.settimana} aria-label="Serate della settimana">
-      <div className={`wrap ${stili.dentro}`}>
-        {SERATE.map((s) => (
-          <Link
-            key={s.codice}
-            href={`/serate/${s.codice}`}
-            className={stili.giorno}
-            style={{ background: `var(--${s.colore})` }}
-            aria-label={`${s.giorno}, ${s.nome}`}
-          >
-            <b>{s.breve}</b>
-            {/*
-              Niente abbreviazioni: il nome è sempre intero, anche nella
-              pillola più stretta. "Milkshake" e "Commerciale" sono una
-              parola sola che non si spezza da sola: qui la riga si sceglie
-              a mano, non la decide il browser a caso.
-            */}
-            <span>
-              {s.codice === "venerdi" ? (
-                <>
-                  Commer
-                  <br />
-                  ciale
-                </>
-              ) : s.codice === "milkshake" ? (
-                <>
-                  Milk
-                  <br />
-                  shake
-                </>
-              ) : (
-                s.nome
-              )}
-            </span>
-          </Link>
-        ))}
-      </div>
-    </nav>
-  );
-}
-
 /** Le quattro serate, con la fotografia e il colore di ognuna. */
 export function Serate() {
   return (

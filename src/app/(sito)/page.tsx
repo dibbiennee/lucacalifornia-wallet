@@ -5,7 +5,6 @@ import {
   ChiELuca,
   ComeFunziona,
   Serate,
-  Settimana,
   SpecialGuest,
   TuttoIlResto,
 } from "@/componenti/sito/sezioni/Home";
@@ -15,7 +14,6 @@ export default function Home() {
     <>
       <DatiStrutturati />
       <Apertura />
-      <Settimana />
       <Serate />
       <SpecialGuest
         avvisami={
