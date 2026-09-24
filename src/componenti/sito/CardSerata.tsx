@@ -67,6 +67,7 @@ export function CardSerata({ serata }: { readonly serata: SerataSito }) {
               href={perPrenotare("Sab sala 1 house")}
               className={stili.sala}
               style={{ background: "var(--cyan)" }}
+              aria-label="Sala 1, house"
             >
               <small>Sala 1</small>
               <strong>HOUSE</strong>
@@ -75,9 +76,19 @@ export function CardSerata({ serata }: { readonly serata: SerataSito }) {
               href={perPrenotare("Sab sala 2 reggaeton")}
               className={stili.sala}
               style={{ background: "var(--magenta)" }}
+              aria-label="Sala 2, reggaeton"
             >
               <small>Sala 2</small>
-              <strong>REGGAETON</strong>
+              {/*
+                La parola intera dove ci sta, l'abbreviazione dove la card è
+                stretta: in quattro colonne "REGGAETON" non entra nemmeno a
+                dieci pixel. Chi legge con la voce sente il nome per esteso,
+                che sta nell'aria-label del link.
+              */}
+              <strong>
+                <span className={stili.intero}>REGGAETON</span>
+                <span className={stili.corto}>REGG.</span>
+              </strong>
             </Link>
           </div>
           <div className={stili.coda}>
