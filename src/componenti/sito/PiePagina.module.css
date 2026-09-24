@@ -16,15 +16,19 @@
   gap: 16px;
   text-decoration: none;
   min-width: 0;
+  /* Il marchio si misura sulla sua colonna: su schermo largo la finestra è
+     larga il doppio, e "CALIFORNIA" finiva sopra i link accanto. */
+  container-type: inline-size;
 }
 
 .parola {
   display: block;
   /*
-   * Misurata perché "CALIFORNIA" ci stia intera: a 12vw, come nel
-   * riferimento, sforava di trenta pixel su uno schermo da 390.
+   * Misurata perché "CALIFORNIA" ci stia intera, sul telefono come sul
+   * computer: a 12vw, come nel riferimento, sforava di trenta pixel su uno
+   * schermo da 390, e su uno schermo largo finiva sopra i link accanto.
    */
-  font-size: clamp(30px, 10.3vw, 88px);
+  font-size: clamp(30px, 11.8cqi, 88px);
   font-weight: 900;
   font-stretch: 125%;
   line-height: 0.88;
