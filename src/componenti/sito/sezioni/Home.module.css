@@ -1,0 +1,316 @@
+/* --- La striscia della settimana, sotto l'apertura --- */
+
+.settimana {
+  border-bottom: 1px solid var(--line);
+}
+
+.settimana .dentro {
+  padding-top: 22px;
+  padding-bottom: 22px;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.giorno {
+  min-height: 76px;
+  border-radius: 14px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  text-decoration: none;
+  color: var(--ink);
+  transition: transform 0.15s ease;
+}
+
+.giorno b {
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.giorno span {
+  font-size: 13px;
+  font-weight: 900;
+  font-stretch: 112%;
+  text-transform: uppercase;
+}
+
+@media (hover: hover) {
+  .giorno:hover { transform: translateY(-2px); }
+}
+
+@media (min-width: 720px) {
+  .giorno { min-height: 92px; }
+  .giorno span { font-size: 17px; }
+}
+
+/* --- Lo special guest --- */
+
+.ospite {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 18px 20px;
+  border-radius: var(--r-l);
+  background: var(--surface);
+  border: 1.5px solid var(--line);
+}
+
+.ospite strong {
+  display: block;
+  font-size: 24px;
+  font-weight: 900;
+  font-stretch: 125%;
+  text-transform: uppercase;
+  line-height: 1;
+}
+
+.arrivo {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  font-weight: 800;
+  color: var(--magenta);
+  margin-top: 6px;
+}
+
+.arrivo i {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--magenta);
+}
+
+/* --- Tutto il resto --- */
+
+.tessere {
+  display: grid;
+  /* Sotto una certa larghezza due colonne non bastano più: le tessere si
+     mettono in colonna da sole invece di stringere le parole. */
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 10px;
+}
+
+.tessera {
+  position: relative;
+  min-width: 0;
+  min-height: 128px;
+  border-radius: var(--r-m);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 4px;
+  text-decoration: none;
+  color: var(--ink);
+  overflow: hidden;
+  isolation: isolate;
+  /* Il titolo si misura sulla tessera, non sulla finestra: "CAPODANNO" è una
+     parola sola e in mezza colonna usciva dal riquadro. */
+  container-type: inline-size;
+}
+
+.tessera strong {
+  display: block;
+  font-size: clamp(15px, 9.5cqi, 21px);
+  font-weight: 900;
+  font-stretch: 118%;
+  text-transform: uppercase;
+  line-height: 1;
+}
+
+.tessera span {
+  font-size: 13.5px;
+  font-weight: 600;
+  line-height: 1.3;
+  text-wrap: pretty;
+}
+
+/*
+ * Quelle con la foto prendono tutta la riga: la fotografia ha bisogno di
+ * spazio per dire qualcosa, e in mezza colonna non si capisce cosa sia.
+ */
+.con-foto {
+  grid-column: 1 / -1;
+  min-height: 240px;
+  color: var(--text);
+}
+
+.con-foto strong { font-size: clamp(22px, 7cqi, 28px); }
+.con-foto span { color: #e4dfea; }
+
+.con-foto img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -2;
+}
+
+.con-foto::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.05) 20%, rgba(0, 0, 0, 0.88) 100%);
+}
+
+.icona {
+  margin: 0 0 10px;
+  flex: none;
+  overflow: visible;
+}
+
+/* Le tre foto sovrapposte della tessera "Voi al Room 26". */
+.mazzo {
+  position: relative;
+  display: block;
+  width: 84px;
+  height: 44px;
+  margin-bottom: 10px;
+  flex: none;
+}
+
+.mazzo img {
+  position: absolute;
+  top: 0;
+  width: 32px;
+  height: 44px;
+  object-fit: cover;
+  border-radius: 6px;
+  box-shadow: 0 0 0 2px var(--milk), 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.mazzo img:nth-child(1) { left: 0; transform: rotate(-10deg); }
+.mazzo img:nth-child(2) { left: 26px; }
+.mazzo img:nth-child(3) { left: 52px; transform: rotate(10deg); }
+
+/* --- Come funziona --- */
+
+.passi {
+  list-style: none;
+  margin: 0 0 20px;
+  padding: 0;
+  display: grid;
+  gap: 10px;
+}
+
+.passi li {
+  display: grid;
+  grid-template-columns: 36px 1fr;
+  gap: 12px;
+  align-items: start;
+  padding: 14px;
+  border-radius: var(--r-m);
+  background: var(--surface);
+}
+
+.passi b {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--text);
+  color: var(--ink);
+  display: grid;
+  place-items: center;
+  font-weight: 900;
+}
+
+.passi strong {
+  display: block;
+  font-size: 16px;
+  font-weight: 800;
+}
+
+.passi span {
+  font-size: 14px;
+  color: var(--muted);
+}
+
+/* --- Il riquadro su Luca --- */
+
+.luca {
+  display: grid;
+  grid-template-columns: 84px 1fr;
+  gap: 14px;
+  align-items: center;
+  padding: 16px;
+  border-radius: var(--r-l);
+  background: var(--surface);
+}
+
+.luca img {
+  width: 84px;
+  height: 84px;
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: center 18%;
+}
+
+.luca strong {
+  display: block;
+  font-size: 18px;
+  font-weight: 900;
+  font-stretch: 112%;
+  text-transform: uppercase;
+  line-height: 1.05;
+}
+
+.luca-link {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.luca-link a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  min-height: 44px;
+  padding: 0 16px;
+  border-radius: 999px;
+  box-shadow: inset 0 0 0 1.5px var(--line);
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.luca-link a:first-child {
+  background: var(--text);
+  color: var(--ink);
+  box-shadow: none;
+}
+
+.luca-link svg {
+  width: 18px;
+  height: 18px;
+}
+
+@media (min-width: 720px) {
+  .tessere { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .con-foto { grid-column: span 2; }
+  .luca { grid-template-columns: 96px 1fr auto; }
+  .luca img { width: 96px; height: 96px; }
+  .luca-link { grid-column: auto; margin-top: 0; display: flex; }
+}
+
+/* L'occhiello a sinistra e il logo del locale a destra, sulla stessa riga. */
+.testa-riga {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+}
+
+.testa-riga img {
+  height: 24px;
+  width: auto;
+}
