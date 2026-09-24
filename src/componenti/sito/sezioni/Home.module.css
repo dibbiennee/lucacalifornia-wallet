@@ -16,6 +16,8 @@
   /* Il nome si misura sulla pillola: "Milkshake" a misura fissa usciva. */
   container-type: inline-size;
   min-height: 76px;
+  /* Il respiro ai fianchi: senza, la parola piu' lunga tocca il bordo. */
+  padding: 0 6px;
   border-radius: 14px;
   display: flex;
   flex-direction: column;
@@ -33,7 +35,11 @@
 }
 
 .giorno span {
-  font-size: clamp(10px, 14cqi, 13px);
+  /*
+   * La misura la detta "DUE SALE", la piu' larga che resta intera: a 390 px
+   * di schermo la pillola e' 81 e la parola ne vuole 70. Mai sotto i 12px.
+   */
+  font-size: clamp(12px, 13cqi, 13px);
   font-weight: 900;
   font-stretch: 112%;
   text-transform: uppercase;
@@ -43,9 +49,14 @@
   .giorno:hover { transform: translateY(-2px); }
 }
 
+/* L'abbreviazione sta sul telefono, la parola intera da 720 px in su. */
+.intero { display: none; }
+
 @media (min-width: 720px) {
   .giorno { min-height: 92px; }
   .giorno span { font-size: clamp(13px, 14cqi, 17px); }
+  .intero { display: inline; }
+  .corto { display: none; }
 }
 
 /* --- Lo special guest --- */

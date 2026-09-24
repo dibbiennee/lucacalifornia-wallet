@@ -11,15 +11,15 @@
 
 html:has(.sito) {
   background: var(--bg);
-  scroll-behavior: smooth;
-  /* La testata resta appiccicata in alto: gli àncora non ci finiscono sotto. */
-  scroll-padding-top: calc(68px + env(safe-area-inset-top, 0px));
-}
-
-@media (prefers-reduced-motion: reduce) {
-  html:has(.sito) {
-    scroll-behavior: auto;
-  }
+  /*
+   * "scroll-behavior: smooth" qui rompeva il tasto indietro: il browser
+   * ripristina da solo la posizione di scorrimento quando torni a una
+   * pagina gia' vista, ma lo fa con un salto secco, e quel salto animato
+   * restava a meta' strada quando la pagina nuova finiva di caricare.
+   * Il risultato era tornare sempre in cima, dentro il video di apertura.
+   * Il sito oggi non ha link con l'ancora (#), quindi lo scorrimento dolce
+   * non serve a nessuno spostamento reale: si toglie del tutto.
+   */
 }
 
 .sito {
@@ -56,7 +56,14 @@ html:has(.sito) {
   width: 100%;
   max-width: 1180px;
   margin: 0 auto;
-  padding: 0 20px;
+  /*
+   * Solo i fianchi, mai sopra e sotto. Con la scorciatoia "padding: 0 20px"
+   * questa regola batteva per specificita' i fogli dei componenti, e chi
+   * scriveva "padding-top: 120px" nel suo modulo si ritrovava zero: nella
+   * prima schermata il testo finiva incollato al fondo, sotto la barra.
+   */
+  padding-left: 20px;
+  padding-right: 20px;
 }
 
 /* La fascia fra una sezione e l'altra. */

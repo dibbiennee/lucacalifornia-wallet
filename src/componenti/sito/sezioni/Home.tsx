@@ -21,9 +21,27 @@ export function Settimana() {
             href={`/serate/${s.codice}`}
             className={stili.giorno}
             style={{ background: `var(--${s.colore})` }}
+            aria-label={`${s.giorno}, ${s.nome}`}
           >
             <b>{s.breve}</b>
-            <span>{s.codice === "venerdi" ? "Comm." : s.nome}</span>
+            {/*
+              Le due parole lunghe si accorciano: nella pillola da 92 px
+              "MILKSHAKE" misurava 94 e toccava tutti e due i bordi. Sopra i
+              720 px c'e' spazio e torna intera. Il nome per esteso resta
+              nell'etichetta che legge la voce.
+            */}
+            <span>
+              {s.codice === "venerdi" ? (
+                "Comm."
+              ) : s.codice === "milkshake" ? (
+                <>
+                  <span className={stili.intero}>{s.nome}</span>
+                  <span className={stili.corto}>Milk.</span>
+                </>
+              ) : (
+                s.nome
+              )}
+            </span>
           </Link>
         ))}
       </div>
@@ -103,7 +121,7 @@ export function TuttoIlResto() {
               <Image src="/foto/night4.webp" alt="" width={64} height={88} sizes="32px" />
               <Image src="/foto/night3.webp" alt="" width={64} height={88} sizes="32px" />
             </span>
-            <strong>Voi al Room 26</strong>
+            <strong>{legaParole("Voi al Room 26")}</strong>
             <span>{legaParole("Le foto delle serate")}</span>
           </Link>
         </div>

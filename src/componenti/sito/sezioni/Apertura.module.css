@@ -47,8 +47,12 @@
 }
 
 .dentro {
-  padding-top: 120px;
-  padding-bottom: 40px;
+  padding-top: 110px;
+  /*
+   * I due pulsanti finivano per meta' sotto la barra fissa: 28 px coperti su
+   * 52. Qui si lascia passare la barra, e sopra ci si mette un margine.
+   */
+  padding-bottom: calc(24px + var(--barra-h, 0px));
   display: flex;
   flex-direction: column;
   gap: 18px;
@@ -82,7 +86,14 @@
 
 .azioni {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  /*
+   * Una sotto l'altra sul telefono stretto: "Entra in lista o prenota" e
+   * "Vedi le serate" fianco a fianco chiedevano 337px, e sotto i 400px di
+   * schermo ce ne stanno solo 320. La colonna "1fr" di una grid non si
+   * restringe sotto il contenuto: il testo, con "nowrap", spingeva la
+   * pagina a scorrere di lato.
+   */
+  grid-template-columns: 1fr;
   gap: 10px;
   max-width: 480px;
 }
@@ -115,7 +126,8 @@
   }
 
   .dentro {
-    padding: 0;
+    padding-top: 0;
+    padding-bottom: 0;
     display: grid;
     grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
     gap: 56px;
