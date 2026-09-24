@@ -38,7 +38,7 @@ export function CardSerata({ serata }: { readonly serata: SerataSito }) {
         </span>
       </Link>
 
-      <div className={stili.corpo} style={due ? { flex: 0 } : undefined}>
+      <div className={stili.corpo}>
         <p className={stili.giorno} style={due ? { color: "var(--muted)" } : undefined}>
           {serata.giorno}
         </p>
@@ -47,20 +47,12 @@ export function CardSerata({ serata }: { readonly serata: SerataSito }) {
           <Link href={`/serate/${serata.codice}`}>{serata.nome}</Link>
         </h3>
 
-        {!due && (
-          <div className={stili.piede}>
-            <Link href={`/serate/${serata.codice}`} className={stili.musica}>
-              {legaParole(serata.musica)}
-            </Link>
-            <Bottone href={perPrenotare(serata.perModulo)} aspetto="nero" stretto>
-              Prenota
-            </Bottone>
-          </div>
-        )}
-      </div>
-
-      {due && (
-        <>
+        {due && (
+          /*
+            Al posto della riga "musica piu' Prenota" delle altre serate, e
+            dentro al corpo come quella: attaccate in fondo alla card, la
+            rendevano cento pixel piu' alta delle sorelle.
+          */
           <div className={stili["due-sale"]}>
             <Link
               href={perPrenotare("Sab sala 1 house")}
@@ -90,13 +82,19 @@ export function CardSerata({ serata }: { readonly serata: SerataSito }) {
               </strong>
             </Link>
           </div>
-          <div className={stili.coda}>
-            <Link href={`/serate/${serata.codice}`} className={stili.musica} style={{ color: "var(--text)" }}>
-              Com&apos;è il sabato
+        )}
+
+        {!due && (
+          <div className={stili.piede}>
+            <Link href={`/serate/${serata.codice}`} className={stili.musica}>
+              {legaParole(serata.musica)}
             </Link>
+            <Bottone href={perPrenotare(serata.perModulo)} aspetto="nero" stretto>
+              Prenota
+            </Bottone>
           </div>
-        </>
-      )}
+        )}
+      </div>
     </article>
   );
 }

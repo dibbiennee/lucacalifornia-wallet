@@ -106,19 +106,17 @@
   color: inherit;
 }
 
-/* Il sabato ha due sale: due porte, non una. */
+/*
+ * Il sabato ha due sale: due porte, non una. Stanno dove le altre card hanno
+ * la riga "musica piu' Prenota", e sono alte come quella: fuori dal corpo,
+ * con la loro coda, la card del sabato veniva cento pixel piu' alta.
+ */
 .due-sale {
   display: grid;
-  /* Affiancate quando ci stanno, una sopra l'altra quando no: "REGGAETON"
-     in mezza card stretta non entrava nemmeno a tredici pixel. */
-  grid-template-columns: 1fr;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
   margin-top: auto;
-}
-
-/* Affiancate appena la card è abbastanza larga: sotto i 380 px si impilano,
-   perché nemmeno "HOUSE" avrebbe il suo spazio. */
-@media (min-width: 380px) {
-  .due-sale { grid-template-columns: 1fr 1fr; }
+  padding-top: 8px;
 }
 
 /* In quattro colonne restano affiancate, con la scritta abbreviata. */
@@ -129,23 +127,33 @@
   .corto { display: inline; }
 }
 
+/* Nella striscia che scorre, sotto i 340px la sala è troppo stretta anche per
+   "REGGAETON" al minimo leggibile di 13px: qui conta lei, non la finestra. */
+@container (max-width: 110px) {
+  .intero { display: none; }
+  .corto { display: inline; }
+}
+
 .sala {
   min-width: 0;
   /* "REGGAETON" in mezza card: la misura si prende dalla colonna. */
   container-type: inline-size;
-  min-height: 88px;
-  /* Il rientro si stringe quando la card è stretta: "REGGAETON" ha bisogno
-     di quei sei pixel per stare dentro. */
-  padding: 14px clamp(12px, 5vw, 20px);
+  /* Alta come il pulsante Prenota delle altre serate: 44px, non 52. */
+  min-height: 44px;
+  border-radius: 12px;
+  padding: 6px 10px;
   color: var(--ink);
   text-decoration: none;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  gap: 2px;
+  align-items: center;
+  gap: 1px;
+  line-height: 1.1;
 }
 
 .sala small {
+  /* Mai sotto i 12px: è testo, non un'icona. */
   font-size: 12px;
   font-weight: 800;
 }
@@ -156,10 +164,6 @@
   font-size: clamp(13px, 9cqi, 19px);
   font-weight: 900;
   font-stretch: 118%;
-}
-
-.coda {
-  padding: 12px 20px 16px;
 }
 
 .suggerimento {
