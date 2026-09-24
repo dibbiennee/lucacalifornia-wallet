@@ -23,10 +23,9 @@ export function Apertura() {
 
       <VideoApertura />
 
-      <picture>
-        <source srcSet="/video/apertura-computer.jpg" media="(min-width: 52rem)" />
-        <img src="/video/apertura-telefono.jpg" alt="" aria-hidden className={stili.fermo} />
-      </picture>
+      {/* Sotto il video c'è sempre la foto: è quella che si vede subito, e
+          quella che resta a chi ha chiesto meno movimento. */}
+      <img src="/foto/poster.webp" alt="" aria-hidden className={stili.fermo} />
 
       <div className={`wrap ${stili.dentro}`}>
         <Image

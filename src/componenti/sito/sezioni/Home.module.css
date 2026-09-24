@@ -8,17 +8,13 @@
   padding-top: 22px;
   padding-bottom: 22px;
   display: grid;
-  /* Due righe da due sotto i 380 px: in quattro colonne "Milkshake" non ci
-     stava, e rimpicciolirlo l'avrebbe portato sotto il leggibile. */
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 8px;
 }
 
-@media (min-width: 420px) {
-  .settimana .dentro { grid-template-columns: repeat(4, minmax(0, 1fr)); }
-}
-
 .giorno {
+  /* Il nome si misura sulla pillola: "Milkshake" a misura fissa usciva. */
+  container-type: inline-size;
   min-height: 76px;
   border-radius: 14px;
   display: flex;
@@ -37,7 +33,7 @@
 }
 
 .giorno span {
-  font-size: 13px;
+  font-size: clamp(10px, 14cqi, 13px);
   font-weight: 900;
   font-stretch: 112%;
   text-transform: uppercase;
@@ -49,7 +45,7 @@
 
 @media (min-width: 720px) {
   .giorno { min-height: 92px; }
-  .giorno span { font-size: 17px; }
+  .giorno span { font-size: clamp(13px, 14cqi, 17px); }
 }
 
 /* --- Lo special guest --- */

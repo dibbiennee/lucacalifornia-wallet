@@ -63,8 +63,13 @@
 }
 
 .apertura h1 {
-  font-size: clamp(46px, 13vw, 118px);
-  max-width: 11ch;
+  /*
+   * Misurata perché "TI DÀ LIBERTÀ" stia su una riga sola: nel riferimento
+   * c'era uno script che rimpiccioliva i titoli finché ci stavano, qui deve
+   * entrare da solo.
+   */
+  font-size: clamp(32px, 9.5vw, 118px);
+  max-width: 13ch;
 }
 
 .azioni {

@@ -37,7 +37,7 @@ export const MENU = [
   { testo: "Chi sono", dove: "/chi-sono" },
 ] as const;
 
-export type Etichetta = "LISTA APERTA" | "POCHI TAVOLI" | "TUTTO PIENO";
+export type Etichetta = "Lista aperta" | "Pochi tavoli" | "Tutto pieno";
 
 export interface SerataSito {
   readonly codice: string;
@@ -77,7 +77,7 @@ export const SERATE: readonly SerataSito[] = [
     colore: "milk",
     perModulo: "Gio Milkshake",
     alt: "Una ragazza balla sorridendo al Milkshake",
-    etichetta: "LISTA APERTA",
+    etichetta: "Lista aperta",
     copertina: "/foto/night8.webp",
     descrizione:
       "Il giovedì è Milkshake: afro e reggaeton tutta la sera. Prenota qui e ti ricontatto io con disponibilità e prezzo.",
@@ -93,7 +93,7 @@ export const SERATE: readonly SerataSito[] = [
     colore: "acid",
     perModulo: "Ven commerciale",
     alt: "Il dj alla consolle il venerdì",
-    etichetta: "LISTA APERTA",
+    etichetta: "Lista aperta",
     copertina: "/foto/night20.webp",
     descrizione:
       "Il venerdì si balla commerciale e reggaeton. Prenota qui e ti ricontatto io con disponibilità e prezzo.",
@@ -110,7 +110,7 @@ export const SERATE: readonly SerataSito[] = [
     perModulo: "Sab sala 1 house",
     alt: "La pista piena il sabato",
     dueSale: true,
-    etichetta: "POCHI TAVOLI",
+    etichetta: "Pochi tavoli",
     copertina: "/foto/night16.webp",
     descrizione:
       "Il sabato il Room 26 apre due sale: house nella prima, reggaeton nella seconda. Dimmi dove vuoi stare e ti sistemo io.",
@@ -126,7 +126,7 @@ export const SERATE: readonly SerataSito[] = [
     colore: "red",
     perModulo: "Dom Báilame",
     alt: "Le luci del Room 26 la domenica",
-    etichetta: "LISTA APERTA",
+    etichetta: "Lista aperta",
     copertina: "/foto/night24.webp",
     descrizione:
       "La domenica si chiude la settimana con Báilame: tutta la sera solo reggaeton. Prenota qui e ti ricontatto io con disponibilità e prezzo.",
