@@ -74,9 +74,17 @@
  * Il titolo si misura sulla colonna che lo contiene, non sulla finestra: su
  * uno schermo largo la colonna è la metà della pagina, e a misura di finestra
  * "TI DÀ LIBERTÀ" finiva su tre righe.
+ *
+ * Il respiro fra un elemento e l'altro: occhiello, titolo, testo e pulsanti
+ * erano ognuno senza margine (i titoli lo perdono di proposito, vedi
+ * sito.css), quindi sul telefono finivano incollati uno sull'altro. Qui il
+ * gap li stacca, invece di lasciare tutto a contatto.
  */
 .testo {
   container-type: inline-size;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
 }
 
 .apertura h1 {
@@ -132,9 +140,6 @@
 
   .testo {
     order: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 18px;
     min-width: 0;
   }
 
