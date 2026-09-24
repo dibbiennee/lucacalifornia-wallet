@@ -84,9 +84,13 @@
   max-width: 13ch;
 }
 
-/* Sotto i 400 px i due pulsanti affiancati non ci stanno mai interi
-   (il testo non va a capo, per la regola 9 di tipografia-web): restano
-   impilati, uno per riga, finché la colonna non è larga abbastanza. */
+/*
+ * Impilati, uno per riga, fin sotto i 960 px. Affiancarli prima chiedeva
+ * "Entra in lista o prenota" e "Vedi le serate" esattamente al minimo che
+ * il testo può occupare (337px, senza andare a capo): a 402px di schermo,
+ * un iPhone qualunque, la colonna non aveva un pixel di respiro oltre
+ * quel minimo, e i pulsanti restavano incollati l'uno all'altro.
+ */
 .azioni {
   display: grid;
   grid-template-columns: 1fr;
@@ -96,10 +100,6 @@
 
 .azioni a {
   padding: 0 12px;
-}
-
-@media (min-width: 400px) {
-  .azioni { grid-template-columns: 1.25fr 1fr; }
 }
 
 /*
