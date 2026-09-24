@@ -19,7 +19,14 @@
   transition: transform 0.15s ease, background-color 0.15s ease;
 }
 
-.btn:active { transform: scale(0.97); }
+/*
+ * Solo con un mouse vero: su un telefono il dito spesso parte proprio sopra
+ * un pulsante per scorrere la pagina, e lo scatto di questo effetto (giù e
+ * su in 0.15s) si vedeva come un salto del pulsante durante lo scroll.
+ */
+@media (hover: hover) and (pointer: fine) {
+  .btn:active { transform: scale(0.97); }
+}
 
 /* L'azione principale: una sola per schermata. */
 .caldo {
