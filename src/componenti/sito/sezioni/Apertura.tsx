@@ -21,11 +21,22 @@ export function Apertura() {
         <polygon points="0,0 700,325 700,525" />
       </svg>
 
-      <VideoApertura />
+      {/*
+        La foto viene prima del video, non dopo: dipinta per ultima gli
+        finiva sopra e il video non si vedeva mai. Ha la precedenza sul resto
+        perché è la prima cosa che riempie lo schermo.
+      */}
+      <img
+        src="/foto/poster.webp"
+        alt=""
+        aria-hidden
+        className={stili.fermo}
+        fetchPriority="high"
+        width={480}
+        height={853}
+      />
 
-      {/* Sotto il video c'è sempre la foto: è quella che si vede subito, e
-          quella che resta a chi ha chiesto meno movimento. */}
-      <img src="/foto/poster.webp" alt="" aria-hidden className={stili.fermo} />
+      <VideoApertura />
 
       <div className={`wrap ${stili.dentro}`}>
         <Image

@@ -1,18 +1,10 @@
 import type { Metadata, Viewport } from "next";
-import { Anton, Hanken_Grotesk } from "next/font/google";
 import type { ReactNode } from "react";
 
+import { carattere } from "@/lib/carattere";
 import { INDIRIZZO, SITO_PUBBLICO } from "@/lib/pubblico";
 
 import "./globals.css";
-
-/** Anton per i titoli: è il carattere delle scritte nei reel di Luca. */
-const titoli = Anton({ subsets: ["latin"], weight: "400", variable: "--carattere-titoli" });
-const testo = Hanken_Grotesk({
-  subsets: ["latin"],
-  weight: ["400", "600", "700"],
-  variable: "--carattere-testo",
-});
 
 const TITOLO = "Luca California, liste e tavoli al Room 26 di Roma";
 const DESCRIZIONE =
@@ -51,7 +43,7 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="it" className={`${titoli.variable} ${testo.variable}`}>
+    <html lang="it" className={carattere.variable}>
       <body>{children}</body>
     </html>
   );
