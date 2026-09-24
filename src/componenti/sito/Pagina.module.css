@@ -369,3 +369,73 @@
     align-items: start;
   }
 }
+
+/* --- Le schermate del pannello, nella pagina delle funzioni --- */
+
+.schermate {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 62%;
+  gap: 12px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  margin: 0 -20px;
+  padding: 4px 20px 10px;
+  scroll-padding: 0 20px;
+  scrollbar-width: none;
+}
+
+.schermate::-webkit-scrollbar { display: none; }
+
+.schermata {
+  scroll-snap-align: start;
+  text-decoration: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+}
+
+.schermata img {
+  width: 100%;
+  height: auto;
+  border-radius: var(--r-m);
+  border: 1px solid var(--line);
+}
+
+.schermata strong {
+  font-size: 15px;
+  font-weight: 900;
+  font-stretch: 112%;
+  text-transform: uppercase;
+}
+
+.schermata span {
+  font-size: 13.5px;
+  color: var(--muted);
+  text-wrap: pretty;
+}
+
+@media (min-width: 720px) {
+  .schermate { grid-auto-columns: minmax(0, 1fr); margin: 0; padding: 4px 0 10px; }
+}
+
+/* Il biglietto, grande, nella pagina delle funzioni. */
+.biglietto {
+  display: grid;
+  gap: 20px;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.biglietto img {
+  width: min(280px, 70%);
+  height: auto;
+  justify-self: center;
+  border-radius: var(--r-m);
+}
+
+@media (min-width: 720px) {
+  .biglietto { grid-template-columns: 280px 1fr; }
+  .biglietto img { width: 100%; }
+}

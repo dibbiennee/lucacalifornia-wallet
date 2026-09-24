@@ -52,20 +52,8 @@ html:has(.pannello) {
   padding-bottom: calc(var(--s-6) + env(safe-area-inset-bottom, 0px));
 }
 
-/*
- * Il pannello non eredita i titoli del sito.
- *
- * globals.css impone Anton maiuscolo a ogni h1, h2 e h3. Qui i titoli sono
- * Archivo e li decide il componente, quindi si azzera. Il selettore usa
- * :where() apposta: cosi' non pesa niente, e qualunque componente lo batte
- * senza doversi inventare selettori lunghi.
- */
+/* I titoli li decide il componente: qui si toglie solo il margine di serie. */
 .pannello :where(h1, h2, h3) {
-  font-family: inherit;
-  font-weight: 400;
-  text-transform: none;
-  letter-spacing: normal;
-  line-height: 1.5;
   margin: 0;
 }
 

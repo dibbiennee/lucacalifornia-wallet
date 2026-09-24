@@ -4,10 +4,9 @@
  * Quello che appartiene a un pezzo (pulsanti, card, testata) sta nel foglio
  * del suo componente. Qui c'è solo l'ossatura.
  *
- * Tutto è annidato sotto .sito finché il vecchio globals.css non è sparito:
- * le sue regole arrivano dappertutto, e i nomi si toccano. Senza
- * l'annidamento le pagine nuove si ritrovavano Anton al posto di Archivo, e
- * gli occhielli col fondo blu del sito di prima.
+ * Tutto è annidato sotto .sito: il sito e il pannello hanno nomi che si
+ * assomigliano, e l'annidamento tiene i due mondi separati senza doverli
+ * rinominare.
  */
 
 html:has(.sito) {
@@ -46,17 +45,8 @@ html:has(.sito) {
   border-radius: 6px;
 }
 
-/*
- * I titoli del sito li decide il componente, non globals.css, che impone
- * Anton maiuscolo a ogni h1. :where() non pesa niente, così qualunque
- * componente lo batte senza selettori lunghi.
- */
+/* I titoli li decide il componente: qui si toglie solo il margine di serie. */
 .sito :where(h1, h2, h3) {
-  font-family: inherit;
-  font-weight: 400;
-  text-transform: none;
-  letter-spacing: normal;
-  line-height: 1.5;
   margin: 0;
 }
 
@@ -106,14 +96,6 @@ html:has(.sito) {
 }
 
 .sito .occhiello {
-  /*
-   * L'azzeramento serve finché c'è il vecchio globals.css: lì "occhiello" è
-   * una targhetta col fondo blu, e senza questo se la porta dietro.
-   */
-  background: none;
-  padding: 0;
-  text-transform: none;
-  letter-spacing: normal;
   font-size: 14px;
   font-weight: 700;
   margin: 0 0 12px;
