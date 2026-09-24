@@ -18,7 +18,7 @@
 
 export const MARCHIO = { riga1: "LUCA", riga2: "CALIFORNIA" } as const;
 
-export const MOTTO = ["NON IMPORTA CHI TU SIA", "IMPORTA CHE TI", "SAPPIA DIVERTIRE"] as const;
+export const MOTTO = ["NON IMPORTA CHI TU SIA", "IMPORTA CHE TI SAPPIA DIVERTIRE"] as const;
 
 export const INSTAGRAM = "lucacurella_ninfeo";
 export const INSTAGRAM_URL = `https://instagram.com/${INSTAGRAM}`;
@@ -28,6 +28,7 @@ export const WHATSAPP = "393348548735";
 
 export const MENU = [
   { testo: "Serate", dove: "/serate" },
+  { testo: "Tavoli", dove: "/tavoli" },
   { testo: "Locali", dove: "/locali" },
   { testo: "Navetta", dove: "/navetta" },
   { testo: "Capodanno", dove: "/capodanno" },
@@ -36,17 +37,29 @@ export const MENU = [
   { testo: "Chi sono", dove: "/chi-sono" },
 ] as const;
 
-export type Etichetta = "LISTA APERTA" | "POCHI TAVOLI" | "TUTTO PIENO";
+export type Etichetta = "Lista aperta" | "Pochi tavoli" | "Tutto pieno";
 
 export interface SerataSito {
   readonly codice: string;
   readonly giorno: string;
+  /** Il giorno in tre lettere, per la striscia della settimana. */
+  readonly breve: string;
   readonly nome: string;
   readonly musica: string;
+  /** Il genere per esteso, quando serve una riga sola che spiega. */
+  readonly genere: string;
   readonly etichetta: Etichetta;
   readonly copertina: string;
+  /** Cosa si vede nella foto: serve a chi non la vede. */
+  readonly alt: string;
+  /** Il colore della serata, come nome del token: milk, acid, cyan, red. */
+  readonly colore: string;
+  /** Come si chiama la serata dentro il modulo. */
+  readonly perModulo: string;
   readonly descrizione: string;
   readonly quando: string;
+  /** Vero per il sabato, che apre due sale con due musiche. */
+  readonly dueSale?: boolean;
 }
 
 /**
@@ -56,47 +69,68 @@ export interface SerataSito {
 export const SERATE: readonly SerataSito[] = [
   {
     codice: "milkshake",
-    giorno: "GIOVEDÌ",
-    nome: "MILKSHAKE",
-    musica: "AFRO E REGGAETON",
-    etichetta: "LISTA APERTA",
-    copertina: "/foto/copertine/milkshake.jpg",
+    giorno: "Giovedì",
+    breve: "Gio",
+    nome: "Milkshake",
+    musica: "Afro e reggaeton",
+    genere: "Afro e reggaeton",
+    colore: "milk",
+    perModulo: "Gio Milkshake",
+    alt: "Una ragazza balla sorridendo al Milkshake",
+    etichetta: "Lista aperta",
+    copertina: "/foto/night8.webp",
     descrizione:
       "Il giovedì è Milkshake: afro e reggaeton tutta la sera. Prenota qui e ti ricontatto io con disponibilità e prezzo.",
-    quando: "OGNI GIOVEDÌ",
+    quando: "Ogni giovedì",
   },
   {
     codice: "venerdi",
-    giorno: "VENERDÌ",
-    nome: "COMMERCIALE",
-    musica: "E REGGAETON",
-    etichetta: "LISTA APERTA",
-    copertina: "/foto/copertine/venerdi.jpg",
+    giorno: "Venerdì",
+    breve: "Ven",
+    nome: "Commerciale",
+    musica: "E reggaeton",
+    genere: "Commerciale e reggaeton",
+    colore: "acid",
+    perModulo: "Ven commerciale",
+    alt: "Il dj alla consolle il venerdì",
+    etichetta: "Lista aperta",
+    copertina: "/foto/night20.webp",
     descrizione:
       "Il venerdì si balla commerciale e reggaeton. Prenota qui e ti ricontatto io con disponibilità e prezzo.",
-    quando: "OGNI VENERDÌ",
+    quando: "Ogni venerdì",
   },
   {
     codice: "sabato",
-    giorno: "SABATO",
-    nome: "DUE SALE",
-    musica: "HOUSE E REGGAETON",
-    etichetta: "POCHI TAVOLI",
-    copertina: "/foto/copertine/sabato.jpg",
+    giorno: "Sabato",
+    breve: "Sab",
+    nome: "Due sale",
+    musica: "House e reggaeton",
+    genere: "House e reggaeton, in due sale",
+    colore: "cyan",
+    perModulo: "Sab sala 1 house",
+    alt: "La pista piena il sabato",
+    dueSale: true,
+    etichetta: "Pochi tavoli",
+    copertina: "/foto/night16.webp",
     descrizione:
       "Il sabato il Room 26 apre due sale: house nella prima, reggaeton nella seconda. Dimmi dove vuoi stare e ti sistemo io.",
-    quando: "OGNI SABATO",
+    quando: "Ogni sabato",
   },
   {
     codice: "bailame",
-    giorno: "DOMENICA",
-    nome: "BÁILAME",
-    musica: "SOLO REGGAETON",
-    etichetta: "LISTA APERTA",
-    copertina: "/foto/copertine/bailame.jpg",
+    giorno: "Domenica",
+    breve: "Dom",
+    nome: "Báilame",
+    musica: "Solo reggaeton",
+    genere: "Solo reggaeton",
+    colore: "red",
+    perModulo: "Dom Báilame",
+    alt: "Le luci del Room 26 la domenica",
+    etichetta: "Lista aperta",
+    copertina: "/foto/night24.webp",
     descrizione:
       "La domenica si chiude la settimana con Báilame: tutta la sera solo reggaeton. Prenota qui e ti ricontatto io con disponibilità e prezzo.",
-    quando: "OGNI DOMENICA",
+    quando: "Ogni domenica",
   },
 ];
 

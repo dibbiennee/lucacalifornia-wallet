@@ -1,0 +1,452 @@
+/* I pezzi che tornano in tutte le pagine interne. */
+
+.cima { padding-top: 18px; }
+
+.testa {
+  padding-top: 10px;
+  padding-bottom: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  /* Un titolo come "Per la figura" ha le parole brevi legate: niente punti
+     dove andare a capo, quindi deve stare intero nella sua colonna. Si
+     misura su di lei, non sulla finestra. */
+  container-type: inline-size;
+}
+
+.testa h1 {
+  font-size: clamp(29px, 9cqi, 76px);
+}
+
+/* La fotografia grande in cima a una pagina. */
+.foto {
+  width: 100%;
+  border-radius: var(--r-l);
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  margin-bottom: 20px;
+  height: auto;
+}
+
+/* Le etichette che non si toccano: dicono e basta. */
+.pillole {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 20px 0 28px;
+  padding: 0;
+  list-style: none;
+}
+
+.pillole li {
+  padding: 8px 14px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  font-size: 14px;
+  font-weight: 700;
+}
+
+/* L'elenco dei punti, in riquadri. */
+.punti {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 24px;
+  display: grid;
+  gap: 10px;
+}
+
+.punti li {
+  padding: 16px 18px;
+  border-radius: var(--r-m);
+  background: var(--surface);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.punti strong {
+  font-size: 16px;
+  font-weight: 900;
+  font-stretch: 112%;
+  text-transform: uppercase;
+}
+
+.punti span {
+  font-size: 14.5px;
+  color: var(--muted);
+}
+
+/* Le due voci sotto il titolo di una serata: quando e dove. */
+.dati {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 10px;
+  margin: 20px 0;
+}
+
+.dati div {
+  padding: 14px 16px;
+  border-radius: var(--r-m);
+  background: var(--surface);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.dati small {
+  font-size: 12px;
+  font-weight: 800;
+  color: var(--dim);
+}
+
+.dati strong {
+  font-size: 15px;
+  font-weight: 800;
+}
+
+/* La galleria che scorre di lato. */
+.galleria {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 60%;
+  gap: 10px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  margin: 0 -20px;
+  padding: 0 20px 6px;
+  scroll-padding: 0 20px;
+  scrollbar-width: none;
+}
+
+.galleria::-webkit-scrollbar { display: none; }
+
+.galleria img {
+  border-radius: var(--r-m);
+  aspect-ratio: 9 / 14;
+  object-fit: cover;
+  width: 100%;
+  height: auto;
+  scroll-snap-align: start;
+}
+
+@media (min-width: 720px) {
+  .galleria {
+    grid-auto-columns: minmax(0, 1fr);
+    margin: 0;
+    padding: 0 0 6px;
+  }
+}
+
+/* I due pulsanti sotto una serata. */
+.azioni {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 10px;
+}
+
+/* Le altre serate, come pillole colorate. */
+.altre {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.altre a {
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 16px;
+  border-radius: 999px;
+  text-decoration: none;
+  font-weight: 800;
+  font-size: 14px;
+  color: var(--ink);
+}
+
+/* --- Le schede dei locali --- */
+
+.locali {
+  display: grid;
+  gap: 14px;
+  padding-bottom: 56px;
+}
+
+.locale {
+  border-radius: var(--r-l);
+  overflow: hidden;
+  background: var(--surface);
+  /* A tre colonne la scheda è un terzo della finestra: un titolo misurato
+     sulla finestra (vw) usciva dalla scheda ("Ninfeo", "Morgan Beach Club").
+     Si misura su di lei. */
+  container-type: inline-size;
+}
+
+.locale img {
+  width: 100%;
+  aspect-ratio: 4 / 2.6;
+  object-fit: cover;
+  height: auto;
+}
+
+.locale .dentro {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: flex-start;
+}
+
+.locale h2 {
+  font-size: clamp(24px, 15cqi, 46px);
+}
+
+.locale strong {
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--muted);
+}
+
+.locale p {
+  margin: 0;
+  font-size: 15.5px;
+  color: var(--testo-2);
+  max-width: 52ch;
+  text-wrap: pretty;
+}
+
+/* --- Il confronto: in macchina o con la navetta --- */
+
+.confronto {
+  display: grid;
+  gap: 10px;
+  margin: 24px 0;
+}
+
+.confronto > div {
+  padding: 18px;
+  border-radius: var(--r-m);
+  background: var(--surface);
+}
+
+.confronto p {
+  margin: 0 0 12px;
+  font-size: 14px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.confronto ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 10px;
+}
+
+.confronto li {
+  display: grid;
+  grid-template-columns: 22px 1fr;
+  gap: 10px;
+  align-items: start;
+  font-size: 14.5px;
+  color: var(--testo-2);
+}
+
+.confronto svg {
+  width: 20px;
+  height: 20px;
+  fill: none;
+  stroke-width: 2.4;
+  stroke-linecap: round;
+}
+
+.male p { color: var(--red); }
+.male svg { stroke: var(--red); }
+.bene p { color: var(--cyan); }
+.bene svg { stroke: var(--cyan); }
+
+@media (min-width: 720px) {
+  .confronto { grid-template-columns: 1fr 1fr; }
+  .locali { grid-template-columns: repeat(3, minmax(0, 1fr)); align-items: start; }
+}
+
+/* --- I pacchetti del Capodanno --- */
+
+.pacchetti {
+  list-style: none;
+  margin: 0 0 20px;
+  padding: 0;
+  display: grid;
+  gap: 10px;
+}
+
+.pacchetti > li > * {
+  width: 100%;
+  text-align: left;
+  padding: 18px 20px;
+  border-radius: var(--r-m);
+  background: var(--surface);
+  border: 1.5px solid var(--line);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  text-decoration: none;
+  color: inherit;
+}
+
+.pacchetti small {
+  font-size: 12px;
+  font-weight: 800;
+  color: var(--dim);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.pacchetti strong {
+  font-size: 22px;
+  font-weight: 900;
+  font-stretch: 118%;
+  text-transform: uppercase;
+  line-height: 1;
+}
+
+.pacchetti em {
+  font-style: normal;
+  font-size: 13px;
+  color: var(--acid);
+  font-weight: 700;
+}
+
+/* --- Il ritratto di una serata --- */
+
+.serata {
+  position: relative;
+  border-radius: var(--r-l);
+  overflow: hidden;
+  color: var(--ink);
+}
+
+.serata > div:first-child { position: relative; }
+
+.serata img {
+  width: 100%;
+  aspect-ratio: 4 / 3.4;
+  object-fit: cover;
+  height: auto;
+}
+
+.banda {
+  padding: 18px 20px 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  /* A due colonne la banda è metà della finestra: un titolo misurato sulla
+     finestra (vw) usciva dalla sua colonna. Si misura su di lei. */
+  container-type: inline-size;
+}
+
+.banda h1 { font-size: clamp(27px, 9.6cqi, 64px); }
+
+.banda .giorno {
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.banda .musica {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.targhetta {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  padding: 7px 12px;
+  border-radius: 999px;
+  background: var(--ink);
+  font-size: 12px;
+  font-weight: 800;
+}
+
+@media (min-width: 860px) {
+  .serata-griglia {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    align-items: start;
+  }
+}
+
+/* --- Le schermate del pannello, nella pagina delle funzioni --- */
+
+.schermate {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 62%;
+  gap: 12px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  margin: 0 -20px;
+  padding: 4px 20px 10px;
+  scroll-padding: 0 20px;
+  scrollbar-width: none;
+}
+
+.schermate::-webkit-scrollbar { display: none; }
+
+.schermata {
+  scroll-snap-align: start;
+  text-decoration: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+}
+
+.schermata img {
+  width: 100%;
+  height: auto;
+  border-radius: var(--r-m);
+  border: 1px solid var(--line);
+}
+
+.schermata strong {
+  font-size: 15px;
+  font-weight: 900;
+  font-stretch: 112%;
+  text-transform: uppercase;
+}
+
+.schermata span {
+  font-size: 13.5px;
+  color: var(--muted);
+  text-wrap: pretty;
+}
+
+@media (min-width: 720px) {
+  .schermate { grid-auto-columns: minmax(0, 1fr); margin: 0; padding: 4px 0 10px; }
+}
+
+/* Il biglietto, grande, nella pagina delle funzioni. */
+.biglietto {
+  display: grid;
+  gap: 20px;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.biglietto img {
+  width: min(280px, 70%);
+  height: auto;
+  justify-self: center;
+  border-radius: var(--r-m);
+}
+
+@media (min-width: 720px) {
+  .biglietto { grid-template-columns: 280px 1fr; }
+  .biglietto img { width: 100%; }
+}

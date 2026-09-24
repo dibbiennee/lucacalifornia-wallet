@@ -1,72 +1,82 @@
+import { nuovoPr } from "@/app/pannello/azioni";
 import { CopiaLink } from "@/componenti/pannello/CopiaLink";
+import { NotaEsempio, Testo } from "@/componenti/pannello/Messaggi";
+import { ModuloRapido } from "@/componenti/pannello/ModuloRapido";
+import { Numeri, Numero } from "@/componenti/pannello/Numero";
+import { PulsanteLink } from "@/componenti/pannello/Pulsante";
+import { Riquadro } from "@/componenti/pannello/Scelta";
+import { Testata } from "@/componenti/pannello/Testata";
 import { compleanni, squadra } from "@/lib/pannello/dati";
+
+import stili from "@/componenti/pannello/CopiaLink.module.css";
 
 export const metadata = { title: "Squadra, pannello Luca California" };
 
+const MESE = new Intl.DateTimeFormat("it-IT", { timeZone: "Europe/Rome", month: "long" });
+
+/** Il messaggio già scritto per il compleanno: lo manda Luca, non parte da solo. */
+function auguri(nome: string): string {
+  const primo = nome.split(" ")[0] ?? nome;
+  return `Ciao ${primo}! Tra poco è il tuo compleanno: ti tengo un tavolo come l'anno scorso?`;
+}
+
 export default function Squadra() {
   return (
-    <main className="pannello-pagina">
-      <p className="pannello-occhiello">SETTEMBRE</p>
-      <h1 className="pannello-titolo">Squadra</h1>
+    <main className="pagina">
+      <Testata occhiello={MESE.format(new Date())} titolo="Squadra" />
 
-      <div style={{ marginTop: "1.8rem" }}>
+      <div className="lista">
         {squadra().map((pr) => (
-          <div key={pr.nome} className="pannello-riquadro">
-            <p style={{ display: "flex", justifyContent: "space-between", gap: "1rem", margin: "0 0 0.6rem" }}>
-              <b style={{ letterSpacing: "0.06em" }}>{pr.nome.toUpperCase()}</b>
-              <span className="debole">{pr.prenotazioni} prenotazioni</span>
+          <Riquadro key={pr.nome}>
+            <p className={stili.testa}>
+              <b>{pr.nome.toUpperCase()}</b>
+              <span>{pr.prenotazioni} prenotazioni</span>
             </p>
 
             <CopiaLink link={pr.link} />
 
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "0.6rem", marginTop: "0.9rem" }}>
-              <span className="pannello-numero">
-                <b>{pr.liste}</b>
-                <span>liste</span>
-              </span>
-              <span className="pannello-numero">
-                <b>{pr.tavoli}</b>
-                <span>tavoli</span>
-              </span>
-              <span className="pannello-numero">
-                <b>{pr.provvigioni} €</b>
-                <span>provvigioni</span>
-              </span>
-            </div>
-          </div>
+            <Numeri>
+              <Numero valore={pr.liste} etichetta="liste" />
+              <Numero valore={pr.tavoli} etichetta="tavoli" />
+              <Numero valore={`${pr.provvigioni} €`} etichetta="provvigioni" />
+            </Numeri>
+          </Riquadro>
         ))}
       </div>
 
-      <button type="button" className="bottone bottone-vuoto" style={{ width: "100%", marginTop: "0.6rem" }}>
-        Aggiungi un PR
-      </button>
+      <ModuloRapido
+        apri="Aggiungi un PR"
+        etichetta="Nome del PR"
+        invia="Crea il suo link"
+        azione={nuovoPr}
+      />
 
-      <section style={{ marginTop: "2.4rem" }}>
-        <h2 className="etichetta-campo">Compleanni in arrivo</h2>
-        {compleanni().map((c) => (
-          <div key={c.nome} className="pannello-riquadro">
-            <p style={{ display: "flex", justifyContent: "space-between", gap: "1rem", margin: "0 0 0.4rem" }}>
-              <b>{c.nome}</b>
-              <span className="debole">{c.fra}</span>
-            </p>
-            <p className="debole" style={{ margin: "0 0 0.9rem", fontSize: "0.9375rem" }}>
-              L&apos;anno scorso: {c.annoScorso.toLowerCase()}
-            </p>
-            <a
-              href={`https://wa.me/${c.telefono}`}
-              className="bottone bottone-vuoto"
-              style={{ width: "100%", minHeight: "2.9rem", fontSize: "0.875rem" }}
-            >
-              Scrivi su WhatsApp
-            </a>
-          </div>
-        ))}
+      <section className="sezione" aria-labelledby="compleanni">
+        <h2 className="titolo-sezione" id="compleanni">
+          Compleanni in arrivo
+        </h2>
+
+        <div className="lista">
+          {compleanni().map((c) => (
+            <Riquadro key={c.nome}>
+              <p className={stili.testa}>
+                <b className={stili["nome-persona"]}>{c.nome}</b>
+                <span>{c.fra}</span>
+              </p>
+              <Testo>L&apos;anno scorso: {c.annoScorso.toLowerCase()}</Testo>
+              <PulsanteLink
+                aspetto="vuoto"
+                href={`https://wa.me/${c.telefono}?text=${encodeURIComponent(auguri(c.nome))}`}
+                esterno
+              >
+                Scrivi su WhatsApp
+              </PulsanteLink>
+            </Riquadro>
+          ))}
+        </div>
       </section>
 
-      <p className="pannello-nota">
-        Anteprima: squadra e compleanni sono di esempio. I link personali dei PR non tracciano
-        ancora niente, perché non c&apos;è il database dove segnare chi arriva da chi.
-      </p>
+      <NotaEsempio />
     </main>
   );
 }

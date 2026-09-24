@@ -1,0 +1,91 @@
+/*
+ * Il menu prende tutto lo schermo.
+ *
+ * Prima era la tendina di serie di <details>: voci in minuscolo tondo dove
+ * tutto il sito è maiuscolo, e un riquadro che copriva mezzo schermo tagliando
+ * quello che c'era sotto. Così invece è una schermata sua, con le voci grandi
+ * abbastanza da prenderle senza guardare.
+ */
+.menu {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  background: var(--bg);
+  display: flex;
+  flex-direction: column;
+  padding: calc(16px + env(safe-area-inset-top, 0px)) 20px calc(24px + env(safe-area-inset-bottom, 0px));
+}
+
+.testa {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 52px;
+}
+
+.marchio {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+}
+
+.marchio span {
+  font-size: 13px;
+  font-weight: 800;
+  font-stretch: 112%;
+  line-height: 1;
+}
+
+.chiudi {
+  appearance: none;
+  border: 0;
+  cursor: pointer;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--surface-2);
+  color: var(--text);
+  display: grid;
+  place-items: center;
+}
+
+.voci {
+  list-style: none;
+  margin: 28px 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  /* Se le voci non ci stanno si scorre, invece di schiacciarle. */
+  overflow-y: auto;
+}
+
+.voci a {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--line);
+  font-size: 30px;
+  font-weight: 900;
+  font-stretch: 125%;
+  text-transform: uppercase;
+  text-decoration: none;
+  line-height: 1;
+}
+
+/* Il pallino del colore della serata: l'occhio la riconosce prima di leggere. */
+.pallino {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  flex: none;
+}
+
+.piede {
+  margin-top: auto;
+  padding-top: 24px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}

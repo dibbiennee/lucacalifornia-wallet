@@ -1,0 +1,46 @@
+/* L'elenco delle voci: etichetta piccola sopra, valore grosso sotto. */
+.voci {
+  margin: 0;
+  display: grid;
+  gap: var(--s-3);
+}
+
+.voci dt {
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--dim);
+}
+
+.voci dd {
+  margin: 2px 0 0;
+  font-size: 17px;
+  font-weight: 700;
+}
+
+/* Il numero è la cosa più utile della schermata: si tocca, quindi è alto 44. */
+.telefono {
+  color: var(--link);
+  font-size: 17px;
+  font-weight: 700;
+  text-underline-offset: 4px;
+  align-self: flex-start;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+}
+
+/* Quello che ha scritto il cliente, con le sue parole. */
+.citazione {
+  margin: 0;
+  padding: var(--s-4);
+  border-radius: var(--r-m);
+  background: var(--surface);
+  font-style: italic;
+  color: var(--testo-2);
+}
+
+.nota-privata {
+  font-style: normal;
+}

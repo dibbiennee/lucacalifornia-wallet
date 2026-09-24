@@ -1,0 +1,76 @@
+import Image from "next/image";
+
+import { Bottone } from "@/componenti/sito/Bottone";
+import { Introduzione } from "@/componenti/sito/Pagina";
+import { VideoApertura } from "@/componenti/VideoApertura";
+
+import stili from "./Apertura.module.css";
+
+/**
+ * La prima schermata: il video del locale, il marchio, e le due strade.
+ *
+ * Sul telefono il filmato fa da sfondo a tutta la pagina, col testo sopra e
+ * un velo scuro sotto perché resti leggibile. Su uno schermo largo diventa
+ * un riquadro verticale accanto al testo: allargato riempirebbe lo schermo
+ * di pixel sgranati, e il velo coprirebbe un video che nessuno vede.
+ *
+ * Sotto il video c'è sempre la foto: è quella che si vede subito, quella che
+ * resta a chi ha chiesto meno movimento, e quella che resta se il codice non
+ * parte.
+ */
+export function Apertura() {
+  return (
+    <section className={stili.apertura} aria-label="Luca California al Room 26">
+      <svg className={stili.raggi} viewBox="0 0 700 700" fill="#FF3EA5" aria-hidden focusable="false">
+        <polygon points="0,0 700,0 700,173" />
+        <polygon points="0,0 700,325 700,525" />
+      </svg>
+
+      <div className={`wrap ${stili.dentro}`}>
+        <div className={stili.media}>
+          {/* La foto prima del video: dipinta per ultima gli finirebbe sopra.
+              Ha la precedenza sul resto perché riempie subito lo schermo. */}
+          <img
+            src="/foto/poster.webp"
+            alt=""
+            aria-hidden
+            fetchPriority="high"
+            width={480}
+            height={853}
+          />
+          <VideoApertura />
+        </div>
+
+        <div className={stili.testo}>
+          <Image
+            src="/foto/california.webp"
+            alt="California"
+            width={272}
+            height={78}
+            priority
+            sizes="136px"
+            className={stili.california}
+          />
+
+          <p className={stili.giorni}>Giovedì, venerdì, sabato, domenica</p>
+
+          <h1 className="display" tabIndex={-1}>
+            <span className="cl">La notte</span> <span className="cl">ti dà libertà</span>
+          </h1>
+
+          <Introduzione>
+            Ciao, sono Luca. Liste e tavoli al Room 26 di Roma, da giovedì a domenica, con la
+            navetta per arrivarci.
+          </Introduzione>
+
+          <div className={stili.azioni}>
+            <Bottone href="/prenota?tipo=lista">Entra in lista o prenota</Bottone>
+            <Bottone href="/serate" aspetto="contorno">
+              Vedi le serate
+            </Bottone>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}

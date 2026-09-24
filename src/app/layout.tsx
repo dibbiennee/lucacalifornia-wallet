@@ -1,18 +1,10 @@
 import type { Metadata, Viewport } from "next";
-import { Anton, Hanken_Grotesk } from "next/font/google";
 import type { ReactNode } from "react";
 
+import { carattere } from "@/lib/carattere";
 import { INDIRIZZO, SITO_PUBBLICO } from "@/lib/pubblico";
 
 import "./globals.css";
-
-/** Anton per i titoli: è il carattere delle scritte nei reel di Luca. */
-const titoli = Anton({ subsets: ["latin"], weight: "400", variable: "--carattere-titoli" });
-const testo = Hanken_Grotesk({
-  subsets: ["latin"],
-  weight: ["400", "600", "700"],
-  variable: "--carattere-testo",
-});
 
 const TITOLO = "Luca California, liste e tavoli al Room 26 di Roma";
 const DESCRIZIONE =
@@ -39,15 +31,19 @@ export const metadata: Metadata = {
   },
   twitter: { card: "summary_large_image", title: TITOLO, description: DESCRIZIONE, images: ["/anteprima.jpg"] },
   robots: SITO_PUBBLICO ? { index: true, follow: true } : { index: false, follow: false },
+  /* Senza, la scheda del browser resta col foglio bianco e iOS mette uno
+     scatto sbiadito della pagina quando la aggiungi alla schermata home. */
+  icons: { icon: "/loghi/icona-192.png", apple: "/loghi/icona-192.png" },
 };
 
 export const viewport: Viewport = {
-  themeColor: "#2B1BB0",
+  /* La barra del browser si intona al sito: era rimasta col blu di prima. */
+  themeColor: "#000000",
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="it" className={`${titoli.variable} ${testo.variable}`}>
+    <html lang="it" className={carattere.variable}>
       <body>{children}</body>
     </html>
   );

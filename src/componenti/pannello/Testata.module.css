@@ -1,0 +1,87 @@
+.testata {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-2);
+}
+
+/* La riga dell'occhiello: a destra ci sta l'azione, per esempio "Esci". */
+.riga {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--s-3);
+  min-height: 32px;
+}
+
+.occhiello {
+  margin: 0;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.titolo.titolo {
+  margin: 0;
+  max-width: 100%;
+  font-size: clamp(30px, 9vw, 42px);
+  font-weight: 900;
+  font-stretch: 125%;
+  line-height: 0.92;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+  text-wrap: balance;
+}
+
+/* Ogni pezzo del titolo, cioè ogni frase fra una virgola e l'altra. */
+.riga-titolo {
+  display: block;
+}
+
+.sottotitolo {
+  margin: 0;
+  color: var(--muted);
+  font-size: 15px;
+}
+
+/* L'azione di testo a destra dell'occhiello. */
+.azione {
+  appearance: none;
+  border: 0;
+  background: none;
+  color: var(--muted);
+  font: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  min-width: 44px;
+  min-height: 44px;
+  padding: 0 var(--s-1);
+  cursor: pointer;
+}
+
+/* Il ritorno indietro, sopra la testata. */
+.indietro {
+  appearance: none;
+  border: 0;
+  background: none;
+  color: var(--muted);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font: inherit;
+  font-size: 15px;
+  font-weight: 700;
+  min-height: 44px;
+  padding: 0;
+  cursor: pointer;
+  align-self: flex-start;
+  text-decoration: none;
+}
+
+.indietro svg {
+  width: 18px;
+  height: 18px;
+}

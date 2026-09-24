@@ -1,21 +1,26 @@
 import type { ReactNode } from "react";
 
-import { BarraFissa } from "@/componenti/BarraFissa";
-import { Intestazione } from "@/componenti/Intestazione";
-import { PiePagina } from "@/componenti/PiePagina";
+import { BarraPrenota } from "@/componenti/sito/BarraPrenota";
+import { PiePagina } from "@/componenti/sito/PiePagina";
+import { Testata } from "@/componenti/sito/Testata";
+import { carattere } from "@/lib/carattere";
+
+import "@/stili/sito.css";
 
 /**
- * Il guscio del sito: intestazione, piè di pagina e barra fissa.
- * Le pagine del prototipo del biglietto stanno fuori da questo gruppo,
- * perché non sono sito: sono strumenti.
+ * Il guscio del sito: testata in alto, barra in basso, piè di pagina.
+ *
+ * Il carattere è lo stesso del pannello, istanziato una volta sola: sito e
+ * strumento sono due facce della stessa cosa, e chi passa dall'uno all'altro
+ * non deve accorgersi di un cambio di mondo.
  */
 export default function LayoutSito({ children }: { children: ReactNode }) {
   return (
-    <>
-      <Intestazione />
-      {children}
+    <div className={`sito ${carattere.variable}`}>
+      <Testata />
+      <main id="principale">{children}</main>
       <PiePagina />
-      <BarraFissa />
-    </>
+      <BarraPrenota />
+    </div>
   );
 }

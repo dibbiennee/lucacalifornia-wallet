@@ -1,0 +1,153 @@
+/*
+ * L'impianto del sito: la colonna, le fasce, i titoli, le utilità.
+ *
+ * Quello che appartiene a un pezzo (pulsanti, card, testata) sta nel foglio
+ * del suo componente. Qui c'è solo l'ossatura.
+ *
+ * Tutto è annidato sotto .sito: il sito e il pannello hanno nomi che si
+ * assomigliano, e l'annidamento tiene i due mondi separati senza doverli
+ * rinominare.
+ */
+
+html:has(.sito) {
+  background: var(--bg);
+  scroll-behavior: smooth;
+  /* La testata resta appiccicata in alto: gli àncora non ci finiscono sotto. */
+  scroll-padding-top: calc(68px + env(safe-area-inset-top, 0px));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html:has(.sito) {
+    scroll-behavior: auto;
+  }
+}
+
+.sito {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--carattere), "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  -webkit-tap-highlight-color: transparent;
+  overflow-x: hidden;
+}
+
+/* Quanto spazio prende la barra in basso: serve al piè di pagina. */
+.sito { --barra-h: 74px; }
+
+@media (min-width: 960px) {
+  .sito { --barra-h: 0px; }
+}
+
+.sito :focus-visible {
+  outline: 3px solid var(--magenta);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+/* I titoli li decide il componente: qui si toglie solo il margine di serie. */
+.sito :where(h1, h2, h3) {
+  margin: 0;
+}
+
+/* --- La colonna --- */
+
+.sito .wrap {
+  width: 100%;
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* La fascia fra una sezione e l'altra. */
+.sito .blocco {
+  padding: 64px 0;
+}
+
+@media (min-width: 760px) {
+  .sito .blocco { padding: 72px 0; }
+}
+
+.sito .blocco-testa {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 28px;
+}
+
+.sito .blocco-testa h2 {
+  /* Le parole brevi sono legate: la riga non si spezza, quindi deve starci. */
+  font-size: clamp(26px, 8vw, 76px);
+}
+
+/* --- I caratteri --- */
+
+/* Il titolo grande: allargato, maiuscolo, righe strette. */
+.sito .display {
+  font-weight: 900;
+  font-stretch: 125%;
+  line-height: 0.9;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+/*
+ * Ogni frase del titolo su una riga sua: "La notte" / "ti dà libertà".
+ * A capo per unità di senso, deciso da chi scrive e non dalla larghezza.
+ */
+.sito .cl {
+  display: block;
+}
+
+.sito .occhiello {
+  font-size: 14px;
+  font-weight: 700;
+  margin: 0 0 12px;
+  color: var(--magenta);
+}
+
+.sito .introduzione {
+  font-size: 17px;
+  line-height: 1.5;
+  color: var(--testo-2);
+  /* Oltre i 52 caratteri l'occhio fatica a ritrovare l'inizio della riga dopo. */
+  max-width: 52ch;
+  margin: 0;
+  text-wrap: pretty;
+}
+
+.sito .nota {
+  font-size: 13px;
+  color: var(--dim);
+  margin: 0;
+}
+
+/* Visibile solo a chi legge con la voce. */
+.sito .sr {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+/* --- Il ritorno indietro, in cima alle pagine interne --- */
+
+.sito .indietro {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  /* 44 px di altezza: si tocca anche di fretta. */
+  min-height: 44px;
+  color: var(--muted);
+  font-size: 15px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.sito .indietro svg {
+  width: 18px;
+  height: 18px;
+}

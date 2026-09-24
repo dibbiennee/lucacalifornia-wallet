@@ -3,6 +3,10 @@
 import { useRouter } from "next/navigation";
 import { useState, type FormEvent } from "react";
 
+import { Campo } from "@/componenti/pannello/Campo";
+import { Pulsante } from "@/componenti/pannello/Pulsante";
+import { Testata } from "@/componenti/pannello/Testata";
+
 /** L'ingresso al pannello: una password sola, quella che Luca dà a chi serve. */
 export default function Accesso() {
   const router = useRouter();
@@ -12,6 +16,17 @@ export default function Accesso() {
 
   async function entra(evento: FormEvent) {
     evento.preventDefault();
+
+    /*
+     * Il campo vuoto lo fermiamo qui: mandarlo al server farebbe consumare
+     * uno dei cinque tentativi per una distrazione.
+     */
+    if (password === "") {
+      setErrore("Scrivi la password");
+      document.getElementById("password")?.focus();
+      return;
+    }
+
     setErrore("");
     setInCorso(true);
 
@@ -28,7 +43,7 @@ export default function Accesso() {
         return;
       }
 
-      router.replace("/pannello");
+      router.replace("/pannello/richieste");
       router.refresh();
     } catch {
       setErrore("Non sono riuscito a parlare col server");
@@ -38,34 +53,23 @@ export default function Accesso() {
   }
 
   return (
-    <main className="pannello-accesso">
-      <form onSubmit={(e) => void entra(e)} noValidate>
-        <p className="pannello-occhiello">PANNELLO</p>
-        <h1 className="pannello-titolo">Entra</h1>
+    <main className="pagina senza-barra pagina-accesso">
+      <Testata occhiello="Pannello" titolo="Entra" />
 
-        <label htmlFor="password" className="etichetta-campo" style={{ marginTop: "2rem" }}>
-          Password
-        </label>
-        <input
+      <form onSubmit={(e) => void entra(e)} noValidate className="sezione">
+        <Campo
           id="password"
+          etichetta="Password"
           type="password"
+          autoComplete="current-password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          autoComplete="current-password"
-          className="pannello-campo"
-          aria-invalid={errore !== ""}
-          aria-describedby={errore === "" ? undefined : "errore-accesso"}
+          errore={errore}
         />
 
-        {errore !== "" && (
-          <p id="errore-accesso" role="alert" className="pannello-errore">
-            {errore}
-          </p>
-        )}
-
-        <button type="submit" className="bottone" disabled={inCorso} style={{ width: "100%", marginTop: "1.5rem" }}>
+        <Pulsante type="submit" disabled={inCorso}>
           {inCorso ? "Un attimo..." : "Entra"}
-        </button>
+        </Pulsante>
       </form>
     </main>
   );

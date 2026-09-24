@@ -1,0 +1,48 @@
+.link {
+  display: flex;
+  align-items: center;
+  gap: var(--s-2);
+  min-width: 0;
+}
+
+/*
+ * Il dominio può essere tagliato, lo slug no: è la parte che distingue un PR
+ * dall'altro, e un link che finisce con i puntini non si riconosce.
+ */
+.link code {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: 13px;
+  color: var(--testo-2);
+}
+
+.link code .dominio {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.testa {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: var(--s-3);
+}
+
+.testa b {
+  font-size: 16px;
+  letter-spacing: 0.04em;
+}
+
+.testa span {
+  font-size: 14px;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+.nome-persona {
+  letter-spacing: 0;
+}

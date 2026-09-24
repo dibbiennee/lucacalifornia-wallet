@@ -1,0 +1,26 @@
+/* Il riquadro che dice cosa succederà quando l'elenco non sarà più vuoto. */
+.vuoto {
+  margin: 0;
+  padding: var(--s-4);
+  border: 1.5px dashed var(--line);
+  border-radius: var(--r-m);
+  color: var(--muted);
+  font-size: 15px;
+}
+
+/* Una riga sola, piccola: sostituisce i riquadri tratteggiati lunghi. */
+.esempio {
+  margin: var(--s-2) 0 0;
+  font-size: 13px;
+  color: var(--dim);
+  text-align: center;
+}
+
+.extra {
+  margin: 0;
+  padding: var(--s-3) var(--s-4);
+  border-radius: var(--r-m);
+  background: var(--surface-2);
+  color: var(--muted);
+  font-size: 14px;
+}

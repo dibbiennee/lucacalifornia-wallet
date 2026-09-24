@@ -1,8 +1,11 @@
+import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
-import { Pila } from "@/componenti/Pila";
-import { Modulo } from "@/componenti/sezioni/Modulo";
+import { Bottone } from "@/componenti/sito/Bottone";
+import { perPrenotare } from "@/componenti/sito/CardSerata";
+import { Altre, Azioni, Dati, Indietro, Introduzione } from "@/componenti/sito/Pagina";
+import stili from "@/componenti/sito/Pagina.module.css";
 import { LOCALE, SERATE } from "@/contenuti/sito";
 
 export function generateStaticParams() {
@@ -15,7 +18,10 @@ export async function generateMetadata({ params }: { params: Promise<{ codice: s
 
   return serata === undefined
     ? {}
-    : { title: `${serata.nome}, ${serata.quando.toLowerCase()} al Room 26 - Luca California` };
+    : {
+        title: `${serata.nome}, ${serata.quando.toLowerCase()} al Room 26 - Luca California`,
+        description: serata.descrizione,
+      };
 }
 
 export default async function PaginaSerata({ params }: { params: Promise<{ codice: string }> }) {
@@ -26,83 +32,80 @@ export default async function PaginaSerata({ params }: { params: Promise<{ codic
     notFound();
   }
 
+  const colore = `var(--${serata.colore})`;
   const altre = SERATE.filter((s) => s.codice !== serata.codice);
 
   return (
     <>
-      <section style={{ position: "relative" }}>
-        <img
-          src={serata.copertina}
-          alt={`${serata.giorno} ${serata.nome} al Room 26`}
-          style={{ width: "100%", height: "58svh", objectFit: "cover" }}
-        />
-        <span
-          aria-hidden
-          style={{
-            position: "absolute",
-            inset: 0,
-            background: "linear-gradient(to top, var(--blu) 8%, rgba(43,27,176,0.25) 60%)",
-          }}
-        />
-      </section>
+      <Indietro testo="Tutte le serate" dove="/serate" />
 
-      <section className="fascia" style={{ paddingTop: "1rem" }}>
-        <div className="dentro">
-          <p className="debole" style={{ fontSize: "0.75rem", letterSpacing: "0.18em", fontWeight: 700, margin: "0 0 0.9rem" }}>
-            {serata.quando} AL ROOM 26
-          </p>
-
-          <Pila righe={[serata.nome, serata.musica]} livello={1} />
-
-          <p className="testo-lungo" style={{ margin: "1.6rem 0 2rem" }}>{serata.descrizione}</p>
-
-          <dl style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1.2rem", margin: 0 }}>
+      <section className="wrap" style={{ padding: "10px 20px 56px" }}>
+        <div className={stili["serata-griglia"]}>
+          <div className={stili.serata} style={{ background: colore }}>
             <div>
-              <dt className="debole" style={{ fontSize: "0.75rem", letterSpacing: "0.16em", fontWeight: 700 }}>
-                QUANDO
-              </dt>
-              <dd style={{ margin: "0.3rem 0 0", fontWeight: 700 }}>{serata.quando}</dd>
+              <Image
+                src={serata.copertina}
+                alt={serata.alt}
+                width={1280}
+                height={1088}
+                sizes="(min-width: 860px) 50vw, 100vw"
+                priority
+              />
+              <span className={stili.targhetta} style={{ color: colore }}>
+                {serata.etichetta}
+              </span>
             </div>
-            <div>
-              <dt className="debole" style={{ fontSize: "0.75rem", letterSpacing: "0.16em", fontWeight: 700 }}>
-                DOVE
-              </dt>
-              <dd style={{ margin: "0.3rem 0 0", fontWeight: 700 }}>{LOCALE.nome}</dd>
+
+            <div className={stili.banda}>
+              <p className={stili.giorno}>{serata.giorno}</p>
+              <h1 className="display" tabIndex={-1}>
+                {serata.nome}
+              </h1>
+              <p className={stili.musica}>{serata.genere}</p>
             </div>
-          </dl>
-        </div>
-      </section>
+          </div>
 
-      <Modulo />
+          <div>
+            <div style={{ marginTop: 22 }}>
+              <Introduzione>{serata.descrizione}</Introduzione>
+            </div>
 
-      <section className="fascia" style={{ background: "var(--blu-scuro)" }}>
-        <div className="dentro">
-          <Pila occhiello="LE ALTRE" righe={["SERATE ROOM26"]} />
-          <ul style={{ listStyle: "none", padding: 0, margin: "1.8rem 0 0", display: "grid", gap: "0.7rem" }}>
-            {altre.map((altra) => (
-              <li key={altra.codice}>
-                <Link
-                  href={`/serate/${altra.codice}`}
-                  style={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                    gap: "1rem",
-                    padding: "1rem 1.1rem",
-                    border: "2px solid rgba(255,255,255,0.3)",
-                    textDecoration: "none",
-                    fontWeight: 700,
-                    letterSpacing: "0.06em",
-                  }}
-                >
-                  <span>
-                    {altra.giorno} {altra.nome}
-                  </span>
-                  <span aria-hidden>→</span>
-                </Link>
-              </li>
-            ))}
-          </ul>
+            <Dati
+              voci={[
+                ["Quando", serata.quando],
+                ["Dove", LOCALE.nome],
+              ]}
+            />
+
+            <Azioni>
+              {serata.dueSale === true ? (
+                <>
+                  <Bottone href={perPrenotare("Sab sala 1 house")}>Sala 1, house</Bottone>
+                  <Bottone href={perPrenotare("Sab sala 2 reggaeton")}>Sala 2, reggaeton</Bottone>
+                </>
+              ) : (
+                <>
+                  <Bottone href={perPrenotare(serata.perModulo)}>Entra in lista</Bottone>
+                  <Bottone href={perPrenotare(serata.perModulo, "tavolo")} aspetto="contorno">
+                    Prenota un tavolo
+                  </Bottone>
+                </>
+              )}
+            </Azioni>
+
+            <div style={{ marginTop: 36 }}>
+              <p className="occhiello" style={{ color: "var(--muted)" }}>
+                Le altre serate
+              </p>
+              <Altre>
+                {altre.map((a) => (
+                  <Link key={a.codice} href={`/serate/${a.codice}`} style={{ background: `var(--${a.colore})` }}>
+                    {a.breve} {a.nome}
+                  </Link>
+                ))}
+              </Altre>
+            </div>
+          </div>
         </div>
       </section>
     </>

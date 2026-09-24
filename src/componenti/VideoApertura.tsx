@@ -19,6 +19,11 @@ import { useEffect, useRef } from "react";
  *
  * Chi ha chiesto meno movimento nelle impostazioni non lo vede per niente:
  * lo nasconde il CSS, e sotto resta il fotogramma fermo.
+ *
+ * PARTE DOPO, non subito. Il tag e le sue sorgenti stanno nell'HTML, così si
+ * leggono senza eseguire niente, ma il browser non le scarica finché la
+ * pagina non ha finito: scaricandole insieme rubava banda alla foto della
+ * prima schermata, e quella ci metteva 4,2 secondi a comparire invece di 1,5.
  */
 
 const LARGO = "(min-width: 52rem)";
@@ -50,22 +55,37 @@ export function VideoApertura() {
       elemento.load();
     };
 
-    elemento.dataset["taglio"] = "apertura-telefono";
-    scambia();
-    largo.addEventListener("change", scambia);
-    return () => largo.removeEventListener("change", scambia);
+    const avvia = () => {
+      elemento.dataset["taglio"] = "apertura-telefono";
+      scambia();
+      // Il play può essere rifiutato (batteria bassa, impostazioni): sotto
+      // resta la foto, che è quello che si vede comunque.
+      void elemento.play().catch(() => undefined);
+      largo.addEventListener("change", scambia);
+    };
+
+    if (document.readyState === "complete") {
+      avvia();
+    } else {
+      window.addEventListener("load", avvia, { once: true });
+    }
+
+    return () => {
+      window.removeEventListener("load", avvia);
+      largo.removeEventListener("change", scambia);
+    };
   }, []);
 
   return (
     <video
       ref={video}
       className="apertura-media apertura-video"
-      autoPlay
       muted
       loop
       playsInline
-      preload="metadata"
-      poster="/video/apertura-telefono.jpg"
+      preload="none"
+      /* Niente poster: sotto c'è già la foto della prima schermata, e due
+         immagini di sfondo sono trenta kilobyte buttati. */
       aria-hidden
       tabIndex={-1}
     >

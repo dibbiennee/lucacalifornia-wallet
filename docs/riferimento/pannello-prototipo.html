@@ -1,0 +1,740 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Pannello · Luca California</title>
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#000000">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 700 700'%3E%3Crect width='700' height='700' fill='%23000'/%3E%3Cg fill='%23F5F2EC' transform='translate(90 90) scale(.743)'%3E%3Cpolygon points='0,0 700,0 700,173'/%3E%3Cpolygon points='0,0 700,325 700,525'/%3E%3Cpolygon points='0,0 351,700 0,700'/%3E%3Cpolygon points='351,700 700,525 700,700'/%3E%3C/g%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,300..900&display=swap">
+<style>
+/* ===================== TOKEN (condivisi col sito) ===================== */
+:root{
+  --bg:#000000; --surface:#141318; --surface-2:#1E1C24; --line:#2E2B36; --nav:#050408;
+  --text:#F5F2EC; --muted:#B3AEBD; --dim:#8E899A; --ink:#000000;
+  --magenta:#FF3EA5;
+  --milk:#FFB3DA; --acid:#E6FF4D; --cyan:#4DE1FF; --red:#FF4A3D; --sun:#FFB35C;
+  --ok:#2FD37A; --wa:#25D366; --errore:#FFC2D1; --link:#7CC7FF;
+  --esito-ok:#0B7A2F; --esito-no:#8E0B2B; --esito-gia:#8A5A00;
+  --r-l:26px; --r-m:16px; --r-s:12px; --r-pill:999px;
+  --s-1:4px; --s-2:8px; --s-3:12px; --s-4:16px; --s-5:24px; --s-6:32px; --s-7:48px; --s-8:64px;
+  --t-veloce:150ms; --t-medio:250ms; --curva:cubic-bezier(.2,.8,.2,1);
+  --font:'Archivo', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --nav-h:calc(56px + env(safe-area-inset-bottom, 0px));
+  color-scheme: dark;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){ --bg:#000000; } }
+:root[data-theme="dark"], :root[data-theme="light"]{ --bg:#000000; }
+*,*::before,*::after{box-sizing:border-box}
+html{background:var(--bg); -webkit-text-size-adjust:100%; scroll-padding-bottom:calc(var(--nav-h) + 16px)}
+body{margin:0; background:var(--bg); color:var(--text); font-family:var(--font); font-size:16px; line-height:1.5; -webkit-font-smoothing:antialiased; -webkit-tap-highlight-color:transparent}
+button,input{font:inherit; color:inherit}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--magenta); outline-offset:3px; border-radius:6px}
+[hidden]{display:none !important}
+[tabindex="-1"]:focus{outline:none}
+.ph{white-space:nowrap}
+.sr{position:absolute !important; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap}
+
+/* ===================== LAYOUT ===================== */
+.pagina{max-width:560px; margin:0 auto; overflow-x:clip; padding:calc(var(--s-5) + env(safe-area-inset-top,0px)) 20px calc(var(--nav-h) + var(--s-6)); display:flex; flex-direction:column; gap:var(--s-4)}
+.pagina.senza-barra{padding-bottom:calc(var(--s-6) + env(safe-area-inset-bottom,0px))}
+.sezione{display:flex; flex-direction:column; gap:var(--s-3); margin-top:var(--s-2)}
+
+/* ===================== COMPONENTI ===================== */
+/* Testata */
+.testata{display:flex; flex-direction:column; gap:var(--s-2)}
+.testata-riga{display:flex; justify-content:space-between; align-items:center; gap:var(--s-3); min-height:32px}
+.occhiello{margin:0; font-size:12px; font-weight:800; letter-spacing:.06em; text-transform:uppercase; color:var(--muted)}
+.titolo{margin:0; font-size:clamp(30px, 9vw, 42px); font-weight:900; font-stretch:125%; line-height:.92; letter-spacing:-.01em; text-transform:uppercase; text-wrap:balance}
+.sottotitolo{margin:0; color:var(--muted); font-size:15px}
+.titolo-sezione{margin:0; font-size:12px; font-weight:800; letter-spacing:.06em; text-transform:uppercase; color:var(--muted)}
+.azione-testo{min-width:44px; appearance:none; border:0; background:none; color:var(--muted); font-size:14px; font-weight:700; text-decoration:underline; text-underline-offset:3px; min-height:44px; padding:0 var(--s-1); cursor:pointer}
+.indietro{appearance:none; border:0; background:none; color:var(--muted); display:inline-flex; align-items:center; gap:6px; font-size:15px; font-weight:700; min-height:44px; padding:0; cursor:pointer; align-self:flex-start; text-decoration:none}
+.indietro svg{width:18px; height:18px}
+
+/* Etichetta di stato */
+.etichetta{display:inline-flex; align-items:center; align-self:flex-start; padding:4px 10px; border-radius:var(--r-pill); font-size:12px; font-weight:800; line-height:1.3; color:var(--ink); white-space:nowrap}
+.e-nuova{background:var(--acid)} .e-confermata{background:var(--ok)} .e-attesa{background:var(--sun)} .e-rifiutata{background:var(--esito-no); color:#fff} .e-corso{background:var(--magenta)}
+
+/* Numero */
+.numeri{display:grid; grid-template-columns:repeat(auto-fit, minmax(84px, 1fr)); gap:var(--s-2)}
+.numeri.due{grid-template-columns:repeat(2,minmax(0,1fr))}
+.numero{background:var(--surface-2); border-radius:var(--r-m); padding:var(--s-3); display:flex; flex-direction:column; gap:2px; min-width:0}
+.numero b{font-size:30px; font-weight:900; font-stretch:112%; line-height:1}
+.numero span{font-size:13px; color:var(--muted)}
+.numero b.sale{animation:sale .5s ease}
+@keyframes sale{0%{transform:scale(1.3); color:var(--ok)}}
+
+/* Card */
+.lista{display:flex; flex-direction:column; gap:var(--s-2)}
+.card{display:grid; grid-template-columns:minmax(0,1fr) auto; gap:4px var(--s-3); padding:var(--s-4); border-radius:var(--r-m); background:var(--surface); text-decoration:none; color:var(--text); transition:transform var(--t-veloce) var(--curva)}
+a.card:active{transform:scale(.98)}
+.card > b{font-size:17px; font-weight:700; min-width:0}
+.card > .ora, .card > .etichetta{grid-column:2; grid-row:1; align-self:start}
+.card > .ora{font-size:13px; font-weight:700; color:var(--muted)}
+.card > span:not(.etichetta):not(.ora){grid-column:1 / -1; font-size:15px; color:#DCD7E4}
+.card .riga-2{font-size:13px !important; color:var(--dim) !important}
+.card .messaggio{font-style:italic}
+
+/* Pulsanti */
+.btn{appearance:none; border:0; cursor:pointer; min-height:52px; padding:0 var(--s-5); border-radius:var(--r-pill); font-size:15px; font-weight:800; letter-spacing:.01em; display:flex; align-items:center; justify-content:center; gap:var(--s-2); text-decoration:none; white-space:nowrap; width:100%; transition:transform var(--t-veloce) var(--curva), background-color var(--t-veloce)}
+.btn:active{transform:scale(.97)}
+.btn-pieno{background:var(--magenta); color:var(--ink)}
+.btn-vuoto{background:transparent; color:var(--text); box-shadow:inset 0 0 0 1.5px var(--line)}
+.btn-whatsapp{background:var(--wa); color:#04250F}
+.btn-pillola{background:var(--text); color:var(--ink); width:auto; min-height:56px; padding:0 var(--s-6)}
+.btn:disabled{opacity:.65; cursor:progress; transform:none}
+.due-pulsanti{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:var(--s-2)}
+@media (hover:hover){ .btn-pieno:hover{background:#FF62B6} .btn-vuoto:hover{box-shadow:inset 0 0 0 1.5px var(--muted)} }
+
+/* Scelta (radiogroup) */
+.scelta{display:flex; flex-wrap:wrap; gap:var(--s-2)}
+.scelta button{appearance:none; border:0; cursor:pointer; min-height:44px; padding:0 var(--s-4); border-radius:var(--r-pill); background:var(--surface-2); color:var(--text); font-size:14px; font-weight:700; white-space:nowrap}
+.scelta button[aria-checked="true"], .scelta a[aria-current="true"]{background:var(--text); color:var(--ink)}
+.scelta a{display:inline-flex; align-items:center; min-height:44px; padding:0 var(--s-4); border-radius:var(--r-pill); background:var(--surface-2); font-size:14px; font-weight:700; text-decoration:none; white-space:nowrap}
+.riquadro{background:var(--surface); border-radius:var(--r-m); padding:var(--s-4); display:flex; flex-direction:column; gap:var(--s-3)}
+.riquadro h3,.riquadro-titolo{margin:0; font-size:17px; font-weight:700}
+
+/* Campo */
+.campo{display:flex; flex-direction:column; gap:6px}
+.campo label{font-size:12px; font-weight:800; letter-spacing:.06em; text-transform:uppercase; color:var(--muted)}
+.campo input{height:52px; border-radius:var(--r-s); border:1.5px solid var(--line); background:var(--surface); color:var(--text); padding:0 14px; font-size:16px; width:100%}
+.campo input:focus{outline:none; border-color:var(--magenta)}
+.campo input[aria-invalid="true"]{border-color:var(--errore)}
+.errore{margin:0; color:var(--errore); font-size:14px; font-weight:700}
+
+/* Avviso, vuoto, nota */
+.avviso{position:fixed; left:50%; bottom:calc(var(--nav-h) + 12px); transform:translateX(-50%); z-index:30; width:min(520px, calc(100% - 32px)); padding:var(--s-3) var(--s-4); border-radius:var(--r-m); background:#123D27; color:#B6F5D1; font-size:14px; font-weight:700; box-shadow:0 10px 30px rgba(0,0,0,.5); animation:avviso .3s var(--curva) both}
+.pagina.senza-barra ~ .avviso{bottom:calc(16px + env(safe-area-inset-bottom,0px))}
+@keyframes avviso{from{opacity:0; transform:translate(-50%, 12px)}}
+.vuoto{margin:0; padding:var(--s-4); border:1.5px dashed var(--line); border-radius:var(--r-m); color:var(--muted); font-size:15px}
+.nota-esempio{margin:var(--s-2) 0 0; font-size:13px; color:var(--dim); text-align:center}
+.testo{margin:0; font-size:15px; color:#DCD7E4}
+.testo-piccolo{margin:0; font-size:13px; color:var(--dim)}
+
+/* Voci della richiesta */
+.voci{margin:0; display:grid; gap:var(--s-3)}
+.voci dt{font-size:12px; font-weight:800; letter-spacing:.06em; text-transform:uppercase; color:var(--dim)}
+.voci dd{margin:2px 0 0; font-size:17px; font-weight:700}
+.telefono{color:var(--link); font-size:17px; font-weight:700; text-underline-offset:4px; align-self:flex-start; min-height:44px; display:inline-flex; align-items:center}
+.citazione{margin:0; padding:var(--s-4); border-radius:var(--r-m); background:var(--surface); font-style:italic; color:#DCD7E4}
+
+/* Barra in basso */
+.barra{position:fixed; left:0; right:0; bottom:0; z-index:20; background:var(--nav); border-top:1px solid var(--line); padding-bottom:env(safe-area-inset-bottom,0px)}
+.barra ul{list-style:none; margin:0 auto; padding:0; max-width:560px; display:grid; grid-template-columns:repeat(4,minmax(0,1fr))}
+.barra a{display:flex; align-items:center; justify-content:center; min-height:56px; font-size:13px; font-weight:700; color:var(--muted); text-decoration:none; position:relative}
+.barra a[aria-current="page"]{color:var(--text)}
+.barra a[aria-current="page"]::before{content:""; position:absolute; top:0; left:24%; right:24%; height:3px; border-radius:0 0 3px 3px; background:var(--magenta)}
+
+.barra a{white-space:nowrap}
+.badge{position:absolute; top:6px; left:calc(50% + 20px); display:grid; place-items:center; min-width:18px; height:18px; padding:0 5px; border-radius:9px; font-size:11px !important; line-height:1; background:var(--magenta); color:var(--ink); font-size:12px; font-weight:900}
+.numero-link{text-decoration:none; color:var(--text); box-shadow:inset 0 0 0 1.5px var(--magenta)}
+.avviso-extra{margin:0; padding:var(--s-3) var(--s-4); border-radius:var(--r-m); background:var(--surface-2); color:var(--muted); font-size:14px}
+input[type="search"]::-webkit-search-cancel-button{filter:invert(1)}
+/* Lettore */
+.lettore{background:#000; border:1px solid var(--line); border-radius:var(--r-l); min-height:300px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:var(--s-4); padding:var(--s-5)}
+.lettore.pieno{position:fixed; inset:0; border:0; border-radius:0; z-index:25}
+.mira{width:200px; height:200px; border-radius:22px; box-shadow:0 0 0 3px #8E8A96; display:grid; place-items:center; overflow:hidden}
+.mira svg{width:150px; height:150px; background:#fff; padding:8px; border-radius:6px; opacity:0; transform:scale(.7) rotate(-8deg); transition:opacity .25s, transform .35s var(--curva)}
+.mira.letto{box-shadow:0 0 0 3px var(--ok)} .mira.letto svg{opacity:1; transform:none}
+.inquadra{margin:0; font-size:20px; font-weight:700}
+.simula{display:grid; gap:var(--s-2); width:100%; max-width:320px}
+.simula .testo-piccolo{text-align:center}
+.conteggio{display:flex; align-items:baseline; gap:var(--s-2)}
+.conteggio b{font-size:44px; font-weight:900; font-stretch:112%; line-height:1}
+.conteggio span{color:var(--muted); font-size:15px; font-weight:700}
+.ingresso{display:flex; justify-content:space-between; align-items:center; gap:var(--s-3); padding:var(--s-3) var(--s-4); border-radius:var(--r-m); background:var(--surface); font-size:16px}
+.ingresso em{font-style:normal; color:var(--muted)}
+.ingresso time{color:var(--muted); font-weight:700; font-variant-numeric:tabular-nums}
+
+/* Esito */
+.esito{position:fixed; inset:0; z-index:40; border:0; margin:0; width:100%; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:var(--s-2); text-align:center; color:#fff; cursor:pointer; padding:var(--s-6) var(--s-5) calc(var(--s-8) + env(safe-area-inset-bottom,0px))}
+.esito.ok{background:var(--esito-ok)} .esito.no{background:var(--esito-no)} .esito.gia{background:var(--esito-gia)}
+.esito strong{font-size:clamp(64px, 22vw, 120px); font-weight:900; font-stretch:112%; line-height:.9}
+.esito b{font-size:26px; font-weight:700}
+.esito span{font-size:19px; font-weight:700}
+.esito small{font-size:15px; font-weight:700; opacity:.85}
+.esito em{position:absolute; left:0; right:0; bottom:calc(var(--s-6) + env(safe-area-inset-bottom,0px)); font-style:normal; font-size:15px; opacity:.85}
+@media (prefers-reduced-motion: no-preference){ .esito{animation:esito .2s ease-out both} }
+@keyframes esito{from{opacity:0}}
+
+/* PR e compleanni */
+.pr-testa{display:flex; justify-content:space-between; align-items:baseline; gap:var(--s-3)}
+.pr-testa b{font-size:16px; letter-spacing:.04em}
+.pr-testa span{font-size:14px; color:var(--muted); white-space:nowrap}
+.link-pr{display:flex; align-items:center; gap:var(--s-2); min-width:0}
+.link-pr code{flex:1; min-width:0; display:flex; font-family:ui-monospace, "SF Mono", Menlo, monospace; font-size:13px; color:#DCD7E4}
+.link-pr code span{min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
+.link-pr .btn{width:auto; min-height:44px; padding:0 var(--s-4); font-size:14px}
+
+/* Biglietto */
+.scheda-biglietto{background:var(--surface); border-radius:var(--r-l); padding:var(--s-5); display:grid; gap:var(--s-4)}
+.scheda-biglietto dt{font-size:12px; font-weight:800; letter-spacing:.06em; color:var(--dim); text-transform:uppercase}
+.scheda-biglietto dd{margin:2px 0 0; font-size:18px; font-weight:700}
+.btn-wallet{background:#000; color:#fff; box-shadow:inset 0 0 0 1.5px var(--text); width:auto; align-self:flex-start; padding:0 var(--s-5)}
+
+/* Finestra di conferma */
+dialog.conferma{border:0; padding:0; background:transparent; color:var(--text); width:100%; max-width:none; margin:auto 0 0}
+dialog.conferma::backdrop{background:rgba(0,0,0,.7)}
+.conferma-in{background:var(--surface); border-radius:var(--r-l) var(--r-l) 0 0; padding:var(--s-5) 20px calc(var(--s-5) + env(safe-area-inset-bottom,0px)); display:flex; flex-direction:column; gap:var(--s-3); max-width:560px; margin:0 auto}
+.conferma-in h2{margin:0; font-size:22px; font-weight:900; font-stretch:112%}
+
+/* Strumento di anteprima (non fa parte del pannello) */
+.anteprima-btn{position:fixed; top:calc(10px + env(safe-area-inset-top,0px)); right:10px; z-index:50; appearance:none; border:0; border-radius:var(--r-pill); background:var(--acid); color:var(--ink); font-size:13px; font-weight:800; min-height:36px; padding:0 14px; cursor:pointer}
+.anteprima{position:fixed; top:0; right:0; bottom:0; z-index:60; width:min(360px, 100%); background:#0B0A0F; border-left:1px solid var(--line); padding:var(--s-5) var(--s-4); overflow-y:auto; display:flex; flex-direction:column; gap:var(--s-3)}
+.anteprima h2{margin:0; font-size:17px}
+.anteprima ol{margin:0; padding:0; list-style:none; display:grid; gap:4px}
+.anteprima a{display:flex; gap:10px; padding:10px 12px; border-radius:var(--r-s); background:var(--surface); text-decoration:none; font-size:14px}
+.anteprima a b{color:var(--acid); font-variant-numeric:tabular-nums; min-width:28px}
+
+.anteprima-btn{top:auto; bottom:calc(var(--nav-h) + 12px); right:12px}
+.pagina.senza-barra ~ .anteprima-btn{bottom:calc(16px + env(safe-area-inset-bottom,0px))}
+.numero b{white-space:nowrap; font-size:clamp(22px, 6.8vw, 30px)}
+.esito.gia strong{font-size:clamp(48px, 15vw, 96px)}
+.titolo{max-width:100%} .esito strong,.esito b{display:block; width:100%}
+@media (max-width:359px){ .numero{padding:var(--s-2) 10px} .numero span{font-size:12px} }
+@media (prefers-reduced-motion: reduce){ *,*::before,*::after{animation-duration:.01ms !important; animation-iteration-count:1 !important; transition:none !important} }
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="chev" viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" fill="none"/></symbol>
+</svg>
+
+<main id="app" class="pagina" tabindex="-1"></main>
+<nav class="barra" id="barra" aria-label="Schermate del pannello"></nav>
+<button type="button" class="esito" id="esito" hidden></button>
+<div id="avvisi" aria-live="polite"></div>
+<dialog class="conferma" id="dlg" aria-labelledby="dlgT"><div class="conferma-in"><h2 id="dlgT"></h2><p class="testo" id="dlgP"></p><button type="button" class="btn btn-pieno" id="dlgOk"></button><button type="button" class="btn btn-vuoto" id="dlgNo">Annulla</button></div></dialog>
+
+<button type="button" class="anteprima-btn" id="antBtn" aria-expanded="false" aria-controls="ant" data-audit-ignora>Stati</button>
+<aside class="anteprima" id="ant" hidden aria-label="Tutti gli stati del prototipo" data-audit-ignora>
+  <h2>Tutti gli stati</h2>
+  <p class="testo-piccolo">Strumento del prototipo, non fa parte del pannello. I numeri sono quelli degli screenshot del pannello vecchio.</p>
+  <ol id="antLista"></ol>
+  <button type="button" class="btn btn-vuoto" id="antReset">Ricomincia da capo</button>
+</aside>
+
+<script>
+/**
+ * a-capo.js — tipografia nel browser, per siti statici o come rete di sicurezza.
+ *
+ * Uso:
+ *   Includi il file con un tag script (src="/a-capo.js", defer), poi:
+ *   addEventListener('DOMContentLoaded', () => ACapo.avvia());
+ *
+ * Opzioni di ACapo.avvia({...}):
+ *   radice      elemento da trattare (default: document.body)
+ *   adatta      selettore dei titoli da rimpicciolire finché la parola più lunga ci sta
+ *               (default: '.display, .card h2, .card h3, [data-adatta]')
+ *   minimo      quanto può scendere un titolo, in rapporto alla misura del CSS (default 0.45)
+ *   osserva     rilegge i testi che cambiano dopo il caricamento (default true)
+ *
+ * Funzioni singole: ACapo.lega(radice), ACapo.adattaTitoli(radice), ACapo.sciogliSeSfora(radice).
+ * Con i router a pagina singola chiama ACapo.aggiorna(paginaVisibile) a ogni cambio pagina.
+ */
+(function () {
+  const NB = '\u00A0';
+  const BREVI = ['il','lo','la','i','gli','le','un','uno','una','di','a','da','in','con','su','per','tra','fra',
+    'del','dello','della','dei','degli','delle','al','allo','alla','ai','agli','alle','dal','dallo','dalla','dai','dagli','dalle',
+    'nel','nello','nella','nei','negli','nelle','sul','sullo','sulla','sui','sugli','sulle','col',
+    'e','ed','o','od','ma','né','che','se','perché','quando','come','dove','mentre','anche',
+    'mi','ti','ci','vi','si','ne','li','non','ogni','più','meno','senza','sotto','sopra','dopo','prima','tu','io',
+    // inglese
+    'an','the','of','to','on','at','by','for','with','from','and','or','but','if','as','is','it','my','your','our','no','not'];
+  const reBrevi = new RegExp('(?<=^|[\\s(«"“\'’\\[])(' + BREVI.join('|') + ')[ \\t\\n]+(?=\\S)', 'giu');
+  const reUnita = /(\d)[ \t]+(?=(€|%|euro|ore|minuti|secondi|sere|giorni|notti|anni|mesi|km|kg|persone|posti|gennaio|febbraio|marzo|aprile|maggio|giugno|luglio|agosto|settembre|ottobre|novembre|dicembre)(?![\p{L}]))/giu;
+  const rePrima = /(?<=^|\s)(Room|Pack|Sala|Giorno|ore|alle|dalle|n\.|art\.)[ \t]+(?=\d)/giu;
+  const SALTA = 'script, style, textarea, input, select, option, svg, code, pre, [data-noglue]';
+
+  const legaTesto = (s) => s.replace(reBrevi, '$1' + NB).replace(reUnita, '$1' + NB).replace(rePrima, '$1' + NB);
+  const esc = (s) => s.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+  const tutti = (sel, r) => (r.matches && r.matches(sel) ? [r] : []).concat(Array.from(r.querySelectorAll(sel)));
+
+  /** Lega parole brevi, numeri e unità; spezza i titoli dopo la virgola; evita la parola sola in fondo. */
+  function lega(radice) {
+    radice = radice || document.body;
+    const w = document.createTreeWalker(radice, NodeFilter.SHOW_TEXT, {
+      acceptNode: (n) => (n.parentElement && !n.parentElement.closest(SALTA) && /\S/.test(n.nodeValue)) ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT
+    });
+    const nodi = []; while (w.nextNode()) nodi.push(w.currentNode);
+    nodi.forEach((n) => { const g = legaTesto(n.nodeValue); if (g !== n.nodeValue) n.nodeValue = g; });
+
+    // Titoli h1 e h2 con virgole e senza a capo decisi a mano: una frase per riga
+    tutti('h1, h2', radice).forEach((h) => {
+      if (h.children.length || h.closest(SALTA)) return;
+      if (parseFloat(getComputedStyle(h).fontSize) < 28) return; // solo i titoli grandi: quelli piccoli vanno a capo da soli
+      const parti = h.textContent.split(/(?<=[,;:])\s+/);
+      if (parti.length < 2) return;
+      h.innerHTML = parti.map((p) => '<span class="cl" style="display:block">' + esc(p) + '</span>').join(' ');
+    });
+
+    // Paragrafi: ultime due parole insieme se l'ultima è corta
+    tutti('p, li, figcaption, blockquote', radice).forEach((p) => {
+      if (p.closest(SALTA) || p.textContent.length < 25) return;
+      const tw = document.createTreeWalker(p, NodeFilter.SHOW_TEXT); let ultimo = null;
+      while (tw.nextNode()) if (/\S/.test(tw.currentNode.nodeValue)) ultimo = tw.currentNode;
+      if (!ultimo) return;
+      const v = ultimo.nodeValue.replace(/[ \t\n]+(\S{1,12})\s*$/u, NB + '$1');
+      if (v !== ultimo.nodeValue) ultimo.nodeValue = v;
+    });
+  }
+
+  let SEL_ADATTA = '.display, .card h2, .card h3, [data-adatta]';
+  let MINIMO = 0.45;
+
+  /** Rimpicciolisce ogni titolo finché la parola (o il gruppo .ph) più lunga ci sta nel contenitore. */
+  function adattaTitoli(radice) {
+    tutti(SEL_ADATTA, radice || document).forEach((el) => {
+      if (!el.getClientRects().length) return;
+      el.style.fontSize = '';
+      let px = parseFloat(getComputedStyle(el).fontSize);
+      const min = px * MINIMO; let giri = 0;
+      while (el.scrollWidth > el.clientWidth + 1 && px > min && giri++ < 150) { px -= 0.5; el.style.fontSize = px + 'px'; }
+    });
+  }
+
+  /** In colonne molto strette le parole legate possono non entrare: lì si torna agli spazi normali. */
+  function sciogliSeSfora(radice) {
+    tutti('p, li, span, strong, b, em, a, label, small, dd, h3, h4, h5', radice || document).forEach((el) => {
+      if (!el.getClientRects().length || el.closest(SALTA) || el.matches(SEL_ADATTA)) return;
+      if (getComputedStyle(el).whiteSpace === 'nowrap' || el.scrollWidth <= el.clientWidth + 1) return;
+      el.setAttribute('data-noglue', '');
+      const w = document.createTreeWalker(el, NodeFilter.SHOW_TEXT);
+      while (w.nextNode()) w.currentNode.nodeValue = w.currentNode.nodeValue.replace(/\u00A0/g, ' ');
+    });
+  }
+
+  function aggiorna(radice) { adattaTitoli(radice); sciogliSeSfora(radice); }
+
+  function avvia(opz) {
+    opz = opz || {};
+    const radice = opz.radice || document.body;
+    if (opz.adatta) SEL_ADATTA = opz.adatta;
+    if (opz.minimo) MINIMO = opz.minimo;
+    lega(radice);
+    aggiorna(radice);
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(() => aggiorna(radice));
+      document.fonts.addEventListener('loadingdone', () => aggiorna(radice)); // font arrivati dopo il primo controllo
+    }
+    let t; addEventListener('resize', () => { clearTimeout(t); t = setTimeout(() => aggiorna(radice), 120); });
+    if (opz.osserva !== false) {
+      new MutationObserver((mm) => {
+        const r = new Set();
+        mm.forEach((m) => { const el = m.type === 'characterData' ? m.target.parentElement : m.target; if (el && el.nodeType === 1) r.add(el); });
+        r.forEach((el) => lega(el));
+      }).observe(radice, { subtree: true, childList: true, characterData: true });
+    }
+  }
+
+  window.ACapo = { avvia, lega, adattaTitoli, sciogliSeSfora, aggiorna, legaTesto };
+})();
+
+</script>
+<script>
+(() => {
+  const $ = (s, r = document) => r.querySelector(s);
+  const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
+  const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+  const IMG = window.IMG || {};
+  const ORARIO_INIZIO = '23:30'; // da confermare con Luca: una sola costante per biglietto e messaggio
+  const SITO = 'https://lucacalifornia.satoshiweb.it';
+
+  /* ---------- date: prossima occorrenza della serata, fuso di Roma ---------- */
+  const GIORNO = { Giovedì: 4, Venerdì: 5, Sabato: 6, Domenica: 0 };
+  const prossima = (dow) => {
+    const p = Object.fromEntries(new Intl.DateTimeFormat('en-GB', { timeZone: 'Europe/Rome', year: 'numeric', month: '2-digit', day: '2-digit', weekday: 'short' }).formatToParts(new Date()).map((x) => [x.type, x.value]));
+    const oggi = { Sun: 0, Mon: 1, Tue: 2, Wed: 3, Thu: 4, Fri: 5, Sat: 6 }[p.weekday];
+    return new Date(Date.UTC(+p.year, +p.month - 1, +p.day + (dow - oggi + 7) % 7));
+  };
+  const fmt = (d, o) => d.toLocaleDateString('it-IT', { timeZone: 'UTC', ...o });
+  const ora = () => new Date().toLocaleTimeString('it-IT', { hour: '2-digit', minute: '2-digit', timeZone: 'Europe/Rome' });
+  const sab = prossima(6);
+
+  /* ---------- dati di esempio (nel progetto: src/lib/pannello/dati.ts) ---------- */
+  const DATI = () => ({
+    stasera: { serata: 'Sabato, due sale', nomeSerata: 'DUE SALE', inCorso: true, inLista: 42, tavoli: 7, entrati: 0, attesi: 49, compleanniInArrivo: 2, attesaCapodanno: 64 },
+    richieste: [
+      { id: 'giulia-marchetti', nome: 'Giulia Marchetti', telefono: '340 000 0000', quando: '18:42', serata: 'Sabato', nomeSerata: 'DUE SALE', sala: 'Sala 2', tipo: 'tavolo', gruppo: 'Misto', budget: '35–50 €', occasione: 'Compleanno', messaggio: "Siamo un bel gruppo, vorremmo la torta al tavolo verso l'una.", stato: 'nuova', notePrivate: 'Già venuta a giugno con 8 persone, tavolo pagato senza problemi.' },
+      { id: 'marco-fanelli', nome: 'Marco Fanelli', telefono: '340 000 0001', quando: '18:10', serata: 'Sabato', nomeSerata: 'DUE SALE', sala: 'Sala 1', tipo: 'tavolo', gruppo: 'Solo ragazzi', budget: '25–30 €', stato: 'nuova' },
+      { id: 'sara-conti', nome: 'Sara Conti', telefono: '340 000 0002', quando: '17:55', serata: 'Domenica Báilame', nomeSerata: 'BÁILAME', tipo: 'lista', stato: 'nuova' },
+      { id: 'federico-nardi', nome: 'Federico Nardi', telefono: '340 000 0003', quando: '16:30', serata: 'Sabato', nomeSerata: 'DUE SALE', sala: 'Sala 1', tipo: 'tavolo', gruppo: 'Misto', budget: 'Oltre 50 €', stato: 'confermata', bigliettoInviatoAlle: '17:20' },
+      { id: 'elisa-rinaldi', nome: 'Elisa Rinaldi', telefono: '340 000 0004', quando: '15:10', serata: 'Sabato', nomeSerata: 'DUE SALE', sala: 'Sala 2', tipo: 'lista', stato: 'confermata', bigliettoInviatoAlle: '15:40' },
+      { id: 'chiara-bianchi', nome: 'Chiara Bianchi', telefono: '340 000 0005', quando: '14:20', serata: 'Sabato', nomeSerata: 'DUE SALE', sala: 'Sala 2', tipo: 'tavolo', gruppo: 'Solo ragazze', budget: '35–50 €', occasione: 'Laurea', stato: 'confermata', bigliettoInviatoAlle: '14:50' },
+      { id: 'luca-ferri', nome: 'Luca Ferri', telefono: '340 000 0006', quando: '13:05', serata: 'Sabato', nomeSerata: 'DUE SALE', sala: 'Sala 1', tipo: 'lista', stato: 'confermata', bigliettoInviatoAlle: '13:40' },
+      { id: 'matteo-conti', nome: 'Matteo Conti', telefono: '340 000 0007', quando: '12:30', serata: 'Sabato', nomeSerata: 'DUE SALE', sala: 'Sala 2', tipo: 'lista', stato: 'confermata', bigliettoInviatoAlle: '12:45' },
+      { id: 'alessia-romano', nome: 'Alessia Romano', telefono: '340 000 0008', quando: '11:15', serata: 'Sabato', nomeSerata: 'DUE SALE', sala: 'Sala 1', tipo: 'lista', stato: 'confermata', bigliettoInviatoAlle: '11:30' }
+    ],
+    serate: [
+      { codice: 'milkshake', nome: 'Giovedì, Milkshake', etichetta: 'Lista aperta' },
+      { codice: 'venerdi', nome: 'Venerdì', etichetta: 'Lista aperta' },
+      { codice: 'sabato', nome: 'Sabato, due sale', etichetta: 'Pochi tavoli' },
+      { codice: 'bailame', nome: 'Domenica, Báilame', etichetta: 'Lista aperta' }
+    ],
+    listeDiAttesa: { specialGuest: 128, capodanno: 64 },
+    squadra: [
+      { nome: 'Marco', prenotazioni: 18, liste: 12, tavoli: 6, provvigioni: 210, link: 'lucacalifornia.satoshiweb.it/marco' },
+      { nome: 'Sara', prenotazioni: 9, liste: 7, tavoli: 2, provvigioni: 95, link: 'lucacalifornia.satoshiweb.it/sara' },
+      { nome: 'Davide', prenotazioni: 4, liste: 3, tavoli: 1, provvigioni: 40, link: 'lucacalifornia.satoshiweb.it/davide' }
+    ],
+    compleanni: [
+      { nome: 'Giulia Marchetti', fra: 'tra 3 settimane', annoScorso: 'Tavolo misto, 8 persone, sala 2', telefono: '393400000000' },
+      { nome: 'Andrea Testa', fra: 'tra 5 settimane', annoScorso: 'Lista, domenica Báilame', telefono: '393400000009' }
+    ],
+    ingressi: [{ nome: 'Elisa Rinaldi', ora: '00:42', giaEntrato: false }, { nome: 'Federico Nardi', ora: '00:35', giaEntrato: false }],
+    dentro: {}
+  });
+  let D = DATI();
+  const S = { cerca: '', loggato: true, tentativi: 0, bloccato: false, errore: '', porta: 'spento', esito: null, ultimoFiltro: '', ospite: false, nuovoPr: false, pacchetti: false, copiato: '', preparo: {}, pronto: {}, lettura: false };
+  const reset = () => { D = DATI(); Object.assign(S, { cerca: '', loggato: true, tentativi: 0, bloccato: false, errore: '', porta: 'spento', esito: null, ultimoFiltro: '', ospite: false, nuovoPr: false, pacchetti: false, copiato: '', preparo: {}, pronto: {}, lettura: false }); };
+
+  /* ---------- funzioni dei dati (nel progetto: Server Actions + dati.ts) ---------- */
+  const richiesta = (id) => D.richieste.find((r) => r.id === id);
+  const aggiornaStato = (id, stato) => { richiesta(id).stato = stato; };
+  const impostaEtichetta = (codice, etichetta) => { D.serate.find((s) => s.codice === codice).etichetta = etichetta; };
+  const aggiungiPr = (nome) => { const slug = nome.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, ''); D.squadra.push({ nome, prenotazioni: 0, liste: 0, tavoli: 0, provvigioni: 0, link: 'lucacalifornia.satoshiweb.it/' + slug }); };
+
+  /* ---------- testi composti come nel pannello ---------- */
+  const riassuntoOggi = (r) => [r.tipo === 'tavolo' ? 'Tavolo' : 'Lista', r.gruppo && r.gruppo.toLowerCase(), r.budget && r.budget + ' a testa', r.occasione && r.occasione.toLowerCase()].filter(Boolean).join(', ');
+  const serataSala = (r) => [r.serata, r.sala].filter(Boolean).join(', ');
+  const riassuntoLista = (r) => [r.serata, r.sala, r.tipo === 'tavolo' ? 'tavolo ' + r.gruppo.toLowerCase() : 'lista', r.budget && r.budget + ' a testa'].filter(Boolean).join(', ');
+  const tipoBiglietto = (r) => r.tipo === 'tavolo' ? 'TAVOLO, ' + r.gruppo.toUpperCase() : 'LISTA';
+  const dataSerata = (r) => prossima(GIORNO[r.serata.split(' ')[0]]);
+  const ETICHETTE = { nuova: ['e-nuova', 'Nuova'], confermata: ['e-confermata', 'Confermata'], 'in attesa': ['e-attesa', 'In attesa'], rifiutata: ['e-rifiutata', 'Rifiutata'] };
+  const etichetta = (s) => `<span class="etichetta ${ETICHETTE[s][0]}">${ETICHETTE[s][1]}</span>`;
+  const messaggioWhatsapp = (r) => `Ciao ${r.nome.split(' ')[0]}, sei dentro per ${r.nomeSerata} di ${fmt(dataSerata(r), { weekday: 'long', day: 'numeric', month: 'long' })}.\n${tipoBiglietto(r)}.\n\nQuesto è il tuo biglietto, aprilo con Safari e aggiungilo al telefono:\n${SITO}/api/pass/…\n\nAll'ingresso fai vedere il QR e passi.`;
+  const numeroWa = (t) => { const d = t.replace(/\D/g, ''); return d.startsWith('39') ? d : '39' + d; };
+  const nota = () => '<p class="nota-esempio">Dati di esempio</p>';
+  const chev = '<svg aria-hidden="true"><use href="#chev"/></svg>';
+
+  /* ---------- QR finto per il prototipo ---------- */
+  const qr = (seed) => { const n = 29; let x = seed * 9301 + 49297; const rnd = () => (x = (x * 9301 + 49297) % 233280) / 233280; const on = [];
+    const f = (r, c) => { for (let i = 0; i < 7; i++) for (let j = 0; j < 7; j++) if (i === 0 || i === 6 || j === 0 || j === 6 || (i > 1 && i < 5 && j > 1 && j < 5)) on.push([r + i, c + j]); };
+    const inF = (r, c) => (r < 8 && c < 8) || (r < 8 && c > n - 9) || (r > n - 9 && c < 8); f(0, 0); f(0, n - 7); f(n - 7, 0);
+    for (let r = 0; r < n; r++) for (let c = 0; c < n; c++) if (!inF(r, c) && rnd() > 0.52) on.push([r, c]);
+    return `<svg viewBox="0 0 29 29" shape-rendering="crispEdges" aria-hidden="true"><g fill="#000">${on.map(([r, c]) => `<rect x="${c}" y="${r}" width="1" height="1"/>`).join('')}</g></svg>`; };
+
+  /* ======================= SCHERMATE ======================= */
+  const V = {};
+  V.accesso = () => `
+    <div class="testata" style="margin-top:var(--s-7)"><p class="occhiello">Pannello</p><h1 class="titolo" tabindex="-1">Entra</h1></div>
+    <form id="fAccesso" class="sezione" novalidate>
+      <div class="campo"><label for="password">Password</label>
+        <input id="password" type="password" autocomplete="current-password"${S.errore ? ' aria-invalid="true" aria-describedby="errAccesso"' : ''}></div>
+      ${S.errore ? `<p class="errore" id="errAccesso" role="alert">${esc(S.errore)}</p>` : ''}
+      <button type="submit" class="btn btn-pieno" id="bEntra">Entra</button>
+      <p class="testo-piccolo">Prototipo: la password è <b>luca</b>. Cinque tentativi sbagliati bloccano l'accesso per 10 minuti, come nel pannello vero.</p>
+    </form>`;
+
+  const eStasera = () => new Intl.DateTimeFormat('en-GB', { timeZone: 'Europe/Rome', weekday: 'short' }).format(new Date()) === 'Sat';
+  const righeStasera = () => {
+    const q = S.cerca.trim().toLowerCase();
+    const conf = D.richieste.filter((r) => r.serata === 'Sabato' && r.stato === 'confermata' && (!q || r.nome.toLowerCase().includes(q)));
+    const tav = conf.filter((r) => r.tipo === 'tavolo'), lis = conf.filter((r) => r.tipo === 'lista');
+    if (!conf.length) return `<p class="vuoto">${q ? `Nessuno con “${esc(S.cerca)}” per stasera.` : 'Ancora nessuno confermato per questa serata.'}</p>`;
+    const card = (r, dettaglio) => `<a class="card" href="#/pannello/richieste/${r.id}?da=stasera"><b>${esc(r.nome)}</b><span class="ora">${r.sala.replace('Sala ', 'sala ')}</span>${dettaglio ? `<span>${esc([r.gruppo, r.budget && r.budget + ' a testa', r.occasione && r.occasione.toLowerCase()].filter(Boolean).join(', '))}</span>` : ''}</a>`;
+    return `${tav.length ? `<section class="sezione" aria-labelledby="hTav"><h2 class="titolo-sezione" id="hTav">Tavoli, ${tav.length}</h2><div class="lista">${tav.map((r) => card(r, true)).join('')}</div></section>` : ''}
+      ${lis.length ? `<section class="sezione" aria-labelledby="hLis"><h2 class="titolo-sezione" id="hLis">Lista, ${lis.length}</h2><div class="lista">${lis.map((r) => card(r, false)).join('')}</div></section>` : ''}`;
+  };
+  V.stasera = () => {
+    const s = D.richieste.filter((r) => r.serata === 'Sabato'), conf = s.filter((r) => r.stato === 'confermata'), nuove = s.filter((r) => r.stato === 'nuova');
+    return `
+    <div class="testata"><p class="occhiello">${eStasera() ? 'Stasera' : 'Prossima serata'}, ${esc(fmt(sab, { weekday: 'long', day: 'numeric', month: 'short' }).replace('.', ''))}</p>
+      <h1 class="titolo" tabindex="-1">Sabato, <span class="ph">due sale</span></h1></div>
+    <div class="numeri"><div class="numero"><b>${conf.filter((r) => r.tipo === 'tavolo').length}</b><span>tavoli</span></div><div class="numero"><b>${conf.filter((r) => r.tipo === 'lista').length}</b><span>in lista</span></div>
+      <a class="numero numero-link" href="#/pannello/richieste?stato=nuova"><b>${nuove.length}</b><span>nuove</span></a></div>
+    <div class="campo"><label for="cerca" class="sr">Cerca un nome</label><input id="cerca" type="search" placeholder="Cerca un nome" autocomplete="off" enterkeyhint="search" value="${esc(S.cerca)}"></div>
+    <div id="elencoStasera" class="sezione" style="margin-top:0">${righeStasera()}</div>
+    ${nota()}`;
+  };
+
+  V.richieste = (q) => {
+    const filtro = q.get('stato') || '';
+    S.ultimoFiltro = filtro;
+    const n = (s) => D.richieste.filter((r) => r.stato === s).length;
+    const lista = D.richieste.filter((r) => !filtro || r.stato === filtro);
+    const f = (s, t) => `<a href="#/pannello/richieste${s ? '?stato=' + encodeURIComponent(s) : ''}"${filtro === s ? ' aria-current="true"' : ''}>${t}</a>`;
+    return `
+    <div class="testata"><div class="testata-riga"><p class="occhiello">Questa settimana</p><button type="button" class="azione-testo" data-azione="esci">Esci</button></div><h1 class="titolo" tabindex="-1">Richieste</h1></div>
+    <nav class="scelta" aria-label="Filtra per stato">${f('nuova', 'Nuove ' + n('nuova'))}${f('confermata', 'Confermate ' + n('confermata'))}${f('', 'Tutte')}</nav>
+    <div class="lista">${lista.map((r) => `<a class="card" href="#/pannello/richieste/${r.id}"><b>${esc(r.nome)}</b>${etichetta(r.stato)}<span>${esc(riassuntoLista(r))}</span>${r.messaggio ? `<span class="messaggio">${esc(r.messaggio)}</span>` : ''}${r.bigliettoInviatoAlle ? `<span class="riga-2">Biglietto inviato alle ${r.bigliettoInviatoAlle}</span>` : ''}</a>`).join('')
+      || `<p class="vuoto">${filtro === 'nuova' ? 'Nessuna richiesta nuova. Appena qualcuno prenota, la trovi qui.' : 'Nessuna richiesta con questo stato.'}</p>`}</div>
+    ${nota()}`;
+  };
+
+  V.richiesta = (q, id) => {
+    const r = richiesta(id);
+    if (!r) return `<div class="testata"><h1 class="titolo" tabindex="-1">Non trovata</h1></div><p class="testo">Questa richiesta non esiste più.</p><a class="btn btn-vuoto" href="#/pannello/richieste">Torna alle richieste</a>`;
+    const conf = r.stato === 'confermata';
+    let blocco;
+    if (S.preparo[id]) blocco = `<button type="button" class="btn btn-pieno" disabled>Preparo il biglietto...</button>`;
+    else if (S.pronto[id]) blocco = `<div class="sezione" role="status"><p class="testo" style="font-weight:700; color:var(--text)">Biglietto pronto.</p>
+        <a class="btn btn-whatsapp" href="https://wa.me/${numeroWa(r.telefono)}?text=${encodeURIComponent(messaggioWhatsapp(r))}" target="_blank" rel="noopener">Apri WhatsApp col messaggio</a>
+        <a class="btn btn-vuoto" href="#/biglietto/${r.id}">Guarda il biglietto</a></div>`;
+    else blocco = `<section class="sezione" aria-labelledby="hQuando"><h2 class="titolo-sezione" id="hQuando">Quando confermi</h2>
+        <p class="testo">Si apre WhatsApp con il messaggio già scritto e il link al biglietto da aggiungere al Wallet. Niente parte da solo.</p>
+        ${conf && r.bigliettoInviatoAlle ? `<p class="testo">Biglietto già inviato alle ${r.bigliettoInviatoAlle}.</p>` : ''}
+        <button type="button" class="btn btn-pieno" data-azione="conferma">${conf ? 'Rimanda il biglietto' : 'Conferma e scrivi'}</button>
+        <div class="due-pulsanti"><button type="button" class="btn btn-vuoto" data-azione="attesa"${r.stato === 'in attesa' ? ' disabled' : ''}>In attesa</button><button type="button" class="btn btn-vuoto" data-azione="rifiuta"${r.stato === 'rifiutata' ? ' disabled' : ''}>Rifiuta</button></div></section>`;
+    return `
+    ${q.get('da') === 'stasera' ? `<a class="indietro" href="#/pannello/stasera">${chev}Stasera</a>` : `<a class="indietro" href="#/pannello/richieste${S.ultimoFiltro ? '?stato=' + encodeURIComponent(S.ultimoFiltro) : ''}">${chev}Richieste</a>`}
+    <div class="testata"><p class="occhiello">Richiesta, oggi ${r.quando}</p><h1 class="titolo" tabindex="-1">${esc(r.nome)}</h1>${etichetta(r.stato)}</div>
+    <a class="telefono" href="tel:${r.telefono.replace(/\s/g, '')}">${r.telefono}</a>
+    <dl class="voci">
+      <div><dt>Serata</dt><dd>${esc(serataSala(r))}</dd></div>
+      <div><dt>Tipo</dt><dd>${r.tipo === 'tavolo' ? 'Tavolo, ' + esc(r.gruppo.toLowerCase()) : 'Lista'}</dd></div>
+      ${r.budget ? `<div><dt>Budget a testa</dt><dd>${r.budget}</dd></div>` : ''}
+      ${r.occasione ? `<div><dt>Occasione</dt><dd>${r.occasione}</dd></div>` : ''}
+    </dl>
+    ${r.messaggio ? `<p class="citazione">“${esc(r.messaggio)}”</p>` : ''}
+    ${blocco}
+    ${r.notePrivate ? `<section class="sezione" aria-labelledby="hNote"><h2 class="titolo-sezione" id="hNote">Note private, solo tu</h2><p class="citazione" style="font-style:normal">${esc(r.notePrivate)}</p></section>` : ''}`;
+  };
+
+  const lettore = (pieno) => {
+    if (S.porta === 'spento') return `<div class="lettore${pieno ? ' pieno' : ''}"><p class="occhiello">Ingresso</p><button type="button" class="btn btn-pillola" data-azione="accendi">Accendi la fotocamera</button></div>`;
+    if (S.porta === 'errore') return `<div class="lettore${pieno ? ' pieno' : ''}"><p class="testo" style="text-align:center">Non riesco ad accendere la fotocamera. Serve un indirizzo https e il permesso del telefono.</p><button type="button" class="btn btn-pillola" data-azione="accendi">Riprova</button></div>`;
+    return `<div class="lettore${pieno ? ' pieno' : ''}"><div class="mira${S.lettura ? ' letto' : ''}">${qr(7)}</div><p class="inquadra">Inquadra il QR</p>
+      <div class="simula"><button type="button" class="btn btn-pieno" data-azione="leggi" data-chi="giulia-marchetti">Simula: biglietto di Giulia</button><button type="button" class="btn btn-vuoto" data-azione="leggi" data-chi="falso">Simula: biglietto non valido</button><p class="testo-piccolo">Nel pannello vero legge la fotocamera con jsQR.</p></div></div>`;
+  };
+  V.porta = () => {
+    const st = D.stasera;
+    return `
+    <p class="avviso-extra">Extra, non incluso: il lettore QR alla porta, se un giorno servirà.</p>
+    <div class="testata"><p class="occhiello">Porta, ${esc(st.serata)}</p><h1 class="sr" tabindex="-1">Porta</h1>
+      <div class="conteggio" aria-live="polite"><b>${st.entrati}</b><span>/ ${st.attesi} entrati</span></div></div>
+    ${lettore(false)}
+    <section class="sezione" aria-labelledby="hMano"><h2 class="titolo-sezione" id="hMano">Se il QR non si legge</h2><a class="btn btn-vuoto" href="#/pannello/richieste">Cerca a mano nella lista</a></section>
+    <section class="sezione" aria-labelledby="hIngressi"><h2 class="titolo-sezione" id="hIngressi">Ultimi ingressi</h2>
+      <div class="lista">${D.ingressi.map((i) => `<div class="ingresso"><span>${esc(i.nome)}${i.giaEntrato ? '<em>, già entrato</em>' : ''}</span><time>${i.ora}</time></div>`).join('')}</div></section>
+    ${nota()}`;
+  };
+  V.scan = () => lettore(true);
+
+  V.serate = () => `
+    <div class="testata"><p class="occhiello">Room 26</p><h1 class="titolo" tabindex="-1">Serate</h1><p class="sottotitolo">Cosa vede la gente sul sito.</p></div>
+    ${D.serate.map((s) => `<div class="riquadro"><h2 class="riquadro-titolo" id="s-${s.codice}">${esc(s.nome)}</h2><div class="scelta" role="radiogroup" aria-labelledby="s-${s.codice}">${['Lista aperta', 'Pochi tavoli', 'Tutto pieno'].map((t) =>
+      `<button type="button" role="radio" aria-checked="${s.etichetta === t}" data-etichetta="${t}" data-codice="${s.codice}">${t}</button>`).join('')}</div></div>`).join('')}
+    <section class="sezione" aria-labelledby="hSg"><h2 class="titolo-sezione" id="hSg">Special guest, ${D.listeDiAttesa.specialGuest} in attesa</h2>
+      <p class="testo">Quando aggiungi un ospite, chi è in attesa riceve l'avviso.</p>
+      ${S.ospite ? `<form id="fOspite" class="riquadro" novalidate><div class="campo"><label for="nomeOspite">Nome dell'ospite</label><input id="nomeOspite" autocomplete="off" required></div><button type="submit" class="btn btn-pieno">Avvisa ${D.listeDiAttesa.specialGuest} persone</button><button type="button" class="btn btn-vuoto" data-azione="annulla-ospite">Annulla</button></form>`
+        : `<button type="button" class="btn btn-vuoto" data-azione="ospite">Aggiungi un ospite</button>`}</section>
+    <section class="sezione" aria-labelledby="hCap"><h2 class="titolo-sezione" id="hCap">Capodanno, ${D.listeDiAttesa.capodanno} in attesa</h2>
+      <p class="testo">${S.pacchetti ? `Pacchetti pubblicati. Le ${D.listeDiAttesa.capodanno} persone in attesa hanno ricevuto l'avviso.` : 'Pacchetti non ancora pubblicati.'}</p>
+      ${S.pacchetti ? '' : `<button type="button" class="btn btn-vuoto" data-azione="pacchetti">Pubblica i pacchetti</button>`}</section>
+    ${nota()}`;
+
+  V.squadra = () => `
+    <div class="testata"><p class="occhiello">${new Date().toLocaleDateString('it-IT', { month: 'long', timeZone: 'Europe/Rome' })}</p><h1 class="titolo" tabindex="-1">Squadra</h1></div>
+    <div class="lista">${D.squadra.map((p) => { const [dom, slug] = [p.link.slice(0, p.link.lastIndexOf('/')), p.link.slice(p.link.lastIndexOf('/'))]; return `<div class="riquadro">
+      <div class="pr-testa"><b>${esc(p.nome.toUpperCase())}</b><span>${p.prenotazioni} prenotazioni</span></div>
+      <div class="link-pr"><code><span>${esc(dom)}</span>${esc(slug)}</code><button type="button" class="btn btn-vuoto" data-copia="https://${esc(p.link)}">${S.copiato === p.link ? 'Copiato' : 'Copia'}</button></div>
+      <div class="numeri"><div class="numero"><b>${p.liste}</b><span>liste</span></div><div class="numero"><b>${p.tavoli}</b><span>tavoli</span></div><div class="numero"><b>${p.provvigioni} €</b><span>provvigioni</span></div></div></div>`; }).join('')}</div>
+    ${S.nuovoPr ? `<form id="fPr" class="riquadro" novalidate><div class="campo"><label for="nomePr">Nome del PR</label><input id="nomePr" autocomplete="off" required></div><button type="submit" class="btn btn-pieno">Crea il suo link</button><button type="button" class="btn btn-vuoto" data-azione="annulla-pr">Annulla</button></form>`
+      : `<button type="button" class="btn btn-vuoto" data-azione="pr">Aggiungi un PR</button>`}
+    <section class="sezione" aria-labelledby="hComp"><h2 class="titolo-sezione" id="hComp">Compleanni in arrivo</h2>
+      <div class="lista">${D.compleanni.map((c) => `<div class="riquadro"><div class="pr-testa"><b style="letter-spacing:0">${esc(c.nome)}</b><span>${c.fra}</span></div><p class="testo">L'anno scorso: ${esc(c.annoScorso.toLowerCase())}</p>
+        <a class="btn btn-vuoto" href="https://wa.me/${c.telefono}?text=${encodeURIComponent(`Ciao ${c.nome.split(' ')[0]}! Tra poco è il tuo compleanno: ti tengo un tavolo come l'anno scorso?`)}" target="_blank" rel="noopener">Scrivi su WhatsApp</a></div>`).join('')}</div></section>
+    ${nota()}`;
+
+  V.biglietto = (q, id) => {
+    const r = richiesta(id) || { nome: 'Mario Rossi', nomeSerata: 'BÁILAME', serata: 'Domenica Báilame', tipo: 'tavolo', gruppo: 'Misto' };
+    const d = dataSerata(r);
+    return `
+    <div class="testata" style="margin-top:var(--s-5)"><p class="occhiello">Luca California</p><h1 class="titolo" tabindex="-1"><span class="cl" style="display:block">Il tuo biglietto</span> <span class="cl" style="display:block">è pronto</span></h1>
+      <p class="sottotitolo">Aggiungilo ad Apple Wallet. All'ingresso ti basta mostrare il QR.</p></div>
+    <dl class="scheda-biglietto" style="margin:0">
+      <div><dt>Serata</dt><dd>${esc(r.nomeSerata)}</dd></div>
+      <div><dt>Quando</dt><dd>${esc(fmt(d, { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }).replace(/^./, (c) => c.toUpperCase()))}, ore ${ORARIO_INIZIO}</dd></div>
+      <div><dt>Tipo</dt><dd>${tipoBiglietto(r)}</dd></div>
+      <div><dt>Nome</dt><dd>${esc(r.nome)}</dd></div>
+      <div><dt>Dove</dt><dd>Room 26, Roma</dd></div>
+    </dl>
+    <button type="button" class="btn btn-wallet" data-azione="wallet">Aggiungi a Apple Wallet</button>
+    <p class="testo-piccolo">Dall'iPhone apri questa pagina con Safari. Su computer il file si scarica e basta, e negli altri browser dell'iPhone non si apre.</p>
+    ${richiesta(id) ? `<a class="indietro" href="#/pannello/richieste/${id}">${chev}Torna alla richiesta</a>` : ''}`;
+  };
+
+
+  /* titoli che stanno nel loro spazio (come la skill tipografia-web) */
+  const adatta = () => $$('.titolo, .esito strong, .numero b').forEach((el) => {
+    if (!el.getClientRects().length) return;
+    el.style.fontSize = ''; let px = parseFloat(getComputedStyle(el).fontSize); const min = px * 0.45; let g = 0;
+    while (el.scrollWidth > el.clientWidth + 1 && px > min && g++ < 150) { px -= 0.5; el.style.fontSize = px + 'px'; }
+  });
+  // i numeri di uno stesso gruppo hanno tutti la stessa misura (la più piccola)
+  const allinea = () => $$('.numeri').forEach((g) => { const bs = $$('.numero b', g); const min = Math.min(...bs.map((b) => parseFloat(getComputedStyle(b).fontSize))); bs.forEach((b) => { b.style.fontSize = min + 'px'; }); });
+  const adattaTutto = () => { adatta(); allinea(); };
+  let tAd; addEventListener('resize', () => { clearTimeout(tAd); tAd = setTimeout(adattaTutto, 120); });
+  if (document.fonts) { document.fonts.ready.then(adattaTutto); document.fonts.addEventListener('loadingdone', () => { if (window.ACapo) ACapo.lega(app); adattaTutto(); }); }
+
+  /* ======================= ROUTER ======================= */
+  const app = $('#app'), barra = $('#barra'), esito = $('#esito');
+  const TABS = [['/pannello/richieste', 'Richieste'], ['/pannello/stasera', 'Stasera'], ['/pannello/serate', 'Serate'], ['/pannello/squadra', 'Squadra']];
+  let rottaAttuale = '';
+  const leggiRotta = () => {
+    const h = location.hash.replace(/^#/, '') || '/pannello';
+    const [path, qs] = h.split('?');
+    return { path: path.replace(/\/$/, '') || '/pannello', q: new URLSearchParams(qs || '') };
+  };
+  const mostra = (tenereScroll) => {
+    const { path, q } = leggiRotta();
+    const parti = path.split('/').filter(Boolean);
+    let vista, args = [q], conBarra = true, titolo = 'Pannello';
+    if (parti[0] === 'staff') { vista = 'scan'; conBarra = false; titolo = 'Ingresso, Luca California'; }
+    else if (parti[0] === 'biglietto') { vista = 'biglietto'; args.push(parti[1]); conBarra = false; titolo = 'Il tuo biglietto'; }
+    else if (!S.loggato || parti[1] === 'accesso') { vista = 'accesso'; conBarra = false; titolo = 'Entra nel pannello'; }
+    else if (parti[1] === 'richieste' && parti[2]) { vista = 'richiesta'; args.push(parti[2]); titolo = 'Richiesta'; }
+    else { vista = { richieste: 'richieste', stasera: 'stasera', porta: 'porta', serate: 'serate', squadra: 'squadra' }[parti[1]] || 'richieste'; titolo = { richieste: 'Richieste', stasera: 'Stasera', porta: 'Porta', serate: 'Serate', squadra: 'Squadra' }[vista]; }
+    const y = scrollY;
+    app.innerHTML = V[vista](...args);
+    app.classList.toggle('senza-barra', !conBarra);
+    document.title = titolo + ' · Luca California';
+    barra.hidden = !conBarra;
+    barra.innerHTML = '<ul>' + TABS.map(([p, t]) => {
+      const attiva = path.startsWith(p) || (p === '/pannello/richieste' && path === '/pannello');
+      const n = p === '/pannello/richieste' ? D.richieste.filter((r) => r.stato === 'nuova').length : 0;
+      return `<li><a href="#${p}"${attiva ? ' aria-current="page"' : ''}>${t}${n ? `<span class="badge" aria-label="${n} nuove">${n}</span>` : ''}</a></li>`;
+    }).join('') + '</ul>';
+    // esito
+    if (S.esito) {
+      const e = S.esito; esito.hidden = false; esito.className = 'esito ' + e.tipo;
+      esito.innerHTML = e.tipo === 'ok' ? `<strong>ENTRA</strong><b>${esc(e.nome)}</b><span>${e.tipo2}</span>${e.sala ? `<span>${e.sala}</span>` : ''}<small>${e.serata}</small><em>Tocca per il prossimo</em>`
+        : e.tipo === 'gia' ? `<strong>GIÀ DENTRO</strong><b>${esc(e.nome)}</b><span>Entrato alle ${e.ora}</span><em>Tocca per il prossimo</em>`
+        : `<strong>NO</strong><b>Biglietto non valido</b><em>Tocca per il prossimo</em>`;
+      esito.setAttribute('aria-label', 'Esito: ' + esito.textContent + '. Tocca per il prossimo');
+    } else esito.hidden = true;
+    const cambiata = rottaAttuale !== location.hash; rottaAttuale = location.hash;
+    if (cambiata && !tenereScroll) { scrollTo(0, 0); const h1 = app.querySelector('h1'); if (h1) h1.focus({ preventScroll: true }); }
+    else if (tenereScroll) scrollTo(0, y);
+    if (window.ACapo) ACapo.lega(app); adattaTutto(); if (window.ACapo) ACapo.sciogliSeSfora(app);
+  };
+  addEventListener('hashchange', () => mostra());
+
+  /* ======================= AZIONI ======================= */
+  let timerAvviso;
+  const avvisa = (t) => { const box = $('#avvisi'); box.innerHTML = `<div class="avviso" role="status">${esc(t)}</div>`; clearTimeout(timerAvviso); timerAvviso = setTimeout(() => { box.innerHTML = ''; }, 2600); };
+  const chiedi = (titolo, testo, ok) => new Promise((res) => {
+    const d = $('#dlg'); $('#dlgT').textContent = titolo; $('#dlgP').textContent = testo; $('#dlgOk').textContent = ok;
+    const fine = (v) => { d.close(); res(v); };
+    $('#dlgOk').onclick = () => fine(true); $('#dlgNo').onclick = () => fine(false); d.onclick = (e) => { if (e.target === d) fine(false); };
+    d.showModal(); $('#dlgNo').focus();
+  });
+  const idRichiesta = () => leggiRotta().path.split('/')[3];
+  const copia = async (t) => { try { await navigator.clipboard.writeText(t); return true; } catch (e) {}
+    const a = document.createElement('textarea'); a.value = t; a.setAttribute('readonly', ''); a.style.cssText = 'position:fixed;opacity:0'; document.body.appendChild(a); a.select();
+    let ok = false; try { ok = document.execCommand('copy'); } catch (e) {} a.remove(); return ok; };
+  const leggi = (chi) => {
+    if (chi === 'falso') { S.esito = { tipo: 'no' }; return mostra(true); }
+    const r = richiesta(chi);
+    if (D.dentro[chi]) { D.ingressi.unshift({ nome: r.nome, ora: ora(), giaEntrato: true }); S.esito = { tipo: 'gia', nome: r.nome, ora: D.dentro[chi] }; return mostra(true); }
+    S.lettura = true; mostra(true);
+    setTimeout(() => {
+      S.lettura = false; const t = ora(); D.dentro[chi] = t; D.stasera.entrati++;
+      D.ingressi.unshift({ nome: r.nome, ora: t, giaEntrato: false });
+      S.esito = { tipo: 'ok', nome: r.nome, tipo2: tipoBiglietto(r), sala: r.sala, serata: r.serata.split(' ')[0].toUpperCase() };
+      mostra(true);
+    }, 650);
+  };
+  esito.addEventListener('click', () => { S.esito = null; mostra(true); });
+  document.addEventListener('input', (e) => { if (e.target.id !== 'cerca') return; S.cerca = e.target.value; $('#elencoStasera').innerHTML = righeStasera(); if (window.ACapo) ACapo.lega($('#elencoStasera')); });
+
+  document.addEventListener('click', async (e) => {
+    const cp = e.target.closest('[data-copia]');
+    if (cp) { const link = cp.dataset.copia.replace('https://', ''); if (await copia(cp.dataset.copia)) { S.copiato = link; mostra(true); setTimeout(() => { if (S.copiato === link) { S.copiato = ''; mostra(true); } }, 2000); } else avvisa('Non riesco a copiare: tieni premuto il link per copiarlo a mano.'); return; }
+    const et = e.target.closest('[data-etichetta]');
+    if (et) { impostaEtichetta(et.dataset.codice, et.dataset.etichetta); mostra(true); const s = D.serate.find((x) => x.codice === et.dataset.codice); avvisa(`${s.nome}: ${s.etichetta.toLowerCase()}. Anteprima: la scelta non è ancora salvata.`); $(`[data-codice="${et.dataset.codice}"][aria-checked="true"]`).focus(); return; }
+    const b = e.target.closest('[data-azione]'); if (!b) return;
+    const az = b.dataset.azione, id = idRichiesta();
+    if (az === 'esci') { S.loggato = false; S.errore = ''; location.hash = '#/pannello/accesso'; return; }
+    if (az === 'conferma') {
+      S.preparo[id] = true; mostra(true);
+      setTimeout(() => { S.preparo[id] = false; const r = richiesta(id); if (r.stato !== 'confermata' && r.tipo === 'tavolo') D.stasera.tavoli++; aggiornaStato(id, 'confermata'); r.bigliettoInviatoAlle = ora(); S.pronto[id] = true; mostra(true); }, 900);
+      return;
+    }
+    if (az === 'attesa') { aggiornaStato(id, 'in attesa'); mostra(true); return avvisa('Segnata in attesa.'); }
+    if (az === 'rifiuta') { const r = richiesta(id); if (await chiedi(`Rifiutare ${r.nome}?`, 'La richiesta passa fra le rifiutate. Non parte nessun messaggio: se vuoi avvisare, scrivi tu.', 'Rifiuta')) { aggiornaStato(id, 'rifiutata'); mostra(true); avvisa('Richiesta rifiutata.'); } return; }
+    if (az === 'accendi') { S.porta = 'cerco'; return mostra(true); }
+    if (az === 'leggi') return leggi(b.dataset.chi);
+    if (az === 'ospite') { S.ospite = true; mostra(true); return $('#nomeOspite').focus(); }
+    if (az === 'annulla-ospite') { S.ospite = false; return mostra(true); }
+    if (az === 'pacchetti') { if (await chiedi('Pubblicare i pacchetti?', `Le ${D.listeDiAttesa.capodanno} persone in attesa ricevono l'avviso che i pacchetti di Capodanno sono online.`, 'Pubblica')) { S.pacchetti = true; mostra(true); avvisa('Pacchetti pubblicati.'); } return; }
+    if (az === 'pr') { S.nuovoPr = true; mostra(true); return $('#nomePr').focus(); }
+    if (az === 'annulla-pr') { S.nuovoPr = false; return mostra(true); }
+    if (az === 'wallet') return avvisa('Nel pannello vero qui si scarica il biglietto per Apple Wallet.');
+  });
+
+  document.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const f = e.target;
+    if (f.id === 'fAccesso') {
+      const bEntra = $('#bEntra'); bEntra.disabled = true; bEntra.textContent = 'Un attimo...';
+      setTimeout(() => {
+        if (S.bloccato) S.errore = 'Troppi tentativi. Riprova fra 10 minuti.';
+        else if ($('#password').value === 'luca') { S.loggato = true; S.tentativi = 0; S.errore = ''; location.hash = '#/pannello/richieste'; return; }
+        else { S.tentativi++; S.errore = S.tentativi >= 5 ? 'Troppi tentativi. Riprova fra 10 minuti.' : 'Password sbagliata'; if (S.tentativi >= 5) S.bloccato = true; }
+        mostra(true); $('#password').focus();
+      }, 400);
+    }
+    if (f.id === 'fOspite') {
+      const n = $('#nomeOspite').value.trim(); if (!n) { $('#nomeOspite').setAttribute('aria-invalid', 'true'); return $('#nomeOspite').focus(); }
+      S.ospite = false; mostra(true); avvisa(`${n}: avviso inviato alle ${D.listeDiAttesa.specialGuest} persone in attesa.`);
+    }
+    if (f.id === 'fPr') {
+      const n = $('#nomePr').value.trim(); if (!n) { $('#nomePr').setAttribute('aria-invalid', 'true'); return $('#nomePr').focus(); }
+      aggiungiPr(n); S.nuovoPr = false; mostra(true); avvisa(`Link creato per ${n}.`);
+    }
+  });
+
+  /* ======================= STRUMENTO: TUTTI GLI STATI ======================= */
+  const STATI = [
+    ['01', 'Accesso vuoto', () => { reset(); S.loggato = false; return '#/pannello/accesso'; }],
+    ['02', 'Accesso, password sbagliata', () => { reset(); S.loggato = false; S.tentativi = 1; S.errore = 'Password sbagliata'; return '#/pannello/accesso'; }],
+    ['22', 'Accesso bloccato', () => { reset(); S.loggato = false; S.tentativi = 5; S.bloccato = true; S.errore = 'Troppi tentativi. Riprova fra 10 minuti.'; return '#/pannello/accesso'; }],
+    ['S1', 'Stasera', () => { reset(); return '#/pannello/stasera'; }],
+    ['S2', 'Stasera, ricerca per nome', () => { reset(); S.cerca = 'chi'; return '#/pannello/stasera'; }],
+    ['S3', 'Stasera, ricerca senza risultati', () => { reset(); S.cerca = 'zzz'; return '#/pannello/stasera'; }],
+    ['04', 'Richieste, tutte', () => { reset(); return '#/pannello/richieste'; }],
+    ['05', 'Richieste, nuove', () => { reset(); return '#/pannello/richieste?stato=nuova'; }],
+    ['06', 'Richieste, confermate', () => { reset(); return '#/pannello/richieste?stato=confermata'; }],
+    ['06b', 'Richieste, elenco vuoto', () => { reset(); D.richieste.forEach((r) => { if (r.stato === 'nuova') r.stato = 'confermata'; }); return '#/pannello/richieste?stato=nuova'; }],
+    ['07', 'Richiesta nuova', () => { reset(); return '#/pannello/richieste/giulia-marchetti'; }],
+    ['07b', 'Richiesta, preparo il biglietto', () => { reset(); S.preparo['giulia-marchetti'] = true; return '#/pannello/richieste/giulia-marchetti'; }],
+    ['08', 'Richiesta dopo Conferma e scrivi', () => { reset(); const r = richiesta('giulia-marchetti'); r.stato = 'confermata'; r.bigliettoInviatoAlle = ora(); S.pronto['giulia-marchetti'] = true; return '#/pannello/richieste/giulia-marchetti'; }],
+    ['09', 'Richiesta già confermata', () => { reset(); return '#/pannello/richieste/federico-nardi'; }],
+    ['10', 'Serate', () => { reset(); return '#/pannello/serate'; }],
+    ['11', 'Serate, aggiungi un ospite', () => { reset(); S.ospite = true; return '#/pannello/serate'; }],
+    ['12', 'Squadra', () => { reset(); return '#/pannello/squadra'; }],
+    ['13', 'Squadra, link copiato', () => { reset(); S.copiato = 'lucacalifornia.satoshiweb.it/marco'; return '#/pannello/squadra'; }],
+    ['14', 'Extra: porta, lettore spento', () => { reset(); return '#/pannello/porta'; }],
+    ['21', 'Extra: porta, lettore acceso', () => { reset(); S.porta = 'cerco'; return '#/pannello/porta'; }],
+    ['19', 'Extra: esito valido', () => { reset(); S.porta = 'cerco'; S.esito = { tipo: 'ok', nome: 'Giulia Marchetti', tipo2: 'TAVOLO, MISTO', sala: 'Sala 2', serata: 'SABATO' }; return '#/pannello/porta'; }],
+    ['20', 'Extra: esito non valido', () => { reset(); S.porta = 'cerco'; S.esito = { tipo: 'no' }; return '#/pannello/porta'; }],
+    ['23', 'Extra: esito già dentro', () => { reset(); S.porta = 'cerco'; S.esito = { tipo: 'gia', nome: 'Giulia Marchetti', ora: '00:39' }; return '#/pannello/porta'; }],
+    ['24', 'Extra: fotocamera non disponibile', () => { reset(); S.porta = 'errore'; return '#/pannello/porta'; }],
+    ['17', 'Extra: staff scan, spento', () => { reset(); return '#/staff/scan'; }],
+    ['18', 'Extra: staff scan, inquadra', () => { reset(); S.porta = 'cerco'; return '#/staff/scan'; }],
+    ['16', 'Biglietto prova', () => { reset(); return '#/biglietto/prova'; }]
+  ];
+  const ant = $('#ant'), antBtn = $('#antBtn');
+  $('#antLista').innerHTML = STATI.map(([n, t], i) => `<li><a href="#" data-stato="${i}"><b>${n}</b>${t}</a></li>`).join('');
+  antBtn.addEventListener('click', () => { const aperto = ant.hidden; ant.hidden = !aperto; antBtn.setAttribute('aria-expanded', String(aperto)); antBtn.textContent = aperto ? 'Chiudi' : 'Stati'; });
+  ant.addEventListener('click', (e) => {
+    const a = e.target.closest('[data-stato]'); if (!a) return; e.preventDefault();
+    const h = STATI[+a.dataset.stato][2](); $('#avvisi').innerHTML = ''; ant.hidden = true; antBtn.textContent = 'Stati'; antBtn.setAttribute('aria-expanded', 'false');
+    if (location.hash === h) mostra(); else location.hash = h;
+  });
+  $('#antReset').addEventListener('click', () => { reset(); ant.hidden = true; antBtn.textContent = 'Stati'; location.hash = '#/pannello/richieste'; mostra(); });
+  addEventListener('keydown', (e) => { if (e.key === 'Escape' && !ant.hidden) antBtn.click(); });
+
+  if (window.ACapo) ACapo.avvia({ adatta: '[data-adatta-acapo]' }); if (document.fonts) document.fonts.ready.then(() => setTimeout(adattaTutto, 0));
+  mostra();
+})();
+</script>
+</body>
+</html>

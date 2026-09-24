@@ -1,0 +1,78 @@
+/*
+ * I token, condivisi fra pannello e sito.
+ *
+ * Vengono dal prototipo approvato (docs/riferimento/pannello-prototipo.html).
+ * I nomi non collidono con quelli del sito di oggi (--blu, --blu-scuro,
+ * --testo): i due insiemi convivono finché anche il sito passa a questi.
+ *
+ * Qui dentro ci sono solo variabili, nessuna regola che disegni qualcosa:
+ * così importarlo non cambia l'aspetto di niente da solo.
+ */
+
+:root {
+  /* superfici */
+  --bg: #000000;
+  --surface: #141318;
+  --surface-2: #1e1c24;
+  --line: #2e2b36;
+  --nav: #050408;
+
+  /* testo: bianco caldo, mai #ffffff puro su nero */
+  --text: #f5f2ec;
+  --muted: #b3aebd;
+  --dim: #8e899a;
+  --ink: #000000;
+  /* il grigio chiaro dei riassunti: più forte di --muted, meno del testo pieno */
+  --testo-2: #dcd7e4;
+
+  /* il fondo chiaro: la pagina della prenotazione si rovescia */
+  --paper: #f5f2ec;
+  --ink-2: #3e3a47;
+
+  /* accento: solo per le azioni */
+  --magenta: #ff3ea5;
+  /* Lo stesso accento sul fondo chiaro: quello sopra lì darebbe 2,9:1. */
+  --magenta-scuro: #c2005f;
+
+  /* i colori delle serate, per etichette e dettagli */
+  --milk: #ffb3da;
+  --acid: #e6ff4d;
+  --cyan: #4de1ff;
+  --red: #ff4a3d;
+  --sun: #ffb35c;
+
+  /* stati */
+  --ok: #2fd37a;
+  --wa: #25d366;
+  --errore: #ffc2d1;
+  --esito-ok: #0b7a2f;
+  --esito-no: #8e0b2b;
+  --esito-gia: #8a5a00;
+  --link: #7cc7ff;
+
+  /* forme */
+  --r-l: 26px;
+  --r-m: 16px;
+  --r-s: 12px;
+  --r-pill: 999px;
+
+  /* spaziature: solo questa scala */
+  --s-1: 4px;
+  --s-2: 8px;
+  --s-3: 12px;
+  --s-4: 16px;
+  --s-5: 24px;
+  --s-6: 32px;
+  --s-7: 48px;
+  --s-8: 64px;
+
+  /* movimento */
+  --t-veloce: 150ms;
+  --t-medio: 250ms;
+  --curva: cubic-bezier(0.2, 0.8, 0.2, 1);
+
+  /* l'altezza della barra in basso, zona sicura dell'iPhone compresa */
+  --nav-h: calc(56px + env(safe-area-inset-bottom, 0px));
+
+  color-scheme: dark;
+}

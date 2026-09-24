@@ -2,12 +2,16 @@ import { redirect } from "next/navigation";
 import type { ReactNode } from "react";
 
 import { BarraPannello } from "@/componenti/pannello/BarraPannello";
+import { richieste } from "@/lib/pannello/dati";
 import { sessioneAperta } from "@/lib/pannello/sessione";
 
 /**
  * Tutto quello che sta dentro questo gruppo è protetto: se la sessione non
  * c'è si finisce sull'accesso, che sta fuori dal gruppo e quindi non si
  * protegge da solo in un giro infinito.
+ *
+ * Il conto delle richieste nuove si fa qui una volta sola, perché il numero
+ * sulla scheda deve essere lo stesso da qualunque schermata lo si guardi.
  */
 export default async function LayoutDentro({ children }: { children: ReactNode }) {
   if (!(await sessioneAperta())) {
@@ -17,7 +21,7 @@ export default async function LayoutDentro({ children }: { children: ReactNode }
   return (
     <>
       {children}
-      <BarraPannello />
+      <BarraPannello nuove={richieste("nuova").length} />
     </>
   );
 }

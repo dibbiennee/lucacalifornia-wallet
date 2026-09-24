@@ -1,35 +1,35 @@
 import { DatiStrutturati } from "@/componenti/DatiStrutturati";
-import { Nastro } from "@/componenti/Nastro";
-import { Apertura } from "@/componenti/sezioni/Apertura";
-import { ComeFunziona } from "@/componenti/sezioni/ComeFunziona";
-import { Galleria } from "@/componenti/sezioni/Galleria";
+import { FoglioAvvisami } from "@/componenti/sito/FoglioAvvisami";
+import { Apertura } from "@/componenti/sito/sezioni/Apertura";
 import {
-  Capodanno,
   ChiELuca,
-  DiventaPr,
-  Estate,
-  Navetta,
+  ComeFunziona,
+  Serate,
+  Settimana,
   SpecialGuest,
-} from "@/componenti/sezioni/Extra";
-import { Modulo } from "@/componenti/sezioni/Modulo";
-import { Serate } from "@/componenti/sezioni/Serate";
+  TuttoIlResto,
+} from "@/componenti/sito/sezioni/Home";
 
 export default function Home() {
   return (
     <>
       <DatiStrutturati />
       <Apertura />
-      <Nastro />
+      <Settimana />
       <Serate />
-      <SpecialGuest />
-      <Galleria />
-      <ChiELuca />
-      <Navetta />
-      <Capodanno />
-      <Estate />
-      <DiventaPr />
+      <SpecialGuest
+        avvisami={
+          <FoglioAvvisami
+            tipo="special_guest"
+            etichetta="Avvisami"
+            titolo="Ti avviso appena esce il nome"
+            spiegazione="Quando c'è un ospite, lo sai prima degli altri. Niente messaggi per altro."
+          />
+        }
+      />
+      <TuttoIlResto />
       <ComeFunziona />
-      <Modulo />
+      <ChiELuca />
     </>
   );
 }

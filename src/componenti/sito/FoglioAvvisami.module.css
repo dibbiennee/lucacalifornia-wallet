@@ -1,0 +1,131 @@
+/*
+ * Il foglio che sale dal basso per lasciare un contatto.
+ *
+ * Su fondo chiaro: è l'unico punto del sito in cui si scrive, e i campi
+ * chiari si vedono meglio di quelli scavati nel nero.
+ */
+.finestra {
+  border: 0;
+  padding: 0;
+  background: transparent;
+  color: var(--ink);
+  width: 100%;
+  max-width: none;
+  max-height: none;
+  height: 100%;
+  margin: 0;
+}
+
+.finestra::backdrop {
+  background: rgba(0, 0, 0, 0.7);
+}
+
+.foglio {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--paper);
+  border-radius: 26px 26px 0 0;
+  padding: 24px 20px calc(24px + env(safe-area-inset-bottom, 0px));
+  max-height: 92%;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.testa {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.testa h2 {
+  font-size: 30px;
+  font-weight: 900;
+  font-stretch: 125%;
+  text-transform: uppercase;
+  line-height: 0.95;
+  margin: 0;
+}
+
+.chiudi {
+  appearance: none;
+  border: 0;
+  cursor: pointer;
+  width: 44px;
+  height: 44px;
+  flex: none;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.08);
+  color: var(--ink);
+  display: grid;
+  place-items: center;
+}
+
+.spiega {
+  margin: 0;
+  font-size: 15px;
+  color: var(--ink-2);
+}
+
+.campo {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.campo label {
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.campo input {
+  height: 52px;
+  border-radius: 12px;
+  border: 1.5px solid rgba(0, 0, 0, 0.25);
+  background: #ffffff;
+  color: var(--ink);
+  padding: 0 14px;
+  font: inherit;
+  /* 16 px esatti: sotto, iOS ingrandisce la pagina appena tocchi il campo. */
+  font-size: 16px;
+}
+
+.campo input:focus {
+  outline: none;
+  border-color: var(--magenta);
+  box-shadow: 0 0 0 3px rgba(255, 62, 165, 0.18);
+}
+
+.campo input[aria-invalid="true"] {
+  border-color: #c2002f;
+}
+
+.errore {
+  margin: 0;
+  color: #c2002f;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.fatto {
+  margin: 0;
+  font-size: 17px;
+  font-weight: 700;
+}
+
+@media (min-width: 720px) {
+  .foglio {
+    left: 50%;
+    right: auto;
+    bottom: auto;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 520px;
+    border-radius: 26px;
+    max-height: 86%;
+  }
+}
