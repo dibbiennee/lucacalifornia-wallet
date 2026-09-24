@@ -103,7 +103,7 @@ export function TuttoIlResto() {
               <Image src="/foto/night4.webp" alt="" width={64} height={88} sizes="32px" />
               <Image src="/foto/night3.webp" alt="" width={64} height={88} sizes="32px" />
             </span>
-            <strong>Voi al Room 26</strong>
+            <strong>{legaParole("Voi al Room 26")}</strong>
             <span>{legaParole("Le foto delle serate")}</span>
           </Link>
         </div>

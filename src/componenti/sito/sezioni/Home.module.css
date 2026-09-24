@@ -33,7 +33,9 @@
 }
 
 .giorno span {
-  font-size: clamp(10px, 14cqi, 13px);
+  /* A 320-340 px la pillola è larga 64-69 px: "MILKSHAKE" al minimo di
+     10 px usciva ancora di qualche pixel. */
+  font-size: clamp(8.5px, 14cqi, 13px);
   font-weight: 900;
   font-stretch: 112%;
   text-transform: uppercase;

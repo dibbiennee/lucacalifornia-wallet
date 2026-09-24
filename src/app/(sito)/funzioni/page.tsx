@@ -4,6 +4,7 @@ import Link from "next/link";
 import { Bottone } from "@/componenti/sito/Bottone";
 import { Indietro, Introduzione, Nota, Punti, TestaPagina, Titolo2 } from "@/componenti/sito/Pagina";
 import stili from "@/componenti/sito/Pagina.module.css";
+import { legaParole } from "@/lib/tipografia";
 
 export const metadata = { title: "Funzioni - Luca California" };
 
@@ -87,8 +88,8 @@ export default function PaginaFunzioni() {
             {PANNELLO.map((v) => (
               <Link key={v.nome} href={v.dove} className={stili.schermata}>
                 <Image src={`/foto/pannello/${v.foto}.webp`} alt={v.alt} width={540} height={844} sizes="(min-width: 720px) 20vw, 62vw" />
-                <strong>{v.nome}</strong>
-                <span>{v.testo}</span>
+                <strong>{legaParole(v.nome, { vedova: false })}</strong>
+                <span>{legaParole(v.testo, { vedova: true })}</span>
               </Link>
             ))}
           </div>
@@ -135,11 +136,19 @@ export default function PaginaFunzioni() {
             <Titolo2 id="la-squadra" misura='clamp(25px, 7.6vw, 60px)'>Ogni PR ha il suo link</Titolo2>
           </div>
 
-          {/* Qui dentro ci sono i grassetti, quindi non passa dal componente. */}
+          {/* Qui dentro ci sono i grassetti, quindi non passa dal componente.
+              L'indirizzo non si spezza mai, tranne a 320 px: lì, con "Marco
+              manda" davanti, non c'è altro modo di restare nel margine. Il
+              punto di rottura è dopo la barra, non a metà di "marco". */}
           <p className="introduzione">
-            Marco manda <strong>lucacalifornia.satoshiweb.it/marco</strong>. Ogni lista e
-            ogni&nbsp;tavolo che arriva da&nbsp;lì viene contato come&nbsp;suo, senza che nessuno
-            segni niente a&nbsp;mano. Funziona uguale per i&nbsp;tuoi canali:{" "}
+            Marco manda{" "}
+            <strong>
+              lucacalifornia.satoshiweb.it/<wbr />
+              marco
+            </strong>
+            . Ogni lista e&nbsp;ogni tavolo che&nbsp;arriva da&nbsp;lì viene contato come&nbsp;suo, senza
+            che&nbsp;nessuno
+            segni niente a&nbsp;mano. Funziona uguale per&nbsp;i&nbsp;tuoi canali:{" "}
             <strong>/ig</strong> nella&nbsp;bio, <strong>/s</strong> nelle&nbsp;storie,{" "}
             <strong>/tiktok</strong> sul&nbsp;profilo.
           </p>

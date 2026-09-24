@@ -8,11 +8,14 @@
   display: flex;
   flex-direction: column;
   gap: 12px;
+  /* Un titolo come "Per la figura" ha le parole brevi legate: niente punti
+     dove andare a capo, quindi deve stare intero nella sua colonna. Si
+     misura su di lei, non sulla finestra. */
+  container-type: inline-size;
 }
 
 .testa h1 {
-  /* A 11vw "Capodanno" usciva dalla colonna su uno schermo da 430. */
-  font-size: clamp(29px, 9vw, 76px);
+  font-size: clamp(29px, 9cqi, 76px);
 }
 
 /* La fotografia grande in cima a una pagina. */
@@ -174,6 +177,10 @@
   border-radius: var(--r-l);
   overflow: hidden;
   background: var(--surface);
+  /* A tre colonne la scheda è un terzo della finestra: un titolo misurato
+     sulla finestra (vw) usciva dalla scheda ("Ninfeo", "Morgan Beach Club").
+     Si misura su di lei. */
+  container-type: inline-size;
 }
 
 .locale img {
@@ -192,7 +199,7 @@
 }
 
 .locale h2 {
-  font-size: clamp(30px, 8vw, 46px);
+  font-size: clamp(24px, 15cqi, 46px);
 }
 
 .locale strong {
@@ -336,9 +343,12 @@
   display: flex;
   flex-direction: column;
   gap: 6px;
+  /* A due colonne la banda è metà della finestra: un titolo misurato sulla
+     finestra (vw) usciva dalla sua colonna. Si misura su di lei. */
+  container-type: inline-size;
 }
 
-.banda h1 { font-size: clamp(36px, 10vw, 64px); }
+.banda h1 { font-size: clamp(27px, 9.6cqi, 64px); }
 
 .banda .giorno {
   font-size: 14px;

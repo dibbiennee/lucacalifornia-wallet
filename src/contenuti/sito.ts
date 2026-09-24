@@ -18,7 +18,7 @@
 
 export const MARCHIO = { riga1: "LUCA", riga2: "CALIFORNIA" } as const;
 
-export const MOTTO = ["NON IMPORTA CHI TU SIA", "IMPORTA CHE TI", "SAPPIA DIVERTIRE"] as const;
+export const MOTTO = ["NON IMPORTA CHI TU SIA", "IMPORTA CHE TI SAPPIA DIVERTIRE"] as const;
 
 export const INSTAGRAM = "lucacurella_ninfeo";
 export const INSTAGRAM_URL = `https://instagram.com/${INSTAGRAM}`;

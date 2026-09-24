@@ -17,7 +17,7 @@ export default function PaginaChiSono() {
       <Indietro testo="Home" dove="/" />
       <TestaPagina
         occhiello="Chi sono"
-        righe={[`${MOTTO[0]},`, MOTTO[1], MOTTO[2]]}
+        righe={[`${MOTTO[0]},`, MOTTO[1]]}
       />
 
       <section className="wrap" style={{ paddingBottom: 56 }}>

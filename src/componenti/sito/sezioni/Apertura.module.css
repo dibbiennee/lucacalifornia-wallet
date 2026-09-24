@@ -80,9 +80,12 @@
   max-width: 13ch;
 }
 
+/* Sotto i 400 px i due pulsanti affiancati non ci stanno mai interi
+   (il testo non va a capo, per la regola 9 di tipografia-web): restano
+   impilati, uno per riga, finché la colonna non è larga abbastanza. */
 .azioni {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr;
   gap: 10px;
   max-width: 480px;
 }
