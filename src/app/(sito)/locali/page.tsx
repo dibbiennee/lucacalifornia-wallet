@@ -1,6 +1,10 @@
+import Image from "next/image";
 import Link from "next/link";
 
-import { Pila } from "@/componenti/Pila";
+import { Bottone } from "@/componenti/sito/Bottone";
+import { FoglioAvvisami } from "@/componenti/sito/FoglioAvvisami";
+import { Indietro, TestaPagina } from "@/componenti/sito/Pagina";
+import stili from "@/componenti/sito/Pagina.module.css";
 import { LOCALI_STAGIONE } from "@/contenuti/locali";
 
 export const metadata = {
@@ -9,50 +13,69 @@ export const metadata = {
     "D'inverno il Room 26 a Roma, d'estate il Ninfeo a Roma e il Morgan Beach Club a Civitavecchia.",
 };
 
+/** Ogni locale ha la sua foto e il suo colore di stagione. */
+const VESTE: Readonly<Record<string, { readonly foto?: string; readonly colore: string; readonly alt?: string }>> = {
+  room26: { foto: "/foto/night24.webp", colore: "var(--cyan)", alt: "Le luci del Room 26" },
+  ninfeo: { foto: "/foto/sunset.webp", colore: "var(--sun)", alt: "Tramonto d'estate" },
+  morgan: { colore: "var(--sun)" },
+};
+
 export default function Locali() {
   return (
-    <section className="fascia">
-      <div className="dentro">
-        <Pila occhiello="UNO PER STAGIONE" righe={["DOVE MI", "TROVI"]} livello={1} />
+    <>
+      <Indietro testo="Home" dove="/" />
+      <TestaPagina occhiello="Un locale per stagione" righe={["I locali"]} />
 
-        <p className="testo-lungo" style={{ margin: "1.6rem 0 2.2rem" }}>
-          Ogni stagione scelgo un locale solo e ci porto tutta la mia lista.
-        </p>
+      <section className="wrap">
+        <div className={stili.locali}>
+          {LOCALI_STAGIONE.map((l) => {
+            const veste = VESTE[l.codice];
 
-        <ul style={{ listStyle: "none", margin: 0, padding: 0, display: "grid", gap: "0.9rem" }}>
-          {LOCALI_STAGIONE.map((l) => (
-            <li key={l.codice}>
-              <Link
-                href={`/locali/${l.codice}`}
-                style={{
-                  display: "block",
-                  border: "2px solid rgba(255,255,255,0.3)",
-                  padding: "1.2rem 1.3rem",
-                  textDecoration: "none",
-                }}
-              >
-                <span className="debole" style={{ display: "block", fontSize: "0.75rem", letterSpacing: "0.16em", fontWeight: 700, marginBottom: "0.4rem" }}>
-                  {l.occhiello}
-                </span>
-                <span
-                  style={{
-                    display: "block",
-                    fontFamily: "var(--carattere-titoli), Impact, sans-serif",
-                    fontSize: "1.9rem",
-                    lineHeight: 1.05,
-                    textTransform: "uppercase",
-                  }}
-                >
-                  {l.nome}
-                </span>
-                <span className="debole" style={{ display: "block", marginTop: "0.3rem" }}>
-                  {l.citta}
-                </span>
-              </Link>
-            </li>
-          ))}
-        </ul>
-      </div>
-    </section>
+            return (
+              <article key={l.codice} className={stili.locale}>
+                {veste?.foto !== undefined && (
+                  <Image
+                    src={veste.foto}
+                    alt={veste.alt ?? ""}
+                    width={640}
+                    height={416}
+                    sizes="(min-width: 720px) 33vw, 100vw"
+                  />
+                )}
+
+                <div className={stili.dentro}>
+                  <p className="occhiello" style={{ color: veste?.colore, margin: 0 }}>
+                    {l.occhiello.charAt(0) + l.occhiello.slice(1).toLowerCase()}
+                  </p>
+
+                  <h2 className="display">
+                    <Link href={`/locali/${l.codice}`} style={{ textDecoration: "none" }}>
+                      {l.nome}
+                    </Link>
+                  </h2>
+
+                  <strong>{l.sottotitolo}</strong>
+                  <p>{l.testo}</p>
+
+                  {l.attesa === undefined ? (
+                    <Bottone href="/serate" aspetto="contorno">
+                      Vedi le serate
+                    </Bottone>
+                  ) : (
+                    <FoglioAvvisami
+                      tipo={l.attesa}
+                      etichetta="Avvisami quando apre"
+                      titolo={`Ti scrivo io quando parte la stagione al ${l.nome}`}
+                      spiegazione="Lasciami un contatto: ti avviso appena il calendario è pronto, prima che se ne accorgano gli altri."
+                      aspetto="contorno"
+                    />
+                  )}
+                </div>
+              </article>
+            );
+          })}
+        </div>
+      </section>
+    </>
   );
 }

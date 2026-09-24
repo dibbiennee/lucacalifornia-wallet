@@ -1,31 +1,48 @@
 import Image from "next/image";
 
-import { Pila } from "@/componenti/Pila";
-import { MOTTO } from "@/contenuti/sito";
+import { Bottone } from "@/componenti/sito/Bottone";
+import { Indietro, TestaPagina } from "@/componenti/sito/Pagina";
+import stili from "@/componenti/sito/Pagina.module.css";
+import { INSTAGRAM, INSTAGRAM_URL, MOTTO } from "@/contenuti/sito";
 
-export const metadata = { title: "Chi è Luca - Luca California" };
+export const metadata = {
+  title: "Chi è Luca - Luca California",
+  description:
+    "Luca Curella, PR e organizzatore di eventi a Roma. Ogni stagione un locale solo, e tutta la lista dentro.",
+};
 
 export default function PaginaChiSono() {
   return (
-    <section className="fascia">
-      <div className="dentro">
-        <Pila occhiello="CHI SONO" righe={[...MOTTO]} livello={1} />
+    <>
+      <Indietro testo="Home" dove="/" />
+      <TestaPagina
+        occhiello="Chi sono"
+        righe={[`${MOTTO[0]},`, `${MOTTO[1]} ${MOTTO[2]}`.toLowerCase()]}
+      />
 
+      <section className="wrap" style={{ paddingBottom: 56 }}>
         <Image
-          src="/foto/luca-bailame-media.jpg"
-          alt="Luca al Room 26"
-          width={533}
-          height={800}
-          sizes="(min-width: 52rem) 34rem, 100vw"
-          style={{ width: "100%", height: "auto", margin: "2rem 0" }}
+          src="/foto/luca.webp"
+          alt="Luca Curella"
+          width={1280} 
+          height={1280}
+          sizes="(min-width: 1180px) 1140px, 100vw"
+          className={stili.foto}
+          priority
         />
 
-        <p className="testo-lungo" style={{ margin: 0 }}>
+        <p className="introduzione">
           Sono Luca Curella, PR e organizzatore di eventi a Roma. Ogni stagione scelgo un locale
           solo e ci porto tutta la mia lista: d&apos;inverno il Room 26, d&apos;estate il Ninfeo e
           il Morgan Beach Club.
         </p>
-      </div>
-    </section>
+
+        <div style={{ marginTop: 24 }}>
+          <Bottone href={INSTAGRAM_URL} aspetto="contorno" esterno>
+            Segui @{INSTAGRAM}
+          </Bottone>
+        </div>
+      </section>
+    </>
   );
 }

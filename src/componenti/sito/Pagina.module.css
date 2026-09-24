@@ -160,3 +160,212 @@
   font-size: 14px;
   color: var(--ink);
 }
+
+/* --- Le schede dei locali --- */
+
+.locali {
+  display: grid;
+  gap: 14px;
+  padding-bottom: 56px;
+}
+
+.locale {
+  border-radius: var(--r-l);
+  overflow: hidden;
+  background: var(--surface);
+}
+
+.locale img {
+  width: 100%;
+  aspect-ratio: 4 / 2.6;
+  object-fit: cover;
+  height: auto;
+}
+
+.locale .dentro {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: flex-start;
+}
+
+.locale h2 {
+  font-size: clamp(30px, 8vw, 46px);
+}
+
+.locale strong {
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--muted);
+}
+
+.locale p {
+  margin: 0;
+  font-size: 15.5px;
+  color: var(--testo-2);
+  max-width: 52ch;
+  text-wrap: pretty;
+}
+
+/* --- Il confronto: in macchina o con la navetta --- */
+
+.confronto {
+  display: grid;
+  gap: 10px;
+  margin: 24px 0;
+}
+
+.confronto > div {
+  padding: 18px;
+  border-radius: var(--r-m);
+  background: var(--surface);
+}
+
+.confronto p {
+  margin: 0 0 12px;
+  font-size: 14px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.confronto ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 10px;
+}
+
+.confronto li {
+  display: grid;
+  grid-template-columns: 22px 1fr;
+  gap: 10px;
+  align-items: start;
+  font-size: 14.5px;
+  color: var(--testo-2);
+}
+
+.confronto svg {
+  width: 20px;
+  height: 20px;
+  fill: none;
+  stroke-width: 2.4;
+  stroke-linecap: round;
+}
+
+.male p { color: var(--red); }
+.male svg { stroke: var(--red); }
+.bene p { color: var(--cyan); }
+.bene svg { stroke: var(--cyan); }
+
+@media (min-width: 720px) {
+  .confronto { grid-template-columns: 1fr 1fr; }
+  .locali { grid-template-columns: repeat(3, minmax(0, 1fr)); align-items: start; }
+}
+
+/* --- I pacchetti del Capodanno --- */
+
+.pacchetti {
+  list-style: none;
+  margin: 0 0 20px;
+  padding: 0;
+  display: grid;
+  gap: 10px;
+}
+
+.pacchetti > li > * {
+  width: 100%;
+  text-align: left;
+  padding: 18px 20px;
+  border-radius: var(--r-m);
+  background: var(--surface);
+  border: 1.5px solid var(--line);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  text-decoration: none;
+  color: inherit;
+}
+
+.pacchetti small {
+  font-size: 12px;
+  font-weight: 800;
+  color: var(--dim);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.pacchetti strong {
+  font-size: 22px;
+  font-weight: 900;
+  font-stretch: 118%;
+  text-transform: uppercase;
+  line-height: 1;
+}
+
+.pacchetti em {
+  font-style: normal;
+  font-size: 13px;
+  color: var(--acid);
+  font-weight: 700;
+}
+
+/* --- Il ritratto di una serata --- */
+
+.serata {
+  position: relative;
+  border-radius: var(--r-l);
+  overflow: hidden;
+  color: var(--ink);
+}
+
+.serata > div:first-child { position: relative; }
+
+.serata img {
+  width: 100%;
+  aspect-ratio: 4 / 3.4;
+  object-fit: cover;
+  height: auto;
+}
+
+.banda {
+  padding: 18px 20px 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.banda h1 { font-size: clamp(36px, 10vw, 64px); }
+
+.banda .giorno {
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.banda .musica {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.targhetta {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  padding: 7px 12px;
+  border-radius: 999px;
+  background: var(--ink);
+  font-size: 12px;
+  font-weight: 800;
+}
+
+@media (min-width: 860px) {
+  .serata-griglia {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    align-items: start;
+  }
+}

@@ -1,9 +1,9 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
-import { ModuloBreve } from "@/componenti/ModuloBreve";
-import { Pila } from "@/componenti/Pila";
-import { Modulo } from "@/componenti/sezioni/Modulo";
+import { Bottone } from "@/componenti/sito/Bottone";
+import { FoglioAvvisami } from "@/componenti/sito/FoglioAvvisami";
+import { Altre, FotoPagina, Indietro, TestaPagina } from "@/componenti/sito/Pagina";
 import { LOCALI_STAGIONE, locale } from "@/contenuti/locali";
 import { SERATE } from "@/contenuti/sito";
 
@@ -14,8 +14,15 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: { params: Promise<{ codice: string }> }) {
   const { codice } = await params;
   const l = locale(codice);
-  return l === undefined ? {} : { title: `${l.nome}, ${l.citta} - Luca California` };
+  return l === undefined ? {} : { title: `${l.nome}, ${l.citta} - Luca California`, description: l.testo };
 }
+
+/** La foto e il colore di ogni locale: gli stessi dell'elenco. */
+const VESTE: Readonly<Record<string, { readonly foto?: string; readonly colore: string; readonly alt?: string }>> = {
+  room26: { foto: "/foto/night24.webp", colore: "var(--cyan)", alt: "Le luci del Room 26" },
+  ninfeo: { foto: "/foto/sunset.webp", colore: "var(--sun)", alt: "Tramonto d'estate" },
+  morgan: { colore: "var(--sun)" },
+};
 
 export default async function PaginaLocale({ params }: { params: Promise<{ codice: string }> }) {
   const { codice } = await params;
@@ -25,128 +32,68 @@ export default async function PaginaLocale({ params }: { params: Promise<{ codic
     notFound();
   }
 
+  const veste = VESTE[l.codice];
   const altri = LOCALI_STAGIONE.filter((x) => x.codice !== l.codice);
 
   return (
     <>
-      {l.foto !== undefined && (
-        <section style={{ position: "relative" }}>
-          <img
-            src={l.foto}
-            alt={`${l.nome}, ${l.citta}`}
-            width={720}
-            height={900}
-            style={{ width: "100%", height: "46svh", objectFit: "cover" }}
-          />
-          <span
-            aria-hidden
-            style={{
-              position: "absolute",
-              inset: 0,
-              background: "linear-gradient(to top, var(--blu) 8%, rgba(43,27,176,0.25) 60%)",
-            }}
-          />
-        </section>
-      )}
+      <Indietro testo="Tutti i locali" dove="/locali" />
+      <TestaPagina
+        occhiello={l.occhiello.charAt(0) + l.occhiello.slice(1).toLowerCase()}
+        colore={veste?.colore ?? "var(--muted)"}
+        righe={[...l.titolo]}
+        introduzione={l.sottotitolo}
+      />
 
-      <section className="fascia" style={l.foto === undefined ? {} : { paddingTop: "1rem" }}>
-        <div className="dentro">
-          <Pila occhiello={l.occhiello} righe={[...l.titolo]} livello={1} />
-          <p className="debole" style={{ margin: "1.2rem 0 0", fontWeight: 600 }}>
-            {l.sottotitolo}
-          </p>
-          <p className="testo-lungo" style={{ margin: "1rem 0 0" }}>
-            {l.testo}
-          </p>
-        </div>
-      </section>
+      <section className="wrap" style={{ paddingBottom: 56 }}>
+        {veste?.foto !== undefined && <FotoPagina src={veste.foto} alt={veste.alt ?? l.nome} />}
 
-      {l.codice === "room26" && (
-        <section className="fascia" style={{ background: "var(--blu-scuro)", paddingTop: 0 }}>
-          <div className="dentro">
-            <Pila occhiello="QUATTRO SERE A SETTIMANA" righe={["LE SERATE"]} />
-            <ul style={{ listStyle: "none", padding: 0, margin: "1.8rem 0 0", display: "grid", gap: "0.7rem" }}>
-              {SERATE.map((s) => (
-                <li key={s.codice}>
-                  <Link
-                    href={`/serate/${s.codice}`}
-                    style={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      alignItems: "center",
-                      gap: "1rem",
-                      padding: "1rem 1.1rem",
-                      border: "2px solid rgba(255,255,255,0.3)",
-                      textDecoration: "none",
-                      fontWeight: 700,
-                      letterSpacing: "0.06em",
-                    }}
-                  >
-                    <span>
-                      {s.giorno} {s.nome}
-                    </span>
-                    <span aria-hidden>→</span>
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </section>
-      )}
+        <p className="introduzione">{l.testo}</p>
 
-      {l.attesa !== undefined && (
-        <section className="fascia" style={{ paddingTop: 0 }}>
-          <div className="dentro" style={{ border: "2px solid rgba(255,255,255,0.3)", padding: "1.6rem" }}>
-            <ModuloBreve
-              azione="/api/lista-attesa"
-              etichettaBottone="Avvisami quando apre"
-              titoloModulo={`Ti scrivo io quando parte la stagione al ${l.nome}`}
-              corpoFisso={{ tipo: l.attesa }}
-              conferma="Sei in lista: ti avviso io."
-              campi={[
-                { nome: "nome", etichetta: "Nome", obbligatorio: true },
-                {
-                  nome: "contatto",
-                  etichetta: "Telefono o email",
-                  tipo: "text",
-                  obbligatorio: true,
-                  segnaposto: "334 854 8735",
-                },
-              ]}
+        <div style={{ marginTop: 24 }}>
+          {l.attesa === undefined ? (
+            <Bottone href="/serate">Vedi le serate</Bottone>
+          ) : (
+            <FoglioAvvisami
+              tipo={l.attesa}
+              etichetta="Avvisami quando apre"
+              titolo={`Ti scrivo io quando parte la stagione al ${l.nome}`}
+              spiegazione="Lasciami un contatto: ti avviso appena il calendario è pronto, prima che se ne accorgano gli altri."
+              aspetto="caldo"
             />
-          </div>
-        </section>
-      )}
+          )}
+        </div>
 
-      {l.codice === "room26" && <Modulo />}
-
-      <section className="fascia" style={{ paddingTop: 0 }}>
-        <div className="dentro">
-          <Pila occhiello="GLI ALTRI" righe={["DOVE MI TROVI"]} />
-          <ul style={{ listStyle: "none", padding: 0, margin: "1.8rem 0 0", display: "grid", gap: "0.7rem" }}>
-            {altri.map((a) => (
-              <li key={a.codice}>
-                <Link
-                  href={`/locali/${a.codice}`}
-                  style={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                    gap: "1rem",
-                    padding: "1rem 1.1rem",
-                    border: "2px solid rgba(255,255,255,0.3)",
-                    textDecoration: "none",
-                    fontWeight: 700,
-                  }}
-                >
-                  <span>
-                    {a.nome}, {a.citta}
-                  </span>
-                  <span aria-hidden>→</span>
+        {l.codice === "room26" && (
+          <div style={{ marginTop: 36 }}>
+            <p className="occhiello" style={{ color: "var(--muted)" }}>
+              Quattro sere a settimana
+            </p>
+            <Altre>
+              {SERATE.map((s) => (
+                <Link key={s.codice} href={`/serate/${s.codice}`} style={{ background: `var(--${s.colore})` }}>
+                  {s.breve} {s.nome}
                 </Link>
-              </li>
+              ))}
+            </Altre>
+          </div>
+        )}
+
+        <div style={{ marginTop: 36 }}>
+          <p className="occhiello" style={{ color: "var(--muted)" }}>
+            Gli altri
+          </p>
+          <Altre>
+            {altri.map((a) => (
+              <Link
+                key={a.codice}
+                href={`/locali/${a.codice}`}
+                style={{ background: "var(--surface)", color: "var(--text)", boxShadow: "inset 0 0 0 1.5px var(--line)" }}
+              >
+                {a.nome}, {a.citta}
+              </Link>
             ))}
-          </ul>
+          </Altre>
         </div>
       </section>
     </>
