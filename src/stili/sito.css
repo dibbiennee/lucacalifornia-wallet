@@ -5,8 +5,9 @@
  * del suo componente. Qui c'è solo l'ossatura.
  *
  * Tutto è annidato sotto .sito finché il vecchio globals.css non è sparito:
- * le sue regole su body, h1 e h2 arrivano dappertutto, e senza questo le
- * pagine nuove si ritroverebbero Anton al posto di Archivo.
+ * le sue regole arrivano dappertutto, e i nomi si toccano. Senza
+ * l'annidamento le pagine nuove si ritrovavano Anton al posto di Archivo, e
+ * gli occhielli col fondo blu del sito di prima.
  */
 
 html:has(.sito) {
@@ -61,7 +62,7 @@ html:has(.sito) {
 
 /* --- La colonna --- */
 
-.wrap {
+.sito .wrap {
   width: 100%;
   max-width: 1180px;
   margin: 0 auto;
@@ -69,25 +70,25 @@ html:has(.sito) {
 }
 
 /* La fascia fra una sezione e l'altra. */
-.blocco {
+.sito .blocco {
   padding: 64px 0;
 }
 
-.blocco-testa {
+.sito .blocco-testa {
   display: flex;
   flex-direction: column;
   gap: 10px;
   margin-bottom: 28px;
 }
 
-.blocco-testa h2 {
+.sito .blocco-testa h2 {
   font-size: clamp(38px, 9vw, 76px);
 }
 
 /* --- I caratteri --- */
 
 /* Il titolo grande: allargato, maiuscolo, righe strette. */
-.display {
+.sito .display {
   font-weight: 900;
   font-stretch: 125%;
   line-height: 0.9;
@@ -100,18 +101,26 @@ html:has(.sito) {
  * Ogni frase del titolo su una riga sua: "La notte" / "ti dà libertà".
  * A capo per unità di senso, deciso da chi scrive e non dalla larghezza.
  */
-.cl {
+.sito .cl {
   display: block;
 }
 
-.occhiello {
+.sito .occhiello {
+  /*
+   * L'azzeramento serve finché c'è il vecchio globals.css: lì "occhiello" è
+   * una targhetta col fondo blu, e senza questo se la porta dietro.
+   */
+  background: none;
+  padding: 0;
+  text-transform: none;
+  letter-spacing: normal;
   font-size: 14px;
   font-weight: 700;
   margin: 0 0 12px;
   color: var(--magenta);
 }
 
-.introduzione {
+.sito .introduzione {
   font-size: 17px;
   line-height: 1.5;
   color: var(--testo-2);
@@ -121,14 +130,14 @@ html:has(.sito) {
   text-wrap: pretty;
 }
 
-.nota {
+.sito .nota {
   font-size: 13px;
   color: var(--dim);
   margin: 0;
 }
 
 /* Visibile solo a chi legge con la voce. */
-.sr {
+.sito .sr {
   position: absolute !important;
   width: 1px;
   height: 1px;
@@ -139,7 +148,7 @@ html:has(.sito) {
 
 /* --- Il ritorno indietro, in cima alle pagine interne --- */
 
-.indietro {
+.sito .indietro {
   display: inline-flex;
   align-items: center;
   gap: 6px;
@@ -151,7 +160,7 @@ html:has(.sito) {
   text-decoration: none;
 }
 
-.indietro svg {
+.sito .indietro svg {
   width: 18px;
   height: 18px;
 }

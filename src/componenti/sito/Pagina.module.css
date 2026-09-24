@@ -1,0 +1,162 @@
+/* I pezzi che tornano in tutte le pagine interne. */
+
+.cima { padding-top: 18px; }
+
+.testa {
+  padding-top: 10px;
+  padding-bottom: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.testa h1 {
+  font-size: clamp(40px, 11vw, 80px);
+}
+
+/* La fotografia grande in cima a una pagina. */
+.foto {
+  width: 100%;
+  border-radius: var(--r-l);
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  margin-bottom: 20px;
+  height: auto;
+}
+
+/* Le etichette che non si toccano: dicono e basta. */
+.pillole {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 20px 0 28px;
+  padding: 0;
+  list-style: none;
+}
+
+.pillole li {
+  padding: 8px 14px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  font-size: 14px;
+  font-weight: 700;
+}
+
+/* L'elenco dei punti, in riquadri. */
+.punti {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 24px;
+  display: grid;
+  gap: 10px;
+}
+
+.punti li {
+  padding: 16px 18px;
+  border-radius: var(--r-m);
+  background: var(--surface);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.punti strong {
+  font-size: 16px;
+  font-weight: 900;
+  font-stretch: 112%;
+  text-transform: uppercase;
+}
+
+.punti span {
+  font-size: 14.5px;
+  color: var(--muted);
+}
+
+/* Le due voci sotto il titolo di una serata: quando e dove. */
+.dati {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 10px;
+  margin: 20px 0;
+}
+
+.dati div {
+  padding: 14px 16px;
+  border-radius: var(--r-m);
+  background: var(--surface);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.dati small {
+  font-size: 12px;
+  font-weight: 800;
+  color: var(--dim);
+}
+
+.dati strong {
+  font-size: 15px;
+  font-weight: 800;
+}
+
+/* La galleria che scorre di lato. */
+.galleria {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 60%;
+  gap: 10px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  margin: 0 -20px;
+  padding: 0 20px 6px;
+  scroll-padding: 0 20px;
+  scrollbar-width: none;
+}
+
+.galleria::-webkit-scrollbar { display: none; }
+
+.galleria img {
+  border-radius: var(--r-m);
+  aspect-ratio: 9 / 14;
+  object-fit: cover;
+  width: 100%;
+  height: auto;
+  scroll-snap-align: start;
+}
+
+@media (min-width: 720px) {
+  .galleria {
+    grid-auto-columns: minmax(0, 1fr);
+    margin: 0;
+    padding: 0 0 6px;
+  }
+}
+
+/* I due pulsanti sotto una serata. */
+.azioni {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 10px;
+}
+
+/* Le altre serate, come pillole colorate. */
+.altre {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.altre a {
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 16px;
+  border-radius: 999px;
+  text-decoration: none;
+  font-weight: 800;
+  font-size: 14px;
+  color: var(--ink);
+}
