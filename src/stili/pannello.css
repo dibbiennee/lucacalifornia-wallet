@@ -20,7 +20,7 @@ html:has(.pannello) {
   min-height: 100dvh;
   background: var(--bg);
   color: var(--text);
-  font-family: var(--carattere-pannello), "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: var(--carattere), "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 16px;
   line-height: 1.5;
   -webkit-tap-highlight-color: transparent;

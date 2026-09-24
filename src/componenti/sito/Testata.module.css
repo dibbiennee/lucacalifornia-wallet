@@ -1,0 +1,74 @@
+/*
+ * La testata resta in alto mentre si scorre.
+ *
+ * Prima non lo faceva: scendevi di uno schermo e per cambiare pagina dovevi
+ * risalire tutto. Il fondo è nero quasi opaco con una sfocatura dietro, così
+ * stacca dal video dell'apertura senza coprirlo del tutto.
+ */
+.top {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  background: rgba(0, 0, 0, 0.82);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--line);
+  padding-top: env(safe-area-inset-top, 0px);
+  margin-top: calc(-1 * env(safe-area-inset-top, 0px));
+}
+
+.riga {
+  height: 68px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.marchio {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  min-height: 44px;
+}
+
+.marchio span {
+  font-size: 13px;
+  font-weight: 800;
+  font-stretch: 112%;
+  line-height: 1;
+}
+
+/* Le voci in fila compaiono solo quando c'è spazio davvero. */
+.voci {
+  display: none;
+  gap: 26px;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.voci a {
+  text-decoration: none;
+  color: var(--muted);
+}
+
+.azioni {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+/* Raddoppiata apposta: deve battere il display del pulsante, e l'ordine in
+   cui Next mette i due fogli non è garantito. */
+.prenota-largo.prenota-largo { display: none; }
+
+@media (hover: hover) {
+  .voci a:hover { color: var(--text); }
+}
+
+@media (min-width: 960px) {
+  .voci { display: flex; }
+  .apri.apri { display: none; }
+  .prenota-largo.prenota-largo { display: inline-flex; }
+}

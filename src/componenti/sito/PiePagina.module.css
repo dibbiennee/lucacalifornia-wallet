@@ -1,0 +1,102 @@
+.piede {
+  background: #050407;
+  border-top: 1px solid var(--line);
+  /* Sotto c'è la barra fissa: il contenuto non deve finirci dietro. */
+  padding: 56px 0 calc(56px + var(--barra-h, 0px));
+}
+
+.dentro {
+  display: grid;
+  gap: 28px;
+}
+
+.marchio {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  text-decoration: none;
+  min-width: 0;
+}
+
+.parola {
+  display: block;
+  /*
+   * Misurata perché "CALIFORNIA" ci stia intera: a 12vw, come nel
+   * riferimento, sforava di trenta pixel su uno schermo da 390.
+   */
+  font-size: clamp(30px, 10.3vw, 88px);
+  font-weight: 900;
+  font-stretch: 125%;
+  line-height: 0.88;
+}
+
+.instagram { justify-self: start; }
+
+.voci {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 16px;
+  border-top: 1px solid var(--line);
+}
+
+.voci a {
+  min-height: 48px;
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid var(--line);
+  text-decoration: none;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.locale {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.locale img {
+  height: 22px;
+  width: auto;
+}
+
+.legali {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 20px;
+}
+
+.legali a {
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  color: var(--muted);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  font-size: 14px;
+}
+
+.firma {
+  margin: 0;
+  font-size: 13px;
+  color: var(--dim);
+}
+
+.firma a { color: var(--muted); }
+
+@media (hover: hover) {
+  .voci a:hover { color: var(--magenta); }
+}
+
+@media (min-width: 860px) {
+  .dentro {
+    grid-template-columns: 1.3fr 1fr;
+    column-gap: 64px;
+    align-items: start;
+  }
+
+  .marchio { grid-row: span 2; }
+  .locale img { height: 26px; }
+}

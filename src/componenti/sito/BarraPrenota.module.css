@@ -1,0 +1,27 @@
+/*
+ * I due modi di entrare, sempre a portata di pollice.
+ *
+ * Solo su telefono: da 960 px in su l'invito sta nella testata, che resta
+ * visibile anche lei.
+ */
+.barra {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 30;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  padding: 10px 12px calc(10px + env(safe-area-inset-bottom, 0px));
+  background: rgba(0, 0, 0, 0.88);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-top: 1px solid var(--line);
+}
+
+.barra a { min-height: 50px; }
+
+@media (min-width: 960px) {
+  .barra { display: none; }
+}

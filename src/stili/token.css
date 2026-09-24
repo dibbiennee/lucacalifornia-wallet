@@ -25,6 +25,10 @@
   /* il grigio chiaro dei riassunti: più forte di --muted, meno del testo pieno */
   --testo-2: #dcd7e4;
 
+  /* il fondo chiaro: la pagina della prenotazione si rovescia */
+  --paper: #f5f2ec;
+  --ink-2: #3e3a47;
+
   /* accento: solo per le azioni */
   --magenta: #ff3ea5;
 
