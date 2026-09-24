@@ -25,18 +25,23 @@ export function Settimana() {
           >
             <b>{s.breve}</b>
             {/*
-              Le due parole lunghe si accorciano: nella pillola da 92 px
-              "MILKSHAKE" misurava 94 e toccava tutti e due i bordi. Sopra i
-              720 px c'e' spazio e torna intera. Il nome per esteso resta
-              nell'etichetta che legge la voce.
+              Niente abbreviazioni: il nome è sempre intero, anche nella
+              pillola più stretta. "Milkshake" e "Commerciale" sono una
+              parola sola che non si spezza da sola: qui la riga si sceglie
+              a mano, non la decide il browser a caso.
             */}
             <span>
               {s.codice === "venerdi" ? (
-                "Comm."
+                <>
+                  Commer
+                  <br />
+                  ciale
+                </>
               ) : s.codice === "milkshake" ? (
                 <>
-                  <span className={stili.intero}>{s.nome}</span>
-                  <span className={stili.corto}>Milk.</span>
+                  Milk
+                  <br />
+                  shake
                 </>
               ) : (
                 s.nome
