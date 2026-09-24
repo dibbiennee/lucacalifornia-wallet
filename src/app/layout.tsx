@@ -39,10 +39,14 @@ export const metadata: Metadata = {
   },
   twitter: { card: "summary_large_image", title: TITOLO, description: DESCRIZIONE, images: ["/anteprima.jpg"] },
   robots: SITO_PUBBLICO ? { index: true, follow: true } : { index: false, follow: false },
+  /* Senza, la scheda del browser resta col foglio bianco e iOS mette uno
+     scatto sbiadito della pagina quando la aggiungi alla schermata home. */
+  icons: { icon: "/loghi/icona-192.png", apple: "/loghi/icona-192.png" },
 };
 
 export const viewport: Viewport = {
-  themeColor: "#2B1BB0",
+  /* La barra del browser si intona al sito: era rimasta col blu di prima. */
+  themeColor: "#000000",
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {

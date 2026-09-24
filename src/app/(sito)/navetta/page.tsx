@@ -1,5 +1,5 @@
 import { FoglioNavetta } from "@/componenti/sito/FoglioNavetta";
-import { Indietro, Punti, TestaPagina } from "@/componenti/sito/Pagina";
+import { Indietro, Introduzione, Punti, TestaPagina } from "@/componenti/sito/Pagina";
 import stili from "@/componenti/sito/Pagina.module.css";
 import { NAVETTA } from "@/contenuti/sito";
 
@@ -69,14 +69,16 @@ export default function PaginaNavetta() {
           </div>
         </div>
 
-        <h2 className="display" style={{ fontSize: "clamp(28px, 8vw, 44px)", marginBottom: 12 }}>
+        <h2 className="display" style={{ fontSize: "clamp(20px, 6.4vw, 44px)", marginBottom: 12 }}>
           <span className="cl">Meglio&nbsp;la&nbsp;navetta</span>{" "}
           <span className="cl">che&nbsp;perdere la&nbsp;patente</span>
         </h2>
-        <p className="introduzione" style={{ marginBottom: 28 }}>
-          Neopatentato o sotto i 21 anni? Per te il limite è zero: basta un drink per rischiare
-          la sospensione. Per tutti gli altri, un posto in navetta costa meno di una multa.
-        </p>
+        <div style={{ marginBottom: 28 }}>
+          <Introduzione>
+            Neopatentato o sotto i 21 anni? Per te il limite è zero: basta un drink per rischiare
+            la sospensione. Per tutti gli altri, un posto in navetta costa meno di una multa.
+          </Introduzione>
+        </div>
 
         <Punti voci={COME_VA} />
 

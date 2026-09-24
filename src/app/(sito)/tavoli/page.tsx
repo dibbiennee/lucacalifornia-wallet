@@ -1,5 +1,5 @@
 import { Bottone } from "@/componenti/sito/Bottone";
-import { FotoPagina, Indietro, Pillole, Punti, TestaPagina } from "@/componenti/sito/Pagina";
+import { FotoPagina, Indietro, Introduzione, Pillole, Punti, TestaPagina } from "@/componenti/sito/Pagina";
 
 export const metadata = {
   title: "Tavoli al Room 26 - Luca California",
@@ -45,10 +45,8 @@ export default function PaginaTavoli() {
       <section className="wrap" style={{ paddingBottom: 56 }}>
         <FotoPagina src="/foto/bottles.webp" alt="Bottiglie illuminate al tavolo" />
 
-        <p className="introduzione">
-          Compleanno, laurea o solo voglia di festeggiare: dimmi cosa festeggiate e ti preparo
-          tutto io, dalla bottiglia alla torta. Arrivi, ti siedi, la serata è già partita.
-        </p>
+        <Introduzione>Compleanno, laurea o solo voglia di festeggiare: dimmi cosa festeggiate e ti preparo
+          tutto io, dalla bottiglia alla torta. Arrivi, ti siedi, la serata è già partita.</Introduzione>
 
         <Pillole voci={OCCASIONI} />
         <Punti voci={COME_FUNZIONA} />

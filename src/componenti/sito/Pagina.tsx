@@ -2,8 +2,59 @@ import Image from "next/image";
 import Link from "next/link";
 import type { ReactNode } from "react";
 
+import { legaParole } from "@/lib/tipografia";
+
 import { Gallone } from "./Icone";
 import stili from "./Pagina.module.css";
+
+type Frase = string | readonly string[];
+
+/** Il testo arriva spezzato quando dentro c'è un valore: si rimette insieme. */
+const insieme = (c: Frase): string => (typeof c === "string" ? c : c.join(""));
+
+/**
+ * Un paragrafo del sito, con gli spazi indivisibili già al posto giusto.
+ *
+ * Nessuna riga chiude su un articolo o una preposizione, e l'ultima riga non
+ * resta con una parola sola: è la regola tipografica italiana, e su uno
+ * schermo stretto si vede subito quando manca.
+ */
+export function Introduzione({
+  children,
+  spazioSotto = false,
+}: {
+  readonly children: Frase;
+  /** Quando sotto viene subito un'altra cosa e serve un po' d'aria. */
+  readonly spazioSotto?: boolean;
+}) {
+  return (
+    <p className="introduzione" style={spazioSotto ? { marginBottom: 18 } : undefined}>
+      {legaParole(insieme(children), { vedova: true })}
+    </p>
+  );
+}
+
+/** Il titolo di una sezione, con le parole brevi legate. */
+export function Titolo2({
+  id,
+  misura,
+  children,
+}: {
+  readonly id: string;
+  /** Alcune sezioni lo vogliono più piccolo del titolo di pagina. */
+  readonly misura?: string;
+  readonly children: string;
+}) {
+  return (
+    <h2 className="display" id={id} style={misura === undefined ? undefined : { fontSize: misura }}>
+      {legaParole(children, { titolo: true, vedova: false })}
+    </h2>
+  );
+}
+
+export function Nota({ children }: { readonly children: Frase }) {
+  return <p className="nota">{legaParole(insieme(children), { vedova: true })}</p>;
+}
 
 /** Il ritorno indietro, in cima a ogni pagina interna. */
 export function Indietro({ testo, dove }: { readonly testo: string; readonly dove: string }) {
@@ -45,13 +96,18 @@ export function TestaPagina({
       <h1 className="display" tabIndex={-1}>
         {righe.map((riga, i) => (
           <span key={riga} className="cl">
-            {riga}
+            {legaParole(riga, { titolo: true, vedova: false })}
             {i < righe.length - 1 ? " " : ""}
           </span>
         ))}
       </h1>
 
-      {introduzione !== undefined && <p className="introduzione">{introduzione}</p>}
+      {introduzione !== undefined &&
+        (typeof introduzione === "string" ? (
+          <Introduzione>{introduzione}</Introduzione>
+        ) : (
+          <p className="introduzione">{introduzione}</p>
+        ))}
     </div>
   );
 }
@@ -75,8 +131,8 @@ export function Punti({ voci }: { readonly voci: readonly { readonly titolo: str
     <ul className={stili.punti}>
       {voci.map((v) => (
         <li key={v.titolo}>
-          <strong>{v.titolo}</strong>
-          <span>{v.testo}</span>
+          <strong>{legaParole(v.titolo, { vedova: false })}</strong>
+          <span>{legaParole(v.testo, { vedova: true })}</span>
         </li>
       ))}
     </ul>

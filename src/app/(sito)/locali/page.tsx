@@ -6,6 +6,7 @@ import { FoglioAvvisami } from "@/componenti/sito/FoglioAvvisami";
 import { Indietro, TestaPagina } from "@/componenti/sito/Pagina";
 import stili from "@/componenti/sito/Pagina.module.css";
 import { LOCALI_STAGIONE } from "@/contenuti/locali";
+import { legaParole } from "@/lib/tipografia";
 
 export const metadata = {
   title: "I locali, stagione per stagione - Luca California",
@@ -54,8 +55,8 @@ export default function Locali() {
                     </Link>
                   </h2>
 
-                  <strong>{l.sottotitolo}</strong>
-                  <p>{l.testo}</p>
+                  <strong>{legaParole(l.sottotitolo, { vedova: true })}</strong>
+                  <p>{legaParole(l.testo, { vedova: true })}</p>
 
                   {l.attesa === undefined ? (
                     <Bottone href="/serate" aspetto="contorno">

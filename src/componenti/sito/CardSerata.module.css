@@ -24,6 +24,9 @@
 }
 
 .card {
+  /* Il nome della serata si misura sulla card: "Commerciale" a misura fissa
+     usciva dal riquadro. */
+  container-type: inline-size;
   border-radius: var(--r-l);
   overflow: hidden;
   display: flex;
@@ -71,10 +74,14 @@
 }
 
 .corpo h3 {
-  font-size: 34px;
+  font-size: clamp(20px, 8.4cqi, 34px);
 }
 
 .corpo h3 a {
+  /* Il titolo è un bersaglio anche lui, oltre alla foto: 44 px come gli altri. */
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
   text-decoration: none;
   color: inherit;
 }

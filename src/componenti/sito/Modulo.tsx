@@ -4,6 +4,8 @@ import Link from "next/link";
 import { useEffect, useId, useState, type FormEvent } from "react";
 
 
+import { legaParole } from "@/lib/tipografia";
+
 import { BottoneAzione } from "./Bottone";
 import stili from "./Modulo.module.css";
 
@@ -142,10 +144,14 @@ export function Modulo() {
       <div className={stili.fatto} role="status">
         <h2>Richiesta inviata</h2>
         <p className="introduzione">
-          Luca la vede e ti scrive su WhatsApp con disponibilità e prezzo.
+          {legaParole("Luca la vede e ti scrive su WhatsApp con disponibilità e prezzo.", {
+            vedova: true,
+          })}
         </p>
         <p className={stili.dopo}>
-          Questa è un&apos;anteprima del sito: la richiesta non viene conservata.
+          {legaParole("Questa è un'anteprima del sito: la richiesta non viene conservata.", {
+            vedova: true,
+          })}
         </p>
       </div>
     );
@@ -197,6 +203,7 @@ export function Modulo() {
         errore={errori.telefono}
         autoComplete="tel"
         inputMode="tel"
+        tipo="tel"
         segnaposto="333 123 4567"
       />
 
@@ -247,8 +254,10 @@ export function Modulo() {
       </BottoneAzione>
 
       <p className={stili.dopo}>
-        La richiesta arriva direttamente a Luca. Quando conferma, ricevi il biglietto da
-        aggiungere al Wallet.
+        {legaParole(
+          "La richiesta arriva direttamente a Luca. Quando conferma, ricevi il biglietto da aggiungere al Wallet.",
+          { vedova: true },
+        )}
       </p>
 
       {/*
@@ -271,6 +280,7 @@ function Campo({
   segnaposto,
   autoComplete,
   inputMode,
+  tipo,
   facoltativo = false,
 }: {
   readonly id: string;
@@ -281,6 +291,7 @@ function Campo({
   readonly segnaposto?: string | undefined;
   readonly autoComplete?: string | undefined;
   readonly inputMode?: "tel" | "text" | undefined;
+  readonly tipo?: string | undefined;
   readonly facoltativo?: boolean;
 }) {
   return (
@@ -299,6 +310,7 @@ function Campo({
         {...(segnaposto === undefined ? {} : { placeholder: segnaposto })}
         {...(autoComplete === undefined ? {} : { autoComplete })}
         {...(inputMode === undefined ? {} : { inputMode })}
+        {...(tipo === undefined ? {} : { type: tipo })}
       />
       {errore !== undefined && (
         <p id={`${id}-errore`} role="alert" className={stili.errore}>

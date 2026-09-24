@@ -49,6 +49,8 @@ export function CardSerata({ serata }: { readonly serata: SerataSito }) {
         {!due && (
           <div className={stili.piede}>
             <Link href={`/serate/${serata.codice}`} className={stili.musica}>
+              {/* Non legata: in una card stretta "Afro e reggaeton" tutto
+                  attaccato sfonda il riquadro, e qui l'a capo ci sta bene. */}
               {serata.musica}
             </Link>
             <Bottone href={perPrenotare(serata.perModulo)} aspetto="nero" stretto>

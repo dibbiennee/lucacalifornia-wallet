@@ -20,7 +20,7 @@ export default function PaginaPrenota() {
       <Indietro testo="Home" dove="/" />
       <TestaPagina
         occhiello="In 30 secondi"
-        colore="var(--magenta)"
+        colore="var(--magenta-scuro)"
         righe={["Entra in lista", "o prenota"]}
         introduzione="Nessun pagamento qui: prezzo e disponibilità te li dice Luca su WhatsApp. Quando conferma, ricevi il biglietto da aggiungere al Wallet."
       />

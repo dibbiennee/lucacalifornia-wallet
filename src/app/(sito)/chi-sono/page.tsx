@@ -1,7 +1,7 @@
 import Image from "next/image";
 
 import { Bottone } from "@/componenti/sito/Bottone";
-import { Indietro, TestaPagina } from "@/componenti/sito/Pagina";
+import { Indietro, Introduzione, TestaPagina } from "@/componenti/sito/Pagina";
 import stili from "@/componenti/sito/Pagina.module.css";
 import { INSTAGRAM, INSTAGRAM_URL, MOTTO } from "@/contenuti/sito";
 
@@ -17,7 +17,7 @@ export default function PaginaChiSono() {
       <Indietro testo="Home" dove="/" />
       <TestaPagina
         occhiello="Chi sono"
-        righe={[`${MOTTO[0]},`, `${MOTTO[1]} ${MOTTO[2]}`.toLowerCase()]}
+        righe={[`${MOTTO[0]},`, MOTTO[1], MOTTO[2]]}
       />
 
       <section className="wrap" style={{ paddingBottom: 56 }}>
@@ -31,11 +31,9 @@ export default function PaginaChiSono() {
           priority
         />
 
-        <p className="introduzione">
-          Sono Luca Curella, PR e organizzatore di eventi a Roma. Ogni stagione scelgo un locale
+        <Introduzione>Sono Luca Curella, PR e organizzatore di eventi a Roma. Ogni stagione scelgo un locale
           solo e ci porto tutta la mia lista: d&apos;inverno il Room 26, d&apos;estate il Ninfeo e
-          il Morgan Beach Club.
-        </p>
+          il Morgan Beach Club.</Introduzione>
 
         <div style={{ marginTop: 24 }}>
           <Bottone href={INSTAGRAM_URL} aspetto="contorno" esterno>

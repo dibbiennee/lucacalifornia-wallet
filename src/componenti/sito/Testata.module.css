@@ -49,6 +49,10 @@
 }
 
 .voci a {
+  /* Alte quanto la testata: 23 px di bersaglio erano sotto il minimo. */
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
   text-decoration: none;
   color: var(--muted);
 }

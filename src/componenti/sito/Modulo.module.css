@@ -11,9 +11,19 @@
   min-height: 70vh;
 }
 
-.pagina :global(.indietro),
-.pagina :global(.introduzione) {
+/*
+ * Sul fondo chiaro i colori del fondo scuro non si leggono: il grigio del
+ * testo dava 1,26:1 e l'accento 2,9:1. Le classi raddoppiate servono a
+ * battere quelle di sito.css senza dipendere dall'ordine dei fogli.
+ */
+.pagina.pagina :global(.indietro),
+.pagina.pagina :global(.introduzione),
+.pagina.pagina :global(.nota) {
   color: var(--ink-2);
+}
+
+.pagina.pagina :global(.occhiello) {
+  color: var(--magenta-scuro);
 }
 
 .modulo {

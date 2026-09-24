@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 
 import { Bottone } from "@/componenti/sito/Bottone";
 import { FoglioAvvisami } from "@/componenti/sito/FoglioAvvisami";
-import { Altre, FotoPagina, Indietro, TestaPagina } from "@/componenti/sito/Pagina";
+import { Altre, FotoPagina, Indietro, Introduzione, TestaPagina } from "@/componenti/sito/Pagina";
 import { LOCALI_STAGIONE, locale } from "@/contenuti/locali";
 import { SERATE } from "@/contenuti/sito";
 
@@ -48,7 +48,7 @@ export default async function PaginaLocale({ params }: { params: Promise<{ codic
       <section className="wrap" style={{ paddingBottom: 56 }}>
         {veste?.foto !== undefined && <FotoPagina src={veste.foto} alt={veste.alt ?? l.nome} />}
 
-        <p className="introduzione">{l.testo}</p>
+        <Introduzione>{l.testo}</Introduzione>
 
         <div style={{ marginTop: 24 }}>
           {l.attesa === undefined ? (

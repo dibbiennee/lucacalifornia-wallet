@@ -4,6 +4,7 @@ import { Bottone } from "@/componenti/sito/Bottone";
 import { VideoApertura } from "@/componenti/VideoApertura";
 
 import stili from "./Apertura.module.css";
+import { Introduzione } from "@/componenti/sito/Pagina";
 
 /**
  * La prima schermata: il video del locale, il marchio, e le due strade.
@@ -44,10 +45,8 @@ export function Apertura() {
           <span className="cl">La notte</span> <span className="cl">ti dà libertà</span>
         </h1>
 
-        <p className="introduzione">
-          Ciao, sono Luca. Liste e tavoli al&nbsp;Room&nbsp;26 di&nbsp;Roma, da&nbsp;giovedì a
-          domenica, con&nbsp;la&nbsp;navetta per&nbsp;arrivarci.
-        </p>
+        <Introduzione>Ciao, sono Luca. Liste e tavoli al&nbsp;Room&nbsp;26 di&nbsp;Roma, da&nbsp;giovedì a
+          domenica, con&nbsp;la&nbsp;navetta per&nbsp;arrivarci.</Introduzione>
 
         <div className={stili.azioni}>
           <Bottone href="/prenota?tipo=lista">Entra in lista o prenota</Bottone>

@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { Bottone } from "@/componenti/sito/Bottone";
-import { Indietro, Punti, TestaPagina } from "@/componenti/sito/Pagina";
+import { Indietro, Introduzione, Nota, Punti, TestaPagina, Titolo2 } from "@/componenti/sito/Pagina";
 import stili from "@/componenti/sito/Pagina.module.css";
 
 export const metadata = { title: "Funzioni - Luca California" };
@@ -75,15 +75,13 @@ export default function PaginaFunzioni() {
             <p className="occhiello" style={{ margin: 0 }}>
               Dal tuo telefono
             </p>
-            <h2 className="display" id="il-pannello" style={{ fontSize: "clamp(34px, 9vw, 60px)" }}>
-              Il pannello
-            </h2>
+            <Titolo2 id="il-pannello" misura='clamp(25px, 7.6vw, 60px)'>Il pannello</Titolo2>
           </div>
 
-          <p className="introduzione" style={{ marginBottom: 18 }}>
+          <Introduzione spazioSotto>
             Le richieste non arrivano più sparse tra messaggi e DM: entrano qui, divise per
             serata. Tocca una schermata per provarla: serve la password del pannello.
-          </p>
+          </Introduzione>
 
           <div className={stili.schermate}>
             {PANNELLO.map((v) => (
@@ -103,9 +101,7 @@ export default function PaginaFunzioni() {
             <p className="occhiello" style={{ margin: 0 }}>
               Quando confermi
             </p>
-            <h2 className="display" id="il-biglietto" style={{ fontSize: "clamp(34px, 9vw, 60px)" }}>
-              Il biglietto nel telefono
-            </h2>
+            <Titolo2 id="il-biglietto" misura='clamp(25px, 7.6vw, 60px)'>Il biglietto nel telefono</Titolo2>
           </div>
 
           <div className={stili.biglietto}>
@@ -117,16 +113,16 @@ export default function PaginaFunzioni() {
               sizes="(min-width: 720px) 280px, 70vw"
             />
             <div>
-              <p className="introduzione" style={{ marginBottom: 18 }}>
+              <Introduzione spazioSotto>
                 Il cliente lo aggiunge all&apos;app Wallet, accanto alla carta di credito e alla
                 carta d&apos;imbarco. Provalo adesso: è un biglietto vero.
-              </p>
+              </Introduzione>
               <Bottone href="/biglietto/prova">Aggiungi il biglietto di prova</Bottone>
             </div>
           </div>
 
           <Punti voci={BIGLIETTO} />
-          <p className="nota">Su Android la stessa cosa con Google Wallet.</p>
+          <Nota>Su Android la stessa cosa con Google Wallet.</Nota>
         </div>
       </section>
 
@@ -136,21 +132,21 @@ export default function PaginaFunzioni() {
             <p className="occhiello" style={{ margin: 0 }}>
               Per la tua squadra
             </p>
-            <h2 className="display" id="la-squadra" style={{ fontSize: "clamp(34px, 9vw, 60px)" }}>
-              Ogni PR ha il suo link
-            </h2>
+            <Titolo2 id="la-squadra" misura='clamp(25px, 7.6vw, 60px)'>Ogni PR ha il suo link</Titolo2>
           </div>
 
+          {/* Qui dentro ci sono i grassetti, quindi non passa dal componente. */}
           <p className="introduzione">
-            Marco manda <strong>lucacalifornia.satoshiweb.it/marco</strong>. Ogni lista e ogni
-            tavolo che arriva da lì viene contato come suo, senza che nessuno segni niente a mano.
-            Funziona uguale per i tuoi canali: <strong>/ig</strong> nella bio,{" "}
-            <strong>/s</strong> nelle storie, <strong>/tiktok</strong> sul profilo.
+            Marco manda <strong>lucacalifornia.satoshiweb.it/marco</strong>. Ogni lista e
+            ogni&nbsp;tavolo che arriva da&nbsp;lì viene contato come&nbsp;suo, senza che nessuno
+            segni niente a&nbsp;mano. Funziona uguale per i&nbsp;tuoi canali:{" "}
+            <strong>/ig</strong> nella&nbsp;bio, <strong>/s</strong> nelle&nbsp;storie,{" "}
+            <strong>/tiktok</strong> sul&nbsp;profilo.
           </p>
 
-          <p className="nota" style={{ marginTop: 24 }}>
-            Anteprima: i numeri e i dati delle schermate sono di esempio.
-          </p>
+          <div style={{ marginTop: 24 }}>
+            <Nota>Anteprima: i numeri e i dati delle schermate sono di esempio.</Nota>
+          </div>
         </div>
       </section>
     </>

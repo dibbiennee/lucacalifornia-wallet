@@ -5,8 +5,10 @@ import { Bottone } from "@/componenti/sito/Bottone";
 import { StrisciaSerate } from "@/componenti/sito/CardSerata";
 import { Brindisi, Navetta, Pass } from "@/componenti/sito/Icone";
 import { COME_FUNZIONA, INSTAGRAM_URL, SERATE, SPECIAL_GUEST } from "@/contenuti/sito";
+import { legaParole } from "@/lib/tipografia";
 
 import stili from "./Home.module.css";
+import { Titolo2 } from "@/componenti/sito/Pagina";
 
 /** La striscia dei quattro giorni, subito sotto l'apertura. */
 export function Settimana() {
@@ -41,9 +43,7 @@ export function Serate() {
             </p>
             <Image src="/foto/room26.webp" alt="Room 26" width={400} height={177} sizes="110px" />
           </div>
-          <h2 className="display" id="le-serate">
-            Le serate
-          </h2>
+          <Titolo2 id="le-serate">Le serate</Titolo2>
         </div>
         <StrisciaSerate serate={SERATE} />
       </div>
@@ -57,16 +57,14 @@ export function TuttoIlResto() {
     <section className="blocco" style={{ paddingTop: 0 }} aria-labelledby="tutto-il-resto">
       <div className="wrap">
         <div className="blocco-testa">
-          <h2 className="display" id="tutto-il-resto" style={{ fontSize: "clamp(34px, 9vw, 60px)" }}>
-            Tutto il resto
-          </h2>
+          <Titolo2 id="tutto-il-resto" misura='clamp(25px, 7.6vw, 60px)'>Tutto il resto</Titolo2>
         </div>
 
         <div className={stili.tessere}>
           <Link href="/tavoli" className={`${stili.tessera} ${stili["con-foto"]}`}>
             <Image src="/foto/bottles.webp" alt="" width={640} height={480} sizes="(min-width: 720px) 33vw, 50vw" />
             <strong>Tavoli</strong>
-            <span>Compleanni, lauree e bottiglie: ti preparo tutto io</span>
+            <span>{legaParole("Compleanni, lauree e bottiglie: ti preparo tutto io")}</span>
           </Link>
 
           <Link href="/navetta" className={stili.tessera} style={{ background: "var(--cyan)" }}>
@@ -74,7 +72,7 @@ export function TuttoIlResto() {
               <Navetta colore="var(--cyan)" />
             </span>
             <strong>Navetta</strong>
-            <span>Andata e ritorno dalla tua zona</span>
+            <span>{legaParole("Andata e ritorno dalla tua zona", { vedova: true })}</span>
           </Link>
 
           <Link href="/capodanno" className={stili.tessera} style={{ background: "var(--acid)" }}>
@@ -82,13 +80,13 @@ export function TuttoIlResto() {
               <Brindisi />
             </span>
             <strong>Capodanno</strong>
-            <span>Tre pacchetti, lista d&apos;attesa aperta</span>
+            <span>{legaParole("Tre pacchetti, lista d'attesa aperta", { vedova: true })}</span>
           </Link>
 
           <Link href="/locali" className={`${stili.tessera} ${stili["con-foto"]}`}>
             <Image src="/foto/sunset.webp" alt="" width={640} height={480} sizes="(min-width: 720px) 33vw, 50vw" />
             <strong>D&apos;estate</strong>
-            <span>Ninfeo all&apos;EUR e Morgan sul mare</span>
+            <span>{legaParole("Ninfeo all'EUR e Morgan sul mare", { vedova: true })}</span>
           </Link>
 
           <Link href="/diventa-pr" className={stili.tessera} style={{ background: "var(--red)" }}>
@@ -96,7 +94,7 @@ export function TuttoIlResto() {
               <Pass colore="var(--red)" />
             </span>
             <strong>Diventa PR</strong>
-            <span>Candidature aperte</span>
+            <span>{legaParole("Candidature aperte")}</span>
           </Link>
 
           <Link href="/serate" className={stili.tessera} style={{ background: "var(--milk)" }}>
@@ -106,7 +104,7 @@ export function TuttoIlResto() {
               <Image src="/foto/night3.webp" alt="" width={64} height={88} sizes="32px" />
             </span>
             <strong>Voi al Room 26</strong>
-            <span>Le foto delle serate</span>
+            <span>{legaParole("Le foto delle serate")}</span>
           </Link>
         </div>
       </div>
@@ -123,9 +121,7 @@ export function ComeFunziona() {
           <p className="occhiello" style={{ margin: 0 }}>
             Dalla richiesta alla porta
           </p>
-          <h2 className="display" id="come-funziona" style={{ fontSize: "clamp(34px, 9vw, 60px)" }}>
-            Come funziona
-          </h2>
+          <Titolo2 id="come-funziona" misura='clamp(25px, 7.6vw, 60px)'>Come funziona</Titolo2>
         </div>
 
         <ol className={stili.passi}>
@@ -133,8 +129,8 @@ export function ComeFunziona() {
             <li key={passo.titolo}>
               <b aria-hidden>{i + 1}</b>
               <div>
-                <strong>{passo.titolo}</strong>
-                <span>{passo.testo}</span>
+                <strong>{legaParole(passo.titolo, { vedova: false })}</strong>
+                <span>{legaParole(passo.testo, { vedova: true })}</span>
               </div>
             </li>
           ))}

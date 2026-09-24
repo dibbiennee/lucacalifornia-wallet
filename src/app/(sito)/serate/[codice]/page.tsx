@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 
 import { Bottone } from "@/componenti/sito/Bottone";
 import { perPrenotare } from "@/componenti/sito/CardSerata";
-import { Altre, Azioni, Dati, Indietro } from "@/componenti/sito/Pagina";
+import { Altre, Azioni, Dati, Indietro, Introduzione } from "@/componenti/sito/Pagina";
 import stili from "@/componenti/sito/Pagina.module.css";
 import { LOCALE, SERATE } from "@/contenuti/sito";
 
@@ -66,9 +66,9 @@ export default async function PaginaSerata({ params }: { params: Promise<{ codic
           </div>
 
           <div>
-            <p className="introduzione" style={{ marginTop: 22 }}>
-              {serata.descrizione}
-            </p>
+            <div style={{ marginTop: 22 }}>
+              <Introduzione>{serata.descrizione}</Introduzione>
+            </div>
 
             <Dati
               voci={[

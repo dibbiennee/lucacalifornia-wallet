@@ -8,8 +8,14 @@
   padding-top: 22px;
   padding-bottom: 22px;
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  /* Due righe da due sotto i 380 px: in quattro colonne "Milkshake" non ci
+     stava, e rimpicciolirlo l'avrebbe portato sotto il leggibile. */
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 8px;
+}
+
+@media (min-width: 420px) {
+  .settimana .dentro { grid-template-columns: repeat(4, minmax(0, 1fr)); }
 }
 
 .giorno {

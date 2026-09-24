@@ -11,7 +11,8 @@
 }
 
 .testa h1 {
-  font-size: clamp(40px, 11vw, 80px);
+  /* A 11vw "Capodanno" usciva dalla colonna su uno schermo da 430. */
+  font-size: clamp(29px, 9vw, 76px);
 }
 
 /* La fotografia grande in cima a una pagina. */

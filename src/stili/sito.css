@@ -72,7 +72,8 @@ html:has(.sito) {
 }
 
 .sito .blocco-testa h2 {
-  font-size: clamp(38px, 9vw, 76px);
+  /* Le parole brevi sono legate: la riga non si spezza, quindi deve starci. */
+  font-size: clamp(26px, 8vw, 76px);
 }
 
 /* --- I caratteri --- */
