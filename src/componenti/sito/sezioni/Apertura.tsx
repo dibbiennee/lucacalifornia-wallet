@@ -1,17 +1,22 @@
 import Image from "next/image";
 
 import { Bottone } from "@/componenti/sito/Bottone";
+import { Introduzione } from "@/componenti/sito/Pagina";
 import { VideoApertura } from "@/componenti/VideoApertura";
 
 import stili from "./Apertura.module.css";
-import { Introduzione } from "@/componenti/sito/Pagina";
 
 /**
  * La prima schermata: il video del locale, il marchio, e le due strade.
  *
- * Sotto il video c'è sempre il fotogramma fermo: è quello che si vede subito,
- * quello che resta a chi ha chiesto meno movimento, e quello che resta se il
- * codice non parte.
+ * Sul telefono il filmato fa da sfondo a tutta la pagina, col testo sopra e
+ * un velo scuro sotto perché resti leggibile. Su uno schermo largo diventa
+ * un riquadro verticale accanto al testo: allargato riempirebbe lo schermo
+ * di pixel sgranati, e il velo coprirebbe un video che nessuno vede.
+ *
+ * Sotto il video c'è sempre la foto: è quella che si vede subito, quella che
+ * resta a chi ha chiesto meno movimento, e quella che resta se il codice non
+ * parte.
  */
 export function Apertura() {
   return (
@@ -21,48 +26,49 @@ export function Apertura() {
         <polygon points="0,0 700,325 700,525" />
       </svg>
 
-      {/*
-        La foto viene prima del video, non dopo: dipinta per ultima gli
-        finiva sopra e il video non si vedeva mai. Ha la precedenza sul resto
-        perché è la prima cosa che riempie lo schermo.
-      */}
-      <img
-        src="/foto/poster.webp"
-        alt=""
-        aria-hidden
-        className={stili.fermo}
-        fetchPriority="high"
-        width={480}
-        height={853}
-      />
-
-      <VideoApertura />
-
       <div className={`wrap ${stili.dentro}`}>
-        <Image
-          src="/foto/california.webp"
-          alt="California"
-          width={272}
-          height={78}
-          priority
-          sizes="136px"
-          className={stili.california}
-        />
+        <div className={stili.media}>
+          {/* La foto prima del video: dipinta per ultima gli finirebbe sopra.
+              Ha la precedenza sul resto perché riempie subito lo schermo. */}
+          <img
+            src="/foto/poster.webp"
+            alt=""
+            aria-hidden
+            fetchPriority="high"
+            width={480}
+            height={853}
+          />
+          <VideoApertura />
+        </div>
 
-        <p className={stili.giorni}>Giovedì, venerdì, sabato, domenica</p>
+        <div className={stili.testo}>
+          <Image
+            src="/foto/california.webp"
+            alt="California"
+            width={272}
+            height={78}
+            priority
+            sizes="136px"
+            className={stili.california}
+          />
 
-        <h1 className="display" tabIndex={-1}>
-          <span className="cl">La notte</span> <span className="cl">ti dà libertà</span>
-        </h1>
+          <p className={stili.giorni}>Giovedì, venerdì, sabato, domenica</p>
 
-        <Introduzione>Ciao, sono Luca. Liste e tavoli al&nbsp;Room&nbsp;26 di&nbsp;Roma, da&nbsp;giovedì a
-          domenica, con&nbsp;la&nbsp;navetta per&nbsp;arrivarci.</Introduzione>
+          <h1 className="display" tabIndex={-1}>
+            <span className="cl">La notte</span> <span className="cl">ti dà libertà</span>
+          </h1>
 
-        <div className={stili.azioni}>
-          <Bottone href="/prenota?tipo=lista">Entra in lista o prenota</Bottone>
-          <Bottone href="/serate" aspetto="contorno">
-            Vedi le serate
-          </Bottone>
+          <Introduzione>
+            Ciao, sono Luca. Liste e tavoli al Room 26 di Roma, da giovedì a domenica, con la
+            navetta per arrivarci.
+          </Introduzione>
+
+          <div className={stili.azioni}>
+            <Bottone href="/prenota?tipo=lista">Entra in lista o prenota</Bottone>
+            <Bottone href="/serate" aspetto="contorno">
+              Vedi le serate
+            </Bottone>
+          </div>
         </div>
       </div>
     </section>

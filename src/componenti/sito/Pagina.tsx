@@ -79,14 +79,17 @@ export function TestaPagina({
   colore = "var(--muted)",
   righe,
   introduzione,
+  senzaColonna = false,
 }: {
   readonly occhiello?: string;
   readonly colore?: string;
   readonly righe: readonly string[];
   readonly introduzione?: ReactNode;
+  /** Vero quando la testa sta già dentro una griglia che le fa da colonna. */
+  readonly senzaColonna?: boolean;
 }) {
   return (
-    <div className={`wrap ${stili.testa}`}>
+    <div className={senzaColonna ? stili.testa : `wrap ${stili.testa}`}>
       {occhiello !== undefined && (
         <p className="occhiello" style={{ color: colore, margin: 0 }}>
           {occhiello}

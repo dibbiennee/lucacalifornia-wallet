@@ -201,3 +201,23 @@
   line-height: 0.95;
   margin: 0;
 }
+
+/*
+ * Da 960 px in su il titolo sta a sinistra e il modulo a destra, e il titolo
+ * resta fermo mentre si compila: così si vede sempre cosa si sta chiedendo.
+ */
+@media (min-width: 960px) {
+  .colonne {
+    display: grid;
+    grid-template-columns: 0.8fr 1.2fr;
+    gap: 64px;
+    align-items: start;
+  }
+
+  .colonne > :first-child {
+    position: sticky;
+    top: 110px;
+  }
+
+  .modulo { max-width: 620px; }
+}

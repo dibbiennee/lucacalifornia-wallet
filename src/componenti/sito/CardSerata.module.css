@@ -115,8 +115,17 @@
   margin-top: auto;
 }
 
+/*
+ * Affiancate solo quando la card è abbastanza larga: sul telefono stretto e
+ * di nuovo in quattro colonne su un computer, "REGGAETON" in mezza card non
+ * entra, e allora si impilano.
+ */
 @media (min-width: 380px) {
   .due-sale { grid-template-columns: 1fr 1fr; }
+}
+
+@media (min-width: 1100px) {
+  .due-sale { grid-template-columns: 1fr; }
 }
 
 .sala {
@@ -156,4 +165,40 @@
   margin: 10px 0 0;
   font-size: 13px;
   color: var(--dim);
+}
+
+/*
+ * Da 760 px in su la striscia diventa una griglia: lo scorrimento di lato è
+ * un gesto da telefono, e su un computer una card larga l'86% dello schermo
+ * sarebbe un manifesto.
+ */
+@media (min-width: 760px) {
+  .striscia {
+    grid-auto-flow: row;
+    grid-auto-columns: auto;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    overflow: visible;
+    margin: 0;
+    padding: 0;
+    gap: 20px;
+  }
+
+  .suggerimento { display: none; }
+
+  .elenco { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
+}
+
+@media (min-width: 1100px) {
+  .striscia,
+  .elenco { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+
+  /*
+   * In quattro colonne il nome torna di larghezza normale, perché allargato
+   * non ci starebbe. La misura resta legata alla card e non alla finestra:
+   * a 2,6vw, come nel riferimento, "COMMERCIALE" usciva dal riquadro.
+   */
+  .corpo h3 {
+    font-size: clamp(22px, 9cqi, 38px);
+    font-stretch: 100%;
+  }
 }

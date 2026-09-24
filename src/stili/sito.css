@@ -64,6 +64,10 @@ html:has(.sito) {
   padding: 64px 0;
 }
 
+@media (min-width: 760px) {
+  .sito .blocco { padding: 72px 0; }
+}
+
 .sito .blocco-testa {
   display: flex;
   flex-direction: column;
