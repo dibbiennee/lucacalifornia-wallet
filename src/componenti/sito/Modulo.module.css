@@ -1,0 +1,193 @@
+/*
+ * Il modulo, su fondo chiaro.
+ *
+ * È l'unico punto del sito in cui si scrive, e si rovescia apposta: i campi
+ * bianchi su carta si vedono, quelli scavati nel nero no. Succede anche di
+ * giorno, in mezzo alla strada, con lo schermo al minimo.
+ */
+.pagina {
+  background: var(--paper);
+  color: var(--ink);
+  min-height: 70vh;
+}
+
+.pagina :global(.indietro),
+.pagina :global(.introduzione) {
+  color: var(--ink-2);
+}
+
+.modulo {
+  display: grid;
+  gap: 18px;
+  padding-bottom: 24px;
+}
+
+/* L'interruttore fra lista e tavolo. */
+.scelta-tipo {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  padding: 4px;
+  background: #e2ddd3;
+  border-radius: 999px;
+}
+
+.scelta-tipo label { position: relative; }
+
+.scelta-tipo input {
+  position: absolute;
+  opacity: 0;
+  inset: 0;
+  cursor: pointer;
+  margin: 0;
+}
+
+.scelta-tipo span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  border-radius: 999px;
+  font-weight: 800;
+  font-size: 15px;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.scelta-tipo input:checked + span {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+.scelta-tipo input:focus-visible + span {
+  outline: 3px solid var(--magenta);
+  outline-offset: 2px;
+}
+
+.due {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.campo {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.campo label {
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.campo input {
+  height: 52px;
+  padding: 0 14px;
+  border: 1.5px solid var(--ink);
+  border-radius: 12px;
+  background: #ffffff;
+  color: var(--ink);
+  font: inherit;
+  /* 16 px esatti: sotto, iOS ingrandisce la pagina appena tocchi il campo. */
+  font-size: 16px;
+  width: 100%;
+}
+
+.campo input::placeholder { color: #8a8594; }
+
+.campo input[aria-invalid="true"] {
+  border-color: #c2002f;
+  box-shadow: 0 0 0 3px rgba(194, 0, 47, 0.12);
+}
+
+.errore {
+  font-size: 13px;
+  color: #b0002a;
+  font-weight: 600;
+  margin: 0;
+}
+
+.gruppo {
+  border: 0;
+  padding: 0;
+  margin: 0;
+  min-width: 0;
+}
+
+.gruppo legend {
+  padding: 0;
+  font-size: 14px;
+  font-weight: 800;
+  margin-bottom: 8px;
+}
+
+.pillole {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.pillola { position: relative; }
+
+.pillola input {
+  position: absolute;
+  opacity: 0;
+  inset: 0;
+  cursor: pointer;
+  margin: 0;
+}
+
+.pillola span {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  /* 46 px: si prende con il pollice senza mirare. */
+  min-height: 46px;
+  padding: 0 16px;
+  border-radius: 999px;
+  box-shadow: inset 0 0 0 1.5px var(--ink);
+  font-size: 15px;
+  font-weight: 700;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.pillola input:checked + span {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+.pillola input:focus-visible + span {
+  outline: 3px solid var(--magenta);
+  outline-offset: 2px;
+}
+
+/* Il pallino col colore della serata. */
+.pillola i {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex: none;
+}
+
+.dopo {
+  font-size: 14px;
+  color: var(--ink-2);
+  margin: 0;
+}
+
+.dopo a { color: var(--ink); }
+
+/* La conferma, quando la richiesta è partita. */
+.fatto {
+  display: grid;
+  gap: 14px;
+  padding: 24px 0 8px;
+}
+
+.fatto h2 {
+  font-size: clamp(32px, 9vw, 56px);
+  font-weight: 900;
+  font-stretch: 125%;
+  text-transform: uppercase;
+  line-height: 0.95;
+  margin: 0;
+}
