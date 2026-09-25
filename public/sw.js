@@ -1,8 +1,18 @@
 /*
  * Il service worker: serve solo a ricevere il push mentre il pannello è
  * chiuso e a mostrare la notifica. Non fa cache, non intercetta richieste:
- * il resto del sito lavora come se lui non ci fosse.
+ * il resto del sito lavora come se lui non ci fosse. Ogni pagina del
+ * pannello arriva sempre fresca dalla rete, a ogni deploy: non serve mai
+ * togliere l'icona dalla schermata home e rimetterla.
+ *
+ * Le due righe qui sotto sono l'unica parte che riguarda lui stesso:
+ * prendono subito il comando appena installata una versione nuova di
+ * questo file, invece di aspettare che tutte le schede del pannello siano
+ * chiuse. Senza, un telefono con il pannello aperto da giorni potrebbe
+ * restare sulla versione vecchia del service worker.
  */
+self.addEventListener("install", () => self.skipWaiting());
+self.addEventListener("activate", (evento) => evento.waitUntil(self.clients.claim()));
 
 self.addEventListener("push", (evento) => {
   let dati = { titolo: "Luca California", corpo: "Nuova richiesta", url: "/pannello/richieste" };
