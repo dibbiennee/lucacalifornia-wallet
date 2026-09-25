@@ -55,7 +55,14 @@ export const impostazioniBiscotto = {
   httpOnly: true,
   sameSite: "lax",
   secure: true,
-  path: "/pannello",
+  /*
+   * Non "/pannello": le azioni del pannello (l'iscrizione al push, per
+   * esempio) vivono sotto /api/pannello/..., un ramo diverso per il
+   * browser, che confronta il percorso lettera per lettera e non sa che
+   * fanno parte della stessa cosa. Con "/pannello" il biscotto non
+   * arrivava su quelle richieste, e sembravano tutte "non autorizzato".
+   */
+  path: "/",
   maxAge: DURATA,
 } as const;
 
