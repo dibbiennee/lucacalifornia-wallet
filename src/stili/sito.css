@@ -158,3 +158,26 @@ html:has(.sito) {
   width: 18px;
   height: 18px;
 }
+
+/*
+ * L'ingresso in scena mentre scorri: senza, ogni sezione compariva di
+ * colpo, ferma, tutta insieme. ".visibile" lo aggiunge RivelaScroll appena
+ * la sezione entra a schermo. Chi ha chiesto meno movimento la vede già
+ * a posto, perché qui sotto non le si tocca opacità né posizione.
+ *
+ * Solo con "js" sull'html (vedi layout.tsx): senza, chi naviga senza
+ * javascript non avrebbe mai avuto ".visibile", e la sezione sarebbe
+ * rimasta invisibile per sempre.
+ */
+@media (prefers-reduced-motion: no-preference) {
+  html.js .sito .rivela {
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+
+  html.js .sito .rivela.visibile {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

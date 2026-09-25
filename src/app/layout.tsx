@@ -44,7 +44,16 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="it" className={carattere.variable}>
-      <body>{children}</body>
+      <body>
+        {/*
+          Senza, ".rivela" (l'animazione di ingresso, vedi sito.css) nascondeva
+          una sezione per sempre a chi naviga senza javascript: qui sotto la
+          regola scatta solo con questa classe, aggiunta subito, prima che il
+          resto della pagina si disegni.
+        */}
+        <script dangerouslySetInnerHTML={{ __html: "document.documentElement.classList.add('js')" }} />
+        {children}
+      </body>
     </html>
   );
 }

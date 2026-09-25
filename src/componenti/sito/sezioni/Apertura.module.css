@@ -87,6 +87,34 @@
   gap: 18px;
 }
 
+/*
+ * L'apertura entrava in scena già ferma, tutta insieme: qui i suoi pezzi
+ * arrivano uno dopo l'altro. Chi ha chiesto meno movimento la vede subito
+ * a posto, come prima.
+ */
+@media (prefers-reduced-motion: no-preference) {
+  @keyframes apertura-entra {
+    from {
+      opacity: 0;
+      transform: translateY(16px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .testo > * {
+    animation: apertura-entra 0.7s ease both;
+  }
+
+  .testo > *:nth-child(1) { animation-delay: 0s; }
+  .testo > *:nth-child(2) { animation-delay: 0.1s; }
+  .testo > *:nth-child(3) { animation-delay: 0.2s; }
+  .testo > *:nth-child(4) { animation-delay: 0.3s; }
+  .testo > *:nth-child(5) { animation-delay: 0.4s; }
+}
+
 .apertura h1 {
   font-size: clamp(30px, 10.6cqi, 112px);
   max-width: 13ch;

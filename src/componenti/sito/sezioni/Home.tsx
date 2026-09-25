@@ -15,7 +15,7 @@ export function Serate() {
   return (
     <section className="blocco" aria-labelledby="le-serate">
       <div className="wrap">
-        <div className="blocco-testa">
+        <div className="blocco-testa rivela">
           <div className={stili["testa-riga"]}>
             <p className="occhiello" style={{ color: "var(--muted)", margin: 0 }}>
               D&apos;inverno, Room 26, Roma
@@ -35,11 +35,11 @@ export function TuttoIlResto() {
   return (
     <section className="blocco" style={{ paddingTop: 0 }} aria-labelledby="tutto-il-resto">
       <div className="wrap">
-        <div className="blocco-testa">
+        <div className="blocco-testa rivela">
           <Titolo2 id="tutto-il-resto" misura='clamp(25px, 7.6vw, 60px)'>Tutto il resto</Titolo2>
         </div>
 
-        <div className={stili.tessere}>
+        <div className={`${stili.tessere} rivela`}>
           <Link href="/tavoli" className={`${stili.tessera} ${stili["con-foto"]}`}>
             <Image src="/foto/bottles.webp" alt="" width={640} height={480} sizes="(min-width: 720px) 33vw, 50vw" />
             <strong>Tavoli</strong>
@@ -96,14 +96,14 @@ export function ComeFunziona() {
   return (
     <section className="blocco" style={{ paddingTop: 0 }} aria-labelledby="come-funziona">
       <div className="wrap">
-        <div className="blocco-testa">
+        <div className="blocco-testa rivela">
           <p className="occhiello" style={{ margin: 0 }}>
             Dalla richiesta alla porta
           </p>
           <Titolo2 id="come-funziona" misura='clamp(25px, 7.6vw, 60px)'>Come funziona</Titolo2>
         </div>
 
-        <ol className={stili.passi}>
+        <ol className={`${stili.passi} rivela`}>
           {COME_FUNZIONA.map((passo, i) => (
             <li key={passo.titolo}>
               <b aria-hidden>{i + 1}</b>
@@ -128,7 +128,7 @@ export function ChiELuca() {
   return (
     <section className="blocco" style={{ paddingTop: 0 }}>
       <div className="wrap">
-        <div className={stili.luca}>
+        <div className={`${stili.luca} rivela`}>
           <Image src="/foto/luca.webp" alt="Luca Curella" width={192} height={192} sizes="96px" />
           <strong>
             <span className="cl">Non&nbsp;importa chi&nbsp;tu&nbsp;sia,</span>{" "}
@@ -152,7 +152,7 @@ export function SpecialGuest({ avvisami }: { readonly avvisami: React.ReactNode 
   return (
     <section className="blocco" style={{ paddingTop: 0 }} aria-label={SPECIAL_GUEST.titolo}>
       <div className="wrap">
-        <div className={stili.ospite}>
+        <div className={`${stili.ospite} rivela`}>
           <div>
             <strong>Special guest</strong>
             <p className={stili.arrivo}>
