@@ -24,7 +24,7 @@ export default async function Dettaglio({
 }) {
   const { id } = await params;
   const { stato, da } = await searchParams;
-  const r = richiesta(id);
+  const r = await richiesta(id);
 
   if (r === undefined) {
     notFound();
@@ -46,6 +46,7 @@ export default async function Dettaglio({
     ["Tipo", tipoEsteso(r)],
     ...(r.budget === undefined ? [] : [["Budget a testa", r.budget] as const]),
     ...(r.occasione === undefined ? [] : [["Occasione", r.occasione] as const]),
+    ...(r.zona === undefined ? [] : [["Zona", r.zona] as const]),
   ];
 
   return (

@@ -1,7 +1,8 @@
+import { AttivaNotifiche } from "@/componenti/pannello/AttivaNotifiche";
 import { CardRichiesta } from "@/componenti/pannello/CardRichiesta";
 import { Esci } from "@/componenti/pannello/Esci";
 import { Etichetta } from "@/componenti/pannello/Etichetta";
-import { NotaEsempio, Vuoto } from "@/componenti/pannello/Messaggi";
+import { Vuoto } from "@/componenti/pannello/Messaggi";
 import { Filtri, Filtro } from "@/componenti/pannello/Scelta";
 import { Testata } from "@/componenti/pannello/Testata";
 import { richieste } from "@/lib/pannello/dati";
@@ -22,7 +23,7 @@ export default async function Richieste({
   searchParams: Promise<{ stato?: string }>;
 }) {
   const { stato } = await searchParams;
-  const tutte = richieste();
+  const tutte = await richieste();
   const nuove = tutte.filter((r) => r.stato === "nuova");
   const confermate = tutte.filter((r) => r.stato === "confermata");
   const mostrate =
@@ -31,6 +32,8 @@ export default async function Richieste({
   return (
     <main className="pagina">
       <Testata occhiello="Questa settimana" titolo="Richieste" azione={<Esci />} />
+
+      <AttivaNotifiche />
 
       <Filtri>
         <Filtro
@@ -73,8 +76,6 @@ export default async function Richieste({
           ))
         )}
       </div>
-
-      <NotaEsempio />
     </main>
   );
 }

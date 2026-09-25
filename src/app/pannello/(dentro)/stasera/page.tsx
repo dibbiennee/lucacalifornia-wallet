@@ -30,10 +30,10 @@ const SOLO_IL_GIORNO = new Intl.DateTimeFormat("en-CA", {
  * numeri, ma non diceva chi sarebbe venuto. Alla porta serve l'elenco, con
  * la ricerca per nome.
  */
-export default function Stasera() {
-  const sera = stasera();
-  const confermati = confermatiPerSerata(sera.codice);
-  const nuove = richieste("nuova").length;
+export default async function Stasera() {
+  const sera = await stasera();
+  const confermati = await confermatiPerSerata(sera.codice);
+  const nuove = (await richieste("nuova")).length;
 
   const quando = prossimaSerata(giornoDellaSerata(sera.codice));
   const oggi = SOLO_IL_GIORNO.format(quando) === SOLO_IL_GIORNO.format(new Date());

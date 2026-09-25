@@ -18,8 +18,8 @@ export const metadata = { title: "Porta, pannello Luca California" };
  * schermo, quindi fuori dal flusso, e la sezione qui sotto gli finiva sopra
  * coprendolo: non si riusciva nemmeno ad accendere la fotocamera.
  */
-export default function Porta() {
-  const sera = stasera();
+export default async function Porta() {
+  const sera = await stasera();
   const ingressi = ultimiIngressi();
 
   return (

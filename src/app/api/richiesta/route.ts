@@ -1,19 +1,20 @@
 import { cookies } from "next/headers";
 
 import { BISCOTTO_PROVENIENZA, nomeProvenienza } from "@/contenuti/canali";
+import { creaRichiesta, type NuovaRichiesta } from "@/lib/pannello/dati";
+import { avvisaTutti } from "@/lib/push";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 /**
- * Riceve una richiesta di lista o tavolo.
+ * Riceve una richiesta di lista, tavolo o navetta.
  *
- * IN ANTEPRIMA NON SALVA NIENTE, e lo dice a chi la manda. Nel sito vero la
- * richiesta finisce su Supabase e compare nel pannello di Luca. Finché quel
- * pezzo non c'è, fingere di aver salvato sarebbe peggio che dirlo.
+ * La scrive su Postgres e avvisa chi ha acceso le notifiche nel pannello:
+ * da qui in poi una richiesta vera arriva davvero a Luca.
  *
- * Qui non parte nessun messaggio: ogni messaggio ai clienti lo manda Luca a
- * mano, ed è una regola del brief.
+ * Qui non parte nessun messaggio al cliente: ogni messaggio a chi prenota lo
+ * manda Luca a mano, ed è una regola del brief. L'avviso push va solo a lui.
  */
 
 interface Richiesta {
@@ -30,6 +31,17 @@ interface Richiesta {
 }
 
 const TIPI = ["lista", "tavolo", "navetta"] as const;
+
+/** Le stesse cinque scelte del modulo (vedi Modulo.tsx), verso i dati del pannello. */
+const SERATE: Readonly<
+  Record<string, { readonly serata: string; readonly nomeSerata: string; readonly codiceSerata: string; readonly sala?: string }>
+> = {
+  "Gio Milkshake": { serata: "Giovedì", nomeSerata: "MILKSHAKE", codiceSerata: "milkshake" },
+  "Ven commerciale": { serata: "Venerdì", nomeSerata: "COMMERCIALE", codiceSerata: "venerdi" },
+  "Sab sala 1 house": { serata: "Sabato", nomeSerata: "DUE SALE", codiceSerata: "sabato", sala: "Sala 1" },
+  "Sab sala 2 reggaeton": { serata: "Sabato", nomeSerata: "DUE SALE", codiceSerata: "sabato", sala: "Sala 2" },
+  "Dom Báilame": { serata: "Domenica Báilame", nomeSerata: "BÁILAME", codiceSerata: "bailame" },
+};
 
 function testo(valore: unknown, massimo: number): string | null {
   if (typeof valore !== "string") {
@@ -52,7 +64,7 @@ export async function POST(richiesta: Request): Promise<Response> {
   const nome = testo(c.nome, 60);
   const cognome = testo(c.cognome, 60);
   const telefono = testo(c.telefono, 30);
-  const serata = testo(c.serata, 60);
+  const serataScelta = testo(c.serata, 60);
   const tipo = testo(c.tipo, 20);
 
   if (tipo === null || !TIPI.includes(tipo as (typeof TIPI)[number])) {
@@ -64,7 +76,7 @@ export async function POST(richiesta: Request): Promise<Response> {
   const navetta = tipo === "navetta";
   const zona = testo(c.zona, 80);
 
-  if (nome === null || telefono === null || serata === null) {
+  if (nome === null || telefono === null || serataScelta === null) {
     return Response.json({ errore: "Servono nome, telefono e la serata" }, { status: 400 });
   }
 
@@ -83,37 +95,50 @@ export async function POST(richiesta: Request): Promise<Response> {
   const tavolo = tipo === "tavolo";
 
   /*
-   * Rimando indietro la richiesta come l'ho capita. Non la salvo, ma così
-   * si può verificare che arrivi completa, occasione e note comprese, senza
-   * dover guardare dentro un database che qui non c'è.
-   */
-  /*
    * Da dove arriva chi prenota. Non lo chiede il modulo: lo sa il sito,
    * perché chi è entrato da /ig o da /marco si porta dietro un biscotto.
    * Chi arriva digitando l'indirizzo risulta "Diretto", che è la verità.
    */
   const provenienza = nomeProvenienza((await cookies()).get(BISCOTTO_PROVENIENZA)?.value);
 
-  const ricevuta = {
-    tipo,
-    nome,
-    ...(cognome === null ? {} : { cognome }),
+  const mappata = SERATE[serataScelta];
+  const nomeCompleto = cognome === null ? nome : `${nome} ${cognome}`;
+  const gruppo = tavolo ? testo(c.gruppo, 40) : null;
+  const budget = tavolo ? testo(c.budget, 40) : null;
+  const occasione = tavolo ? testo(c.occasione, 60) : null;
+  const note = tavolo ? testo(c.note, 300) : null;
+
+  const daSalvare: NuovaRichiesta = {
+    nome: nomeCompleto,
     telefono,
-    serata,
-    ...(zona === null ? {} : { zona }),
+    serata: mappata?.serata ?? serataScelta,
+    nomeSerata: mappata?.nomeSerata ?? serataScelta.toUpperCase(),
+    codiceSerata: mappata?.codiceSerata ?? "altro",
+    tipo: tipo as NuovaRichiesta["tipo"],
     provenienza,
-    ...(tavolo
-      ? {
-          gruppo: testo(c.gruppo, 40) ?? "",
-          budget: testo(c.budget, 40) ?? "",
-          occasione: testo(c.occasione, 60) ?? "",
-          note: testo(c.note, 300) ?? "",
-        }
-      : {}),
+    ...(mappata?.sala === undefined ? {} : { sala: mappata.sala }),
+    ...(gruppo === null ? {} : { gruppo }),
+    ...(budget === null ? {} : { budget }),
+    ...(occasione === null ? {} : { occasione }),
+    ...(note === null ? {} : { messaggio: note }),
+    ...(navetta && zona !== null ? { zona } : {}),
   };
 
+  const salvata = await creaRichiesta(daSalvare);
+
+  const corpoAvviso =
+    tipo === "tavolo"
+      ? `Tavolo, ${salvata.serata}${salvata.sala === undefined ? "" : `, ${salvata.sala}`}`
+      : tipo === "navetta"
+        ? `Navetta da ${zona}, ${salvata.serata}`
+        : `Lista, ${salvata.serata}`;
+
+  // Se il push fallisce (nessuno iscritto, un endpoint scaduto...) la
+  // richiesta è comunque salvata: Luca la vede aprendo il pannello.
+  await avvisaTutti(nomeCompleto, corpoAvviso, `/pannello/richieste/${salvata.id}`).catch(() => undefined);
+
   return Response.json(
-    { salvata: false, nota: "Anteprima del sito: la richiesta non viene conservata.", ricevuta },
+    { salvata: true, id: salvata.id },
     { headers: { "Cache-Control": "no-store" } },
   );
 }

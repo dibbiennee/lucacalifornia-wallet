@@ -2,18 +2,20 @@
  * I dati del pannello.
  *
  * PUNTO UNICO DI INGRESSO. Le schermate non sanno da dove arrivano i dati:
- * chiamano queste funzioni e basta. Oggi restituiscono esempi, domani
- * interrogano Supabase, e le schermate non cambiano di una riga.
+ * chiamano queste funzioni e basta.
  *
- * Lo stesso vale per le funzioni che scrivono (aggiornaStato, impostaEtichetta,
- * aggiungiPr...): oggi cambiano gli esempi qui in memoria, domani scrivono sul
- * database. Chi le chiama non se ne accorge.
+ * Le richieste (richieste, richiesta, confermatiPerSerata, aggiornaStato,
+ * creaRichiesta) sono vere, su Postgres: arrivano dal modulo del sito e le
+ * vede Luca qui. Il resto (stasera oltre ai confermati, serate, squadra,
+ * compleanni, ultimi ingressi, liste d'attesa) è ancora di esempio, in
+ * memoria: le schermate lo dichiarano con "Dati di esempio".
  *
- * ATTENZIONE, finché sono esempi: la memoria è quella dell'istanza che risponde.
- * Una modifica si vede finché quella resta calda, poi torna indietro, e un'altra
- * istanza non la vede proprio. Le schermate lo dichiarano, invece di far credere
- * il contrario.
+ * ATTENZIONE, finché quel resto è esempio: la memoria è quella dell'istanza
+ * che risponde. Una modifica si vede finché quella resta calda, poi torna
+ * indietro, e un'altra istanza non la vede proprio.
  */
+
+import { db } from "@/lib/db";
 
 export type StatoRichiesta = "nuova" | "confermata" | "in attesa" | "rifiutata";
 
@@ -33,10 +35,12 @@ export interface RichiestaPannello {
   /** Per legare la richiesta alla serata senza confrontare stringhe scritte a mano. */
   readonly codiceSerata: string;
   readonly sala?: string;
-  readonly tipo: "lista" | "tavolo";
+  readonly tipo: "lista" | "tavolo" | "navetta";
   readonly gruppo?: string;
   readonly budget?: string;
   readonly occasione?: string;
+  /** Solo per la navetta: da dove parte. */
+  readonly zona?: string;
   readonly messaggio?: string;
   /*
    * Da dove è arrivata la richiesta. Nel pannello non si mostra più da
@@ -50,146 +54,111 @@ export interface RichiestaPannello {
   readonly bigliettoInviatoAlle?: string;
 }
 
-/*
- * Mutabile, perché le funzioni di scrittura devono poter cambiare qualcosa.
- * Con il database questa lista sparisce e restano solo le funzioni.
- */
-let RICHIESTE: RichiestaPannello[] = [
-  {
-    id: "giulia-marchetti",
-    nome: "Giulia Marchetti",
-    telefono: "340 000 0000",
-    quando: "18:42",
-    serata: "Sabato",
-    nomeSerata: "DUE SALE",
-    codiceSerata: "sabato",
-    sala: "Sala 2",
-    tipo: "tavolo",
-    gruppo: "Misto",
-    budget: "35–50 €",
-    occasione: "Compleanno",
-    messaggio: "Siamo un bel gruppo, vorremmo la torta al tavolo verso l'una.",
-    provenienza: "Storie Instagram",
-    stato: "nuova",
-    notePrivate: "Già venuta a giugno con 8 persone, tavolo pagato senza problemi.",
-  },
-  {
-    id: "marco-fanelli",
-    nome: "Marco Fanelli",
-    telefono: "340 000 0001",
-    quando: "18:10",
-    serata: "Sabato",
-    nomeSerata: "DUE SALE",
-    codiceSerata: "sabato",
-    sala: "Sala 1",
-    tipo: "tavolo",
-    gruppo: "Solo ragazzi",
-    budget: "25–30 €",
-    provenienza: "Link di Marco",
-    stato: "nuova",
-  },
-  {
-    id: "sara-conti",
-    nome: "Sara Conti",
-    telefono: "340 000 0002",
-    quando: "17:55",
-    serata: "Domenica Báilame",
-    nomeSerata: "BÁILAME",
-    codiceSerata: "bailame",
-    tipo: "lista",
-    provenienza: "Bio Instagram",
-    stato: "nuova",
-  },
-  {
-    id: "federico-nardi",
-    nome: "Federico Nardi",
-    telefono: "340 000 0003",
-    quando: "16:30",
-    serata: "Sabato",
-    nomeSerata: "DUE SALE",
-    codiceSerata: "sabato",
-    sala: "Sala 1",
-    tipo: "tavolo",
-    gruppo: "Misto",
-    budget: "Oltre 50 €",
-    provenienza: "Storie Instagram",
-    stato: "confermata",
-    bigliettoInviatoAlle: "17:20",
-  },
-  {
-    id: "elisa-rinaldi",
-    nome: "Elisa Rinaldi",
-    telefono: "340 000 0004",
-    quando: "15:10",
-    serata: "Sabato",
-    nomeSerata: "DUE SALE",
-    codiceSerata: "sabato",
-    sala: "Sala 2",
-    tipo: "lista",
-    provenienza: "Google",
-    stato: "confermata",
-    bigliettoInviatoAlle: "15:40",
-  },
-  {
-    id: "chiara-bianchi",
-    nome: "Chiara Bianchi",
-    telefono: "340 000 0005",
-    quando: "14:20",
-    serata: "Sabato",
-    nomeSerata: "DUE SALE",
-    codiceSerata: "sabato",
-    sala: "Sala 2",
-    tipo: "tavolo",
-    gruppo: "Solo ragazze",
-    budget: "35–50 €",
-    occasione: "Laurea",
-    provenienza: "Bio Instagram",
-    stato: "confermata",
-    bigliettoInviatoAlle: "14:50",
-  },
-  {
-    id: "luca-ferri",
-    nome: "Luca Ferri",
-    telefono: "340 000 0006",
-    quando: "13:05",
-    serata: "Sabato",
-    nomeSerata: "DUE SALE",
-    codiceSerata: "sabato",
-    sala: "Sala 1",
-    tipo: "lista",
-    provenienza: "Diretto",
-    stato: "confermata",
-    bigliettoInviatoAlle: "13:40",
-  },
-  {
-    id: "matteo-conti",
-    nome: "Matteo Conti",
-    telefono: "340 000 0007",
-    quando: "12:30",
-    serata: "Sabato",
-    nomeSerata: "DUE SALE",
-    codiceSerata: "sabato",
-    sala: "Sala 2",
-    tipo: "lista",
-    provenienza: "TikTok",
-    stato: "confermata",
-    bigliettoInviatoAlle: "12:45",
-  },
-  {
-    id: "alessia-romano",
-    nome: "Alessia Romano",
-    telefono: "340 000 0008",
-    quando: "11:15",
-    serata: "Sabato",
-    nomeSerata: "DUE SALE",
-    codiceSerata: "sabato",
-    sala: "Sala 1",
-    tipo: "lista",
-    provenienza: "Storie Instagram",
-    stato: "confermata",
-    bigliettoInviatoAlle: "11:30",
-  },
-];
+/** Una riga della tabella "richieste", così come la scrive Postgres. */
+interface RigaRichiesta {
+  readonly id: string;
+  readonly quando: Date;
+  readonly nome: string;
+  readonly telefono: string;
+  readonly serata: string;
+  readonly nome_serata: string;
+  readonly codice_serata: string;
+  readonly sala: string | null;
+  readonly tipo: string;
+  readonly gruppo: string | null;
+  readonly budget: string | null;
+  readonly occasione: string | null;
+  readonly zona: string | null;
+  readonly messaggio: string | null;
+  readonly provenienza: string;
+  readonly stato: string;
+  readonly note_private: string | null;
+  readonly biglietto_inviato_alle: string | null;
+}
+
+/** L'ora di adesso come la scrivono le schermate: 18:42. */
+function comeOra(quando: Date): string {
+  return new Intl.DateTimeFormat("it-IT", {
+    timeZone: "Europe/Rome",
+    hour: "2-digit",
+    minute: "2-digit",
+  }).format(quando);
+}
+
+function daRiga(r: RigaRichiesta): RichiestaPannello {
+  return {
+    id: r.id,
+    nome: r.nome,
+    telefono: r.telefono,
+    quando: comeOra(r.quando),
+    serata: r.serata,
+    nomeSerata: r.nome_serata,
+    codiceSerata: r.codice_serata,
+    tipo: r.tipo as RichiestaPannello["tipo"],
+    provenienza: r.provenienza,
+    stato: r.stato as StatoRichiesta,
+    ...(r.sala === null ? {} : { sala: r.sala }),
+    ...(r.gruppo === null ? {} : { gruppo: r.gruppo }),
+    ...(r.budget === null ? {} : { budget: r.budget }),
+    ...(r.occasione === null ? {} : { occasione: r.occasione }),
+    ...(r.zona === null ? {} : { zona: r.zona }),
+    ...(r.messaggio === null ? {} : { messaggio: r.messaggio }),
+    ...(r.note_private === null ? {} : { notePrivate: r.note_private }),
+    ...(r.biglietto_inviato_alle === null ? {} : { bigliettoInviatoAlle: r.biglietto_inviato_alle }),
+  };
+}
+
+export interface NuovaRichiesta {
+  readonly nome: string;
+  readonly telefono: string;
+  readonly serata: string;
+  readonly nomeSerata: string;
+  readonly codiceSerata: string;
+  readonly tipo: RichiestaPannello["tipo"];
+  readonly provenienza: string;
+  readonly sala?: string;
+  readonly gruppo?: string;
+  readonly budget?: string;
+  readonly occasione?: string;
+  readonly zona?: string;
+  readonly messaggio?: string;
+}
+
+/** Un id leggibile, che si vede anche nel link della singola richiesta. */
+function nuovoId(nome: string): string {
+  const base = nome
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[̀-ͯ]/g, "")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/(^-|-$)/g, "");
+
+  return `${base}-${Math.random().toString(36).slice(2, 7)}`;
+}
+
+/** Scrive la richiesta vera sul database. La vede subito il pannello. */
+export async function creaRichiesta(dati: NuovaRichiesta): Promise<RichiestaPannello> {
+  const sql = await db();
+  const id = nuovoId(dati.nome);
+
+  await sql`
+    INSERT INTO richieste (
+      id, nome, telefono, serata, nome_serata, codice_serata, sala, tipo,
+      gruppo, budget, occasione, zona, messaggio, provenienza, stato
+    ) VALUES (
+      ${id}, ${dati.nome}, ${dati.telefono}, ${dati.serata}, ${dati.nomeSerata},
+      ${dati.codiceSerata}, ${dati.sala ?? null}, ${dati.tipo}, ${dati.gruppo ?? null},
+      ${dati.budget ?? null}, ${dati.occasione ?? null}, ${dati.zona ?? null},
+      ${dati.messaggio ?? null}, ${dati.provenienza}, 'nuova'
+    )
+  `;
+
+  const creata = await richiesta(id);
+  if (creata === undefined) {
+    throw new Error("La richiesta appena scritta non si trova più");
+  }
+  return creata;
+}
 
 export interface Stasera {
   readonly codice: string;
@@ -254,8 +223,8 @@ let ATTESA = { specialGuest: 128, capodanno: 64 };
 
 /* ------------------------------ lettura ------------------------------ */
 
-export function stasera(): Stasera {
-  const confermati = confermatiPerSerata("sabato");
+export async function stasera(): Promise<Stasera> {
+  const confermati = await confermatiPerSerata("sabato");
 
   return {
     codice: "sabato",
@@ -271,22 +240,36 @@ export function stasera(): Stasera {
   };
 }
 
-export function richieste(stato?: StatoRichiesta): readonly RichiestaPannello[] {
-  return stato === undefined ? RICHIESTE : RICHIESTE.filter((r) => r.stato === stato);
+export async function richieste(stato?: StatoRichiesta): Promise<readonly RichiestaPannello[]> {
+  const sql = await db();
+  const righe = (
+    stato === undefined
+      ? await sql`SELECT * FROM richieste ORDER BY creata_alle DESC`
+      : await sql`SELECT * FROM richieste WHERE stato = ${stato} ORDER BY creata_alle DESC`
+  ) as unknown as RigaRichiesta[];
+  return righe.map(daRiga);
 }
 
-export function richiesta(id: string): RichiestaPannello | undefined {
-  return RICHIESTE.find((r) => r.id === id);
+export async function richiesta(id: string): Promise<RichiestaPannello | undefined> {
+  const sql = await db();
+  const righe = (await sql`SELECT * FROM richieste WHERE id = ${id}`) as unknown as RigaRichiesta[];
+  return righe[0] === undefined ? undefined : daRiga(righe[0]);
 }
 
 /**
  * Chi è confermato per una serata.
  *
- * Con il database filtrerà anche sulla data, perché lo stesso sabato torna
- * ogni settimana; adesso gli esempi vivono in una settimana sola.
+ * Filtra solo sullo stato, non sulla data: lo stesso sabato torna ogni
+ * settimana, e finché le serate passate non si archiviano questa vede
+ * "confermata" per qualunque sabato sia stato.
  */
-export function confermatiPerSerata(codice: string): readonly RichiestaPannello[] {
-  return RICHIESTE.filter((r) => r.codiceSerata === codice && r.stato === "confermata");
+export async function confermatiPerSerata(codice: string): Promise<readonly RichiestaPannello[]> {
+  const sql = await db();
+  const righe = (await sql`
+    SELECT * FROM richieste WHERE codice_serata = ${codice} AND stato = 'confermata'
+    ORDER BY creata_alle DESC
+  `) as unknown as RigaRichiesta[];
+  return righe.map(daRiga);
 }
 
 export function serate(): readonly SerataPannello[] {
@@ -328,25 +311,15 @@ export function ultimiIngressi(): readonly Ingresso[] {
 
 /* ------------------------------ scrittura ------------------------------ */
 
-/** L'ora di adesso come la scrivono le schermate: 18:42. */
-function adesso(): string {
-  return new Intl.DateTimeFormat("it-IT", {
-    timeZone: "Europe/Rome",
-    hour: "2-digit",
-    minute: "2-digit",
-  }).format(new Date());
-}
+export async function aggiornaStato(id: string, stato: StatoRichiesta): Promise<void> {
+  const sql = await db();
+  const bigliettoOra = stato === "confermata" ? comeOra(new Date()) : null;
 
-export function aggiornaStato(id: string, stato: StatoRichiesta): void {
-  RICHIESTE = RICHIESTE.map((r) =>
-    r.id === id
-      ? {
-          ...r,
-          stato,
-          ...(stato === "confermata" ? { bigliettoInviatoAlle: adesso() } : {}),
-        }
-      : r,
-  );
+  await sql`
+    UPDATE richieste
+    SET stato = ${stato}, biglietto_inviato_alle = COALESCE(${bigliettoOra}, biglietto_inviato_alle)
+    WHERE id = ${id}
+  `;
 }
 
 export function impostaEtichetta(codice: string, etichetta: EtichettaSerata): void {

@@ -5,6 +5,14 @@ import { BarraPannello } from "@/componenti/pannello/BarraPannello";
 import { richieste } from "@/lib/pannello/dati";
 import { sessioneAperta } from "@/lib/pannello/sessione";
 
+/*
+ * Ogni schermata qui dentro legge la sessione di chi la guarda (e, per le
+ * richieste, il database): non ha senso prepararne una copia in anticipo
+ * quando il sito si costruisce. Vale per tutto il gruppo, non pagina per
+ * pagina, perché "dimenticata su una schermata nuova" è un errore facile.
+ */
+export const dynamic = "force-dynamic";
+
 /**
  * Tutto quello che sta dentro questo gruppo è protetto: se la sessione non
  * c'è si finisce sull'accesso, che sta fuori dal gruppo e quindi non si
@@ -18,10 +26,12 @@ export default async function LayoutDentro({ children }: { children: ReactNode }
     redirect("/pannello/accesso");
   }
 
+  const nuove = await richieste("nuova");
+
   return (
     <>
       {children}
-      <BarraPannello nuove={richieste("nuova").length} />
+      <BarraPannello nuove={nuove.length} />
     </>
   );
 }

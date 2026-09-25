@@ -19,12 +19,23 @@ function unisci(pezzi: readonly (string | null | undefined)[]): string {
   return lega(pezzi.filter((p) => p !== null && p !== undefined && p !== "").join(", "));
 }
 
+/** Es. "tavolo misto", "lista", "navetta da Trastevere". */
+function tipoBreve(r: RichiestaPannello): string {
+  if (r.tipo === "tavolo") {
+    return `tavolo ${(r.gruppo ?? "").toLowerCase()}`.trim();
+  }
+  if (r.tipo === "navetta") {
+    return r.zona === undefined ? "navetta" : `navetta da ${r.zona}`;
+  }
+  return "lista";
+}
+
 /** "Sabato, Sala 2, tavolo misto, 35–50 € a testa" */
 export function riassunto(r: RichiestaPannello): string {
   return unisci([
     r.serata,
     r.sala,
-    r.tipo === "tavolo" ? `tavolo ${(r.gruppo ?? "").toLowerCase()}`.trim() : "lista",
+    tipoBreve(r),
     r.budget === undefined ? null : `${r.budget} a testa`,
   ]);
 }
@@ -45,10 +56,22 @@ export function serataSala(r: RichiestaPannello): string {
 
 /** Come finisce scritto sul biglietto: "TAVOLO, MISTO" oppure "LISTA". */
 export function tipoBiglietto(r: RichiestaPannello): string {
-  return r.tipo === "tavolo" ? `TAVOLO, ${(r.gruppo ?? "").toUpperCase()}` : "LISTA";
+  if (r.tipo === "tavolo") {
+    return `TAVOLO, ${(r.gruppo ?? "").toUpperCase()}`;
+  }
+  if (r.tipo === "navetta") {
+    return "NAVETTA";
+  }
+  return "LISTA";
 }
 
 /** "Tavolo, misto" oppure "Lista", per la riga sotto il nome. */
 export function tipoEsteso(r: RichiestaPannello): string {
-  return r.tipo === "tavolo" ? `Tavolo, ${(r.gruppo ?? "").toLowerCase()}` : "Lista";
+  if (r.tipo === "tavolo") {
+    return `Tavolo, ${(r.gruppo ?? "").toLowerCase()}`;
+  }
+  if (r.tipo === "navetta") {
+    return r.zona === undefined ? "Navetta" : `Navetta, ${r.zona.toLowerCase()}`;
+  }
+  return "Lista";
 }

@@ -13,17 +13,20 @@
     "strip": "node scripts/genera-strip.mjs"
   },
   "dependencies": {
+    "@neondatabase/serverless": "^1.1.0",
     "jsqr": "^1.4.0",
     "next": "16.3.6",
     "passkit-generator": "3.6.1",
     "react": "19.2.0",
-    "react-dom": "19.2.0"
+    "react-dom": "19.2.0",
+    "web-push": "^3.6.7"
   },
   "devDependencies": {
     "@types/node": "24.10.1",
     "@types/qrcode": "^1.5.6",
     "@types/react": "19.2.2",
     "@types/react-dom": "19.2.1",
+    "@types/web-push": "^3.6.4",
     "qrcode": "^1.5.4",
     "sharp": "0.35.4",
     "typescript": "5.9.3"

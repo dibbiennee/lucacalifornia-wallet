@@ -12,6 +12,7 @@ import {
   type StatoRichiesta,
 } from "@/lib/pannello/dati";
 import { sessioneAperta } from "@/lib/pannello/sessione";
+import { avvisaTutti } from "@/lib/push";
 
 /**
  * Le azioni del pannello.
@@ -40,7 +41,7 @@ const TESTI: Readonly<Record<StatoRichiesta, string>> = {
 
 export async function cambiaStato(id: string, stato: StatoRichiesta): Promise<string> {
   await dentro();
-  aggiornaStato(id, stato);
+  await aggiornaStato(id, stato);
 
   // Cambia il numero sulla scheda "Richieste", quindi si aggiorna tutto il gruppo.
   revalidatePath("/pannello", "layout");
@@ -86,4 +87,12 @@ export async function nuovoPr(nome: string): Promise<string> {
   revalidatePath("/pannello/squadra");
 
   return `Link creato: ${pr.link}`;
+}
+
+/** Manda una notifica di prova a tutti i telefoni iscritti, per verificare che arrivi. */
+export async function provaNotifica(): Promise<string> {
+  await dentro();
+  await avvisaTutti("Prova", "Se leggi questa, le notifiche funzionano.", "/pannello/richieste");
+
+  return "Notifica di prova mandata.";
 }

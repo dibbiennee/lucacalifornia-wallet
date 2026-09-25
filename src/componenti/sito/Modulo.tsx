@@ -148,11 +148,6 @@ export function Modulo() {
             vedova: true,
           })}
         </p>
-        <p className={stili.dopo}>
-          {legaParole("Questa è un'anteprima del sito: la richiesta non viene conservata.", {
-            vedova: true,
-          })}
-        </p>
       </div>
     );
   }
