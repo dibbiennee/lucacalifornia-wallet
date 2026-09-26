@@ -33,6 +33,7 @@ export default function Home() {
             etichetta="Avvisami"
             titolo="Ti avviso appena esce il programma"
             spiegazione="Quando pubblico data e biglietti, lo sai prima degli altri. Niente messaggi per altro."
+            aspetto="nero"
           />
         }
       />

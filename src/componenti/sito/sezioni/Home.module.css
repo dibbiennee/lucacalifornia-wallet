@@ -10,6 +10,7 @@
   border-radius: var(--r-l);
   background: var(--surface);
   border: 1.5px solid var(--line);
+  container-type: inline-size;
 }
 
 /*
@@ -54,6 +55,49 @@
   height: 10px;
   border-radius: 50%;
   background: var(--magenta);
+}
+
+/*
+ * Halloween si fa notare rispetto a chi aspetta senza colore: fondo
+ * arancione pieno invece del grigio scuro, testo scuro sopra per il
+ * contrasto (come le altre tessere a fondo chiaro), niente bordo perché su
+ * un colore pieno il filo grigio sporcava invece di rifinire.
+ */
+.halloween {
+  background: var(--sun);
+  color: var(--ink);
+  border-color: transparent;
+}
+
+.halloween .arrivo {
+  color: var(--ink);
+}
+
+.halloween .arrivo i {
+  background: var(--ink);
+}
+
+.halloweenTesta {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-width: 0;
+  flex: 1;
+}
+
+.halloweenTesta svg {
+  flex: none;
+}
+
+/*
+ * Sotto i 360px la scheda non ha spazio sia per la zucca che per "Halloween"
+ * intero, e "Halloween" (una parola sola) non può stringersi cedendo alla
+ * zucca: sparisce lei, non lui.
+ */
+@container (max-width: 360px) {
+  .halloweenTesta svg {
+    display: none;
+  }
 }
 
 /* --- Tutto il resto --- */

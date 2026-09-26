@@ -26,7 +26,7 @@ export function FoglioAvvisami({
   readonly etichetta: string;
   readonly titolo: string;
   readonly spiegazione: string;
-  readonly aspetto?: "chiaro" | "caldo" | "contorno";
+  readonly aspetto?: "chiaro" | "caldo" | "contorno" | "nero";
 }) {
   const id = useId();
   const finestra = useRef<HTMLDialogElement | null>(null);

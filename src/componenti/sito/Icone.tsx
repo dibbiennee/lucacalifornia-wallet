@@ -77,6 +77,31 @@ export function Pass({ colore }: { readonly colore: string }) {
   );
 }
 
+/** La zucca di Halloween: il corpo prende il colore del testo, la faccia quello del fondo. */
+export function Zucca({ colore }: { readonly colore: string }) {
+  return (
+    <svg viewBox="0 0 64 64" width="44" height="44" aria-hidden focusable="false">
+      <g fill="currentColor">
+        <ellipse cx="20" cy="35" rx="11" ry="18" />
+        <ellipse cx="32" cy="35" rx="12.5" ry="19" />
+        <ellipse cx="44" cy="35" rx="11" ry="18" />
+      </g>
+      <path
+        d="M32 3c5 1 7 6 4 10"
+        stroke="currentColor"
+        strokeWidth="4"
+        strokeLinecap="round"
+        fill="none"
+      />
+      <g fill={colore}>
+        <path d="M17 30l7 7h-7z" />
+        <path d="M47 30l-7 7h7z" />
+        <path d="M17 46c4 4 8 4 15 0c7 4 11 4 15 0l-2 5c-4 3-9 3-13 0c-4 3-9 3-13 0z" />
+      </g>
+    </svg>
+  );
+}
+
 /** Il gallone del ritorno indietro. */
 export function Gallone() {
   return (
