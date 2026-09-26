@@ -6,17 +6,17 @@ export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 /**
- * Le liste d'attesa: special guest e Capodanno.
+ * Le liste d'attesa: special guest, Halloween e Capodanno.
  *
  * Nel sito vero questi contatti finiscono nella tabella liste_attesa, con il
  * tipo accanto, così quando Luca pubblica date e prezzi ha già chi avvisare.
- * I tipi sono quattro: special guest, Capodanno e le due sedi estive, che
- * non hanno ancora un calendario da mostrare.
+ * I tipi sono cinque: special guest, Halloween, Capodanno e le due sedi
+ * estive, che non hanno ancora un calendario da mostrare.
  * In anteprima non c'è database: la richiesta viene controllata e confermata,
  * ma non conservata, e la pagina lo dice a chi la manda.
  */
 
-const TIPI = ["special_guest", "capodanno", "ninfeo", "morgan"] as const;
+const TIPI = ["special_guest", "halloween", "capodanno", "ninfeo", "morgan"] as const;
 type Tipo = (typeof TIPI)[number];
 
 function testo(valore: unknown, massimo: number): string | null {

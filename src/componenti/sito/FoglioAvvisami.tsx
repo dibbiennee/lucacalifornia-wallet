@@ -8,8 +8,8 @@ import stili from "./FoglioAvvisami.module.css";
 /**
  * "Avvisami": un nome, un contatto, e basta.
  *
- * Lo usano lo special guest, il Capodanno e le due stagioni estive: cose che
- * non hanno ancora una data, ma hanno già chi le aspetta.
+ * Lo usano lo special guest, Halloween, il Capodanno e le due stagioni
+ * estive: cose che non hanno ancora una data, ma hanno già chi le aspetta.
  *
  * Il foglio sale dal basso perché è lì che sta il pollice, e si chiude
  * toccando fuori o con Esc, senza dover centrare la crocetta.
@@ -21,7 +21,7 @@ export function FoglioAvvisami({
   spiegazione,
   aspetto = "chiaro",
 }: {
-  readonly tipo: "special_guest" | "capodanno" | "ninfeo" | "morgan";
+  readonly tipo: "special_guest" | "halloween" | "capodanno" | "ninfeo" | "morgan";
   /** Il testo del pulsante che lo apre. */
   readonly etichetta: string;
   readonly titolo: string;

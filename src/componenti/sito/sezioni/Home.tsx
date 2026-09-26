@@ -4,7 +4,7 @@ import Link from "next/link";
 import { Bottone } from "@/componenti/sito/Bottone";
 import { StrisciaSerate } from "@/componenti/sito/CardSerata";
 import { Brindisi, Navetta, Pass } from "@/componenti/sito/Icone";
-import { COME_FUNZIONA, INSTAGRAM_URL, SERATE, SPECIAL_GUEST } from "@/contenuti/sito";
+import { COME_FUNZIONA, HALLOWEEN, INSTAGRAM_URL, SERATE, SPECIAL_GUEST } from "@/contenuti/sito";
 import { legaParole } from "@/lib/tipografia";
 
 import stili from "./Home.module.css";
@@ -153,10 +153,30 @@ export function SpecialGuest({ avvisami }: { readonly avvisami: React.ReactNode 
     <section className="blocco" style={{ paddingTop: 0 }} aria-label={SPECIAL_GUEST.titolo}>
       <div className="wrap">
         <div className={`${stili.ospite} rivela`}>
-          <div>
+          <div className={stili.ospiteTesto}>
             <strong>Special guest</strong>
             <p className={stili.arrivo}>
               <i aria-hidden />
+              In arrivo
+            </p>
+          </div>
+          {avvisami}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/** Halloween: stessa attesa dello special guest, un locale diverso. */
+export function Halloween({ avvisami }: { readonly avvisami: React.ReactNode }) {
+  return (
+    <section className="blocco" style={{ paddingTop: 0 }} aria-label={HALLOWEEN.titolo}>
+      <div className="wrap">
+        <div className={`${stili.ospite} rivela`}>
+          <div className={stili.ospiteTesto}>
+            <strong>Halloween</strong>
+            <p className={stili.arrivo} style={{ color: "var(--sun)" }}>
+              <i aria-hidden style={{ background: "var(--sun)" }} />
               In arrivo
             </p>
           </div>

@@ -4,6 +4,7 @@ import { Apertura } from "@/componenti/sito/sezioni/Apertura";
 import {
   ChiELuca,
   ComeFunziona,
+  Halloween,
   Serate,
   SpecialGuest,
   TuttoIlResto,
@@ -22,6 +23,16 @@ export default function Home() {
             etichetta="Avvisami"
             titolo="Ti avviso appena esce il nome"
             spiegazione="Quando c'è un ospite, lo sai prima degli altri. Niente messaggi per altro."
+          />
+        }
+      />
+      <Halloween
+        avvisami={
+          <FoglioAvvisami
+            tipo="halloween"
+            etichetta="Avvisami"
+            titolo="Ti avviso appena esce il programma"
+            spiegazione="Quando pubblico data e biglietti, lo sai prima degli altri. Niente messaggi per altro."
           />
         }
       />

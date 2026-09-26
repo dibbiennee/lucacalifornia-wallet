@@ -196,3 +196,9 @@ export const SPECIAL_GUEST = {
   testo: "Sii il primo a saperlo.",
   azione: "AVVISAMI",
 } as const;
+
+export const HALLOWEEN = {
+  titolo: "HALLOWEEN IN ARRIVO",
+  testo: "Sii il primo a saperlo.",
+  azione: "AVVISAMI",
+} as const;
