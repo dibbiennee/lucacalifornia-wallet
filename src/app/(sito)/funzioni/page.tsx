@@ -2,7 +2,8 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { Bottone } from "@/componenti/sito/Bottone";
-import { Indietro, Introduzione, Nota, Punti, TestaPagina, Titolo2 } from "@/componenti/sito/Pagina";
+import { Indietro } from "@/componenti/sito/Indietro";
+import { Introduzione, Nota, Punti, TestaPagina, Titolo2 } from "@/componenti/sito/Pagina";
 import stili from "@/componenti/sito/Pagina.module.css";
 import { legaParole } from "@/lib/tipografia";
 

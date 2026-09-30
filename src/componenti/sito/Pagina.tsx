@@ -1,5 +1,4 @@
 import Image from "next/image";
-import Link from "next/link";
 import type { ReactNode } from "react";
 
 import { legaParole } from "@/lib/tipografia";
@@ -54,18 +53,6 @@ export function Titolo2({
 
 export function Nota({ children }: { readonly children: Frase }) {
   return <p className="nota">{legaParole(insieme(children), { vedova: true })}</p>;
-}
-
-/** Il ritorno indietro, in cima a ogni pagina interna. */
-export function Indietro({ testo, dove }: { readonly testo: string; readonly dove: string }) {
-  return (
-    <div className={`wrap ${stili.cima}`}>
-      <Link href={dove} className="indietro">
-        <Gallone />
-        {testo}
-      </Link>
-    </div>
-  );
 }
 
 /**
@@ -204,11 +191,13 @@ export function Altre({ children }: { readonly children: ReactNode }) {
 /** Le foto delle serate, che scorrono di lato. */
 export function Galleria({
   foto,
+  etichetta = "Foto dalle storie, scorri di lato",
 }: {
   readonly foto: readonly { readonly src: string; readonly alt: string }[];
+  readonly etichetta?: string;
 }) {
   return (
-    <div className={stili.galleria} tabIndex={0} aria-label="Foto dalle storie, scorri di lato">
+    <div className={stili.galleria} tabIndex={0} aria-label={etichetta}>
       {foto.map((f) => (
         <Image key={f.src} src={f.src} alt={f.alt} width={640} height={996} sizes="(min-width: 720px) 25vw, 60vw" />
       ))}

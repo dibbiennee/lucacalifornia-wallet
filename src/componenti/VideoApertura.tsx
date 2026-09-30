@@ -1,6 +1,8 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
+
+import stili from "./VideoApertura.module.css";
 
 /**
  * Il video dell'apertura.
@@ -30,6 +32,8 @@ const LARGO = "(min-width: 52rem)";
 
 export function VideoApertura() {
   const video = useRef<HTMLVideoElement | null>(null);
+  const [conAudio, setConAudio] = useState(false);
+  const [silenziato, setSilenziato] = useState(true);
 
   useEffect(() => {
     const elemento = video.current;
@@ -59,8 +63,12 @@ export function VideoApertura() {
       elemento.dataset["taglio"] = "apertura-telefono";
       scambia();
       // Il play può essere rifiutato (batteria bassa, impostazioni): sotto
-      // resta la foto, che è quello che si vede comunque.
-      void elemento.play().catch(() => undefined);
+      // resta la foto, che è quello che si vede comunque, e il pallino
+      // dell'audio non compare perché non c'è niente da silenziare.
+      elemento
+        .play()
+        .then(() => setConAudio(true))
+        .catch(() => undefined);
       largo.addEventListener("change", scambia);
     };
 
@@ -76,21 +84,63 @@ export function VideoApertura() {
     };
   }, []);
 
+  const cambiaAudio = () => {
+    const elemento = video.current;
+    if (elemento === null) {
+      return;
+    }
+    elemento.muted = !elemento.muted;
+    setSilenziato(elemento.muted);
+  };
+
   return (
-    <video
-      ref={video}
-      className="apertura-media apertura-video"
-      muted
-      loop
-      playsInline
-      preload="none"
-      /* Niente poster: sotto c'è già la foto della prima schermata, e due
-         immagini di sfondo sono trenta kilobyte buttati. */
-      aria-hidden
-      tabIndex={-1}
-    >
-      <source src="/video/apertura-telefono.webm" type="video/webm" />
-      <source src="/video/apertura-telefono.mp4" type="video/mp4" />
-    </video>
+    <>
+      <video
+        ref={video}
+        className="apertura-media apertura-video"
+        muted
+        loop
+        playsInline
+        preload="none"
+        /* Niente poster: sotto c'è già la foto della prima schermata, e due
+           immagini di sfondo sono trenta kilobyte buttati. */
+        aria-hidden
+        tabIndex={-1}
+      >
+        <source src="/video/apertura-telefono.webm" type="video/webm" />
+        <source src="/video/apertura-telefono.mp4" type="video/mp4" />
+      </video>
+
+      {conAudio && (
+        <button
+          type="button"
+          onClick={cambiaAudio}
+          className={stili.audio}
+          aria-label={silenziato ? "Attiva l'audio del video" : "Disattiva l'audio del video"}
+          aria-pressed={!silenziato}
+        >
+          <IconaAudio silenziato={silenziato} />
+        </button>
+      )}
+    </>
+  );
+}
+
+function IconaAudio({ silenziato }: { readonly silenziato: boolean }) {
+  return (
+    <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden focusable="false">
+      <path d="M4 9v6h4l5 4V5L8 9H4z" fill="currentColor" />
+      {silenziato ? (
+        <path d="M15.5 9.5l5 5m0-5l-5 5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" fill="none" />
+      ) : (
+        <path
+          d="M16.2 8.8a5 5 0 0 1 0 6.4M18.6 6.4a8.5 8.5 0 0 1 0 11.2"
+          stroke="currentColor"
+          strokeWidth="1.8"
+          strokeLinecap="round"
+          fill="none"
+        />
+      )}
+    </svg>
   );
 }

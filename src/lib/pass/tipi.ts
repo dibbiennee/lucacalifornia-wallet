@@ -8,6 +8,10 @@ export const LOCALI = {
     nome: "Ninfeo, Roma",
     indirizzo: "",
   },
+  morgan: {
+    nome: "Morgan Beach Club, Civitavecchia",
+    indirizzo: "",
+  },
 } as const;
 
 export type CodiceLocale = keyof typeof LOCALI;

@@ -30,3 +30,4 @@ next-env.d.ts
 
 # cache di tsc --noEmit
 tsconfig.tsbuildinfo
+sorgenti-video/

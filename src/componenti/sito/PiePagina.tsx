@@ -16,10 +16,12 @@ export function PiePagina() {
       <div className={`wrap ${stili.dentro}`}>
         <Link href="/" className={stili.marchio} aria-label="Luca California, home">
           <Marchio misura={48} />
-          <span className={stili.parola}>
-            LUCA
-            <br />
-            CALIFORNIA
+          <span className={stili.testo}>
+            <span className={stili.parola}>
+              LUCA
+              <br />
+              CALIFORNIA
+            </span>
           </span>
         </Link>
 

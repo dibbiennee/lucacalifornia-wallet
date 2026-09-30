@@ -1,7 +1,8 @@
 import Image from "next/image";
 
 import { Bottone } from "@/componenti/sito/Bottone";
-import { Indietro, Introduzione, TestaPagina } from "@/componenti/sito/Pagina";
+import { Indietro } from "@/componenti/sito/Indietro";
+import { Introduzione, TestaPagina } from "@/componenti/sito/Pagina";
 import stili from "@/componenti/sito/Pagina.module.css";
 import { INSTAGRAM, INSTAGRAM_URL, MOTTO } from "@/contenuti/sito";
 
@@ -32,8 +33,8 @@ export default function PaginaChiSono() {
         />
 
         <Introduzione>Sono Luca Curella, PR e organizzatore di eventi a Roma. Ogni stagione scelgo un locale
-          solo e ci porto tutta la mia passione: d&apos;inverno il Room 26, d&apos;estate il
-          Ninfeo.</Introduzione>
+          solo e ci porto tutta la mia passione: d&apos;inverno il Room 26, d&apos;estate il Ninfeo e
+          il Morgan Beach Club.</Introduzione>
 
         <div style={{ marginTop: 24 }}>
           <Bottone href={INSTAGRAM_URL} aspetto="contorno" esterno>

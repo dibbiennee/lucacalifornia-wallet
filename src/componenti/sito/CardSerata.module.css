@@ -10,13 +10,11 @@
 
 .riga {
   display: grid;
-  /* "auto" e non un numero fisso: "Domenica" è più largo di "Sabato", e un
-     numero solo o ballava stretto per lei o sprecava spazio per gli altri. */
-  grid-template-columns: auto 1fr 18px;
+  grid-template-columns: 52px 1fr 18px;
   align-items: center;
-  gap: 12px;
-  min-height: 60px;
-  padding: 10px 16px;
+  gap: 14px;
+  min-height: 68px;
+  padding: 8px 16px;
   border-radius: var(--r-m);
   background: var(--surface);
   text-decoration: none;
@@ -24,30 +22,61 @@
   container-type: inline-size;
 }
 
-.rigaGiorno {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 12.5px;
-  font-weight: 800;
-  color: var(--muted);
-  text-transform: uppercase;
-  letter-spacing: 0.02em;
-  white-space: nowrap;
+/*
+ * Chi ha un marchio suo lo indossa per intero: niente tassello a sinistra,
+ * la foto è la riga, spenta dentro il colore della riga sotto al testo.
+ * "cover" e non "contain": deve riempire, non stare in mezzo con bande
+ * vuote. La riga è bassa e larga, quindi orizzontalmente lo spazio combacia
+ * sempre: solo il fuoco verticale conta, e arriva da "badgePosizione" per
+ * ogni serata (qui sotto, in linea, altrimenti sarebbe lo stesso per tutte).
+ */
+.rigaConFoto {
+  grid-template-columns: 1fr 18px;
+  background-size: cover;
+  background-repeat: no-repeat;
 }
 
-/* Il colore della serata non sparisce: resta come pallino accanto al giorno. */
-.rigaGiorno i {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
+/*
+ * L'ombra sul testo, non un velo scuro sopra la foto: un velo abbastanza
+ * scuro da leggersi ovunque copriva anche il logo, che dietro ci sta.
+ * Con l'ombra il logo resta intero e il testo si legge lo stesso.
+ */
+.rigaConFoto .rigaNome,
+.rigaConFoto .rigaGenere {
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.85), 0 1px 10px rgba(0, 0, 0, 0.6);
+}
+
+.rigaConFoto .rigaGenere {
+  color: var(--text);
+}
+
+/*
+ * Il badge: un tassello del colore della serata con il giorno in tre
+ * lettere dentro, per chi non ha ancora una foto sua. Mai un pallino
+ * qualunque: anche senza foto, si riconosce da qui.
+ */
+.rigaBadge {
+  width: 52px;
+  height: 52px;
   flex: none;
+  border-radius: 14px;
+  overflow: hidden;
+  display: grid;
+  place-items: center;
+}
+
+.rigaBadge strong {
+  font-size: 14px;
+  font-weight: 900;
+  font-stretch: 118%;
+  text-transform: uppercase;
+  color: var(--ink);
 }
 
 .rigaTesto {
   display: flex;
   flex-direction: column;
-  gap: 1px;
+  gap: 2px;
   min-width: 0;
 }
 
@@ -62,6 +91,7 @@
   text-overflow: ellipsis;
 }
 
+/* "Giorno · genere": per il sabato è una riga lunga, tronca invece di sforare. */
 .rigaGenere {
   font-size: 12.5px;
   font-weight: 600;

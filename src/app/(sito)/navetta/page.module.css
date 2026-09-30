@@ -1,0 +1,23 @@
+/*
+ * La foto del bus solo in alto a destra, dove il titolo non arriva: sfuma
+ * verso sinistra fino a sparire, cosi resta un tocco e non un fondo pieno
+ * che renderebbe piu' dura la lettura del titolo e del testo sopra.
+ */
+.sfondo {
+  position: relative;
+  isolation: isolate;
+}
+
+.sfondo::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  opacity: 0.5;
+  background-image: url("/foto/atmosfera/navetta.jpg");
+  background-size: cover;
+  background-position: right center;
+  background-repeat: no-repeat;
+  -webkit-mask-image: linear-gradient(to left, rgba(0, 0, 0, 0.9) 0%, transparent 62%);
+  mask-image: linear-gradient(to left, rgba(0, 0, 0, 0.9) 0%, transparent 62%);
+}

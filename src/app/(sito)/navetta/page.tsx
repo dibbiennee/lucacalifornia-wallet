@@ -1,7 +1,10 @@
 import { FoglioNavetta } from "@/componenti/sito/FoglioNavetta";
-import { Indietro, Introduzione, Punti, TestaPagina } from "@/componenti/sito/Pagina";
+import { Indietro } from "@/componenti/sito/Indietro";
+import { Introduzione, Punti, TestaPagina } from "@/componenti/sito/Pagina";
 import stili from "@/componenti/sito/Pagina.module.css";
 import { NAVETTA } from "@/contenuti/sito";
+
+import stiliPagina from "./page.module.css";
 
 export const metadata = {
   title: "Servizio navetta - Luca California",
@@ -31,12 +34,14 @@ export default function PaginaNavetta() {
   return (
     <>
       <Indietro testo="Home" dove="/" />
-      <TestaPagina
-        occhiello={NAVETTA.occhiello.charAt(0) + NAVETTA.occhiello.slice(1).toLowerCase()}
-        colore="var(--cyan)"
-        righe={["Servizio navetta"]}
-        introduzione={NAVETTA.testo}
-      />
+      <div className={stiliPagina.sfondo}>
+        <TestaPagina
+          occhiello={NAVETTA.occhiello.charAt(0) + NAVETTA.occhiello.slice(1).toLowerCase()}
+          colore="var(--cyan)"
+          righe={["Servizio navetta"]}
+          introduzione={NAVETTA.testo}
+        />
+      </div>
 
       <section className="wrap" style={{ paddingBottom: 56 }}>
         <div className={stili.confronto}>

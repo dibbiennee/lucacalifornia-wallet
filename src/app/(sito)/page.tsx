@@ -5,7 +5,9 @@ import {
   ChiELuca,
   ComeFunziona,
   Halloween,
+  LeFoto,
   Serate,
+  SpaccaPagina,
   SpecialGuest,
   TuttoIlResto,
 } from "@/componenti/sito/sezioni/Home";
@@ -23,7 +25,6 @@ export default function Home() {
             etichetta="Avvisami"
             titolo="Ti avviso appena esce il programma"
             spiegazione="Quando pubblico data e biglietti, lo sai prima degli altri. Niente messaggi per altro."
-            aspetto="nero"
           />
         }
       />
@@ -39,6 +40,8 @@ export default function Home() {
       />
       <TuttoIlResto />
       <ComeFunziona />
+      <LeFoto />
+      <SpaccaPagina />
       <ChiELuca />
     </>
   );

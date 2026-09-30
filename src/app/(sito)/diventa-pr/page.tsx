@@ -1,7 +1,10 @@
 import { Bottone } from "@/componenti/sito/Bottone";
 import { FoglioCandidatura } from "@/componenti/sito/FoglioCandidatura";
-import { Indietro, Punti, TestaPagina } from "@/componenti/sito/Pagina";
+import { Indietro } from "@/componenti/sito/Indietro";
+import { Punti, TestaPagina } from "@/componenti/sito/Pagina";
 import { INSTAGRAM_URL } from "@/contenuti/sito";
+
+import stili from "./page.module.css";
 
 export const metadata = {
   title: "Diventa PR - Luca California",
@@ -27,12 +30,14 @@ export default function PaginaDiventaPr() {
   return (
     <>
       <Indietro testo="Home" dove="/" />
-      <TestaPagina
-        occhiello="All we have is now"
-        colore="var(--red)"
-        righe={["Per la figura", "di PR"]}
-        introduzione="Cerco nuovi PR per la mia squadra, a Roma e sul litorale. Non serve esperienza: la formazione la faccio io, di persona, in un percorso individuale in due giorni."
-      />
+      <div className={stili.sfondo}>
+        <TestaPagina
+          occhiello="All we have is now"
+          colore="var(--red)"
+          righe={["Per la figura", "di PR"]}
+          introduzione="Cerco nuovi PR per la mia squadra, a Roma e sul litorale. Non serve esperienza: la formazione la faccio io, di persona, in un percorso individuale in due giorni."
+        />
+      </div>
 
       <section className="wrap" style={{ paddingBottom: 56 }}>
         <p className="occhiello" style={{ color: "var(--muted)" }}>

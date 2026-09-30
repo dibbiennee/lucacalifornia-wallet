@@ -3,12 +3,12 @@ import Link from "next/link";
 
 import { Bottone } from "@/componenti/sito/Bottone";
 import { ListaSerate } from "@/componenti/sito/CardSerata";
-import { Brindisi, Navetta, Pass, Zucca } from "@/componenti/sito/Icone";
+import { Gallone, Pass } from "@/componenti/sito/Icone";
 import { COME_FUNZIONA, HALLOWEEN, INSTAGRAM_URL, SERATE, SPECIAL_GUEST } from "@/contenuti/sito";
 import { legaParole } from "@/lib/tipografia";
 
 import stili from "./Home.module.css";
-import { Titolo2 } from "@/componenti/sito/Pagina";
+import { Galleria, Titolo2 } from "@/componenti/sito/Pagina";
 
 /** Le quattro serate, con la fotografia e il colore di ognuna. */
 export function Serate() {
@@ -37,64 +37,52 @@ export function Serate() {
 /** Le sei strade che partono dalla home. */
 export function TuttoIlResto() {
   return (
-    <section className="blocco" style={{ paddingTop: 0 }} aria-labelledby="tutto-il-resto">
+    <section className="blocco" style={{ paddingTop: 0 }} aria-label="Tutto il resto">
       <div className="wrap">
-        <div className="blocco-testa rivela">
-          <Titolo2 id="tutto-il-resto" misura='clamp(25px, 7.6vw, 60px)'>Tutto il resto</Titolo2>
+        <div className={`${stili.divisore} rivela`} aria-hidden>
+          <span className={stili.divisoreLinea} />
+          <FrecciaGiu />
+          <span className={stili.divisoreLinea} />
         </div>
 
         <div className={`${stili.tessere} rivela`}>
-          <Link href="/tavoli" className={`${stili.tessera} ${stili["con-foto"]}`}>
-            <Image src="/foto/bottles.webp" alt="" width={640} height={480} sizes="(min-width: 720px) 33vw, 50vw" />
+          <Link href="/tavoli" className={`${stili.tessera} ${stili["con-foto"]} ${stili.tesseraFoto}`}>
+            <Image src="/foto/atmosfera/tavoli-tessera.jpg" alt="" width={640} height={373} sizes="(min-width: 720px) 33vw, 50vw" />
             <strong>Tavoli</strong>
             <span>{legaParole("Compleanni, lauree e bottiglie: ti preparo tutto io")}</span>
           </Link>
 
-          <Link href="/navetta" className={stili.tessera} style={{ background: "var(--cyan)" }}>
-            <span className={stili.icona}>
-              <Navetta colore="var(--cyan)" />
-            </span>
+          <Link href="/navetta" className={`${stili.tessera} ${stili.tesseraFoto}`}>
+            <Image src="/foto/atmosfera/navetta.jpg" alt="" width={640} height={530} sizes="50vw" />
             <strong>Navetta</strong>
             <span>{legaParole("Andata e ritorno dalla tua zona", { vedova: true })}</span>
           </Link>
 
-          <Link href="/capodanno" className={stili.tessera} style={{ background: "var(--acid)" }}>
-            <span className={stili.icona}>
-              <Brindisi />
-            </span>
+          <Link href="/capodanno" className={`${stili.tessera} ${stili.tesseraFoto}`}>
+            <Image src="/foto/atmosfera/capodanno.jpg" alt="" width={640} height={518} sizes="50vw" />
             <strong>Capodanno</strong>
             <span>{legaParole("Tre pacchetti, lista d'attesa aperta", { vedova: true })}</span>
           </Link>
 
-          <Link href="/locali" className={`${stili.tessera} ${stili["con-foto"]}`}>
+          <Link href="/locali" className={`${stili.tessera} ${stili["con-foto"]} ${stili.tesseraFoto}`}>
             <Image src="/foto/sunset.webp" alt="" width={640} height={480} sizes="(min-width: 720px) 33vw, 50vw" />
             <strong>D&apos;estate</strong>
-            <span>{legaParole("Il Ninfeo, all'EUR", { vedova: true })}</span>
+            <span>{legaParole("Ninfeo all'EUR e Morgan sul mare", { vedova: true })}</span>
           </Link>
 
-          <Link href="/diventa-pr" className={stili.tessera} style={{ background: "var(--red)" }}>
+          <Link
+            href="/diventa-pr"
+            className={`${stili.tessera} ${stili.piena}`}
+            style={{ background: "var(--red)" }}
+          >
             <span className={stili.icona}>
               <Pass colore="var(--red)" />
             </span>
-            <strong>Diventa PR</strong>
-            <span>{legaParole("Candidature aperte")}</span>
-          </Link>
-
-          <a
-            href="https://t.me/BAILAMEOFFICIAL"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={stili.tessera}
-            style={{ background: "var(--milk)" }}
-          >
-            <span className={stili.mazzo} aria-hidden>
-              <Image src="/foto/night12.webp" alt="" width={64} height={88} sizes="32px" />
-              <Image src="/foto/night4.webp" alt="" width={64} height={88} sizes="32px" />
-              <Image src="/foto/night3.webp" alt="" width={64} height={88} sizes="32px" />
+            <span className={stili.pienaTesto}>
+              <strong>Diventa PR</strong>
+              <span>{legaParole("Candidature aperte")}</span>
             </span>
-            <strong>{legaParole("Voi al Room 26")}</strong>
-            <span>{legaParole("Le foto delle serate")}</span>
-          </a>
+          </Link>
         </div>
       </div>
     </section>
@@ -104,7 +92,7 @@ export function TuttoIlResto() {
 /** I tre passi, dalla richiesta alla porta. */
 export function ComeFunziona() {
   return (
-    <section className="blocco" style={{ paddingTop: 0 }} aria-labelledby="come-funziona">
+    <section className={`blocco ${stili.comeFunzionaSfondo}`} style={{ paddingTop: 0 }} aria-labelledby="come-funziona">
       <div className="wrap">
         <div className="blocco-testa rivela">
           <p className="occhiello" style={{ margin: 0 }}>
@@ -129,6 +117,91 @@ export function ComeFunziona() {
           Entra in lista o prenota
         </Bottone>
       </div>
+    </section>
+  );
+}
+
+/**
+ * Le foto delle serate, divise per canale: Bàilame e Room 26 sono due
+ * pubblici diversi, e due canali Telegram separati invece di uno solo dove
+ * si mischiano.
+ *
+ * Quelle di Room 26 sono ancora di esempio: Luca manderà anche quelle sue,
+ * e vanno sostituite allo stesso modo di Bàilame qui sopra.
+ */
+const FOTO_BAILAME = [
+  { src: "/foto/bailame/bailame1.jpg", alt: "Due amiche si abbracciano ridendo, con le luci del palco alle spalle" },
+  { src: "/foto/bailame/bailame2.jpg", alt: "Due ragazze ballano abbracciate" },
+  { src: "/foto/bailame/bailame3.jpg", alt: "Un ragazzo in console indica la scritta sulla sua maglietta" },
+  { src: "/foto/bailame/bailame5.jpg", alt: "Due amiche fanno le boccucce in posa per la foto" },
+  { src: "/foto/bailame/bailame6.jpg", alt: "Una ragazza con un drink in mano si guarda intorno" },
+  { src: "/foto/bailame/bailame7.jpg", alt: "Un gruppo di amici in posa sotto le luci colorate" },
+  { src: "/foto/bailame/bailame8.jpg", alt: "Tre amici abbracciati sorridono alla foto" },
+  { src: "/foto/bailame/bailame9.jpg", alt: "Una ragazza balla di spalle con le braccia alzate, l'insegna Bàilame sullo sfondo" },
+  { src: "/foto/bailame/bailame10.jpg", alt: "Una ragazza in posa con la maglia del Brasile" },
+];
+
+const FOTO_ROOM26 = [
+  { src: "/foto/night8.webp", alt: "" },
+  { src: "/foto/night16.webp", alt: "" },
+  { src: "/foto/night20.webp", alt: "" },
+];
+
+function CanaleFoto({
+  titolo,
+  colore,
+  foto,
+  href,
+}: {
+  readonly titolo: string;
+  readonly colore: string;
+  readonly foto: readonly { readonly src: string; readonly alt: string }[];
+  readonly href: string;
+}) {
+  return (
+    <div>
+      <p className={stili.canaleTitolo} style={{ color: colore }}>
+        {titolo}
+      </p>
+      <Galleria foto={foto} etichetta={`Foto di ${titolo}, scorri di lato`} />
+      <a href={href} target="_blank" rel="noopener noreferrer" className={stili.canaleLink}>
+        <span>{legaParole("Vedi tutte su Telegram", { vedova: true })}</span>
+        <Gallone />
+      </a>
+    </div>
+  );
+}
+
+/** Le foto delle serate, divise per canale Telegram: scorrono di lato, come le storie. */
+export function LeFoto() {
+  return (
+    <section className="blocco" style={{ paddingTop: 0 }} aria-labelledby="le-foto">
+      <div className="wrap">
+        <div className="blocco-testa rivela">
+          <p className="occhiello" style={{ margin: 0 }}>
+            Dalle vostre serate
+          </p>
+          <Titolo2 id="le-foto" misura='clamp(25px, 7.6vw, 60px)'>Le foto</Titolo2>
+        </div>
+
+        <div className={`${stili.canali} rivela`}>
+          <CanaleFoto titolo="Bàilame" colore="var(--red)" foto={FOTO_BAILAME} href="https://t.me/BAILAMEOFFICIAL" />
+          <CanaleFoto titolo="Room 26" colore="var(--cyan)" foto={FOTO_ROOM26} href="https://t.me/room26official" />
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/**
+ * Una pausa a tutta larghezza tra due sezioni: solo una foto e una riga,
+ * senza scheda né bottoni. Serve a far respirare la pagina in mezzo alle
+ * sezioni piene di testo e link, non a spiegare qualcosa.
+ */
+export function SpaccaPagina() {
+  return (
+    <section className={stili.spacca} aria-hidden>
+      <p className="display">{legaParole("La musica non si racconta. Si vive da dentro.", { titolo: true, vedova: true })}</p>
     </section>
   );
 }
@@ -162,7 +235,7 @@ export function SpecialGuest({ avvisami }: { readonly avvisami: React.ReactNode 
   return (
     <section className="blocco" style={{ paddingTop: 0 }} aria-label={SPECIAL_GUEST.titolo}>
       <div className="wrap">
-        <div className={`${stili.ospite} rivela`}>
+        <div className={`${stili.ospite} ${stili.ospiteFoto} rivela`}>
           <div className={stili.ospiteTesto}>
             <strong>Special guest</strong>
             <p className={stili.arrivo}>
@@ -178,29 +251,42 @@ export function SpecialGuest({ avvisami }: { readonly avvisami: React.ReactNode 
 }
 
 /*
- * Halloween: stessa attesa dello special guest, un locale diverso. Qui in
- * più, perché si faccia notare: fondo arancione invece del grigio scuro
- * di chi aspetta senza colore, e la zucca a dirlo prima ancora del testo.
+ * Halloween: stessa attesa dello special guest, un locale diverso. Una foto
+ * vera al posto del solo colore arancione, con lo stesso sistema (foto di
+ * sfondo, sfumatura scura, testo chiaro sopra) usato per lo special guest.
  */
 export function Halloween({ avvisami }: { readonly avvisami: React.ReactNode }) {
   return (
-    <section className="blocco" style={{ paddingTop: 0 }} aria-label={HALLOWEEN.titolo}>
+    <section className="blocco" style={{ paddingTop: 0, paddingBottom: 8 }} aria-label={HALLOWEEN.titolo}>
       <div className="wrap">
         <div className={`${stili.ospite} ${stili.halloween} rivela`}>
-          <div className={stili.halloweenTesta}>
-            <Zucca colore="var(--sun)" />
-            <div className={stili.ospiteTesto}>
-              <strong>Halloween</strong>
-              <p className={stili.arrivo}>
-                <i aria-hidden />
-                In arrivo
-              </p>
-            </div>
+          <div className={stili.ospiteTesto}>
+            <strong>Halloween</strong>
+            <p className={stili.arrivo}>
+              <i aria-hidden />
+              In arrivo
+            </p>
           </div>
           {avvisami}
         </div>
       </div>
     </section>
+  );
+}
+
+/** Il divisore tra "Le serate" e "Tutto il resto": invita a scorrere, senza dover scrivere un titolo. */
+function FrecciaGiu() {
+  return (
+    <svg className={stili.divisoreFreccia} viewBox="0 0 24 24" width="20" height="20" aria-hidden focusable="false">
+      <path
+        d="M12 4v14m0 0l-6-6m6 6l6-6"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        fill="none"
+      />
+    </svg>
   );
 }
 

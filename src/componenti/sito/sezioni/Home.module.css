@@ -6,8 +6,14 @@
   align-items: center;
   justify-content: space-between;
   gap: 14px;
-  padding: 18px 20px;
-  border-radius: var(--r-l);
+  /*
+   * Stessa taglia delle righe delle serate sopra: la stessa altezza minima,
+   * lo stesso raggio, poco spazio nero attorno invece della scheda grande
+   * di prima.
+   */
+  min-height: 68px;
+  padding: 10px 16px;
+  border-radius: var(--r-m);
   background: var(--surface);
   border: 1.5px solid var(--line);
   container-type: inline-size;
@@ -58,55 +64,79 @@
 }
 
 /*
- * Halloween si fa notare rispetto a chi aspetta senza colore: fondo
- * arancione pieno invece del grigio scuro, testo scuro sopra per il
- * contrasto (come le altre tessere a fondo chiaro), niente bordo perché su
- * un colore pieno il filo grigio sporcava invece di rifinire.
+ * Lo special guest ha una foto sua, invece del solo grigio scuro: luci
+ * verdi e viola di consolle, spente dentro il colore della scheda con la
+ * stessa sfumatura delle altre foto di sfondo, cosi il testo resta leggibile.
+ */
+.ospiteFoto {
+  position: relative;
+  isolation: isolate;
+  border-color: transparent;
+  color: var(--paper);
+}
+
+.ospiteFoto::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: var(--r-m);
+  background-image:
+    linear-gradient(100deg, rgba(20, 19, 24, 0.55), rgba(20, 19, 24, 0.4)),
+    url("/foto/atmosfera/special-guest.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.ospiteFoto strong,
+.ospiteFoto .arrivo {
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.6);
+}
+
+/*
+ * Halloween si fa notare rispetto a chi aspetta senza colore: una foto vera
+ * di zucche, con lo stesso sistema dello special guest (foto di sfondo,
+ * sfumatura scura, testo chiaro sopra), più il respiro di luce arancione a
+ * farla notare in più.
  */
 .halloween {
-  background: var(--sun);
-  color: var(--ink);
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  color: var(--paper);
   border-color: transparent;
-  padding: 22px 20px;
-  box-shadow: 0 10px 30px -8px rgba(255, 179, 92, 0.6);
+  /*
+   * Il bagliore prima si allargava con una sfumatura larga (30-40px), e
+   * quel poco di nero della pagina attorno diventava una fascia scura ben
+   * visibile. Più stretto (10-14px), resta un accenno e non una cornice.
+   */
+  box-shadow: 0 4px 14px -4px rgba(255, 179, 92, 0.6);
   animation: halloweenLuce 2.6s ease-in-out infinite;
+}
+
+.halloween::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background-image:
+    linear-gradient(100deg, rgba(20, 12, 4, 0.6), rgba(20, 12, 4, 0.35)),
+    url("/foto/atmosfera/halloween.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
 /* Un respiro di luce, non uno scatto: deve farsi notare, non disturbare. */
 @keyframes halloweenLuce {
-  0%, 100% { box-shadow: 0 10px 30px -8px rgba(255, 179, 92, 0.6); }
-  50% { box-shadow: 0 14px 40px -4px rgba(255, 179, 92, 0.95); }
+  0%, 100% { box-shadow: 0 4px 14px -4px rgba(255, 179, 92, 0.6); }
+  50% { box-shadow: 0 6px 18px -2px rgba(255, 179, 92, 0.95); }
 }
 
+.halloween strong,
 .halloween .arrivo {
-  color: var(--ink);
-}
-
-.halloween .arrivo i {
-  background: var(--ink);
-}
-
-.halloweenTesta {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  min-width: 0;
-  flex: 1;
-}
-
-.halloweenTesta svg {
-  flex: none;
-}
-
-/*
- * Sotto i 360px la scheda non ha spazio sia per la zucca che per "Halloween"
- * intero, e "Halloween" (una parola sola) non può stringersi cedendo alla
- * zucca: sparisce lei, non lui.
- */
-@container (max-width: 360px) {
-  .halloweenTesta svg {
-    display: none;
-  }
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.6);
 }
 
 /* Il richiamo sopra le serate: fa venire voglia di non aspettare. */
@@ -128,7 +158,91 @@
   flex: none;
 }
 
+/* --- Le foto delle serate --- */
+
+.canali {
+  display: grid;
+  /* "minmax(0, 1fr)" e non "auto": senza, la colonna si allargava sul
+     contenuto intrinseco della galleria che scorre dentro, portando la
+     pagina intera fuori dallo schermo in larghezza. */
+  grid-template-columns: minmax(0, 1fr);
+  gap: 28px;
+}
+
+.canaleTitolo {
+  margin: 0 0 10px;
+  font-size: 18px;
+  font-weight: 900;
+  font-stretch: 118%;
+  text-transform: uppercase;
+}
+
+.canaleLink {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  max-width: 100%;
+  margin-top: 10px;
+  min-height: 44px;
+  font-size: 14px;
+  font-weight: 800;
+  color: var(--text);
+  text-decoration: none;
+}
+
+/*
+ * Il gallone non ha una misura sua: senza, con niente altro a fermarlo in
+ * una riga flessibile, si allargava fino a riempire tutta la larghezza
+ * disponibile invece di restare un'iconcina. Torna indietro di suo, e qui
+ * deve puntare fuori, non dentro.
+ */
+.canaleLink svg {
+  width: 18px;
+  height: 18px;
+  flex: none;
+  transform: rotate(180deg);
+  color: var(--dim);
+}
+
+@media (hover: hover) {
+  .canaleLink:hover svg { color: var(--text); }
+}
+
 /* --- Tutto il resto --- */
+
+/*
+ * Il passaggio tra "Le serate" e "Tutto il resto": una riga con una freccia
+ * al posto di un titolo. La freccia respira piano verso il basso, un invito
+ * a scorrere invece di una scritta come le altre sezioni.
+ */
+.divisore {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 24px;
+  color: var(--dim);
+}
+
+.divisoreLinea {
+  flex: 1;
+  height: 1px;
+  background: var(--line);
+}
+
+.divisoreFreccia {
+  flex: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .divisoreFreccia {
+    animation: divisoreRespira 1.8s ease-in-out infinite;
+  }
+}
+
+@keyframes divisoreRespira {
+  0%, 100% { transform: translateY(0); opacity: 0.7; }
+  50% { transform: translateY(4px); opacity: 1; }
+}
 
 .tessere {
   display: grid;
@@ -174,19 +288,19 @@
 }
 
 /*
- * Quelle con la foto prendono tutta la riga: la fotografia ha bisogno di
- * spazio per dire qualcosa, e in mezza colonna non si capisce cosa sia.
+ * La foto di sfondo, comune a chi ce l'ha: l'immagine dietro, spenta da una
+ * sfumatura scura verso il basso perché il testo, sempre in fondo alla
+ * tessera, resti leggibile sopra qualunque foto.
  */
-.con-foto {
-  grid-column: 1 / -1;
-  min-height: 240px;
+.tesseraFoto {
   color: var(--text);
+  /* Opaco e non semi-trasparente: su una foto chiara (il cielo di "D'estate")
+     un bianco al 50% si confondeva col colore sotto invece di restare un
+     bordo visibile. */
+  box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.9);
 }
 
-.con-foto strong { font-size: clamp(22px, 7cqi, 28px); }
-.con-foto span { color: #e4dfea; }
-
-.con-foto img {
+.tesseraFoto img {
   position: absolute;
   inset: 0;
   width: 100%;
@@ -195,13 +309,54 @@
   z-index: -2;
 }
 
-.con-foto::after {
+.tesseraFoto::after {
   content: "";
   position: absolute;
   inset: 0;
   z-index: -1;
   background: linear-gradient(180deg, rgba(0, 0, 0, 0.05) 20%, rgba(0, 0, 0, 0.88) 100%);
 }
+
+.tesseraFoto span {
+  color: #e4dfea;
+}
+
+/*
+ * Quelle con la foto e niente altro accanto prendono tutta la riga: la
+ * fotografia ha bisogno di spazio per dire qualcosa, e in mezza colonna non
+ * si capisce cosa sia. La navetta invece resta in mezza colonna, come le
+ * altre tessere piccole: la foto ci sta bene anche stretta.
+ */
+.con-foto {
+  grid-column: 1 / -1;
+  min-height: 240px;
+}
+
+/*
+ * "Diventa PR" da sola nell'ultima riga: allungata a tutta larghezza invece
+ * di lasciarla a metà con l'altra metà vuota. In riga, non in colonna: da
+ * sola ha spazio per stare accanto all'icona invece che sopra.
+ */
+.piena {
+  grid-column: 1 / -1;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 16px;
+  min-height: 96px;
+}
+
+.piena .icona {
+  margin: 0;
+}
+
+.pienaTesto {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.con-foto strong { font-size: clamp(22px, 7cqi, 28px); }
 
 .icona {
   margin: 0 0 10px;
@@ -210,29 +365,6 @@
 }
 
 /* Le tre foto sovrapposte della tessera "Voi al Room 26". */
-.mazzo {
-  position: relative;
-  display: block;
-  width: 84px;
-  height: 44px;
-  margin-bottom: 10px;
-  flex: none;
-}
-
-.mazzo img {
-  position: absolute;
-  top: 0;
-  width: 32px;
-  height: 44px;
-  object-fit: cover;
-  border-radius: 6px;
-  box-shadow: 0 0 0 2px var(--milk), 0 4px 10px rgba(0, 0, 0, 0.3);
-}
-
-.mazzo img:nth-child(1) { left: 0; transform: rotate(-10deg); }
-.mazzo img:nth-child(2) { left: 26px; }
-.mazzo img:nth-child(3) { left: 52px; transform: rotate(10deg); }
-
 /* --- Come funziona --- */
 
 .passi {
@@ -273,6 +405,68 @@
 .passi span {
   font-size: 14px;
   color: var(--muted);
+}
+
+/*
+ * Uno sfondo fotografico dietro "Come funziona": una foto di consolle in
+ * bianco e nero, spenta dentro il buio del sito con la stessa sfumatura
+ * verticale del footer, cosi i passi restano leggibili sopra.
+ */
+.comeFunzionaSfondo {
+  position: relative;
+  isolation: isolate;
+}
+
+.comeFunzionaSfondo::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background-image:
+    linear-gradient(180deg, rgba(5, 4, 7, 0.7) 0%, rgba(5, 4, 7, 0.94) 65%, var(--bg) 100%),
+    url("/foto/atmosfera/come-funziona-dj.jpg");
+  background-size: cover;
+  background-position: center 35%;
+  background-repeat: no-repeat;
+}
+
+/*
+ * La pausa a tutta larghezza tra due sezioni: la foto riempie tutto lo
+ * schermo in orizzontale, la scritta sta sopra, centrata, con la stessa
+ * sfumatura scura delle altre foto di sfondo del sito.
+ */
+.spacca {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 46vh;
+  padding: 48px 24px;
+  text-align: center;
+}
+
+.spacca::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background-image:
+    linear-gradient(rgba(5, 4, 7, 0.55), rgba(5, 4, 7, 0.55)),
+    url("/foto/atmosfera/spacca-rosso.jpg");
+  background-size: cover;
+  background-position: center 30%;
+  background-repeat: no-repeat;
+}
+
+.spacca p {
+  max-width: 720px;
+  font-size: clamp(22px, 5.4vw, 40px);
+  font-weight: 800;
+  font-stretch: 108%;
+  line-height: 1.3;
+  color: var(--paper);
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.7);
 }
 
 /* --- Il riquadro su Luca --- */

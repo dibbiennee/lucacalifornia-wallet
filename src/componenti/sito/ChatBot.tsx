@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 
 import { legaParole } from "@/lib/tipografia";
 
+import { useBarraFissa } from "./useBarraFissa";
 import stili from "./ChatBot.module.css";
 
 interface Domanda {
@@ -61,6 +62,7 @@ interface Messaggio {
  */
 export function ChatBot() {
   const percorso = usePathname();
+  const barraFissa = useBarraFissa();
   const [aperto, setAperto] = useState(false);
   const [chieste, setChieste] = useState<readonly string[]>([]);
   const [messaggi, setMessaggi] = useState<readonly Messaggio[]>([
@@ -107,7 +109,7 @@ export function ChatBot() {
   return (
     <>
       <div
-        className={`${stili.pannello} ${aperto ? stili.aperto : ""}`}
+        className={`${stili.pannello} ${aperto ? stili.aperto : ""} ${barraFissa ? stili.sollevato : ""}`}
         role="dialog"
         aria-label="Assistente Luca California"
         aria-hidden={!aperto}
@@ -143,7 +145,7 @@ export function ChatBot() {
 
       <button
         type="button"
-        className={stili.fab}
+        className={`${stili.fab} ${barraFissa ? stili.sollevato : ""}`}
         onClick={() => setAperto((a) => !a)}
         aria-expanded={aperto}
         aria-label={aperto ? "Chiudi la chat" : "Hai domande? Aprimi"}

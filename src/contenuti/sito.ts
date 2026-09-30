@@ -27,7 +27,6 @@ export const INSTAGRAM_URL = `https://instagram.com/${INSTAGRAM}`;
 export const WHATSAPP = "393348548735";
 
 export const MENU = [
-  { testo: "Serate", dove: "/serate" },
   { testo: "Tavoli", dove: "/tavoli" },
   { testo: "Locali", dove: "/locali" },
   { testo: "Navetta", dove: "/navetta" },
@@ -58,6 +57,21 @@ export interface SerataSito {
   readonly perModulo: string;
   readonly descrizione: string;
   readonly quando: string;
+  /** Il marchio della serata, per il badge nella riga sottile in home. Non tutte ce l'hanno ancora. */
+  readonly badge?: string;
+  /**
+   * Dove inquadrare il badge: la riga è bassa e larga, quindi "cover" ne
+   * mostra solo una fetta orizzontale. Il numero dice quale, in percentuale
+   * dall'alto dell'immagine intera. Senza, il logo può cadere a metà o
+   * uscire dalla fetta visibile.
+   */
+  readonly badgePosizione?: string;
+  /**
+   * Dove inquadrare la copertina intera nella pagina della serata: la foto
+   * è quasi quadrata ma il riquadro no, e "cover" da solo può tagliare una
+   * scritta vicina al bordo. Senza, l'inquadratura resta centrata.
+   */
+  readonly copertinaPosizione?: string;
 }
 
 /**
@@ -77,6 +91,8 @@ export const SERATE: readonly SerataSito[] = [
     alt: "Una ragazza balla sorridendo al Milkshake",
     etichetta: "Disponibilità limitata",
     copertina: "/foto/night8.webp",
+    badge: "/foto/serate/milkshake-badge.jpg",
+    badgePosizione: "center",
     descrizione:
       "Il giovedì è Milkshake: afro e reggaeton tutta la sera. Prenota qui e ti ricontatto io con disponibilità e prezzo.",
     quando: "Ogni giovedì",
@@ -90,9 +106,11 @@ export const SERATE: readonly SerataSito[] = [
     genere: "Commerciale e reggaeton",
     colore: "acid",
     perModulo: "Ven commerciale",
-    alt: "Il dj alla consolle il venerdì",
+    alt: "Il volantino Drip del venerdì, con gli occhiali a specchio",
     etichetta: "Disponibilità limitata",
-    copertina: "/foto/night20.webp",
+    copertina: "/foto/serate/venerdi.jpg",
+    badge: "/foto/serate/venerdi-riga.jpg",
+    badgePosizione: "center",
     descrizione:
       "Il venerdì si balla commerciale e reggaeton. Prenota qui e ti ricontatto io con disponibilità e prezzo.",
     quando: "Ogni venerdì",
@@ -106,9 +124,12 @@ export const SERATE: readonly SerataSito[] = [
     genere: "Commerciale, reggaeton e house",
     colore: "cyan",
     perModulo: "Sab Reggaeton",
-    alt: "La pista piena il sabato",
+    alt: "Il volantino del sabato, con due ballerine e il logo Room 26",
     etichetta: "Pochi tavoli",
-    copertina: "/foto/night16.webp",
+    copertina: "/foto/serate/sabato.jpg",
+    copertinaPosizione: "center top",
+    badge: "/foto/serate/sabato-riga.jpg",
+    badgePosizione: "center",
     descrizione:
       "Il sabato si balla soprattutto commerciale e reggaeton, con un po' di house. Dimmi che formato musicale ti piace e ti sistemo io.",
     quando: "Ogni sabato",
@@ -125,6 +146,8 @@ export const SERATE: readonly SerataSito[] = [
     alt: "Le luci del Room 26 la domenica",
     etichetta: "Disponibilità limitata",
     copertina: "/foto/night24.webp",
+    badge: "/foto/serate/bailame-badge.jpg",
+    badgePosizione: "center",
     descrizione:
       "La domenica si chiude la settimana con Bàilame: tutta la sera solo reggaeton. Prenota qui e ti ricontatto io con disponibilità e prezzo.",
     quando: "Ogni domenica",

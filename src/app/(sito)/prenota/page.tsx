@@ -1,5 +1,6 @@
 import { Modulo } from "@/componenti/sito/Modulo";
-import { Indietro, TestaPagina } from "@/componenti/sito/Pagina";
+import { Indietro } from "@/componenti/sito/Indietro";
+import { TestaPagina } from "@/componenti/sito/Pagina";
 import stili from "@/componenti/sito/Modulo.module.css";
 
 export const metadata = {

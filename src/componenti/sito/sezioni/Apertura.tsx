@@ -1,8 +1,8 @@
 import Image from "next/image";
 
 import { Bottone } from "@/componenti/sito/Bottone";
-import { Introduzione } from "@/componenti/sito/Pagina";
 import { VideoApertura } from "@/componenti/VideoApertura";
+import { legaParole } from "@/lib/tipografia";
 
 import stili from "./Apertura.module.css";
 
@@ -58,10 +58,12 @@ export function Apertura() {
             <span className="cl">Tu scegli la&nbsp;serata.</span> <span className="cl">Io ti faccio entrare</span>
           </h1>
 
-          <Introduzione>
-            Ciao, sono Luca. Ti metto in lista o ti prenoto il tavolo al Room 26 di Roma, dal
-            giovedì alla domenica. E la navetta ti porta fino all&apos;ingresso.
-          </Introduzione>
+          <p className="introduzione">
+            <span className="cl">{legaParole("Ciao, sono Luca. Ti prenoto il tavolo")}</span>{" "}
+            <span className="cl">{legaParole("o ti metto in lista al Room 26 di Roma")}</span>{" "}
+            <span className="cl">{legaParole("dal giovedì alla domenica.")}</span>{" "}
+            <span className="cl">{legaParole("E la navetta ti porta fino all'ingresso.")}</span>
+          </p>
 
           <div className={stili.azioni}>
             <Bottone href="/prenota?tipo=tavolo">Prenota il tavolo</Bottone>

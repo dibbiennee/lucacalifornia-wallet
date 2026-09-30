@@ -4,7 +4,8 @@ import { notFound } from "next/navigation";
 
 import { Bottone } from "@/componenti/sito/Bottone";
 import { perPrenotare } from "@/componenti/sito/CardSerata";
-import { Altre, Azioni, CardMappa, Dati, Indietro, Introduzione } from "@/componenti/sito/Pagina";
+import { Indietro } from "@/componenti/sito/Indietro";
+import { Altre, Azioni, CardMappa, Dati, Introduzione } from "@/componenti/sito/Pagina";
 import stili from "@/componenti/sito/Pagina.module.css";
 import { LOCALE, SERATE } from "@/contenuti/sito";
 
@@ -50,6 +51,7 @@ export default async function PaginaSerata({ params }: { params: Promise<{ codic
                 height={1088}
                 sizes="(min-width: 860px) 50vw, 100vw"
                 priority
+                style={serata.copertinaPosizione === undefined ? undefined : { objectPosition: serata.copertinaPosizione }}
               />
               <span className={stili.targhetta} style={{ color: colore }}>
                 {serata.etichetta}

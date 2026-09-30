@@ -1,5 +1,16 @@
+/*
+ * Il piè di pagina è tanto nero vuoto: la foto del trofeo di Bàilame ci sta
+ * dietro, appena accennata sotto un velo scuro, invece di lasciarlo spoglio.
+ */
+/*
+ * Il velo non è piatto: si scurisce scendendo, così la foto si spegne nel
+ * nero invece di finire di netto dove finisce lei. In fondo è nero pieno,
+ * uguale al resto della pagina appena sotto.
+ */
 .piede {
-  background: #050407;
+  background:
+    linear-gradient(to bottom, rgba(5, 4, 7, 0.6) 0%, rgba(5, 4, 7, 0.88) 55%, rgba(5, 4, 7, 1) 100%),
+    url("/foto/bailame-sfondo.jpg") center 20% / cover no-repeat;
   border-top: 1px solid var(--line);
   /* Sotto c'è la barra fissa: il contenuto non deve finirci dietro. */
   padding: 56px 0 calc(56px + var(--barra-h, 0px));
@@ -12,12 +23,18 @@
 
 .marchio {
   display: flex;
-  flex-direction: column;
+  align-items: center;
   gap: 16px;
   text-decoration: none;
   min-width: 0;
-  /* Il marchio si misura sulla sua colonna: su schermo largo la finestra è
-     larga il doppio, e "CALIFORNIA" finiva sopra i link accanto. */
+}
+
+.testo {
+  display: block;
+  min-width: 0;
+  flex: 1;
+  /* Il testo si misura sulla sua colonna, non su tutto il marchio: l'icona
+     accanto le toglie spazio, e "CALIFORNIA" doveva accorgersene. */
   container-type: inline-size;
 }
 

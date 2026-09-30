@@ -5,7 +5,7 @@
 .fab {
   position: fixed;
   right: 16px;
-  bottom: 20px;
+  bottom: calc(20px + env(safe-area-inset-bottom, 0px));
   z-index: 40;
   width: 58px;
   height: 58px;
@@ -17,7 +17,7 @@
   place-items: center;
   cursor: pointer;
   box-shadow: 0 12px 28px -10px rgba(0, 0, 0, 0.55);
-  transition: transform 0.2s ease, background-color 0.2s ease;
+  transition: bottom 0.35s ease, transform 0.2s ease, background-color 0.2s ease;
 }
 
 @media (hover: hover) and (pointer: fine) {
@@ -26,8 +26,13 @@
 
 .fab:active { transform: scale(0.94); }
 
+/*
+ * Sale solo quando sale anche la barra "Prenota la tua serata": sono la
+ * stessa barra vista da due lati, e senza la barra il cerchietto non ha
+ * niente da scavalcare.
+ */
 @media (max-width: 959px) {
-  .fab { bottom: calc(84px + env(safe-area-inset-bottom, 0px)); }
+  .fab.sollevato { bottom: calc(84px + env(safe-area-inset-bottom, 0px)); }
 }
 
 /*
@@ -38,7 +43,7 @@
 .pannello {
   position: fixed;
   right: 16px;
-  bottom: 88px;
+  bottom: calc(88px + env(safe-area-inset-bottom, 0px));
   z-index: 40;
   width: min(360px, calc(100vw - 32px));
   max-height: min(70vh, 560px);
@@ -53,7 +58,7 @@
   transform: translateY(14px) scale(0.94);
   opacity: 0;
   pointer-events: none;
-  transition: transform 0.28s ease, opacity 0.22s ease;
+  transition: bottom 0.35s ease, transform 0.28s ease, opacity 0.22s ease;
 }
 
 .pannello.aperto {
@@ -62,8 +67,9 @@
   pointer-events: auto;
 }
 
+/* Segue il cerchietto: stessa soglia, stesso sollevamento. */
 @media (max-width: 959px) {
-  .pannello { bottom: calc(152px + env(safe-area-inset-bottom, 0px)); }
+  .pannello.sollevato { bottom: calc(152px + env(safe-area-inset-bottom, 0px)); }
 }
 
 .testa {

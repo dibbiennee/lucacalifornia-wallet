@@ -3,20 +3,23 @@ import Link from "next/link";
 
 import { Bottone } from "@/componenti/sito/Bottone";
 import { FoglioAvvisami } from "@/componenti/sito/FoglioAvvisami";
-import { Indietro, TestaPagina } from "@/componenti/sito/Pagina";
+import { Indietro } from "@/componenti/sito/Indietro";
+import { TestaPagina } from "@/componenti/sito/Pagina";
 import stili from "@/componenti/sito/Pagina.module.css";
 import { LOCALI_STAGIONE } from "@/contenuti/locali";
 import { legaParole } from "@/lib/tipografia";
 
 export const metadata = {
   title: "I locali, stagione per stagione - Luca California",
-  description: "D'inverno il Room 26 a Roma, d'estate il Ninfeo a Roma.",
+  description:
+    "D'inverno il Room 26 a Roma, d'estate il Ninfeo a Roma e il Morgan Beach Club a Civitavecchia.",
 };
 
 /** Ogni locale ha la sua foto e il suo colore di stagione. */
 const VESTE: Readonly<Record<string, { readonly foto?: string; readonly colore: string; readonly alt?: string }>> = {
   room26: { foto: "/foto/night24.webp", colore: "var(--cyan)", alt: "Le luci del Room 26" },
   ninfeo: { foto: "/foto/sunset.webp", colore: "var(--sun)", alt: "Tramonto d'estate" },
+  morgan: { colore: "var(--sun)" },
 };
 
 export default function Locali() {

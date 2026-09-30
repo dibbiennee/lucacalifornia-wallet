@@ -1,7 +1,10 @@
 import { FoglioAvvisami } from "@/componenti/sito/FoglioAvvisami";
-import { Indietro, TestaPagina } from "@/componenti/sito/Pagina";
+import { Indietro } from "@/componenti/sito/Indietro";
+import { TestaPagina } from "@/componenti/sito/Pagina";
 import stili from "@/componenti/sito/Pagina.module.css";
 import { CAPODANNO } from "@/contenuti/sito";
+
+import stiliPagina from "./page.module.css";
 
 export const metadata = {
   title: "Capodanno - Luca California",
@@ -12,12 +15,14 @@ export default function PaginaCapodanno() {
   return (
     <>
       <Indietro testo="Home" dove="/" />
-      <TestaPagina
-        occhiello="31 dicembre"
-        colore="var(--acid)"
-        righe={["Capodanno"]}
-        introduzione="Solo a Capodanno lavoro con più strutture. Prezzi e strutture a breve: ti metto in lista d'attesa e te lo dico appena ci sono."
-      />
+      <div className={stiliPagina.sfondo}>
+        <TestaPagina
+          occhiello="31 dicembre"
+          colore="var(--acid)"
+          righe={["Capodanno"]}
+          introduzione="Solo a Capodanno lavoro con più strutture. Prezzi e strutture a breve: ti metto in lista d'attesa e te lo dico appena ci sono."
+        />
+      </div>
 
       <section className="wrap" style={{ paddingBottom: 56 }}>
         <ul className={stili.pacchetti}>

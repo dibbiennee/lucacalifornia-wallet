@@ -1,9 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 
 import { Bottone } from "./Bottone";
+import { useBarraFissa } from "./useBarraFissa";
 import stili from "./BarraPrenota.module.css";
 
 /**
@@ -18,26 +18,7 @@ import stili from "./BarraPrenota.module.css";
  */
 export function BarraPrenota() {
   const percorso = usePathname();
-  const inHome = percorso === "/";
-  const [visibile, setVisibile] = useState(!inHome);
-
-  useEffect(() => {
-    if (!inHome) {
-      return;
-    }
-
-    const serate = document.getElementById("le-serate");
-    if (serate === null) {
-      return;
-    }
-
-    const osservatore = new IntersectionObserver(
-      ([voce]) => setVisibile(voce !== undefined && voce.isIntersecting)
-    );
-
-    osservatore.observe(serate);
-    return () => osservatore.disconnect();
-  }, [inHome]);
+  const visibile = useBarraFissa();
 
   if (percorso === "/prenota") {
     return null;

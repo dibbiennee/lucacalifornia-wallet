@@ -1,6 +1,7 @@
 import { Bottone } from "@/componenti/sito/Bottone";
 import { ElencoSerate } from "@/componenti/sito/CardSerata";
-import { Galleria, Indietro, TestaPagina } from "@/componenti/sito/Pagina";
+import { Indietro } from "@/componenti/sito/Indietro";
+import { Galleria, TestaPagina } from "@/componenti/sito/Pagina";
 import { INSTAGRAM, INSTAGRAM_URL, SERATE } from "@/contenuti/sito";
 
 export const metadata = { title: "Le serate al Room 26 - Luca California" };

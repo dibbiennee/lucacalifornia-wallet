@@ -1,0 +1,28 @@
+/*
+ * La testa della pagina con una foto di consolle sotto: la stessa sfumatura
+ * scura usata altrove nel sito, cosi titolo e occhiello restano leggibili
+ * sopra la foto invece di sparire dentro le luci blu.
+ */
+.sfondo {
+  position: relative;
+  isolation: isolate;
+}
+
+.sfondo::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background-image:
+    linear-gradient(180deg, rgba(5, 4, 7, 0.55) 0%, rgba(5, 4, 7, 0.85) 70%, var(--bg) 100%),
+    url("/foto/atmosfera/pr-dj.jpg");
+  background-size: cover;
+  background-position: center 40%;
+  background-repeat: no-repeat;
+}
+
+.sfondo h1,
+.sfondo p,
+.sfondo .occhiello {
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.7);
+}

@@ -19,7 +19,14 @@ export function CardSerata({ serata }: { readonly serata: SerataSito }) {
   return (
     <article className={stili.card} style={{ background: colore }}>
       <Link href={`/serate/${serata.codice}`} className={stili.foto} aria-label={`${serata.nome}, dettagli`}>
-        <Image src={serata.copertina} alt={serata.alt} width={640} height={624} sizes="(min-width: 860px) 320px, 86vw" />
+        <Image
+          src={serata.copertina}
+          alt={serata.alt}
+          width={640}
+          height={624}
+          sizes="(min-width: 860px) 320px, 86vw"
+          style={serata.copertinaPosizione === undefined ? undefined : { objectPosition: serata.copertinaPosizione }}
+        />
         <span className={stili.etichetta} style={{ color: colore }}>
           {serata.etichetta}
         </span>
@@ -46,29 +53,49 @@ export function CardSerata({ serata }: { readonly serata: SerataSito }) {
 }
 
 /**
- * Le quattro serate, una riga sottile ciascuna: solo giorno, nome e genere.
+ * Le quattro serate, una riga sottile ciascuna.
  *
- * In home non serve la foto, che sta già nella pagina della serata: qui
- * bastano tre righe di testo per far scegliere, e ci stanno tutte e quattro
- * senza scorrere di lato. Il sabato non ha bisogno di un caso a parte come
- * nella card grande: "genere" dice già "house e reggaeton, in due sale".
+ * Chi ha già un marchio suo (Milkshake, Bàilame) lo indossa per intero: la
+ * foto aderisce a tutta la riga, a destra, e si spegne verso sinistra dentro
+ * il colore della riga, proprio dove serve spazio pulito per il testo. Le
+ * altre, finché non hanno una foto, restano un tassello del loro colore con
+ * il giorno in tre lettere dentro: non un pallino qualunque.
  */
 export function ListaSerate({ serate }: { readonly serate: readonly SerataSito[] }) {
   return (
     <div className={stili.righe}>
-      {serate.map((s) => (
-        <Link key={s.codice} href={`/serate/${s.codice}`} className={stili.riga}>
-          <span className={stili.rigaGiorno}>
-            <i aria-hidden style={{ background: `var(--${s.colore})` }} />
-            {s.giorno}
-          </span>
-          <span className={stili.rigaTesto}>
-            <strong className={`display ${stili.rigaNome}`}>{s.nome}</strong>
-            <span className={stili.rigaGenere}>{s.genere}</span>
-          </span>
-          <Freccia />
-        </Link>
-      ))}
+      {serate.map((s) => {
+        const conFoto = s.badge !== undefined;
+
+        return (
+          <Link
+            key={s.codice}
+            href={`/serate/${s.codice}`}
+            className={`${stili.riga} ${conFoto ? stili.rigaConFoto : ""}`}
+            style={
+              conFoto
+                ? {
+                    backgroundImage: `linear-gradient(to right, rgba(20, 19, 24, 0.45), rgba(20, 19, 24, 0.55)), url(${s.badge})`,
+                    backgroundPosition: s.badgePosizione ?? "center",
+                  }
+                : undefined
+            }
+          >
+            {!conFoto && (
+              <span className={stili.rigaBadge} style={{ background: `var(--${s.colore})` }}>
+                <strong aria-hidden>{s.breve}</strong>
+              </span>
+            )}
+            <span className={stili.rigaTesto}>
+              <strong className={`display ${stili.rigaNome}`}>{s.nome}</strong>
+              <span className={stili.rigaGenere}>
+                {s.giorno} · {s.genere}
+              </span>
+            </span>
+            <Freccia />
+          </Link>
+        );
+      })}
     </div>
   );
 }

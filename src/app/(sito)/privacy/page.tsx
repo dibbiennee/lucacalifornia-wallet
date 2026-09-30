@@ -1,4 +1,5 @@
-import { Indietro, TestaPagina } from "@/componenti/sito/Pagina";
+import { Indietro } from "@/componenti/sito/Indietro";
+import { TestaPagina } from "@/componenti/sito/Pagina";
 
 export const metadata = { title: "PRIVACY - Luca California" };
 

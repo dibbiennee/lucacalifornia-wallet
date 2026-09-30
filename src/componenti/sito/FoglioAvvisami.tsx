@@ -21,7 +21,7 @@ export function FoglioAvvisami({
   spiegazione,
   aspetto = "chiaro",
 }: {
-  readonly tipo: "special_guest" | "halloween" | "capodanno" | "ninfeo";
+  readonly tipo: "special_guest" | "halloween" | "capodanno" | "ninfeo" | "morgan";
   /** Il testo del pulsante che lo apre. */
   readonly etichetta: string;
   readonly titolo: string;
