@@ -55,12 +55,12 @@ export function Apertura() {
           <p className={stili.giorni}>Giovedì, venerdì, sabato, domenica</p>
 
           <h1 className="display" tabIndex={-1}>
-            <span className="cl">La notte</span> <span className="cl">ti dà libertà</span>
+            <span className="cl">Tu scegli la&nbsp;serata.</span> <span className="cl">Io ti faccio entrare</span>
           </h1>
 
           <Introduzione>
-            Ciao, sono Luca. Liste e tavoli al Room 26 di Roma, da giovedì a domenica, con la
-            navetta per arrivarci.
+            Ciao, sono Luca. Ti metto in lista o ti prenoto il tavolo al Room 26 di Roma, dal
+            giovedì alla domenica. E la navetta ti porta fino all&apos;ingresso.
           </Introduzione>
 
           <div className={stili.azioni}>
