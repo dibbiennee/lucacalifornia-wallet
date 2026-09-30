@@ -1,4 +1,16 @@
 
+/*
+ * Un accenno di riga tra le serate e "Halloween": le stacca appena, senza
+ * riaprire il buco nero di prima. Da sola serve solo a dire "qui cambia
+ * gruppo", non a fare da titolo.
+ */
+.rigaDivisore {
+  display: block;
+  height: 1px;
+  margin: 4px 0 16px;
+  background: var(--line);
+}
+
 /* --- Lo special guest --- */
 
 .ospite {
@@ -106,13 +118,6 @@
   overflow: hidden;
   color: var(--paper);
   border-color: transparent;
-  /*
-   * Il bagliore prima si allargava con una sfumatura larga (30-40px), e
-   * quel poco di nero della pagina attorno diventava una fascia scura ben
-   * visibile. Più stretto (10-14px), resta un accenno e non una cornice.
-   */
-  box-shadow: 0 4px 14px -4px rgba(255, 179, 92, 0.6);
-  animation: halloweenLuce 2.6s ease-in-out infinite;
 }
 
 .halloween::before {
@@ -126,12 +131,6 @@
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-}
-
-/* Un respiro di luce, non uno scatto: deve farsi notare, non disturbare. */
-@keyframes halloweenLuce {
-  0%, 100% { box-shadow: 0 4px 14px -4px rgba(255, 179, 92, 0.6); }
-  50% { box-shadow: 0 6px 18px -2px rgba(255, 179, 92, 0.95); }
 }
 
 .halloween strong,

@@ -13,7 +13,7 @@ import { Galleria, Titolo2 } from "@/componenti/sito/Pagina";
 /** Le quattro serate, con la fotografia e il colore di ognuna. */
 export function Serate() {
   return (
-    <section className="blocco" aria-labelledby="le-serate">
+    <section className="blocco" style={{ paddingBottom: 20 }} aria-labelledby="le-serate">
       <div className="wrap">
         <div className="blocco-testa rivela">
           <div className={stili["testa-riga"]}>
@@ -259,6 +259,7 @@ export function Halloween({ avvisami }: { readonly avvisami: React.ReactNode }) 
   return (
     <section className="blocco" style={{ paddingTop: 0, paddingBottom: 8 }} aria-label={HALLOWEEN.titolo}>
       <div className="wrap">
+        <span className={stili.rigaDivisore} aria-hidden />
         <div className={`${stili.ospite} ${stili.halloween} rivela`}>
           <div className={stili.ospiteTesto}>
             <strong>Halloween</strong>
