@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 
 import { Bottone } from "@/componenti/sito/Bottone";
 import { perPrenotare } from "@/componenti/sito/CardSerata";
-import { Altre, Azioni, Dati, Indietro, Introduzione } from "@/componenti/sito/Pagina";
+import { Altre, Azioni, CardMappa, Dati, Indietro, Introduzione } from "@/componenti/sito/Pagina";
 import stili from "@/componenti/sito/Pagina.module.css";
 import { LOCALE, SERATE } from "@/contenuti/sito";
 
@@ -70,27 +70,17 @@ export default async function PaginaSerata({ params }: { params: Promise<{ codic
               <Introduzione>{serata.descrizione}</Introduzione>
             </div>
 
-            <Dati
-              voci={[
-                ["Quando", serata.quando],
-                ["Dove", LOCALE.nome],
-              ]}
-            />
+            <Dati voci={[["Quando", serata.quando]]} />
+            <CardMappa nome={LOCALE.nome} indirizzo={LOCALE.indirizzo} />
 
             <Azioni>
-              {serata.dueSale === true ? (
-                <>
-                  <Bottone href={perPrenotare("Sab sala 1 house")}>Sala 1, house</Bottone>
-                  <Bottone href={perPrenotare("Sab sala 2 reggaeton")}>Sala 2, reggaeton</Bottone>
-                </>
-              ) : (
-                <>
-                  <Bottone href={perPrenotare(serata.perModulo)}>Entra in lista</Bottone>
-                  <Bottone href={perPrenotare(serata.perModulo, "tavolo")} aspetto="contorno">
-                    Prenota un tavolo
-                  </Bottone>
-                </>
-              )}
+              <Bottone href={perPrenotare(serata.perModulo, "tavolo")}>Prenota il tavolo</Bottone>
+              <Bottone href={perPrenotare(serata.perModulo)} aspetto="contorno">
+                Entra in lista
+              </Bottone>
+              <Bottone href={`/api/calendario/${serata.codice}`} aspetto="chiaro" esterno>
+                Aggiungi al calendario
+              </Bottone>
             </Azioni>
 
             <div style={{ marginTop: 36 }}>

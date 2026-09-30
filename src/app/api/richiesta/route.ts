@@ -32,15 +32,14 @@ interface Richiesta {
 
 const TIPI = ["lista", "tavolo", "navetta"] as const;
 
-/** Le stesse cinque scelte del modulo (vedi Modulo.tsx), verso i dati del pannello. */
+/** Le stesse quattro scelte del modulo (vedi Modulo.tsx), verso i dati del pannello. */
 const SERATE: Readonly<
   Record<string, { readonly serata: string; readonly nomeSerata: string; readonly codiceSerata: string; readonly sala?: string }>
 > = {
   "Gio Milkshake": { serata: "Giovedì", nomeSerata: "MILKSHAKE", codiceSerata: "milkshake" },
   "Ven commerciale": { serata: "Venerdì", nomeSerata: "COMMERCIALE", codiceSerata: "venerdi" },
-  "Sab sala 1 house": { serata: "Sabato", nomeSerata: "DUE SALE", codiceSerata: "sabato", sala: "Sala 1" },
-  "Sab sala 2 reggaeton": { serata: "Sabato", nomeSerata: "DUE SALE", codiceSerata: "sabato", sala: "Sala 2" },
-  "Dom Báilame": { serata: "Domenica Báilame", nomeSerata: "BÁILAME", codiceSerata: "bailame" },
+  "Sab Reggaeton": { serata: "Sabato", nomeSerata: "REGGAETON", codiceSerata: "sabato" },
+  "Dom Bàilame": { serata: "Domenica Bàilame", nomeSerata: "BÀILAME", codiceSerata: "bailame" },
 };
 
 function testo(valore: unknown, massimo: number): string | null {

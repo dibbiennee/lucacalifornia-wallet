@@ -24,11 +24,11 @@ export interface RichiestaPannello {
   readonly nome: string;
   readonly telefono: string;
   readonly quando: string;
-  /** Come si legge nelle schermate: "Sabato", "Domenica Báilame". */
+  /** Come si legge nelle schermate: "Sabato", "Domenica Bàilame". */
   readonly serata: string;
   /**
    * Il nome della serata, quello che va nel biglietto e nel messaggio:
-   * "DUE SALE", non "SABATO". Senza, il messaggio diceva "sei dentro per
+   * "REGGAETON", non "SABATO". Senza, il messaggio diceva "sei dentro per
    * SABATO di sabato 27 settembre".
    */
   readonly nomeSerata: string;
@@ -209,14 +209,43 @@ export const DATI_DI_ESEMPIO = true;
 let SERATE_PANNELLO: SerataPannello[] = [
   { codice: "milkshake", nome: "Giovedì, Milkshake", etichetta: "Lista aperta" },
   { codice: "venerdi", nome: "Venerdì", etichetta: "Lista aperta" },
-  { codice: "sabato", nome: "Sabato, due sale", etichetta: "Pochi tavoli" },
-  { codice: "bailame", nome: "Domenica, Báilame", etichetta: "Lista aperta" },
+  { codice: "sabato", nome: "Sabato, Reggaeton", etichetta: "Pochi tavoli" },
+  { codice: "bailame", nome: "Domenica, Bàilame", etichetta: "Lista aperta" },
 ];
 
 let SQUADRA: Pr[] = [
-  { nome: "Marco", prenotazioni: 18, liste: 12, tavoli: 6, provvigioni: 210, link: "lucacalifornia.satoshiweb.it/marco" },
-  { nome: "Sara", prenotazioni: 9, liste: 7, tavoli: 2, provvigioni: 95, link: "lucacalifornia.satoshiweb.it/sara" },
-  { nome: "Davide", prenotazioni: 4, liste: 3, tavoli: 1, provvigioni: 40, link: "lucacalifornia.satoshiweb.it/davide" },
+  {
+    nome: "Lorenzo Fiorentino",
+    prenotazioni: 18,
+    liste: 12,
+    tavoli: 6,
+    provvigioni: 210,
+    link: `lucacalifornia.satoshiweb.it/${nomeCorto("Lorenzo Fiorentino")}`,
+  },
+  {
+    nome: "Alex Feletti",
+    prenotazioni: 9,
+    liste: 7,
+    tavoli: 2,
+    provvigioni: 95,
+    link: `lucacalifornia.satoshiweb.it/${nomeCorto("Alex Feletti")}`,
+  },
+  {
+    nome: "Alessio",
+    prenotazioni: 6,
+    liste: 4,
+    tavoli: 2,
+    provvigioni: 60,
+    link: `lucacalifornia.satoshiweb.it/${nomeCorto("Alessio")}`,
+  },
+  {
+    nome: "Sara Arciero",
+    prenotazioni: 4,
+    liste: 3,
+    tavoli: 1,
+    provvigioni: 40,
+    link: `lucacalifornia.satoshiweb.it/${nomeCorto("Sara Arciero")}`,
+  },
 ];
 
 let ATTESA = { specialGuest: 128, capodanno: 64 };
@@ -229,7 +258,7 @@ export async function stasera(): Promise<Stasera> {
   return {
     codice: "sabato",
     giorno: "Sabato 26 set",
-    serata: "Sabato, due sale",
+    serata: "Sabato, Reggaeton",
     inCorso: true,
     inLista: confermati.filter((r) => r.tipo === "lista").length,
     tavoli: confermati.filter((r) => r.tipo === "tavolo").length,
@@ -295,7 +324,7 @@ export function compleanni(): readonly Compleanno[] {
     {
       nome: "Andrea Testa",
       fra: "tra 5 settimane",
-      annoScorso: "Lista, domenica Báilame",
+      annoScorso: "Lista, domenica Bàilame",
       telefono: "393400000005",
     },
   ];

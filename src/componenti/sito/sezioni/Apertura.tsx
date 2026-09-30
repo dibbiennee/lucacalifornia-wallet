@@ -20,7 +20,7 @@ import stili from "./Apertura.module.css";
  */
 export function Apertura() {
   return (
-    <section className={stili.apertura} aria-label="Luca California al Room 26">
+    <section id="apertura" className={stili.apertura} aria-label="Luca California al Room 26">
       <svg className={stili.raggi} viewBox="0 0 700 700" fill="#FF3EA5" aria-hidden focusable="false">
         <polygon points="0,0 700,0 700,173" />
         <polygon points="0,0 700,325 700,525" />
@@ -64,9 +64,9 @@ export function Apertura() {
           </Introduzione>
 
           <div className={stili.azioni}>
-            <Bottone href="/prenota?tipo=lista">Entra in lista o prenota</Bottone>
-            <Bottone href="/serate" aspetto="contorno">
-              Vedi le serate
+            <Bottone href="/prenota?tipo=tavolo">Prenota il tavolo</Bottone>
+            <Bottone href="/prenota?tipo=lista" aspetto="contorno">
+              Entra in lista
             </Bottone>
           </div>
         </div>

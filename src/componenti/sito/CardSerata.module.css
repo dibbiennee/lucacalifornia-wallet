@@ -1,21 +1,80 @@
-/* Le card che scorrono di lato: su un telefono è il gesto naturale. */
-.striscia {
+/*
+ * Le serate in home: una riga sottile ciascuna, tutte una sotto l'altra.
+ * Niente foto e niente scorrimento di lato, perché qui devono starci tutte e
+ * quattro in un colpo d'occhio; la foto resta nella pagina della serata.
+ */
+.righe {
   display: grid;
-  grid-auto-flow: column;
-  grid-auto-columns: 86%;
-  align-items: start;
-  overflow-x: auto;
-  scroll-snap-type: x mandatory;
-  overscroll-behavior-x: contain;
-  /* Esce dai margini della colonna, così la prima card tocca il bordo. */
-  margin: 0 -20px;
-  padding: 4px 20px 8px;
-  scroll-padding: 0 20px;
-  scrollbar-width: none;
-  gap: 12px;
+  gap: 8px;
 }
 
-.striscia::-webkit-scrollbar { display: none; }
+.riga {
+  display: grid;
+  /* "auto" e non un numero fisso: "Domenica" è più largo di "Sabato", e un
+     numero solo o ballava stretto per lei o sprecava spazio per gli altri. */
+  grid-template-columns: auto 1fr 18px;
+  align-items: center;
+  gap: 12px;
+  min-height: 60px;
+  padding: 10px 16px;
+  border-radius: var(--r-m);
+  background: var(--surface);
+  text-decoration: none;
+  color: inherit;
+  container-type: inline-size;
+}
+
+.rigaGiorno {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12.5px;
+  font-weight: 800;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+
+/* Il colore della serata non sparisce: resta come pallino accanto al giorno. */
+.rigaGiorno i {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex: none;
+}
+
+.rigaTesto {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  min-width: 0;
+}
+
+.rigaNome {
+  /* "Commerciale" in una riga stretta: si misura sulla riga, non sulla finestra.
+     Sotto la misura minima si tronca invece di sforare: il nome intero resta
+     comunque nel titolo della pagina a cui porta. */
+  font-size: clamp(14px, 8.5cqi, 20px);
+  line-height: 1.1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.rigaGenere {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.rigaFreccia {
+  flex: none;
+  color: var(--dim);
+}
 
 /* In colonna, quando le card sono l'elenco e non una striscia. */
 .elenco {
@@ -106,95 +165,11 @@
   color: inherit;
 }
 
-/*
- * Il sabato ha due sale: due porte, non una. Stanno dove le altre card hanno
- * la riga "musica piu' Prenota", e sono alte come quella: fuori dal corpo,
- * con la loro coda, la card del sabato veniva cento pixel piu' alta.
- */
-.due-sale {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 8px;
-  margin-top: auto;
-  padding-top: 8px;
-}
-
-/* In quattro colonne restano affiancate, con la scritta abbreviata. */
-.corto { display: none; }
-
-@media (min-width: 1100px) {
-  .intero { display: none; }
-  .corto { display: inline; }
-}
-
-/* Nella striscia che scorre, sotto i 340px la sala è troppo stretta anche per
-   "REGGAETON" al minimo leggibile di 13px: qui conta lei, non la finestra. */
-@container (max-width: 110px) {
-  .intero { display: none; }
-  .corto { display: inline; }
-}
-
-.sala {
-  min-width: 0;
-  /* "REGGAETON" in mezza card: la misura si prende dalla colonna. */
-  container-type: inline-size;
-  /* Alta come il pulsante Prenota delle altre serate: 44px, non 52. */
-  min-height: 44px;
-  border-radius: 12px;
-  padding: 6px 10px;
-  color: var(--ink);
-  text-decoration: none;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 1px;
-  line-height: 1.1;
-}
-
-.sala small {
-  /* Mai sotto i 12px: è testo, non un'icona. */
-  font-size: 12px;
-  font-weight: 800;
-}
-
-.sala strong {
-  display: block;
-  white-space: nowrap;
-  font-size: clamp(13px, 9cqi, 19px);
-  font-weight: 900;
-  font-stretch: 118%;
-}
-
-.suggerimento {
-  margin: 10px 0 0;
-  font-size: 13px;
-  color: var(--dim);
-}
-
-/*
- * Da 760 px in su la striscia diventa una griglia: lo scorrimento di lato è
- * un gesto da telefono, e su un computer una card larga l'86% dello schermo
- * sarebbe un manifesto.
- */
 @media (min-width: 760px) {
-  .striscia {
-    grid-auto-flow: row;
-    grid-auto-columns: auto;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    overflow: visible;
-    margin: 0;
-    padding: 0;
-    gap: 20px;
-  }
-
-  .suggerimento { display: none; }
-
   .elenco { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
 }
 
 @media (min-width: 1100px) {
-  .striscia,
   .elenco { grid-template-columns: repeat(4, minmax(0, 1fr)); }
 
   /*

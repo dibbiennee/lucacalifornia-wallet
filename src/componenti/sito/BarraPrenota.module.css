@@ -1,5 +1,5 @@
 /*
- * I due modi di entrare, sempre a portata di pollice.
+ * L'invito, sempre a portata di pollice.
  *
  * Solo su telefono: da 960 px in su l'invito sta nella testata, che resta
  * visibile anche lei.
@@ -10,17 +10,28 @@
   right: 0;
   bottom: 0;
   z-index: 30;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 8px;
   padding: 10px 12px calc(10px + env(safe-area-inset-bottom, 0px));
   background: rgba(0, 0, 0, 0.88);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
   border-top: 1px solid var(--line);
+  transform: translateY(0);
+  opacity: 1;
+  transition: transform 0.35s ease, opacity 0.35s ease;
 }
 
-.barra a { min-height: 50px; }
+.barra a { width: 100%; min-height: 50px; }
+
+/*
+ * In home parte già fuori dallo schermo: sull'apertura ci sono già i due
+ * pulsanti dell'hero, e vederne un terzo appena si apre il sito è confusione,
+ * non aiuto.
+ */
+.nascosta {
+  transform: translateY(calc(100% + env(safe-area-inset-bottom, 0px)));
+  opacity: 0;
+  pointer-events: none;
+}
 
 @media (min-width: 960px) {
   .barra { display: none; }

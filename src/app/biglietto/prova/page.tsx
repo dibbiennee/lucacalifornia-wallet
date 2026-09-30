@@ -13,7 +13,7 @@ import { TestoPiccolo } from "@/componenti/pannello/Messaggi";
  */
 
 const VOCI = [
-  ["Serata", "BÁILAME"],
+  ["Serata", "BÀILAME"],
   ["Quando", "Domenica 27 settembre 2026, ore 23:30"],
   ["Tipo", "TAVOLO, MISTO"],
   ["Nome", "Mario Rossi"],

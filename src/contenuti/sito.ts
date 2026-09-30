@@ -8,7 +8,7 @@
  */
 
 /*
- * Il nome della serata della domenica si scrive "Báilame", con l'accento.
+ * Il nome della serata della domenica si scrive "Bàilame", con l'accento.
  * È come sta scritto nel logo della serata, quello che si vede nelle foto
  * dentro al locale, ed è anche come si scrive in spagnolo.
  *
@@ -37,7 +37,7 @@ export const MENU = [
   { testo: "Chi sono", dove: "/chi-sono" },
 ] as const;
 
-export type Etichetta = "Lista aperta" | "Pochi tavoli" | "Tutto pieno";
+export type Etichetta = "Disponibilità limitata" | "Pochi tavoli" | "Tutto pieno";
 
 export interface SerataSito {
   readonly codice: string;
@@ -58,8 +58,6 @@ export interface SerataSito {
   readonly perModulo: string;
   readonly descrizione: string;
   readonly quando: string;
-  /** Vero per il sabato, che apre due sale con due musiche. */
-  readonly dueSale?: boolean;
 }
 
 /**
@@ -77,7 +75,7 @@ export const SERATE: readonly SerataSito[] = [
     colore: "milk",
     perModulo: "Gio Milkshake",
     alt: "Una ragazza balla sorridendo al Milkshake",
-    etichetta: "Lista aperta",
+    etichetta: "Disponibilità limitata",
     copertina: "/foto/night8.webp",
     descrizione:
       "Il giovedì è Milkshake: afro e reggaeton tutta la sera. Prenota qui e ti ricontatto io con disponibilità e prezzo.",
@@ -93,7 +91,7 @@ export const SERATE: readonly SerataSito[] = [
     colore: "acid",
     perModulo: "Ven commerciale",
     alt: "Il dj alla consolle il venerdì",
-    etichetta: "Lista aperta",
+    etichetta: "Disponibilità limitata",
     copertina: "/foto/night20.webp",
     descrizione:
       "Il venerdì si balla commerciale e reggaeton. Prenota qui e ti ricontatto io con disponibilità e prezzo.",
@@ -103,38 +101,40 @@ export const SERATE: readonly SerataSito[] = [
     codice: "sabato",
     giorno: "Sabato",
     breve: "Sab",
-    nome: "Due sale",
-    musica: "House e reggaeton",
-    genere: "House e reggaeton, in due sale",
+    nome: "Reggaeton",
+    musica: "Commerciale, reggaeton e house",
+    genere: "Commerciale, reggaeton e house",
     colore: "cyan",
-    perModulo: "Sab sala 1 house",
+    perModulo: "Sab Reggaeton",
     alt: "La pista piena il sabato",
-    dueSale: true,
     etichetta: "Pochi tavoli",
     copertina: "/foto/night16.webp",
     descrizione:
-      "Il sabato il Room 26 apre due sale: house nella prima, reggaeton nella seconda. Dimmi dove vuoi stare e ti sistemo io.",
+      "Il sabato si balla soprattutto commerciale e reggaeton, con un po' di house. Dimmi che formato musicale ti piace e ti sistemo io.",
     quando: "Ogni sabato",
   },
   {
     codice: "bailame",
     giorno: "Domenica",
     breve: "Dom",
-    nome: "Báilame",
+    nome: "Bàilame",
     musica: "Solo reggaeton",
     genere: "Solo reggaeton",
     colore: "red",
-    perModulo: "Dom Báilame",
+    perModulo: "Dom Bàilame",
     alt: "Le luci del Room 26 la domenica",
-    etichetta: "Lista aperta",
+    etichetta: "Disponibilità limitata",
     copertina: "/foto/night24.webp",
     descrizione:
-      "La domenica si chiude la settimana con Báilame: tutta la sera solo reggaeton. Prenota qui e ti ricontatto io con disponibilità e prezzo.",
+      "La domenica si chiude la settimana con Bàilame: tutta la sera solo reggaeton. Prenota qui e ti ricontatto io con disponibilità e prezzo.",
     quando: "Ogni domenica",
   },
 ];
 
-export const LOCALE = { nome: "ROOM 26, ROMA" } as const;
+export const LOCALE = {
+  nome: "ROOM 26, ROMA",
+  indirizzo: "Piazza Guglielmo Marconi 31, Roma",
+} as const;
 
 export const COME_FUNZIONA = [
   {
@@ -149,6 +149,10 @@ export const COME_FUNZIONA = [
     titolo: "IL BIGLIETTO NEL TELEFONO",
     testo:
       "Lo aggiungi ad Apple Wallet o Google Wallet. All'ingresso mostri il QR, niente nomi da cercare in lista.",
+  },
+  {
+    titolo: "CI OCCUPIAMO DI TUTTO",
+    testo: "Dalla prenotazione alla fine dell'evento, garantendoti l'accesso.",
   },
 ] as const;
 
@@ -169,19 +173,6 @@ export const CAPODANNO = {
     { nome: "PACK 3", righe: ["CENA", "SERATA", "HOTEL"] },
   ],
   azione: "METTIMI IN LISTA D'ATTESA",
-} as const;
-
-/*
- * Delle due sedi estive non c'è ancora una foto giusta, e online esistono
- * solo immagini di giornali e social, tutte protette. Invece di un riquadro
- * vuoto che sembra un'immagine non caricata, sono due tessere disegnate.
- */
-export const ESTATE = {
-  occhiello: "D'ESTATE",
-  posti: [
-    { nome: "NINFEO", dove: "Roma, all'EUR", codice: "ninfeo" },
-    { nome: "MORGAN", dove: "Civitavecchia, sul mare", codice: "morgan" },
-  ],
 } as const;
 
 export const DIVENTA_PR = {

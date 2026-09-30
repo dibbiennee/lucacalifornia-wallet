@@ -11,9 +11,9 @@ import type { DatiBiglietto } from "./tipi";
 export function bigliettoDiProva(): DatiBiglietto {
   return {
     serialNumber: nuovoSerialNumber(),
-    serata: "BÁILAME",
+    serata: "BÀILAME",
     // Domenica 27 settembre 2026, 23:30, ora di Roma.
-    // Báilame è la serata della domenica: il sabato al Room 26 sono
+    // Bàilame è la serata della domenica: il sabato al Room 26 sono
     // due sale diverse, house e reggaeton.
     inizioSerata: new Date("2026-09-27T23:30:00+02:00"),
     tipo: "TAVOLO, MISTO",

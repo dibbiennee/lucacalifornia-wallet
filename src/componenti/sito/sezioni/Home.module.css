@@ -67,6 +67,15 @@
   background: var(--sun);
   color: var(--ink);
   border-color: transparent;
+  padding: 22px 20px;
+  box-shadow: 0 10px 30px -8px rgba(255, 179, 92, 0.6);
+  animation: halloweenLuce 2.6s ease-in-out infinite;
+}
+
+/* Un respiro di luce, non uno scatto: deve farsi notare, non disturbare. */
+@keyframes halloweenLuce {
+  0%, 100% { box-shadow: 0 10px 30px -8px rgba(255, 179, 92, 0.6); }
+  50% { box-shadow: 0 14px 40px -4px rgba(255, 179, 92, 0.95); }
 }
 
 .halloween .arrivo {
@@ -98,6 +107,25 @@
   .halloweenTesta svg {
     display: none;
   }
+}
+
+/* Il richiamo sopra le serate: fa venire voglia di non aspettare. */
+.disponibilita {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin: 6px 0 0;
+  font-size: 13px;
+  font-weight: 800;
+  color: var(--magenta);
+}
+
+.disponibilita i {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--magenta);
+  flex: none;
 }
 
 /* --- Tutto il resto --- */
@@ -319,8 +347,11 @@
 }
 
 @media (min-width: 860px) {
-  /* I tre passi in fila: in colonna, su uno schermo largo, sono una scala. */
-  .passi { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
+  /* I passi in fila: in colonna, su uno schermo largo, sono una scala.
+     "auto-fit" e non un numero fisso: quando i passi diventano quattro (o
+     cambiano ancora) restano in una riga sola invece di lasciarne una
+     scoperta con un solo passo dentro. */
+  .passi { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; }
 }
 
 /* L'occhiello a sinistra e il logo del locale a destra, sulla stessa riga. */

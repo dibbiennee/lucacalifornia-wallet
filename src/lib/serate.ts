@@ -23,8 +23,8 @@ export const SERATE: readonly Serata[] = [
     musica: "due sale",
     sale: ["Sala 1, house", "Sala 2, reggaeton"],
   },
-  // "Báilame" con l'accento: è la grafia del logo della serata.
-  { codice: "bailame", nome: "BÁILAME", giorno: 0, musica: "100% reggaeton", sale: [] },
+  // "Bàilame" con l'accento: è la grafia del logo della serata.
+  { codice: "bailame", nome: "BÀILAME", giorno: 0, musica: "100% reggaeton", sale: [] },
 ];
 
 /**

@@ -16,16 +16,6 @@ export default function Home() {
       <DatiStrutturati />
       <Apertura />
       <Serate />
-      <SpecialGuest
-        avvisami={
-          <FoglioAvvisami
-            tipo="special_guest"
-            etichetta="Avvisami"
-            titolo="Ti avviso appena esce il nome"
-            spiegazione="Quando c'è un ospite, lo sai prima degli altri. Niente messaggi per altro."
-          />
-        }
-      />
       <Halloween
         avvisami={
           <FoglioAvvisami
@@ -34,6 +24,16 @@ export default function Home() {
             titolo="Ti avviso appena esce il programma"
             spiegazione="Quando pubblico data e biglietti, lo sai prima degli altri. Niente messaggi per altro."
             aspetto="nero"
+          />
+        }
+      />
+      <SpecialGuest
+        avvisami={
+          <FoglioAvvisami
+            tipo="special_guest"
+            etichetta="Avvisami"
+            titolo="Ti avviso appena esce il nome"
+            spiegazione="Quando c'è un ospite, lo sai prima degli altri. Niente messaggi per altro."
           />
         }
       />

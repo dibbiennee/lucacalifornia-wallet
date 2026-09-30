@@ -32,8 +32,8 @@ export default function PaginaChiSono() {
         />
 
         <Introduzione>Sono Luca Curella, PR e organizzatore di eventi a Roma. Ogni stagione scelgo un locale
-          solo e ci porto tutta la mia lista: d&apos;inverno il Room 26, d&apos;estate il Ninfeo e
-          il Morgan Beach Club.</Introduzione>
+          solo e ci porto tutta la mia passione: d&apos;inverno il Room 26, d&apos;estate il
+          Ninfeo.</Introduzione>
 
         <div style={{ marginTop: 24 }}>
           <Bottone href={INSTAGRAM_URL} aspetto="contorno" esterno>

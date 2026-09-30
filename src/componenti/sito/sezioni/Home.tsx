@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { Bottone } from "@/componenti/sito/Bottone";
-import { StrisciaSerate } from "@/componenti/sito/CardSerata";
+import { ListaSerate } from "@/componenti/sito/CardSerata";
 import { Brindisi, Navetta, Pass, Zucca } from "@/componenti/sito/Icone";
 import { COME_FUNZIONA, HALLOWEEN, INSTAGRAM_URL, SERATE, SPECIAL_GUEST } from "@/contenuti/sito";
 import { legaParole } from "@/lib/tipografia";
@@ -23,8 +23,12 @@ export function Serate() {
             <Image src="/foto/room26.webp" alt="Room 26" width={400} height={177} sizes="110px" />
           </div>
           <Titolo2 id="le-serate">Le serate</Titolo2>
+          <p className={stili.disponibilita}>
+            <i aria-hidden />
+            Disponibilità limitata
+          </p>
         </div>
-        <StrisciaSerate serate={SERATE} />
+        <ListaSerate serate={SERATE} />
       </div>
     </section>
   );
@@ -65,7 +69,7 @@ export function TuttoIlResto() {
           <Link href="/locali" className={`${stili.tessera} ${stili["con-foto"]}`}>
             <Image src="/foto/sunset.webp" alt="" width={640} height={480} sizes="(min-width: 720px) 33vw, 50vw" />
             <strong>D&apos;estate</strong>
-            <span>{legaParole("Ninfeo all'EUR e Morgan sul mare", { vedova: true })}</span>
+            <span>{legaParole("Il Ninfeo, all'EUR", { vedova: true })}</span>
           </Link>
 
           <Link href="/diventa-pr" className={stili.tessera} style={{ background: "var(--red)" }}>
@@ -76,7 +80,13 @@ export function TuttoIlResto() {
             <span>{legaParole("Candidature aperte")}</span>
           </Link>
 
-          <Link href="/serate" className={stili.tessera} style={{ background: "var(--milk)" }}>
+          <a
+            href="https://t.me/BAILAMEOFFICIAL"
+            target="_blank"
+            rel="noopener noreferrer"
+            className={stili.tessera}
+            style={{ background: "var(--milk)" }}
+          >
             <span className={stili.mazzo} aria-hidden>
               <Image src="/foto/night12.webp" alt="" width={64} height={88} sizes="32px" />
               <Image src="/foto/night4.webp" alt="" width={64} height={88} sizes="32px" />
@@ -84,7 +94,7 @@ export function TuttoIlResto() {
             </span>
             <strong>{legaParole("Voi al Room 26")}</strong>
             <span>{legaParole("Le foto delle serate")}</span>
-          </Link>
+          </a>
         </div>
       </div>
     </section>

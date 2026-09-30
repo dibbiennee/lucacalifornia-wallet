@@ -77,10 +77,13 @@
   color: var(--muted);
 }
 
-/* Le due voci sotto il titolo di una serata: quando e dove. */
+/*
+ * "Quando", sotto il titolo di una serata. "Dove" ora è la mappetta cliccabile
+ * subito sotto: una sola voce qui non deve stirarsi a metà riga.
+ */
 .dati {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(140px, 220px));
   gap: 10px;
   margin: 20px 0;
 }
@@ -318,6 +321,67 @@
   font-size: 13px;
   color: var(--acid);
   font-weight: 700;
+}
+
+/*
+ * Il locale su Maps: un puntino su un fondo a griglia, che basta a farlo
+ * riconoscere come una mappa senza caricarne una vera (a pagamento).
+ */
+.mappa {
+  display: grid;
+  grid-template-columns: 52px 1fr 20px;
+  align-items: center;
+  gap: 14px;
+  margin: 10px 0 0;
+  padding: 14px 16px;
+  border-radius: var(--r-m);
+  background: var(--surface);
+  text-decoration: none;
+  color: inherit;
+}
+
+.puntini {
+  width: 52px;
+  height: 52px;
+  border-radius: var(--r-s, 10px);
+  display: grid;
+  place-items: center;
+  background-image: radial-gradient(var(--line) 1.2px, transparent 1.2px);
+  background-size: 9px 9px;
+  background-color: var(--paper);
+}
+
+.mappaTesto {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  min-width: 0;
+}
+
+.mappaTesto small {
+  font-size: 12px;
+  font-weight: 800;
+  color: var(--dim);
+}
+
+.mappaTesto strong {
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.mappaTesto span {
+  font-size: 13px;
+  color: var(--muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Il gallone torna indietro di suo: qui deve puntare fuori, non dentro. */
+.mappa svg:last-child {
+  flex: none;
+  transform: rotate(180deg);
+  color: var(--dim);
 }
 
 /* --- Il ritratto di una serata --- */

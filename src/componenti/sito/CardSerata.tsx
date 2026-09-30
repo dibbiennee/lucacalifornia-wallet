@@ -12,106 +12,79 @@ export function perPrenotare(serata: string, tipo: "lista" | "tavolo" = "lista")
   return `/prenota?tipo=${tipo}&serata=${encodeURIComponent(serata)}`;
 }
 
-/**
- * Una serata, col suo colore.
- *
- * Il sabato è l'eccezione: due sale con due musiche diverse, quindi due porte
- * invece di un pulsante solo. Su fondo scuro, perché il colore lì sarebbe una
- * scelta fra le due sale.
- */
+/** Una serata, col suo colore. */
 export function CardSerata({ serata }: { readonly serata: SerataSito }) {
-  const due = serata.dueSale === true;
   const colore = `var(--${serata.colore})`;
 
   return (
-    <article
-      className={stili.card}
-      style={due ? { background: "var(--surface)", color: "var(--text)" } : { background: colore }}
-    >
+    <article className={stili.card} style={{ background: colore }}>
       <Link href={`/serate/${serata.codice}`} className={stili.foto} aria-label={`${serata.nome}, dettagli`}>
         <Image src={serata.copertina} alt={serata.alt} width={640} height={624} sizes="(min-width: 860px) 320px, 86vw" />
-        <span
-          className={stili.etichetta}
-          style={due ? { background: "var(--text)", color: "var(--ink)" } : { color: colore }}
-        >
+        <span className={stili.etichetta} style={{ color: colore }}>
           {serata.etichetta}
         </span>
       </Link>
 
       <div className={stili.corpo}>
-        <p className={stili.giorno} style={due ? { color: "var(--muted)" } : undefined}>
-          {serata.giorno}
-        </p>
+        <p className={stili.giorno}>{serata.giorno}</p>
 
         <h3 className="display" style={serata.codice === "venerdi" ? { fontStretch: "112%" } : undefined}>
           <Link href={`/serate/${serata.codice}`}>{serata.nome}</Link>
         </h3>
 
-        {due && (
-          /*
-            Al posto della riga "musica piu' Prenota" delle altre serate, e
-            dentro al corpo come quella: attaccate in fondo alla card, la
-            rendevano cento pixel piu' alta delle sorelle.
-          */
-          <div className={stili["due-sale"]}>
-            <Link
-              href={perPrenotare("Sab sala 1 house")}
-              className={stili.sala}
-              style={{ background: "var(--cyan)" }}
-              aria-label="Sala 1, house"
-            >
-              <small>Sala 1</small>
-              <strong>HOUSE</strong>
-            </Link>
-            <Link
-              href={perPrenotare("Sab sala 2 reggaeton")}
-              className={stili.sala}
-              style={{ background: "var(--magenta)" }}
-              aria-label="Sala 2, reggaeton"
-            >
-              <small>Sala 2</small>
-              {/*
-                La parola intera dove ci sta, l'abbreviazione dove la card è
-                stretta: in quattro colonne "REGGAETON" non entra nemmeno a
-                dieci pixel. Chi legge con la voce sente il nome per esteso,
-                che sta nell'aria-label del link.
-              */}
-              <strong>
-                <span className={stili.intero}>REGGAETON</span>
-                <span className={stili.corto}>REGG.</span>
-              </strong>
-            </Link>
-          </div>
-        )}
-
-        {!due && (
-          <div className={stili.piede}>
-            <Link href={`/serate/${serata.codice}`} className={stili.musica}>
-              {legaParole(serata.musica)}
-            </Link>
-            <Bottone href={perPrenotare(serata.perModulo)} aspetto="nero" stretto>
-              Prenota
-            </Bottone>
-          </div>
-        )}
+        <div className={stili.piede}>
+          <Link href={`/serate/${serata.codice}`} className={stili.musica}>
+            {legaParole(serata.musica)}
+          </Link>
+          <Bottone href={perPrenotare(serata.perModulo)} aspetto="nero" stretto>
+            Prenota
+          </Bottone>
+        </div>
       </div>
     </article>
   );
 }
 
-/** Le quattro serate che scorrono di lato. */
-export function StrisciaSerate({ serate }: { readonly serate: readonly SerataSito[] }) {
+/**
+ * Le quattro serate, una riga sottile ciascuna: solo giorno, nome e genere.
+ *
+ * In home non serve la foto, che sta già nella pagina della serata: qui
+ * bastano tre righe di testo per far scegliere, e ci stanno tutte e quattro
+ * senza scorrere di lato. Il sabato non ha bisogno di un caso a parte come
+ * nella card grande: "genere" dice già "house e reggaeton, in due sale".
+ */
+export function ListaSerate({ serate }: { readonly serate: readonly SerataSito[] }) {
   return (
-    <>
-      <div className={stili.striscia}>
-        {serate.map((s) => (
-          <CardSerata key={s.codice} serata={s} />
-        ))}
-      </div>
-      <p className={stili.suggerimento} aria-hidden>
-        Scorri per le altre serate
-      </p>
-    </>
+    <div className={stili.righe}>
+      {serate.map((s) => (
+        <Link key={s.codice} href={`/serate/${s.codice}`} className={stili.riga}>
+          <span className={stili.rigaGiorno}>
+            <i aria-hidden style={{ background: `var(--${s.colore})` }} />
+            {s.giorno}
+          </span>
+          <span className={stili.rigaTesto}>
+            <strong className={`display ${stili.rigaNome}`}>{s.nome}</strong>
+            <span className={stili.rigaGenere}>{s.genere}</span>
+          </span>
+          <Freccia />
+        </Link>
+      ))}
+    </div>
+  );
+}
+
+function Freccia() {
+  return (
+    <svg className={stili.rigaFreccia} width="18" height="18" viewBox="0 0 24 24" aria-hidden focusable="false">
+      <path
+        d="M9 5l7 7-7 7"
+        stroke="currentColor"
+        strokeWidth="2.2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        fill="none"
+      />
+    </svg>
   );
 }
 

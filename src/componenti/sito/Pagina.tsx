@@ -155,6 +155,44 @@ export function Dati({ voci }: { readonly voci: readonly (readonly [string, stri
   );
 }
 
+/**
+ * Il locale, con un pallino sulla mappa: porta dritto a Google Maps, con
+ * l'indirizzo già scritto. Niente API a pagamento per una mappa vera: il
+ * disegno a puntini basta a farla riconoscere come tale.
+ */
+export function CardMappa({ nome, indirizzo }: { readonly nome: string; readonly indirizzo: string }) {
+  return (
+    <a
+      className={stili.mappa}
+      href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(indirizzo)}`}
+      target="_blank"
+      rel="noopener"
+    >
+      <span className={stili.puntini} aria-hidden>
+        <Spillo />
+      </span>
+      <span className={stili.mappaTesto}>
+        <small>Dove</small>
+        <strong>{nome}</strong>
+        <span>{indirizzo}</span>
+      </span>
+      <Gallone />
+    </a>
+  );
+}
+
+function Spillo() {
+  return (
+    <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden focusable="false">
+      <path
+        d="M12 2c-4 0-7 3-7 7 0 5.2 7 13 7 13s7-7.8 7-13c0-4-3-7-7-7z"
+        fill="var(--magenta)"
+      />
+      <circle cx="12" cy="9" r="2.6" fill="var(--paper)" />
+    </svg>
+  );
+}
+
 export function Azioni({ children }: { readonly children: ReactNode }) {
   return <div className={stili.azioni}>{children}</div>;
 }

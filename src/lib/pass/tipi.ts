@@ -8,10 +8,6 @@ export const LOCALI = {
     nome: "Ninfeo, Roma",
     indirizzo: "",
   },
-  morgan: {
-    nome: "Morgan Beach Club, Civitavecchia",
-    indirizzo: "",
-  },
 } as const;
 
 export type CodiceLocale = keyof typeof LOCALI;
@@ -28,7 +24,7 @@ export function isCodiceLocale(valore: string): valore is CodiceLocale {
 export interface Prenotazione {
   /** Identificativo del biglietto: univoco, mai riusato. */
   readonly serialNumber: string;
-  /** Nome della serata, es. "BÁILAME". */
+  /** Nome della serata, es. "BÀILAME". */
   readonly serata: string;
   /** Inizio della serata: decide quando il pass compare in blocco schermo. */
   readonly inizioSerata: Date;

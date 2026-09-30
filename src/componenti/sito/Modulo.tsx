@@ -22,13 +22,12 @@ import stili from "./Modulo.module.css";
  * può aprire il modulo già sulla cosa giusta.
  */
 
-/** Le cinque scelte: il sabato si sdoppia, perché sono due sale diverse. */
+/** Le quattro serate, una per giorno. */
 const SERATE_MODULO = [
   { valore: "Gio Milkshake", colore: "milk" },
   { valore: "Ven commerciale", colore: "acid" },
-  { valore: "Sab sala 1 house", colore: "cyan" },
-  { valore: "Sab sala 2 reggaeton", colore: "magenta" },
-  { valore: "Dom Báilame", colore: "red" },
+  { valore: "Sab Reggaeton", colore: "cyan" },
+  { valore: "Dom Bàilame", colore: "red" },
 ] as const;
 
 const GRUPPI = ["Solo ragazzi", "Solo ragazze", "Misto"] as const;
@@ -65,7 +64,7 @@ export function Modulo() {
   const [problema, setProblema] = useState("");
   const [inviata, setInviata] = useState(false);
 
-  // Quello che arriva dall'indirizzo: ?tipo=tavolo e ?serata=Dom Báilame
+  // Quello che arriva dall'indirizzo: ?tipo=tavolo e ?serata=Dom Bàilame
   useEffect(() => {
     const cerca = new URLSearchParams(window.location.search);
 

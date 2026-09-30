@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 
 import { BarraPrenota } from "@/componenti/sito/BarraPrenota";
+import { ChatBot } from "@/componenti/sito/ChatBot";
 import { PiePagina } from "@/componenti/sito/PiePagina";
 import { RivelaScroll } from "@/componenti/sito/RivelaScroll";
 import { Testata } from "@/componenti/sito/Testata";
@@ -22,6 +23,7 @@ export default function LayoutSito({ children }: { children: ReactNode }) {
       <main id="principale">{children}</main>
       <PiePagina />
       <BarraPrenota />
+      <ChatBot />
       <RivelaScroll />
     </div>
   );
