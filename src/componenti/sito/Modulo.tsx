@@ -74,7 +74,9 @@ type TipoIngresso = "lista" | "tavolo" | "braccialetto";
 
 export function Modulo() {
   const id = useId();
-  const [tipo, setTipo] = useState<TipoIngresso>("lista");
+  // Il tavolo è la priorità: chi apre il modulo senza un tipo scelto prima
+  // (dal link fisso, per esempio) parte da lì, non dalla lista.
+  const [tipo, setTipo] = useState<TipoIngresso>("tavolo");
   const [nome, setNome] = useState("");
   const [cognome, setCognome] = useState("");
   const [telefono, setTelefono] = useState("");
@@ -94,7 +96,7 @@ export function Modulo() {
     const cerca = new URLSearchParams(window.location.search);
 
     const tipoIndirizzo = cerca.get("tipo");
-    if (tipoIndirizzo === "tavolo" || tipoIndirizzo === "braccialetto") {
+    if (tipoIndirizzo === "tavolo" || tipoIndirizzo === "braccialetto" || tipoIndirizzo === "lista") {
       setTipo(tipoIndirizzo);
     }
 
@@ -186,9 +188,9 @@ export function Modulo() {
       <div className={stili["scelta-tipo"]} role="radiogroup" aria-label="Cosa vuoi">
         {(
           [
-            ["Lista", "lista"],
             ["Tavolo", "tavolo"],
             ["Braccialetto", "braccialetto"],
+            ["Lista", "lista"],
           ] as const
         ).map(([testo, valore]) => (
           <label key={valore}>

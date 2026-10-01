@@ -35,7 +35,7 @@ export interface RichiestaPannello {
   /** Per legare la richiesta alla serata senza confrontare stringhe scritte a mano. */
   readonly codiceSerata: string;
   readonly sala?: string;
-  readonly tipo: "lista" | "tavolo" | "navetta" | "braccialetto";
+  readonly tipo: "tavolo" | "braccialetto" | "lista" | "navetta";
   readonly gruppo?: string;
   readonly budget?: string;
   readonly occasione?: string;

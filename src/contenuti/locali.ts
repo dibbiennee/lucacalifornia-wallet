@@ -34,7 +34,7 @@ export const LOCALI_STAGIONE: readonly Locale[] = [
     titolo: ["ROOM 26", "ROMA"],
     sottotitolo: "Quattro sere a settimana, da giovedì a domenica",
     testo:
-      "D'inverno lavoro qui, quattro sere a settimana. Ogni serata ha la sua musica e il suo pubblico: scegli la tua e ti sistemo io, in lista o al tavolo.",
+      "D'inverno lavoro qui, quattro sere a settimana. Ogni serata ha la sua musica e il suo pubblico: scegli la tua e ti sistemo io, al tavolo o in lista.",
     foto: "/foto/copertine/sabato.jpg",
   },
   {

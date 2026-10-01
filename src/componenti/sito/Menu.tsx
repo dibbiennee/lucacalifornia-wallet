@@ -111,9 +111,9 @@ export function Menu({ chiudi }: { readonly chiudi: () => void }) {
       </ul>
 
       <div className={stili.piede}>
-        <Bottone href="/prenota?tipo=lista">Lista</Bottone>
-        <Bottone href="/prenota?tipo=tavolo" aspetto="contorno">
-          Tavolo
+        <Bottone href="/prenota?tipo=tavolo">Tavolo</Bottone>
+        <Bottone href="/prenota?tipo=lista" aspetto="contorno">
+          Lista
         </Bottone>
       </div>
     </div>

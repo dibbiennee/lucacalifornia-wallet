@@ -43,7 +43,7 @@ export function CardSerata({ serata }: { readonly serata: SerataSito }) {
           <Link href={`/serate/${serata.codice}`} className={stili.musica}>
             {legaParole(serata.musica)}
           </Link>
-          <Bottone href={perPrenotare(serata.perModulo)} aspetto="nero" stretto>
+          <Bottone href={perPrenotare(serata.perModulo, "tavolo")} aspetto="nero" stretto>
             Prenota
           </Bottone>
         </div>

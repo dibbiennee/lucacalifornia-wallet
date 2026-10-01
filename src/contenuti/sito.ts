@@ -161,7 +161,7 @@ export const LOCALE = {
 
 export const COME_FUNZIONA = [
   {
-    titolo: "SCEGLI LISTA O TAVOLO",
+    titolo: "SCEGLI TAVOLO, BRACCIALETTO O LISTA",
     testo: "Compili il form qui sotto in mezzo minuto.",
   },
   {

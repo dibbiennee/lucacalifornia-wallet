@@ -26,7 +26,7 @@ export default function PaginaSerate() {
       <TestaPagina
         occhiello="D'inverno, Room 26, Roma"
         righe={["Le serate"]}
-        introduzione="Quattro sere a settimana, da giovedì a domenica. Ogni serata ha la sua musica e il suo pubblico: scegli la tua e ti sistemo io, in lista o al tavolo."
+        introduzione="Quattro sere a settimana, da giovedì a domenica. Ogni serata ha la sua musica e il suo pubblico: scegli la tua e ti sistemo io, al tavolo o in lista."
       />
 
       <section className="wrap">

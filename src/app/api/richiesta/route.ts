@@ -31,7 +31,7 @@ interface Richiesta {
   readonly genere?: string;
 }
 
-const TIPI = ["lista", "tavolo", "navetta", "braccialetto"] as const;
+const TIPI = ["tavolo", "braccialetto", "lista", "navetta"] as const;
 const GENERI = ["Donna", "Uomo"] as const;
 
 /** Le stesse quattro scelte del modulo (vedi Modulo.tsx), verso i dati del pannello. */

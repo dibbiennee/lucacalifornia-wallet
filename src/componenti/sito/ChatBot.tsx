@@ -24,7 +24,7 @@ const DOMANDE: readonly Domanda[] = [
     id: "come-funziona",
     domanda: "Come funziona?",
     risposta:
-      "Scegli lista o tavolo dal modulo, Luca ti conferma su WhatsApp con disponibilità e prezzo, e il biglietto ti arriva nel telefono.",
+      "Scegli tavolo, braccialetto o lista dal modulo, Luca ti conferma su WhatsApp con disponibilità e prezzo, e il biglietto ti arriva nel telefono.",
   },
   {
     id: "dove",

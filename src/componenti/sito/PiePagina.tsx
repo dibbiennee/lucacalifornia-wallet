@@ -8,7 +8,7 @@ import { Marchio } from "./Marchio";
 import stili from "./PiePagina.module.css";
 
 /** Le stesse voci del menu, più la prenotazione, in due colonne. */
-const VOCI = [...MENU.filter((v) => v.dove !== "/funzioni"), { testo: "Prenota", dove: "/prenota?tipo=lista" }];
+const VOCI = [...MENU.filter((v) => v.dove !== "/funzioni"), { testo: "Prenota", dove: "/prenota?tipo=tavolo" }];
 
 export function PiePagina() {
   return (

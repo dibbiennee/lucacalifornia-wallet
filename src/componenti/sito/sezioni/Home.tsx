@@ -113,8 +113,8 @@ export function ComeFunziona() {
           ))}
         </ol>
 
-        <Bottone href="/prenota?tipo=lista" pieno>
-          Entra in lista o prenota
+        <Bottone href="/prenota?tipo=tavolo" pieno>
+          Prenota il tuo ingresso
         </Bottone>
       </div>
     </section>

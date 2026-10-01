@@ -46,8 +46,8 @@ export function Testata() {
 
           <div className={stili.azioni}>
             {/* Su telefono non ci sta: al suo posto c'è il Menu. */}
-            <Bottone href="/prenota?tipo=lista" stretto classe={stili["prenota-largo"]}>
-              Entra in lista o prenota
+            <Bottone href="/prenota?tipo=tavolo" stretto classe={stili["prenota-largo"]}>
+              Prenota il tuo ingresso
             </Bottone>
 
             <BottoneAzione
