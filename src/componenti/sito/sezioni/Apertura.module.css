@@ -193,7 +193,7 @@
   .apertura h1 { max-width: none; }
 
   .azioni {
-    grid-template-columns: auto auto;
+    grid-template-columns: auto auto auto;
     justify-content: start;
   }
 

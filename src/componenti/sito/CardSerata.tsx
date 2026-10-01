@@ -8,7 +8,7 @@ import { Bottone } from "./Bottone";
 import stili from "./CardSerata.module.css";
 
 /** Il link al modulo, già con la serata scelta. */
-export function perPrenotare(serata: string, tipo: "lista" | "tavolo" = "lista"): string {
+export function perPrenotare(serata: string, tipo: "lista" | "tavolo" | "braccialetto" = "lista"): string {
   return `/prenota?tipo=${tipo}&serata=${encodeURIComponent(serata)}`;
 }
 

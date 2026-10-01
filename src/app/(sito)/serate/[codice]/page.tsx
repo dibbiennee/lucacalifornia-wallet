@@ -79,6 +79,9 @@ export default async function PaginaSerata({ params }: { params: Promise<{ codic
               <Bottone href={perPrenotare(serata.perModulo, "tavolo")} classe="cta-prenota">
                 Prenota il tavolo
               </Bottone>
+              <Bottone href={perPrenotare(serata.perModulo, "braccialetto")} aspetto="contorno" classe="cta-prenota">
+                Prenota il bracciale
+              </Bottone>
               <Bottone href={perPrenotare(serata.perModulo)} aspetto="contorno" classe="cta-prenota">
                 Entra in lista
               </Bottone>

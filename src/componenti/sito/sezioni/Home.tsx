@@ -64,12 +64,6 @@ export function TuttoIlResto() {
             <span>{legaParole("Tre pacchetti, lista d'attesa aperta", { vedova: true })}</span>
           </Link>
 
-          <Link href="/locali" className={`${stili.tessera} ${stili["con-foto"]} ${stili.tesseraFoto}`}>
-            <Image src="/foto/sunset.webp" alt="" width={640} height={480} sizes="(min-width: 720px) 33vw, 50vw" />
-            <strong>D&apos;estate</strong>
-            <span>{legaParole("Ninfeo all'EUR e Morgan sul mare", { vedova: true })}</span>
-          </Link>
-
           <Link
             href="/diventa-pr"
             className={`${stili.tessera} ${stili.piena}`}

@@ -74,7 +74,7 @@ export function ElencoStasera({
           {braccialetti.length > 0 && (
             <section className="sezione" aria-labelledby={`${id}-braccialetti`}>
               <h2 className="titolo-sezione" id={`${id}-braccialetti`}>
-                Braccialetti, {braccialetti.length}
+                Bracciali, {braccialetti.length}
               </h2>
               <div className="lista">
                 {braccialetti.map((r) => (

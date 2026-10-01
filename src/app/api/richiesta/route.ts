@@ -142,7 +142,7 @@ export async function POST(richiesta: Request): Promise<Response> {
       : tipo === "navetta"
         ? `Navetta da ${zona}, ${salvata.serata}`
         : tipo === "braccialetto"
-          ? `Braccialetto ${(genere ?? "").toLowerCase()}, ${salvata.serata}`
+          ? `Bracciale ${(genere ?? "").toLowerCase()}, ${salvata.serata}`
           : `Lista, ${salvata.serata}`;
 
   // Se il push fallisce (nessuno iscritto, un endpoint scaduto...) la

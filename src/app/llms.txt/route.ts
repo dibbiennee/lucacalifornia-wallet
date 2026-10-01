@@ -1,4 +1,3 @@
-import { LOCALI_STAGIONE } from "@/contenuti/locali";
 import { SERATE } from "@/contenuti/sito";
 import { INDIRIZZO, SITO_PUBBLICO } from "@/lib/pubblico";
 
@@ -19,17 +18,12 @@ export function GET(): Response {
     "# Luca California",
     "",
     "> Luca Curella, in arte Luca California, è un PR di Roma: mette in lista e prenota",
-    "> tavoli al ROOM26 di Roma d'inverno, al Ninfeo di Roma e al Morgan Beach Club di",
-    "> Civitavecchia d'estate. Si prenota dal sito, lui conferma su WhatsApp e il",
+    "> tavoli al ROOM26 di Roma. Si prenota dal sito, lui conferma su WhatsApp e il",
     "> biglietto arriva nel telefono, da aggiungere ad Apple Wallet o Google Wallet.",
     "",
     "## Serate al ROOM26",
     "",
     ...SERATE.map((s) => `- [${s.giorno} ${s.nome}](${INDIRIZZO}/serate/${s.codice}): ${s.musica.toLowerCase()}`),
-    "",
-    "## Locali, uno per stagione",
-    "",
-    ...LOCALI_STAGIONE.map((l) => `- [${l.nome}, ${l.citta}](${INDIRIZZO}/locali/${l.codice}): ${l.sottotitolo.toLowerCase()}`),
     "",
     "## Altro",
     "",

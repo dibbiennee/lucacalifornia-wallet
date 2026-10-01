@@ -28,7 +28,7 @@ function tipoBreve(r: RichiestaPannello): string {
     return r.zona === undefined ? "navetta" : `navetta da ${r.zona}`;
   }
   if (r.tipo === "braccialetto") {
-    return `braccialetto ${(r.gruppo ?? "").toLowerCase()}`.trim();
+    return `bracciale ${(r.gruppo ?? "").toLowerCase()}`.trim();
   }
   return "lista";
 }
@@ -66,7 +66,7 @@ export function tipoBiglietto(r: RichiestaPannello): string {
     return "NAVETTA";
   }
   if (r.tipo === "braccialetto") {
-    return `BRACCIALETTO, ${(r.gruppo ?? "").toUpperCase()}`;
+    return `BRACCIALE, ${(r.gruppo ?? "").toUpperCase()}`;
   }
   return "LISTA";
 }
@@ -80,7 +80,7 @@ export function tipoEsteso(r: RichiestaPannello): string {
     return r.zona === undefined ? "Navetta" : `Navetta, ${r.zona.toLowerCase()}`;
   }
   if (r.tipo === "braccialetto") {
-    return `Braccialetto, ${(r.gruppo ?? "").toLowerCase()}`;
+    return `Bracciale, ${(r.gruppo ?? "").toLowerCase()}`;
   }
   return "Lista";
 }

@@ -63,6 +63,9 @@ export function Apertura() {
 
           <div className={stili.azioni}>
             <Bottone href="/prenota?tipo=tavolo">Prenota il tavolo</Bottone>
+            <Bottone href="/prenota?tipo=braccialetto" aspetto="contorno">
+              Prenota il bracciale
+            </Bottone>
             <Bottone href="/prenota?tipo=lista" aspetto="contorno">
               Entra in lista
             </Bottone>

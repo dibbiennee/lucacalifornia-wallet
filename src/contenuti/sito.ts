@@ -28,10 +28,8 @@ export const WHATSAPP = "393348548735";
 
 export const MENU = [
   { testo: "Tavoli", dove: "/tavoli" },
-  { testo: "Locali", dove: "/locali" },
   { testo: "Navetta", dove: "/navetta" },
   { testo: "Capodanno", dove: "/capodanno" },
-  { testo: "Funzioni", dove: "/funzioni" },
   { testo: "Diventa PR", dove: "/diventa-pr" },
   { testo: "Chi sono", dove: "/chi-sono" },
 ] as const;

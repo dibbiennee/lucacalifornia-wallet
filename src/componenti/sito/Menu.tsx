@@ -13,12 +13,10 @@ import stili from "./Menu.module.css";
 const COLORI: Readonly<Record<string, string>> = {
   "/serate": "var(--milk)",
   "/tavoli": "var(--sun)",
-  "/locali": "var(--cyan)",
   "/navetta": "var(--cyan)",
   "/capodanno": "var(--acid)",
   "/diventa-pr": "var(--red)",
   "/chi-sono": "var(--text)",
-  "/funzioni": "var(--magenta)",
 };
 
 /**
@@ -112,6 +110,9 @@ export function Menu({ chiudi }: { readonly chiudi: () => void }) {
 
       <div className={stili.piede}>
         <Bottone href="/prenota?tipo=tavolo">Tavolo</Bottone>
+        <Bottone href="/prenota?tipo=braccialetto" aspetto="nero">
+          Bracciale
+        </Bottone>
         <Bottone href="/prenota?tipo=lista" aspetto="contorno">
           Lista
         </Bottone>

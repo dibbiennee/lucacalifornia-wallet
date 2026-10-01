@@ -189,7 +189,7 @@ export function Modulo() {
         {(
           [
             ["Tavolo", "tavolo"],
-            ["Braccialetto", "braccialetto"],
+            ["Bracciale", "braccialetto"],
             ["Lista", "lista"],
           ] as const
         ).map(([testo, valore]) => (
