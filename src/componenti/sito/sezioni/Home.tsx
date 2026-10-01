@@ -15,7 +15,7 @@ export function Serate() {
   return (
     <section className="blocco" style={{ paddingBottom: 20 }} aria-labelledby="le-serate">
       <div className="wrap">
-        <div className="blocco-testa rivela">
+        <div id="testa-serate" className="blocco-testa rivela">
           <div className={stili["testa-riga"]}>
             <p className="occhiello" style={{ color: "var(--muted)", margin: 0 }}>
               D&apos;inverno, ROOM26, Roma
@@ -95,9 +95,6 @@ export function ComeFunziona() {
     <section className={`blocco ${stili.comeFunzionaSfondo}`} style={{ paddingTop: 0 }} aria-labelledby="come-funziona">
       <div className="wrap">
         <div className="blocco-testa rivela">
-          <p className="occhiello" style={{ margin: 0 }}>
-            Dalla richiesta alla porta
-          </p>
           <Titolo2 id="come-funziona" misura='clamp(25px, 7.6vw, 60px)'>Come funziona</Titolo2>
         </div>
 

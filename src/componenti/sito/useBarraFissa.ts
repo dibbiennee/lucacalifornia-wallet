@@ -9,11 +9,12 @@ import { usePathname } from "next/navigation";
  * Condivisa fra BarraPrenota e il cerchietto della chat: devono muoversi
  * insieme, non ognuno per conto suo con la sua osservazione della pagina.
  *
- * In home resta falsa solo sull'apertura, e vera per tutto il resto della
- * pagina, comunque lunga: si agganciava a "Le serate" invece che
- * all'apertura, e più giù, appena quella sezione usciva dalla vista, la barra
- * spariva di nuovo. Nelle altre pagine, dove l'apertura non c'è, è sempre
- * vera.
+ * In home resta falsa finché non si arriva con il fondo dello schermo alla
+ * testata di "Le serate", poi resta vera per il resto della pagina, comunque
+ * lunga: l'osservatore si stacca al primo scatto, apposta, perché se restasse
+ * acceso la barra sparirebbe di nuovo appena quella testata (bassa, stretta)
+ * esce a sua volta dalla vista scorrendo più giù. Nelle altre pagine, dove
+ * quella testata non c'è, è sempre vera.
  */
 export function useBarraFissa(): boolean {
   const percorso = usePathname();
@@ -25,16 +26,19 @@ export function useBarraFissa(): boolean {
       return;
     }
 
-    const apertura = document.getElementById("apertura");
-    if (apertura === null) {
+    const testata = document.getElementById("testa-serate");
+    if (testata === null) {
       return;
     }
 
-    const osservatore = new IntersectionObserver(
-      ([voce]) => setVisibile(voce !== undefined && !voce.isIntersecting)
-    );
+    const osservatore = new IntersectionObserver(([voce]) => {
+      if (voce !== undefined && voce.isIntersecting) {
+        setVisibile(true);
+        osservatore.disconnect();
+      }
+    });
 
-    osservatore.observe(apertura);
+    osservatore.observe(testata);
     return () => osservatore.disconnect();
   }, [inHome]);
 

@@ -420,8 +420,22 @@
   position: absolute;
   inset: 0;
   z-index: -1;
+  /*
+   * In alto parte dal nero pieno della pagina, non dalla foto: senza,
+   * si vedeva uno stacco netto esattamente dove iniziava la sezione,
+   * perché sopra c'è il nero piatto della pagina e la foto comincia
+   * subito più chiara. Qui la foto si vede solo al centro, sfumando
+   * verso il nero sia sopra che sotto.
+   */
   background-image:
-    linear-gradient(180deg, rgba(5, 4, 7, 0.7) 0%, rgba(5, 4, 7, 0.94) 65%, var(--bg) 100%),
+    linear-gradient(
+      180deg,
+      var(--bg) 0%,
+      rgba(5, 4, 7, 0.75) 12%,
+      rgba(5, 4, 7, 0.55) 35%,
+      rgba(5, 4, 7, 0.9) 70%,
+      var(--bg) 100%
+    ),
     url("/foto/atmosfera/come-funziona-dj.jpg");
   background-size: cover;
   background-position: center 35%;

@@ -161,21 +161,16 @@ export const LOCALE = {
 
 export const COME_FUNZIONA = [
   {
-    titolo: "SCEGLI TAVOLO, BRACCIALETTO O LISTA",
-    testo: "Compili il form qui sotto in mezzo minuto.",
+    titolo: "SCEGLI LA TUA SERATA",
+    testo: "Prenota dal sito in 20 secondi.",
   },
   {
-    titolo: "LUCA CONFERMA",
-    testo: "Ti scrive su WhatsApp con disponibilità e prezzo.",
+    titolo: "ATTENDI LA MIA CONFERMA",
+    testo: "Ti scriverò su WhatsApp per la conferma.",
   },
   {
-    titolo: "IL BIGLIETTO NEL TELEFONO",
-    testo:
-      "Lo aggiungi ad Apple Wallet o Google Wallet. All'ingresso mostri il QR, niente nomi da cercare in lista.",
-  },
-  {
-    titolo: "CI OCCUPIAMO DI TUTTO",
-    testo: "Dalla prenotazione alla fine dell'evento, garantendoti l'accesso.",
+    titolo: "GODITI LA TUA SERATA",
+    testo: "Il biglietto è già nel telefono: mostri il QR ed entri.",
   },
 ] as const;
 
