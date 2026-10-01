@@ -49,10 +49,12 @@
 .dentro {
   padding-top: 110px;
   /*
-   * I due pulsanti finivano per meta' sotto la barra fissa: 28 px coperti su
-   * 52. Qui si lascia passare la barra, e sopra ci si mette un margine.
+   * Niente spazio riservato alla barra fissa qui sotto: nell'apertura la
+   * barra è sempre nascosta (sparisce solo quando questa sezione non si
+   * vede più), quindi riservarle spazio lasciava un vuoto nero fisso di
+   * 74px sotto i pulsanti per tutto il tempo in cui si guarda l'apertura.
    */
-  padding-bottom: calc(24px + var(--barra-h, 0px));
+  padding-bottom: 32px;
   display: flex;
   flex-direction: column;
   gap: 18px;
