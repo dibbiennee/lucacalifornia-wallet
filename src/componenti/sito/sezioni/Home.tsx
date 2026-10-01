@@ -110,7 +110,7 @@ export function ComeFunziona() {
           ))}
         </ol>
 
-        <Bottone href="/prenota?tipo=tavolo" pieno>
+        <Bottone href="/prenota?tipo=tavolo" pieno classe="cta-prenota">
           Prenota il tuo ingresso
         </Bottone>
       </div>

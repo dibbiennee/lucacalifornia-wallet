@@ -1,7 +1,7 @@
 /*
- * La testa della pagina con una foto di consolle sotto: la stessa sfumatura
+ * La testa della pagina con la foto del pass da PR sotto: la stessa sfumatura
  * scura usata altrove nel sito, cosi titolo e occhiello restano leggibili
- * sopra la foto invece di sparire dentro le luci blu.
+ * sopra la foto invece di sparire dentro le luci rosse.
  */
 .sfondo {
   position: relative;
@@ -15,9 +15,9 @@
   z-index: -1;
   background-image:
     linear-gradient(180deg, rgba(5, 4, 7, 0.55) 0%, rgba(5, 4, 7, 0.85) 70%, var(--bg) 100%),
-    url("/foto/atmosfera/pr-dj.jpg");
+    url("/foto/atmosfera/pr-radio.jpg");
   background-size: cover;
-  background-position: center 40%;
+  background-position: center 65%;
   background-repeat: no-repeat;
 }
 

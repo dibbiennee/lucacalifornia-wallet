@@ -52,7 +52,7 @@ export default function PaginaTavoli() {
         <Pillole voci={OCCASIONI} />
         <Punti voci={COME_FUNZIONA} />
 
-        <Bottone href="/prenota?tipo=tavolo" pieno stile={{ background: "var(--sun)", color: "var(--ink)" }}>
+        <Bottone href="/prenota?tipo=tavolo" pieno classe="cta-prenota" stile={{ background: "var(--sun)", color: "var(--ink)" }}>
           Prenota un tavolo
         </Bottone>
       </section>
