@@ -11,6 +11,10 @@ export const dynamic = "force-dynamic";
  * subito, così nell'indirizzo del browser resta il sito e non il codice del
  * canale, che sennò finirebbe in ogni link condiviso.
  *
+ * I link dei PR fanno eccezione: non portano alla home, ma dritti al modulo
+ * isolato in /pr. Un PR manda il link e basta: chi lo apre deve vedere solo
+ * il modulo, senza dover prima capire cos'è il sito.
+ *
  * Gli indirizzi conosciuti stanno in un elenco chiuso: tutto il resto è
  * pagina non trovata, altrimenti qualsiasi parola dopo la barra diventerebbe
  * un canale.
@@ -26,7 +30,8 @@ export async function GET(
     return new Response("Non trovato", { status: 404 });
   }
 
-  const risposta = new Response(null, { status: 307, headers: { Location: "/" } });
+  const destinazione = trovato.valore.startsWith("pr:") ? "/pr" : "/";
+  const risposta = new Response(null, { status: 307, headers: { Location: destinazione } });
 
   risposta.headers.append(
     "Set-Cookie",
