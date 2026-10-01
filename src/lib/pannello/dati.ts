@@ -208,8 +208,8 @@ export const DATI_DI_ESEMPIO = true;
 
 let SERATE_PANNELLO: SerataPannello[] = [
   { codice: "milkshake", nome: "Giovedì, Milkshake", etichetta: "Lista aperta" },
-  { codice: "venerdi", nome: "Venerdì", etichetta: "Lista aperta" },
-  { codice: "sabato", nome: "Sabato, Reggaeton", etichetta: "Pochi tavoli" },
+  { codice: "venerdi", nome: "Venerdì, Drip", etichetta: "Lista aperta" },
+  { codice: "sabato", nome: "Sabato, International", etichetta: "Pochi tavoli" },
   { codice: "bailame", nome: "Domenica, Bàilame", etichetta: "Lista aperta" },
 ];
 
@@ -258,7 +258,7 @@ export async function stasera(): Promise<Stasera> {
   return {
     codice: "sabato",
     giorno: "Sabato 26 set",
-    serata: "Sabato, Reggaeton",
+    serata: "Sabato, International",
     inCorso: true,
     inLista: confermati.filter((r) => r.tipo === "lista").length,
     tavoli: confermati.filter((r) => r.tipo === "tavolo").length,

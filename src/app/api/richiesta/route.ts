@@ -37,8 +37,8 @@ const SERATE: Readonly<
   Record<string, { readonly serata: string; readonly nomeSerata: string; readonly codiceSerata: string; readonly sala?: string }>
 > = {
   "Gio Milkshake": { serata: "Giovedì", nomeSerata: "MILKSHAKE", codiceSerata: "milkshake" },
-  "Ven commerciale": { serata: "Venerdì", nomeSerata: "COMMERCIALE", codiceSerata: "venerdi" },
-  "Sab Reggaeton": { serata: "Sabato", nomeSerata: "REGGAETON", codiceSerata: "sabato" },
+  "Ven Drip": { serata: "Venerdì", nomeSerata: "DRIP", codiceSerata: "venerdi" },
+  "Sab International": { serata: "Sabato", nomeSerata: "INTERNATIONAL", codiceSerata: "sabato" },
   "Dom Bàilame": { serata: "Domenica Bàilame", nomeSerata: "BÀILAME", codiceSerata: "bailame" },
 };
 

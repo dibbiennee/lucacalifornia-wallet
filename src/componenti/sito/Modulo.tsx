@@ -25,8 +25,8 @@ import stili from "./Modulo.module.css";
 /** Le quattro serate, una per giorno. */
 const SERATE_MODULO = [
   { valore: "Gio Milkshake", colore: "milk" },
-  { valore: "Ven commerciale", colore: "acid" },
-  { valore: "Sab Reggaeton", colore: "cyan" },
+  { valore: "Ven Drip", colore: "acid" },
+  { valore: "Sab International", colore: "cyan" },
   { valore: "Dom Bàilame", colore: "red" },
 ] as const;
 

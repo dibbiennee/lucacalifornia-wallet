@@ -35,7 +35,7 @@ export function CardSerata({ serata }: { readonly serata: SerataSito }) {
       <div className={stili.corpo}>
         <p className={stili.giorno}>{serata.giorno}</p>
 
-        <h3 className="display" style={serata.codice === "venerdi" ? { fontStretch: "112%" } : undefined}>
+        <h3 className="display" style={serata.codice === "sabato" ? { fontStretch: "100%" } : undefined}>
           <Link href={`/serate/${serata.codice}`}>{serata.nome}</Link>
         </h3>
 

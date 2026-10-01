@@ -60,7 +60,7 @@ export default async function PaginaSerata({ params }: { params: Promise<{ codic
 
             <div className={stili.banda}>
               <p className={stili.giorno}>{serata.giorno}</p>
-              <h1 className="display" tabIndex={-1}>
+              <h1 className="display" style={serata.codice === "sabato" ? { fontStretch: "100%" } : undefined} tabIndex={-1}>
                 {serata.nome}
               </h1>
               <p className={stili.musica}>{serata.genere}</p>

@@ -24,7 +24,7 @@ export default function PaginaPrenota() {
         <TestaPagina
           occhiello="In 30 secondi"
           colore="var(--magenta-scuro)"
-          righe={["Entra in lista", "o prenota"]}
+          righe={["Prenota il tuo", "ingresso"]}
           introduzione="Nessun pagamento qui: prezzo e disponibilità te li dice Luca su WhatsApp. Quando conferma, ricevi il biglietto da aggiungere al Wallet."
           senzaColonna
         />
