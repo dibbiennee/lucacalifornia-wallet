@@ -293,7 +293,7 @@ export function Modulo() {
 
       <p className={stili.dopo}>
         {legaParole(
-          "La richiesta arriva direttamente a Luca. Quando conferma, ricevi il biglietto da aggiungere al Wallet.",
+          "Dopo aver compilato il form, riceverai direttamente conferma su WhatsApp.",
           { vedova: true },
         )}
       </p>
