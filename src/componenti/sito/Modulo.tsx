@@ -35,7 +35,7 @@ const OCCASIONI = [
   "Nessuna",
 ] as const;
 
-const GENERI = ["Donna", "Uomo"] as const;
+const GENERI = ["Donna", "Uomo", "Misti"] as const;
 const PERSONE = ["1", "2", "3", "4", "5", "6+"] as const;
 
 /**
@@ -52,7 +52,7 @@ function prezzoBraccialetto(notte: NotteSerata | undefined, genere: string): str
       ? "30 € a testa, con 2 drink inclusi."
       : genere === "Donna"
         ? "25 € a testa, con 2 drink inclusi."
-        : "25 € donna, 30 € uomo, con 2 drink inclusi.";
+        : "25 € donna, 30 € uomo, con 2 drink inclusi."; // "Misti", o ancora da scegliere
   }
   return null;
 }
@@ -61,6 +61,7 @@ interface Errori {
   nome?: string;
   cognome?: string;
   telefono?: string;
+  serata?: string;
   genere?: string;
 }
 
@@ -101,12 +102,8 @@ export function Modulo() {
       setTipo(tipoIndirizzo);
     }
 
-    // Quello che arriva dall'indirizzo è il codice della notte (es.
-    // "venerdi"): si prende la prima data di quella notte, cioè la più
-    // vicina, perché la lista è già in ordine di calendario.
-    const notteIndirizzo = cerca.get("serata");
-    const trovata = generato.find((v) => v.notte === notteIndirizzo);
-    setSerata((trovata ?? generato[0])?.data ?? "");
+    // Nessuna data preselezionata: è una scelta vera, non va data per
+    // scontata nemmeno quando si arriva da un link già sulla notte giusta.
   }, []);
 
   const voceSerata = calendario.find((v) => v.data === serata);
@@ -124,6 +121,9 @@ export function Modulo() {
       trovati.telefono = "Serve un numero per ricontattarti";
     } else if (telefono.replace(/\D/g, "").length < 9) {
       trovati.telefono = "Questo numero sembra incompleto";
+    }
+    if (serata === "") {
+      trovati.serata = "Scegli una data";
     }
     if (tipo === "braccialetto" && genere === "") {
       trovati.genere = "Dicci se è per una donna o un uomo";
@@ -239,24 +239,31 @@ export function Modulo() {
       />
 
       <div className={stili.campo}>
-        <label htmlFor={`${id}-serata`}>Serata</label>
+        <label htmlFor={`${id}-serata`}>Data</label>
         <select
           id={`${id}-serata`}
           name="serata"
+          required
           value={serata}
           onChange={(e) => setSerata(e.target.value)}
           disabled={calendario.length === 0}
+          aria-invalid={errori.serata !== undefined}
+          aria-describedby={errori.serata === undefined ? undefined : `${id}-serata-errore`}
         >
-          {calendario.length === 0 ? (
-            <option value="">Un attimo...</option>
-          ) : (
-            calendario.map((v) => (
-              <option key={v.data} value={v.data}>
-                {v.valore}
-              </option>
-            ))
-          )}
+          <option value="" disabled hidden>
+            {calendario.length === 0 ? "Un attimo..." : "Tocca per scegliere la data"}
+          </option>
+          {calendario.map((v) => (
+            <option key={v.data} value={v.data}>
+              {v.valore}
+            </option>
+          ))}
         </select>
+        {errori.serata !== undefined && (
+          <p id={`${id}-serata-errore`} role="alert" className={stili.errore}>
+            {errori.serata}
+          </p>
+        )}
       </div>
 
       <Scelta etichetta="Quante persone" nome="persone" voci={PERSONE} scelto={persone} cambia={setPersone} />

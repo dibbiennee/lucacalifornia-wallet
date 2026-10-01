@@ -35,7 +35,7 @@ interface Richiesta {
 }
 
 const TIPI = ["tavolo", "braccialetto", "lista", "navetta"] as const;
-const GENERI = ["Donna", "Uomo"] as const;
+const GENERI = ["Donna", "Uomo", "Misti"] as const;
 
 function testo(valore: unknown, massimo: number): string | null {
   if (typeof valore !== "string") {
