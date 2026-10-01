@@ -6,17 +6,19 @@ import { usePathname } from "next/navigation";
 import stili from "./BarraPannello.module.css";
 
 /**
- * Le quattro schermate, sempre a portata di pollice.
+ * Le tre schermate, sempre a portata di pollice.
  *
  * Erano cinque, con "Oggi" davanti e "Porta" in fondo. Il pannello serve
  * prima di tutto a ricevere e confermare le richieste, quindi ora si apre
- * lì; i numeri di "Oggi" sono passati a "Stasera" e la porta è uscita dalla
- * barra, perché forse non verrà mai usata.
+ * lì; i numeri di "Oggi" sono passati a "Stasera", poi diventata
+ * "Riepilogo" quando le prenotazioni hanno iniziato ad avere una data vera,
+ * anche lontana. "Serate" è uscita perché erano solo interruttori finti, su
+ * dati che non toccavano il sito davvero; la porta è uscita dalla barra
+ * perché forse non verrà mai usata.
  */
 const VOCI = [
   { testo: "Richieste", dove: "/pannello/richieste" },
-  { testo: "Stasera", dove: "/pannello/stasera" },
-  { testo: "Serate", dove: "/pannello/serate" },
+  { testo: "Riepilogo", dove: "/pannello/riepilogo" },
   { testo: "Squadra", dove: "/pannello/squadra" },
 ] as const;
 

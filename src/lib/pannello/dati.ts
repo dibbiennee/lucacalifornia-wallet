@@ -183,14 +183,6 @@ export interface Stasera {
   readonly attesaCapodanno: number;
 }
 
-export type EtichettaSerata = "Lista aperta" | "Pochi tavoli" | "Tutto pieno";
-
-export interface SerataPannello {
-  readonly codice: string;
-  readonly nome: string;
-  readonly etichetta: EtichettaSerata;
-}
-
 export interface Pr {
   readonly nome: string;
   readonly prenotazioni: number;
@@ -215,13 +207,6 @@ export interface Ingresso {
 
 /** Vero finché i dati sono di esempio: le schermate lo dichiarano a schermo. */
 export const DATI_DI_ESEMPIO = true;
-
-let SERATE_PANNELLO: SerataPannello[] = [
-  { codice: "milkshake", nome: "Giovedì, Milkshake", etichetta: "Lista aperta" },
-  { codice: "venerdi", nome: "Venerdì, Drip", etichetta: "Lista aperta" },
-  { codice: "sabato", nome: "Sabato, International", etichetta: "Pochi tavoli" },
-  { codice: "bailame", nome: "Domenica, Bàilame", etichetta: "Lista aperta" },
-];
 
 let SQUADRA: Pr[] = [
   {
@@ -321,14 +306,6 @@ export async function confermatiPerSerata(codice: string): Promise<readonly Rich
   return righe.map(daRiga);
 }
 
-export function serate(): readonly SerataPannello[] {
-  return SERATE_PANNELLO;
-}
-
-export function listeDiAttesa(): { readonly specialGuest: number; readonly capodanno: number } {
-  return ATTESA;
-}
-
 export function squadra(): readonly Pr[] {
   return SQUADRA;
 }
@@ -369,19 +346,6 @@ export async function aggiornaStato(id: string, stato: StatoRichiesta): Promise<
     SET stato = ${stato}, biglietto_inviato_alle = COALESCE(${bigliettoOra}, biglietto_inviato_alle)
     WHERE id = ${id}
   `;
-}
-
-export function impostaEtichetta(codice: string, etichetta: EtichettaSerata): void {
-  SERATE_PANNELLO = SERATE_PANNELLO.map((s) => (s.codice === codice ? { ...s, etichetta } : s));
-}
-
-/** Quando ci sarà il database, da qui partirà l'avviso a chi è in attesa. */
-export function aggiungiOspite(_nome: string): number {
-  return ATTESA.specialGuest;
-}
-
-export function pubblicaPacchetti(): number {
-  return ATTESA.capodanno;
 }
 
 /** Da "Gian Marco" a "gianmarco": è quello che finisce nel suo link. */

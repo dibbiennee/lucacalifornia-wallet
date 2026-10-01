@@ -12,7 +12,7 @@ import stili from "./dettaglio.module.css";
  * Una richiesta, con tutto quello che serve a rispondere.
  *
  * Il ritorno indietro sa da dove sei arrivato: dall'elenco filtrato torna a
- * quel filtro, da Stasera torna a Stasera. Prima non c'era proprio, e si
+ * quel filtro, dal Riepilogo torna al Riepilogo. Prima non c'era proprio, e si
  * usciva solo col gesto del browser.
  */
 export default async function Dettaglio({
@@ -31,8 +31,8 @@ export default async function Dettaglio({
   }
 
   const indietro =
-    da === "stasera"
-      ? { testo: "Stasera", dove: "/pannello/stasera" }
+    da === "riepilogo"
+      ? { testo: "Riepilogo", dove: "/pannello/riepilogo" }
       : {
           testo: "Richieste",
           dove:
