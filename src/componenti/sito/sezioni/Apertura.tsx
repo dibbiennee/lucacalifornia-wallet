@@ -2,7 +2,6 @@ import Image from "next/image";
 
 import { Bottone } from "@/componenti/sito/Bottone";
 import { VideoApertura } from "@/componenti/VideoApertura";
-import { legaParole } from "@/lib/tipografia";
 
 import stili from "./Apertura.module.css";
 
@@ -58,7 +57,9 @@ export function Apertura() {
             <span className="cl">Tu scegli la&nbsp;serata.</span> <span className="cl">Io ti faccio entrare</span>
           </h1>
 
-          <p className="introduzione">{legaParole("Ciao, sono Luca, PR ed organizzatore di eventi.", { vedova: true })}</p>
+          <p className="introduzione">
+            <span className="cl">Ciao, sono&nbsp;Luca, PR</span> <span className="cl">ed organizzatore di eventi.</span>
+          </p>
 
           <div className={stili.azioni}>
             <Bottone href="/prenota?tipo=tavolo">Prenota il tavolo</Bottone>
