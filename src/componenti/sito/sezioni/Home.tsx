@@ -3,7 +3,7 @@ import Link from "next/link";
 
 import { Bottone } from "@/componenti/sito/Bottone";
 import { ListaSerate } from "@/componenti/sito/CardSerata";
-import { Gallone, Pass } from "@/componenti/sito/Icone";
+import { Gallone } from "@/componenti/sito/Icone";
 import { COME_FUNZIONA, HALLOWEEN, INSTAGRAM_URL, SERATE, SPECIAL_GUEST } from "@/contenuti/sito";
 import { legaParole } from "@/lib/tipografia";
 
@@ -64,18 +64,10 @@ export function TuttoIlResto() {
             <span>{legaParole("Tre pacchetti, lista d'attesa aperta", { vedova: true })}</span>
           </Link>
 
-          <Link
-            href="/diventa-pr"
-            className={`${stili.tessera} ${stili.piena}`}
-            style={{ background: "var(--red)" }}
-          >
-            <span className={stili.icona}>
-              <Pass colore="var(--red)" />
-            </span>
-            <span className={stili.pienaTesto}>
-              <strong>Diventa PR</strong>
-              <span>{legaParole("Candidature aperte")}</span>
-            </span>
+          <Link href="/diventa-pr" className={`${stili.tessera} ${stili["con-foto"]} ${stili.tesseraFoto}`}>
+            <Image src="/foto/atmosfera/pr-radio.jpg" alt="" width={640} height={248} sizes="(min-width: 720px) 33vw, 50vw" />
+            <strong>Diventa PR</strong>
+            <span>{legaParole("Candidature aperte")}</span>
           </Link>
         </div>
       </div>
