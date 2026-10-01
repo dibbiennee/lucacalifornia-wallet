@@ -9,7 +9,7 @@ import stiliPagina from "./page.module.css";
 export const metadata = {
   title: "Servizio navetta - Luca California",
   description:
-    "Dalla tua zona al Room 26 e ritorno a fine serata. Niente macchina, niente parcheggio, nessuno che deve restare sobrio per guidare.",
+    "Dalla tua zona al ROOM26 e ritorno a fine serata. Niente macchina, niente parcheggio, nessuno che deve restare sobrio per guidare.",
 };
 
 const IN_MACCHINA = [

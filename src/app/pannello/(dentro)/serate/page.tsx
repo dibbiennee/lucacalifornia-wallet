@@ -12,7 +12,7 @@ export default function Serate() {
 
   return (
     <main className="pagina">
-      <Testata occhiello="Room 26" titolo="Serate" sottotitolo="Cosa vede la gente sul sito." />
+      <Testata occhiello="ROOM26" titolo="Serate" sottotitolo="Cosa vede la gente sul sito." />
 
       <InterruttoriSerate serate={serate()} />
 

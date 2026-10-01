@@ -1,7 +1,7 @@
 /** I locali dove lavora Luca. Il token porta solo il codice, non l'indirizzo. */
 export const LOCALI = {
   room26: {
-    nome: "Room 26, Roma",
+    nome: "ROOM26, Roma",
     indirizzo: "Piazza Guglielmo Marconi 31, 00144 Roma",
   },
   ninfeo: {

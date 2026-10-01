@@ -6,9 +6,9 @@ import { INDIRIZZO, SITO_PUBBLICO } from "@/lib/pubblico";
 
 import "./globals.css";
 
-const TITOLO = "Luca California, liste e tavoli al Room 26 di Roma";
+const TITOLO = "Luca California, liste e tavoli al ROOM26 di Roma";
 const DESCRIZIONE =
-  "Liste e tavoli al Room 26 di Roma, da giovedì a domenica, con la navetta per arrivarci. Prenoti in mezzo minuto e il biglietto ti arriva nel telefono.";
+  "Liste e tavoli al ROOM26 di Roma, da giovedì a domenica, con la navetta per arrivarci. Prenoti in mezzo minuto e il biglietto ti arriva nel telefono.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(INDIRIZZO),

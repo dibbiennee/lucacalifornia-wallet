@@ -124,7 +124,7 @@ export const SERATE: readonly SerataSito[] = [
     genere: "Commerciale, reggaeton e house",
     colore: "cyan",
     perModulo: "Sab International",
-    alt: "Il volantino del sabato, con due ballerine e il logo Room 26",
+    alt: "Il volantino del sabato, con due ballerine e il logo ROOM26",
     etichetta: "Pochi tavoli",
     copertina: "/foto/serate/sabato.jpg",
     copertinaPosizione: "center top",
@@ -143,7 +143,7 @@ export const SERATE: readonly SerataSito[] = [
     genere: "Solo reggaeton",
     colore: "red",
     perModulo: "Dom Bàilame",
-    alt: "Le luci del Room 26 la domenica",
+    alt: "Le luci del ROOM26 la domenica",
     etichetta: "Disponibilità limitata",
     copertina: "/foto/night24.webp",
     badge: "/foto/serate/bailame-badge.jpg",
@@ -155,7 +155,7 @@ export const SERATE: readonly SerataSito[] = [
 ];
 
 export const LOCALE = {
-  nome: "ROOM 26, ROMA",
+  nome: "ROOM26, ROMA",
   indirizzo: "Piazza Guglielmo Marconi 31, Roma",
 } as const;
 

@@ -40,7 +40,7 @@ export function PiePagina() {
 
         <p className={stili.locale}>
           <span>D&apos;inverno al</span>
-          <Image src="/foto/room26.webp" alt="Room 26" width={400} height={177} sizes="120px" />
+          <Image src="/foto/room26.webp" alt="ROOM26" width={400} height={177} sizes="120px" />
         </p>
 
         <div className={stili.legali}>

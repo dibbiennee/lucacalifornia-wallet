@@ -18,9 +18,9 @@ export function Serate() {
         <div className="blocco-testa rivela">
           <div className={stili["testa-riga"]}>
             <p className="occhiello" style={{ color: "var(--muted)", margin: 0 }}>
-              D&apos;inverno, Room 26, Roma
+              D&apos;inverno, ROOM26, Roma
             </p>
-            <Image src="/foto/room26.webp" alt="Room 26" width={400} height={177} sizes="110px" />
+            <Image src="/foto/room26.webp" alt="ROOM26" width={400} height={177} sizes="110px" />
           </div>
           <Titolo2 id="le-serate">Le serate</Titolo2>
           <p className={stili.disponibilita}>
@@ -122,12 +122,9 @@ export function ComeFunziona() {
 }
 
 /**
- * Le foto delle serate, divise per canale: Bàilame e Room 26 sono due
+ * Le foto delle serate, divise per canale: Bàilame e ROOM26 sono due
  * pubblici diversi, e due canali Telegram separati invece di uno solo dove
  * si mischiano.
- *
- * Quelle di Room 26 sono ancora di esempio: Luca manderà anche quelle sue,
- * e vanno sostituite allo stesso modo di Bàilame qui sopra.
  */
 const FOTO_BAILAME = [
   { src: "/foto/bailame/bailame1.jpg", alt: "Due amiche si abbracciano ridendo, con le luci del palco alle spalle" },
@@ -142,9 +139,17 @@ const FOTO_BAILAME = [
 ];
 
 const FOTO_ROOM26 = [
-  { src: "/foto/night8.webp", alt: "" },
-  { src: "/foto/night16.webp", alt: "" },
-  { src: "/foto/night20.webp", alt: "" },
+  { src: "/foto/room26/room26-1.jpg", alt: "Tre amiche abbracciate in posa per la foto" },
+  { src: "/foto/room26/room26-2.jpg", alt: "Due amiche abbracciate sorridono" },
+  { src: "/foto/room26/room26-3.jpg", alt: "Un gruppo di amiche si stringe per la foto" },
+  { src: "/foto/room26/room26-4.jpg", alt: "Una ragazza con la lingua fuori balla con un'amica alle spalle" },
+  { src: "/foto/room26/room26-5.jpg", alt: "Due amiche vicine, una beve con la cannuccia" },
+  { src: "/foto/room26/room26-6.jpg", alt: "Un gruppo di amici fa una foto di gruppo" },
+  { src: "/foto/room26/room26-7.jpg", alt: "Tre amiche con i drink in mano fanno le linguacce" },
+  { src: "/foto/room26/room26-8.jpg", alt: "Tre amiche posano sorridenti" },
+  { src: "/foto/room26/room26-9.jpg", alt: "Una ragazza in posa con la mano vicino al viso" },
+  { src: "/foto/room26/room26-10.jpg", alt: "Una ragazza fa un cuore con le mani" },
+  { src: "/foto/room26/room26-11.jpg", alt: "Un gruppo di amici abbracciati sorride alla foto" },
 ];
 
 function CanaleFoto({
@@ -186,7 +191,7 @@ export function LeFoto() {
 
         <div className={`${stili.canali} rivela`}>
           <CanaleFoto titolo="Bàilame" colore="var(--red)" foto={FOTO_BAILAME} href="https://t.me/BAILAMEOFFICIAL" />
-          <CanaleFoto titolo="Room 26" colore="var(--cyan)" foto={FOTO_ROOM26} href="https://t.me/room26official" />
+          <CanaleFoto titolo="ROOM26" colore="var(--cyan)" foto={FOTO_ROOM26} href="https://t.me/room26official" />
         </div>
       </div>
     </section>

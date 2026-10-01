@@ -29,7 +29,7 @@ const DOMANDE: readonly Domanda[] = [
   {
     id: "dove",
     domanda: "Dove siete?",
-    risposta: "Siamo al Room 26, in Piazza Guglielmo Marconi 31 a Roma, all'EUR.",
+    risposta: "Siamo al ROOM26, in Piazza Guglielmo Marconi 31 a Roma, all'EUR.",
   },
   {
     id: "navetta",

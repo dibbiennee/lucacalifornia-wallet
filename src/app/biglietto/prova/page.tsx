@@ -17,7 +17,7 @@ const VOCI = [
   ["Quando", "Domenica 27 settembre 2026, ore 23:30"],
   ["Tipo", "TAVOLO, MISTO"],
   ["Nome", "Mario Rossi"],
-  ["Dove", "Room 26, Roma"],
+  ["Dove", "ROOM26, Roma"],
 ] as const;
 
 export default function PaginaProvaWallet() {

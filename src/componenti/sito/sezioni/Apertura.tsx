@@ -19,7 +19,7 @@ import stili from "./Apertura.module.css";
  */
 export function Apertura() {
   return (
-    <section id="apertura" className={stili.apertura} aria-label="Luca California al Room 26">
+    <section id="apertura" className={stili.apertura} aria-label="Luca California al ROOM26">
       <svg className={stili.raggi} viewBox="0 0 700 700" fill="#FF3EA5" aria-hidden focusable="false">
         <polygon points="0,0 700,0 700,173" />
         <polygon points="0,0 700,325 700,525" />

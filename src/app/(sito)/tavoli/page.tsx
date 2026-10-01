@@ -3,9 +3,9 @@ import { Indietro } from "@/componenti/sito/Indietro";
 import { FotoPagina, Introduzione, Pillole, Punti, TestaPagina } from "@/componenti/sito/Pagina";
 
 export const metadata = {
-  title: "Tavoli al Room 26 - Luca California",
+  title: "Tavoli al ROOM26 - Luca California",
   description:
-    "Compleanni, lauree e bottiglie al Room 26 di Roma: dimmi cosa festeggiate e preparo tutto io, dalla bottiglia alla torta.",
+    "Compleanni, lauree e bottiglie al ROOM26 di Roma: dimmi cosa festeggiate e preparo tutto io, dalla bottiglia alla torta.",
 };
 
 /** Le occasioni sono le stesse che si scelgono nel modulo. */

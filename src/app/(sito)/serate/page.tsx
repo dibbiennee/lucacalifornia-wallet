@@ -4,7 +4,7 @@ import { Indietro } from "@/componenti/sito/Indietro";
 import { Galleria, TestaPagina } from "@/componenti/sito/Pagina";
 import { INSTAGRAM, INSTAGRAM_URL, SERATE } from "@/contenuti/sito";
 
-export const metadata = { title: "Le serate al Room 26 - Luca California" };
+export const metadata = { title: "Le serate al ROOM26 - Luca California" };
 
 /*
  * Le quattro foto sono fotogrammi del video del locale: non sono inventate,
@@ -24,7 +24,7 @@ export default function PaginaSerate() {
     <>
       <Indietro testo="Home" dove="/" />
       <TestaPagina
-        occhiello="D'inverno, Room 26, Roma"
+        occhiello="D'inverno, ROOM26, Roma"
         righe={["Le serate"]}
         introduzione="Quattro sere a settimana, da giovedì a domenica. Ogni serata ha la sua musica e il suo pubblico: scegli la tua e ti sistemo io, al tavolo o in lista."
       />
@@ -40,7 +40,7 @@ export default function PaginaSerate() {
               Dalle vostre storie
             </p>
             <h2 className="display" id="voi-al-room26">
-              <span className="ph">Voi</span> <span className="ph">al Room 26</span>
+              <span className="ph">Voi</span> <span className="ph">al ROOM26</span>
             </h2>
           </div>
 

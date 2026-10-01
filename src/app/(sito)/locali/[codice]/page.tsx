@@ -20,7 +20,7 @@ export async function generateMetadata({ params }: { params: Promise<{ codice: s
 
 /** La foto e il colore di ogni locale: gli stessi dell'elenco. */
 const VESTE: Readonly<Record<string, { readonly foto?: string; readonly colore: string; readonly alt?: string }>> = {
-  room26: { foto: "/foto/night24.webp", colore: "var(--cyan)", alt: "Le luci del Room 26" },
+  room26: { foto: "/foto/night24.webp", colore: "var(--cyan)", alt: "Le luci del ROOM26" },
   ninfeo: { foto: "/foto/sunset.webp", colore: "var(--sun)", alt: "Tramonto d'estate" },
   morgan: { colore: "var(--sun)" },
 };

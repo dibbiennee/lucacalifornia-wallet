@@ -1,7 +1,7 @@
 /**
  * I locali, uno per stagione.
  *
- * Dal brief: d'inverno il Room 26 a Roma, d'estate il Ninfeo a Roma e il
+ * Dal brief: d'inverno il ROOM26 a Roma, d'estate il Ninfeo a Roma e il
  * Morgan Beach Club a Civitavecchia.
  *
  * Le due righe in più sul Ninfeo e sul Morgan vengono da fonti pubbliche
@@ -27,11 +27,11 @@ export interface Locale {
 export const LOCALI_STAGIONE: readonly Locale[] = [
   {
     codice: "room26",
-    nome: "Room 26",
+    nome: "ROOM26",
     citta: "Roma",
     stagione: "inverno",
     occhiello: "D'INVERNO",
-    titolo: ["ROOM 26", "ROMA"],
+    titolo: ["ROOM26", "ROMA"],
     sottotitolo: "Quattro sere a settimana, da giovedì a domenica",
     testo:
       "D'inverno lavoro qui, quattro sere a settimana. Ogni serata ha la sua musica e il suo pubblico: scegli la tua e ti sistemo io, al tavolo o in lista.",

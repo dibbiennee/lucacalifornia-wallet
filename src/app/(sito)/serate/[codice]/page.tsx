@@ -20,7 +20,7 @@ export async function generateMetadata({ params }: { params: Promise<{ codice: s
   return serata === undefined
     ? {}
     : {
-        title: `${serata.nome}, ${serata.quando.toLowerCase()} al Room 26 - Luca California`,
+        title: `${serata.nome}, ${serata.quando.toLowerCase()} al ROOM26 - Luca California`,
         description: serata.descrizione,
       };
 }

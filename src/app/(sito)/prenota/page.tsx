@@ -6,7 +6,7 @@ import stili from "@/componenti/sito/Modulo.module.css";
 export const metadata = {
   title: "Prenota il tuo ingresso - Luca California",
   description:
-    "Tavolo, braccialetto o lista al Room 26 di Roma in mezzo minuto. Nessun pagamento: prezzo e disponibilità te li dice Luca su WhatsApp.",
+    "Tavolo, braccialetto o lista al ROOM26 di Roma in mezzo minuto. Nessun pagamento: prezzo e disponibilità te li dice Luca su WhatsApp.",
 };
 
 /**
