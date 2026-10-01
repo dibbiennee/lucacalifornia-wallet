@@ -112,7 +112,6 @@ export function ComeFunziona() {
 const FOTO_BAILAME = [
   { src: "/foto/bailame/bailame1.jpg", alt: "Due amiche si abbracciano ridendo, con le luci del palco alle spalle" },
   { src: "/foto/bailame/bailame2.jpg", alt: "Due ragazze ballano abbracciate" },
-  { src: "/foto/bailame/bailame3.jpg", alt: "Un ragazzo in console indica la scritta sulla sua maglietta" },
   { src: "/foto/bailame/bailame5.jpg", alt: "Due amiche fanno le boccucce in posa per la foto" },
   { src: "/foto/bailame/bailame6.jpg", alt: "Una ragazza con un drink in mano si guarda intorno" },
   { src: "/foto/bailame/bailame7.jpg", alt: "Un gruppo di amici in posa sotto le luci colorate" },

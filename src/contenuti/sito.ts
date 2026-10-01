@@ -168,7 +168,7 @@ export const COME_FUNZIONA = [
   },
   {
     titolo: "GODITI LA TUA SERATA",
-    testo: "Il biglietto è già nel telefono: mostri il QR ed entri.",
+    testo: "Verrai seguito dall'inizio alla fine.",
   },
 ] as const;
 
