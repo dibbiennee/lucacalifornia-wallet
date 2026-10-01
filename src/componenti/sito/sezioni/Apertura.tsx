@@ -58,12 +58,7 @@ export function Apertura() {
             <span className="cl">Tu scegli la&nbsp;serata.</span> <span className="cl">Io ti faccio entrare</span>
           </h1>
 
-          <p className="introduzione">
-            <span className="cl">{legaParole("Ciao, sono Luca. Ti prenoto il tavolo")}</span>{" "}
-            <span className="cl">{legaParole("o ti metto in lista al Room 26 di Roma")}</span>{" "}
-            <span className="cl">{legaParole("dal giovedì alla domenica.")}</span>{" "}
-            <span className="cl">{legaParole("E la navetta ti porta fino all'ingresso.")}</span>
-          </p>
+          <p className="introduzione">{legaParole("Ciao, sono Luca, PR ed organizzatore di eventi.", { vedova: true })}</p>
 
           <div className={stili.azioni}>
             <Bottone href="/prenota?tipo=tavolo">Prenota il tavolo</Bottone>
