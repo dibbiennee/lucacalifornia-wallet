@@ -185,11 +185,13 @@ export interface Stasera {
 
 export interface Pr {
   readonly nome: string;
-  readonly prenotazioni: number;
-  readonly liste: number;
-  readonly tavoli: number;
-  readonly provvigioni: number;
+  readonly codice: string;
   readonly link: string;
+  /** Richieste confermate portate da questo PR, in tutto e per tipo. */
+  readonly confermate: number;
+  readonly tavoli: number;
+  readonly liste: number;
+  readonly braccialetti: number;
 }
 
 export interface Compleanno {
@@ -207,41 +209,6 @@ export interface Ingresso {
 
 /** Vero finché i dati sono di esempio: le schermate lo dichiarano a schermo. */
 export const DATI_DI_ESEMPIO = true;
-
-let SQUADRA: Pr[] = [
-  {
-    nome: "Lorenzo Fiorentino",
-    prenotazioni: 18,
-    liste: 12,
-    tavoli: 6,
-    provvigioni: 210,
-    link: `lucacalifornia.satoshiweb.it/${nomeCorto("Lorenzo Fiorentino")}`,
-  },
-  {
-    nome: "Alex Feletti",
-    prenotazioni: 9,
-    liste: 7,
-    tavoli: 2,
-    provvigioni: 95,
-    link: `lucacalifornia.satoshiweb.it/${nomeCorto("Alex Feletti")}`,
-  },
-  {
-    nome: "Alessio",
-    prenotazioni: 6,
-    liste: 4,
-    tavoli: 2,
-    provvigioni: 60,
-    link: `lucacalifornia.satoshiweb.it/${nomeCorto("Alessio")}`,
-  },
-  {
-    nome: "Sara Arciero",
-    prenotazioni: 4,
-    liste: 3,
-    tavoli: 1,
-    provvigioni: 40,
-    link: `lucacalifornia.satoshiweb.it/${nomeCorto("Sara Arciero")}`,
-  },
-];
 
 let ATTESA = { specialGuest: 128, capodanno: 64 };
 
@@ -306,8 +273,50 @@ export async function confermatiPerSerata(codice: string): Promise<readonly Rich
   return righe.map(daRiga);
 }
 
-export function squadra(): readonly Pr[] {
-  return SQUADRA;
+interface RigaPr {
+  readonly codice: string;
+  readonly nome: string;
+}
+
+interface RigaConteggio {
+  readonly provenienza: string;
+  readonly tipo: string;
+  readonly conteggio: number;
+}
+
+/**
+ * I PR, con le richieste vere che hanno portato: niente più numeri finti.
+ *
+ * Il collegamento è "provenienza = 'Link di {nome}'", la stessa stringa che
+ * nomeProvenienza() scrive su ogni richiesta arrivata dal link di quel PR:
+ * non serve una colonna in più, il dato per aggregare c'è già.
+ */
+export async function squadra(): Promise<readonly Pr[]> {
+  const sql = await db();
+
+  const pr = (await sql`SELECT codice, nome FROM pr ORDER BY creato_alle ASC`) as unknown as RigaPr[];
+
+  const conteggi = (await sql`
+    SELECT provenienza, tipo, COUNT(*)::int AS conteggio
+    FROM richieste
+    WHERE stato = 'confermata' AND provenienza LIKE 'Link di %'
+    GROUP BY provenienza, tipo
+  `) as unknown as RigaConteggio[];
+
+  return pr.map((p) => {
+    const suoi = conteggi.filter((c) => c.provenienza === `Link di ${p.nome}`);
+    const per = (tipo: string) => suoi.find((c) => c.tipo === tipo)?.conteggio ?? 0;
+
+    return {
+      nome: p.nome,
+      codice: p.codice,
+      link: `lucacalifornia.satoshiweb.it/${p.codice}`,
+      confermate: suoi.reduce((tot, c) => tot + c.conteggio, 0),
+      tavoli: per("tavolo"),
+      liste: per("lista"),
+      braccialetti: per("braccialetto"),
+    };
+  });
 }
 
 export function compleanni(): readonly Compleanno[] {
@@ -357,16 +366,25 @@ export function nomeCorto(nome: string): string {
     .replace(/[^a-z0-9]+/g, "");
 }
 
-export function aggiungiPr(nome: string): Pr {
-  const pr: Pr = {
-    nome,
-    prenotazioni: 0,
-    liste: 0,
-    tavoli: 0,
-    provvigioni: 0,
-    link: `lucacalifornia.satoshiweb.it/${nomeCorto(nome)}`,
-  };
+/** Vero il link di un PR davvero riconosciuto da /[canale], non solo un'anteprima. */
+export async function aggiungiPr(nome: string): Promise<Pr> {
+  const sql = await db();
+  const base = nomeCorto(nome);
 
-  SQUADRA = [...SQUADRA, pr];
-  return pr;
+  const occupato = (await sql`SELECT 1 FROM pr WHERE codice = ${base}`) as unknown as readonly unknown[];
+  // Due PR con un nome che dà lo stesso codice (es. due "Marco"): il secondo
+  // prende un codice con un paio di cifre in più, non sovrascrive il primo.
+  const codice = occupato.length === 0 ? base : `${base}${Math.floor(10 + Math.random() * 90)}`;
+
+  await sql`INSERT INTO pr (id, nome, codice) VALUES (${`pr-${codice}`}, ${nome}, ${codice})`;
+
+  return {
+    nome,
+    codice,
+    link: `lucacalifornia.satoshiweb.it/${codice}`,
+    confermate: 0,
+    tavoli: 0,
+    liste: 0,
+    braccialetti: 0,
+  };
 }

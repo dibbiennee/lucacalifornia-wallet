@@ -20,25 +20,27 @@ function auguri(nome: string): string {
   return `Ciao ${primo}! Tra poco è il tuo compleanno: ti tengo un tavolo come l'anno scorso?`;
 }
 
-export default function Squadra() {
+export default async function Squadra() {
+  const pr = await squadra();
+
   return (
     <main className="pagina">
       <Testata occhiello={MESE.format(new Date())} titolo="Squadra" />
 
       <div className="lista">
-        {squadra().map((pr) => (
-          <Riquadro key={pr.nome}>
+        {pr.map((p) => (
+          <Riquadro key={p.codice}>
             <p className={stili.testa}>
-              <b>{pr.nome.toUpperCase()}</b>
-              <span>{pr.prenotazioni} prenotazioni</span>
+              <b>{p.nome.toUpperCase()}</b>
+              <span>{p.confermate} confermate</span>
             </p>
 
-            <CopiaLink link={pr.link} />
+            <CopiaLink link={p.link} />
 
             <Numeri>
-              <Numero valore={pr.liste} etichetta="liste" />
-              <Numero valore={pr.tavoli} etichetta="tavoli" />
-              <Numero valore={`${pr.provvigioni} €`} etichetta="provvigioni" />
+              <Numero valore={p.liste} etichetta="liste" />
+              <Numero valore={p.tavoli} etichetta="tavoli" />
+              <Numero valore={p.braccialetti} etichetta="bracciali" />
             </Numeri>
           </Riquadro>
         ))}

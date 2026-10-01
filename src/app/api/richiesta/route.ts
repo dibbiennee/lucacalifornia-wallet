@@ -102,7 +102,7 @@ export async function POST(richiesta: Request): Promise<Response> {
    * perché chi è entrato da /ig o da /marco si porta dietro un biscotto.
    * Chi arriva digitando l'indirizzo risulta "Diretto", che è la verità.
    */
-  const provenienza = nomeProvenienza((await cookies()).get(BISCOTTO_PROVENIENZA)?.value);
+  const provenienza = await nomeProvenienza((await cookies()).get(BISCOTTO_PROVENIENZA)?.value);
 
   // La notte e il nome da biglietto si ricavano dalla data, non da quello che
   // manda il browser: così non c'è da fidarsi di una stringa scritta a mano.

@@ -24,7 +24,7 @@ export async function GET(
   contesto: { params: Promise<{ canale: string }> },
 ): Promise<Response> {
   const { canale } = await contesto.params;
-  const trovato = riconosci(canale);
+  const trovato = await riconosci(canale);
 
   if (trovato === null) {
     return new Response("Non trovato", { status: 404 });

@@ -43,7 +43,7 @@ export async function cambiaStato(id: string, stato: StatoRichiesta): Promise<st
 
 export async function nuovoPr(nome: string): Promise<string> {
   await dentro();
-  const pr = aggiungiPr(nome);
+  const pr = await aggiungiPr(nome);
   revalidatePath("/pannello/squadra");
 
   return `Link creato: ${pr.link}`;

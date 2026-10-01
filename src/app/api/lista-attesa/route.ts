@@ -58,16 +58,13 @@ export async function POST(richiesta: Request): Promise<Response> {
     return Response.json({ errore: "Scrivi un telefono valido o un'email" }, { status: 400 });
   }
 
+  const provenienza = await nomeProvenienza((await cookies()).get(BISCOTTO_PROVENIENZA)?.value);
+
   return Response.json(
     {
       salvata: false,
       nota: "Anteprima del sito: il contatto non viene conservato.",
-      ricevuta: {
-        tipo,
-        nome,
-        contatto,
-        provenienza: nomeProvenienza((await cookies()).get(BISCOTTO_PROVENIENZA)?.value),
-      },
+      ricevuta: { tipo, nome, contatto, provenienza },
     },
     { headers: { "Cache-Control": "no-store" } },
   );

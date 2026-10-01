@@ -91,6 +91,31 @@ export async function db(): Promise<NeonQueryFunction<false, false>> {
     )
   `);
 
+  /*
+   * I PR, prima fissi nel codice (src/contenuti/canali.ts): "Aggiungi PR" dal
+   * pannello generava solo un link finto, mai davvero riconosciuto da
+   * /[canale]. Ora la squadra vive qui, e il link che esce da "Aggiungi PR"
+   * funziona davvero.
+   */
+  await ignoraCorsaAllaCreazione(sql`
+    CREATE TABLE IF NOT EXISTS pr (
+      id TEXT PRIMARY KEY,
+      nome TEXT NOT NULL,
+      codice TEXT UNIQUE NOT NULL,
+      creato_alle TIMESTAMPTZ NOT NULL DEFAULT now()
+    )
+  `);
+
+  // I tre PR che c'erano già fissi nel codice: seminati una volta sola,
+  // così i link che Luca ha già girato continuano a funzionare.
+  await ignoraCorsaAllaCreazione(sql`
+    INSERT INTO pr (id, nome, codice) VALUES
+      ('pr-marco', 'Marco', 'marco'),
+      ('pr-sara', 'Sara', 'sara'),
+      ('pr-davide', 'Davide', 'davide')
+    ON CONFLICT (codice) DO NOTHING
+  `);
+
   creata = true;
   return sql;
 }

@@ -15,7 +15,12 @@ import { cookies } from "next/headers";
 
 const BISCOTTO = "pannello";
 const SALE = "luca-california-pannello-v1";
-const DURATA = 12 * 60 * 60;
+/*
+ * Un anno: chi entra una volta resta dentro, non deve rifare la password ogni
+ * volta che riapre il telefono. Esce solo premendo "Esci", o se Luca cambia
+ * la password.
+ */
+const DURATA = 365 * 24 * 60 * 60;
 
 function passwordAttesa(): string {
   const password = process.env["PANNELLO_PASSWORD"];
