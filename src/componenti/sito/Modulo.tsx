@@ -42,15 +42,39 @@ const OCCASIONI = [
   "Nessuna",
 ] as const;
 
+const GENERI = ["Donna", "Uomo"] as const;
+
+/**
+ * Il prezzo del braccialetto, dove c'è: solo venerdì e sabato, e solo sabato
+ * cambia fra donna e uomo. Le altre sere Luca lo dice su WhatsApp come per
+ * lista e tavolo, perché il prezzo non c'è ancora.
+ */
+function prezzoBraccialetto(serata: string, genere: string): string | null {
+  if (serata === "Ven Drip") {
+    return "25 € a testa, con 2 drink inclusi.";
+  }
+  if (serata === "Sab International") {
+    return genere === "Uomo"
+      ? "30 € a testa, con 2 drink inclusi."
+      : genere === "Donna"
+        ? "25 € a testa, con 2 drink inclusi."
+        : "25 € donna, 30 € uomo, con 2 drink inclusi.";
+  }
+  return null;
+}
+
 interface Errori {
   nome?: string;
   cognome?: string;
   telefono?: string;
+  genere?: string;
 }
+
+type TipoIngresso = "lista" | "tavolo" | "braccialetto";
 
 export function Modulo() {
   const id = useId();
-  const [tavolo, setTavolo] = useState(false);
+  const [tipo, setTipo] = useState<TipoIngresso>("lista");
   const [nome, setNome] = useState("");
   const [cognome, setCognome] = useState("");
   const [telefono, setTelefono] = useState("");
@@ -58,6 +82,7 @@ export function Modulo() {
   const [gruppo, setGruppo] = useState<string>("Misto");
   const [budget, setBudget] = useState<string>(BUDGET[0]);
   const [occasione, setOccasione] = useState<string>("Nessuna");
+  const [genere, setGenere] = useState<string>("");
   const [note, setNote] = useState("");
   const [errori, setErrori] = useState<Errori>({});
   const [inCorso, setInCorso] = useState(false);
@@ -68,8 +93,9 @@ export function Modulo() {
   useEffect(() => {
     const cerca = new URLSearchParams(window.location.search);
 
-    if (cerca.get("tipo") === "tavolo") {
-      setTavolo(true);
+    const tipoIndirizzo = cerca.get("tipo");
+    if (tipoIndirizzo === "tavolo" || tipoIndirizzo === "braccialetto") {
+      setTipo(tipoIndirizzo);
     }
 
     const scelta = cerca.get("serata");
@@ -91,6 +117,9 @@ export function Modulo() {
       trovati.telefono = "Serve un numero per ricontattarti";
     } else if (telefono.replace(/\D/g, "").length < 9) {
       trovati.telefono = "Questo numero sembra incompleto";
+    }
+    if (tipo === "braccialetto" && genere === "") {
+      trovati.genere = "Dicci se è per una donna o un uomo";
     }
 
     return trovati;
@@ -115,12 +144,13 @@ export function Modulo() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          tipo: tavolo ? "tavolo" : "lista",
+          tipo,
           nome,
           cognome,
           telefono,
           serata,
-          ...(tavolo ? { gruppo, budget, occasione, note } : {}),
+          ...(tipo === "tavolo" ? { gruppo, budget, occasione, note } : {}),
+          ...(tipo === "braccialetto" ? { genere } : {}),
         }),
       });
 
@@ -154,17 +184,15 @@ export function Modulo() {
   return (
     <form onSubmit={(e) => void invia(e)} noValidate className={stili.modulo}>
       <div className={stili["scelta-tipo"]} role="radiogroup" aria-label="Cosa vuoi">
-        {[
-          ["Lista", false],
-          ["Tavolo", true],
-        ].map(([testo, valore]) => (
-          <label key={String(testo)}>
-            <input
-              type="radio"
-              name="tipo"
-              checked={tavolo === valore}
-              onChange={() => setTavolo(valore as boolean)}
-            />
+        {(
+          [
+            ["Lista", "lista"],
+            ["Tavolo", "tavolo"],
+            ["Braccialetto", "braccialetto"],
+          ] as const
+        ).map(([testo, valore]) => (
+          <label key={valore}>
+            <input type="radio" name="tipo" checked={tipo === valore} onChange={() => setTipo(valore)} />
             <span>{testo}</span>
           </label>
         ))}
@@ -221,7 +249,7 @@ export function Modulo() {
         </div>
       </fieldset>
 
-      {tavolo && (
+      {tipo === "tavolo" && (
         <>
           <Scelta etichetta="Chi c'è al tavolo" nome="gruppo" voci={GRUPPI} scelto={gruppo} cambia={setGruppo} />
           <Scelta etichetta="Budget a testa" nome="budget" voci={BUDGET} scelto={budget} cambia={setBudget} />
@@ -234,6 +262,20 @@ export function Modulo() {
             cambia={setNote}
             segnaposto="Torta, bottiglia, decorazioni..."
           />
+        </>
+      )}
+
+      {tipo === "braccialetto" && (
+        <>
+          <Scelta etichetta="Per chi è" nome="genere" voci={GENERI} scelto={genere} cambia={setGenere} />
+          {errori.genere !== undefined && (
+            <p role="alert" className={stili.errore}>
+              {errori.genere}
+            </p>
+          )}
+          {prezzoBraccialetto(serata, genere) !== null && (
+            <p className={stili.prezzo}>{prezzoBraccialetto(serata, genere)}</p>
+          )}
         </>
       )}
 

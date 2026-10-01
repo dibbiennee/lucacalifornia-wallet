@@ -28,9 +28,11 @@ interface Richiesta {
   readonly occasione?: string;
   readonly note?: string;
   readonly zona?: string;
+  readonly genere?: string;
 }
 
-const TIPI = ["lista", "tavolo", "navetta"] as const;
+const TIPI = ["lista", "tavolo", "navetta", "braccialetto"] as const;
+const GENERI = ["Donna", "Uomo"] as const;
 
 /** Le stesse quattro scelte del modulo (vedi Modulo.tsx), verso i dati del pannello. */
 const SERATE: Readonly<
@@ -73,7 +75,9 @@ export async function POST(richiesta: Request): Promise<Response> {
   // La navetta si chiede con nome, telefono, serata e zona: il cognome no,
   // perché è un modulo corto che si compila mentre si sta già uscendo.
   const navetta = tipo === "navetta";
+  const braccialetto = tipo === "braccialetto";
   const zona = testo(c.zona, 80);
+  const genere = testo(c.genere, 10);
 
   if (nome === null || telefono === null || serataScelta === null) {
     return Response.json({ errore: "Servono nome, telefono e la serata" }, { status: 400 });
@@ -85,6 +89,10 @@ export async function POST(richiesta: Request): Promise<Response> {
 
   if (navetta && zona === null) {
     return Response.json({ errore: "Serve la zona da cui parti" }, { status: 400 });
+  }
+
+  if (braccialetto && (genere === null || !GENERI.includes(genere as (typeof GENERI)[number]))) {
+    return Response.json({ errore: "Dicci se il braccialetto è per una donna o un uomo" }, { status: 400 });
   }
 
   if (telefono.replace(/\D/g, "").length < 9) {
@@ -102,7 +110,10 @@ export async function POST(richiesta: Request): Promise<Response> {
 
   const mappata = SERATE[serataScelta];
   const nomeCompleto = cognome === null ? nome : `${nome} ${cognome}`;
-  const gruppo = tavolo ? testo(c.gruppo, 40) : null;
+  // Il braccialetto non ha una colonna sua per il genere: usa "gruppo", la
+  // stessa che il tavolo usa per "chi c'è al tavolo". Sono due cose diverse
+  // che non capitano mai insieme, quindi la colonna può restare una sola.
+  const gruppo = tavolo ? testo(c.gruppo, 40) : braccialetto ? genere : null;
   const budget = tavolo ? testo(c.budget, 40) : null;
   const occasione = tavolo ? testo(c.occasione, 60) : null;
   const note = tavolo ? testo(c.note, 300) : null;
@@ -130,7 +141,9 @@ export async function POST(richiesta: Request): Promise<Response> {
       ? `Tavolo, ${salvata.serata}${salvata.sala === undefined ? "" : `, ${salvata.sala}`}`
       : tipo === "navetta"
         ? `Navetta da ${zona}, ${salvata.serata}`
-        : `Lista, ${salvata.serata}`;
+        : tipo === "braccialetto"
+          ? `Braccialetto ${(genere ?? "").toLowerCase()}, ${salvata.serata}`
+          : `Lista, ${salvata.serata}`;
 
   // Se il push fallisce (nessuno iscritto, un endpoint scaduto...) la
   // richiesta è comunque salvata: Luca la vede aprendo il pannello.

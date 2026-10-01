@@ -27,6 +27,7 @@ export function ElencoStasera({
   const q = cerca.trim().toLowerCase();
   const trovati = q === "" ? confermati : confermati.filter((r) => r.nome.toLowerCase().includes(q));
   const tavoli = trovati.filter((r) => r.tipo === "tavolo");
+  const braccialetti = trovati.filter((r) => r.tipo === "braccialetto");
   const lista = trovati.filter((r) => r.tipo === "lista");
 
   return (
@@ -64,6 +65,24 @@ export function ElencoStasera({
                     nome={r.nome}
                     destra={r.sala?.toLowerCase()}
                     riassunto={dettaglioTavolo(r)}
+                  />
+                ))}
+              </div>
+            </section>
+          )}
+
+          {braccialetti.length > 0 && (
+            <section className="sezione" aria-labelledby={`${id}-braccialetti`}>
+              <h2 className="titolo-sezione" id={`${id}-braccialetti`}>
+                Braccialetti, {braccialetti.length}
+              </h2>
+              <div className="lista">
+                {braccialetti.map((r) => (
+                  <CardRichiesta
+                    key={r.id}
+                    dove={`/pannello/richieste/${r.id}?da=stasera`}
+                    nome={r.nome}
+                    riassunto={r.gruppo === undefined ? "" : r.gruppo.toLowerCase()}
                   />
                 ))}
               </div>

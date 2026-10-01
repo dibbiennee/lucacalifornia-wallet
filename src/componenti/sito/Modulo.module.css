@@ -35,7 +35,7 @@
 /* L'interruttore fra lista e tavolo. */
 .scelta-tipo {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr;
   padding: 4px;
   background: #e2ddd3;
   border-radius: 999px;
@@ -55,10 +55,13 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  text-align: center;
   min-height: 48px;
+  padding: 4px 6px;
   border-radius: 999px;
   font-weight: 800;
-  font-size: 15px;
+  font-size: 13.5px;
+  line-height: 1.15;
   transition: background-color 0.15s ease, color 0.15s ease;
 }
 
@@ -182,6 +185,14 @@
   font-size: 14px;
   color: var(--ink-2);
   margin: 0;
+}
+
+/* Il prezzo del braccialetto: deve saltare all'occhio appena si sceglie la serata. */
+.prezzo {
+  margin: -6px 0 0;
+  font-size: 14px;
+  font-weight: 800;
+  color: var(--ink);
 }
 
 .dopo a { color: var(--ink); }

@@ -19,13 +19,16 @@ function unisci(pezzi: readonly (string | null | undefined)[]): string {
   return lega(pezzi.filter((p) => p !== null && p !== undefined && p !== "").join(", "));
 }
 
-/** Es. "tavolo misto", "lista", "navetta da Trastevere". */
+/** Es. "tavolo misto", "lista", "navetta da Trastevere", "braccialetto donna". */
 function tipoBreve(r: RichiestaPannello): string {
   if (r.tipo === "tavolo") {
     return `tavolo ${(r.gruppo ?? "").toLowerCase()}`.trim();
   }
   if (r.tipo === "navetta") {
     return r.zona === undefined ? "navetta" : `navetta da ${r.zona}`;
+  }
+  if (r.tipo === "braccialetto") {
+    return `braccialetto ${(r.gruppo ?? "").toLowerCase()}`.trim();
   }
   return "lista";
 }
@@ -62,6 +65,9 @@ export function tipoBiglietto(r: RichiestaPannello): string {
   if (r.tipo === "navetta") {
     return "NAVETTA";
   }
+  if (r.tipo === "braccialetto") {
+    return `BRACCIALETTO, ${(r.gruppo ?? "").toUpperCase()}`;
+  }
   return "LISTA";
 }
 
@@ -72,6 +78,9 @@ export function tipoEsteso(r: RichiestaPannello): string {
   }
   if (r.tipo === "navetta") {
     return r.zona === undefined ? "Navetta" : `Navetta, ${r.zona.toLowerCase()}`;
+  }
+  if (r.tipo === "braccialetto") {
+    return `Braccialetto, ${(r.gruppo ?? "").toLowerCase()}`;
   }
   return "Lista";
 }
