@@ -66,6 +66,9 @@ export function Apertura() {
             <Bottone href="/prenota?tipo=braccialetto" aspetto="contorno">
               Prenota il bracciale VIP
             </Bottone>
+            <Bottone href="/prenota?tipo=lista" aspetto="contorno">
+              Entra in lista
+            </Bottone>
           </div>
         </div>
       </div>
