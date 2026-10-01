@@ -49,7 +49,7 @@ export function PiePagina() {
         </div>
 
         <p className={stili.firma}>
-          Sito di{" "}
+          By{" "}
           <a href="https://satoshiweb.it" target="_blank" rel="noopener">
             satoshiweb.it
           </a>
