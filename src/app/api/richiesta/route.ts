@@ -1,5 +1,6 @@
 import { cookies } from "next/headers";
 
+import { serataPerData } from "@/lib/calendario-serate";
 import { BISCOTTO_PROVENIENZA, nomeProvenienza } from "@/contenuti/canali";
 import { creaRichiesta, type NuovaRichiesta } from "@/lib/pannello/dati";
 import { avvisaTutti } from "@/lib/push";
@@ -23,9 +24,11 @@ interface Richiesta {
   readonly cognome: string;
   readonly telefono: string;
   readonly serata: string;
+  readonly dataSerata: string;
   readonly gruppo?: string;
   readonly budget?: string;
   readonly occasione?: string;
+  readonly persone?: string;
   readonly note?: string;
   readonly zona?: string;
   readonly genere?: string;
@@ -33,16 +36,6 @@ interface Richiesta {
 
 const TIPI = ["tavolo", "braccialetto", "lista", "navetta"] as const;
 const GENERI = ["Donna", "Uomo"] as const;
-
-/** Le stesse quattro scelte del modulo (vedi Modulo.tsx), verso i dati del pannello. */
-const SERATE: Readonly<
-  Record<string, { readonly serata: string; readonly nomeSerata: string; readonly codiceSerata: string; readonly sala?: string }>
-> = {
-  "Gio Milkshake": { serata: "Giovedì", nomeSerata: "MILKSHAKE", codiceSerata: "milkshake" },
-  "Ven Drip": { serata: "Venerdì", nomeSerata: "DRIP", codiceSerata: "venerdi" },
-  "Sab International": { serata: "Sabato", nomeSerata: "INTERNATIONAL", codiceSerata: "sabato" },
-  "Dom Bàilame": { serata: "Domenica Bàilame", nomeSerata: "BÀILAME", codiceSerata: "bailame" },
-};
 
 function testo(valore: unknown, massimo: number): string | null {
   if (typeof valore !== "string") {
@@ -65,7 +58,10 @@ export async function POST(richiesta: Request): Promise<Response> {
   const nome = testo(c.nome, 60);
   const cognome = testo(c.cognome, 60);
   const telefono = testo(c.telefono, 30);
-  const serataScelta = testo(c.serata, 60);
+  const serataScelta = testo(c.serata, 80);
+  // Solo il modulo principale manda una data: la navetta sceglie ancora solo il giorno della settimana.
+  const dataSerata = testo(c.dataSerata, 10);
+  const persone = testo(c.persone, 10);
   const tipo = testo(c.tipo, 20);
 
   if (tipo === null || !TIPI.includes(tipo as (typeof TIPI)[number])) {
@@ -108,7 +104,10 @@ export async function POST(richiesta: Request): Promise<Response> {
    */
   const provenienza = nomeProvenienza((await cookies()).get(BISCOTTO_PROVENIENZA)?.value);
 
-  const mappata = SERATE[serataScelta];
+  // La notte e il nome da biglietto si ricavano dalla data, non da quello che
+  // manda il browser: così non c'è da fidarsi di una stringa scritta a mano.
+  // La navetta non manda una data (sceglie solo il giorno), quindi resta null.
+  const derivata = dataSerata === null ? null : serataPerData(dataSerata);
   const nomeCompleto = cognome === null ? nome : `${nome} ${cognome}`;
   // Il braccialetto non ha una colonna sua per il genere: usa "gruppo", la
   // stessa che il tavolo usa per "chi c'è al tavolo". Sono due cose diverse
@@ -121,15 +120,16 @@ export async function POST(richiesta: Request): Promise<Response> {
   const daSalvare: NuovaRichiesta = {
     nome: nomeCompleto,
     telefono,
-    serata: mappata?.serata ?? serataScelta,
-    nomeSerata: mappata?.nomeSerata ?? serataScelta.toUpperCase(),
-    codiceSerata: mappata?.codiceSerata ?? "altro",
+    serata: serataScelta,
+    nomeSerata: derivata?.nomeSerata ?? serataScelta.toUpperCase(),
+    codiceSerata: derivata?.notte ?? "altro",
     tipo: tipo as NuovaRichiesta["tipo"],
     provenienza,
-    ...(mappata?.sala === undefined ? {} : { sala: mappata.sala }),
+    ...(dataSerata === null ? {} : { dataSerata }),
     ...(gruppo === null ? {} : { gruppo }),
     ...(budget === null ? {} : { budget }),
     ...(occasione === null ? {} : { occasione }),
+    ...(persone === null ? {} : { persone }),
     ...(note === null ? {} : { messaggio: note }),
     ...(navetta && zona !== null ? { zona } : {}),
   };

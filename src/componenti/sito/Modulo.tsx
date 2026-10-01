@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useEffect, useId, useState, type FormEvent } from "react";
 
-
+import { calendarioSerate, type NotteSerata, type VoceCalendarioSerata } from "@/lib/calendario-serate";
 import { legaParole } from "@/lib/tipografia";
 
 import { BottoneAzione } from "./Bottone";
@@ -12,23 +12,16 @@ import stili from "./Modulo.module.css";
 /**
  * Il modulo: l'unica cosa che porta soldi.
  *
- * Tutte le scelte sono pillole e non menu a tendina: è una richiesta del
- * brief, e di notte con una mano sola una pillola si prende sempre.
- *
- * Il numero di persone non si chiede mai, nemmeno per il tavolo: lo ha
- * chiesto Luca.
+ * Le scelte sono pillole, tranne la serata: lì servono le date vere, e con
+ * tante date in fila la pillola non sta più in uno schermo di telefono. Per
+ * quella si usa il menu a tendina del sistema, quello che si apre da solo
+ * con le dita o con il mouse.
  *
  * Il tipo e la serata arrivano dall'indirizzo, così ogni pulsante del sito
- * può aprire il modulo già sulla cosa giusta.
+ * può aprire il modulo già sulla cosa giusta: la serata arriva come codice
+ * della notte (milkshake, venerdi, sabato, bailame), e il modulo sceglie da
+ * solo la prossima data vera di quella notte.
  */
-
-/** Le quattro serate, una per giorno. */
-const SERATE_MODULO = [
-  { valore: "Gio Milkshake", colore: "milk" },
-  { valore: "Ven Drip", colore: "acid" },
-  { valore: "Sab International", colore: "cyan" },
-  { valore: "Dom Bàilame", colore: "red" },
-] as const;
 
 const GRUPPI = ["Solo ragazzi", "Solo ragazze", "Misto"] as const;
 const BUDGET = ["25–30 €", "35–50 €", "Oltre 50 €"] as const;
@@ -43,17 +36,18 @@ const OCCASIONI = [
 ] as const;
 
 const GENERI = ["Donna", "Uomo"] as const;
+const PERSONE = ["1", "2", "3", "4", "5", "6+"] as const;
 
 /**
  * Il prezzo del braccialetto, dove c'è: solo venerdì e sabato, e solo sabato
- * cambia fra donna e uomo. Le altre sere Luca lo dice su WhatsApp come per
+ * cambia fra donna e uomo. Le altre notti Luca lo dice su WhatsApp come per
  * lista e tavolo, perché il prezzo non c'è ancora.
  */
-function prezzoBraccialetto(serata: string, genere: string): string | null {
-  if (serata === "Ven Drip") {
+function prezzoBraccialetto(notte: NotteSerata | undefined, genere: string): string | null {
+  if (notte === "venerdi") {
     return "25 € a testa, con 2 drink inclusi.";
   }
-  if (serata === "Sab International") {
+  if (notte === "sabato") {
     return genere === "Uomo"
       ? "30 € a testa, con 2 drink inclusi."
       : genere === "Donna"
@@ -80,7 +74,9 @@ export function Modulo() {
   const [nome, setNome] = useState("");
   const [cognome, setCognome] = useState("");
   const [telefono, setTelefono] = useState("");
-  const [serata, setSerata] = useState<string>(SERATE_MODULO[0].valore);
+  const [calendario, setCalendario] = useState<readonly VoceCalendarioSerata[]>([]);
+  const [serata, setSerata] = useState<string>("");
+  const [persone, setPersone] = useState<string>(PERSONE[0]);
   const [gruppo, setGruppo] = useState<string>("Misto");
   const [budget, setBudget] = useState<string>(BUDGET[0]);
   const [occasione, setOccasione] = useState<string>("Nessuna");
@@ -91,8 +87,13 @@ export function Modulo() {
   const [problema, setProblema] = useState("");
   const [inviata, setInviata] = useState(false);
 
-  // Quello che arriva dall'indirizzo: ?tipo=tavolo e ?serata=Dom Bàilame
+  // Le date vere si generano solo nel browser, da "adesso": calcolarle anche
+  // sul server darebbe due liste leggermente diverse (secondi di differenza
+  // fra quando risponde il server e quando il browser disegna la pagina).
   useEffect(() => {
+    const generato = calendarioSerate();
+    setCalendario(generato);
+
     const cerca = new URLSearchParams(window.location.search);
 
     const tipoIndirizzo = cerca.get("tipo");
@@ -100,11 +101,15 @@ export function Modulo() {
       setTipo(tipoIndirizzo);
     }
 
-    const scelta = cerca.get("serata");
-    if (scelta !== null && SERATE_MODULO.some((s) => s.valore === scelta)) {
-      setSerata(scelta);
-    }
+    // Quello che arriva dall'indirizzo è il codice della notte (es.
+    // "venerdi"): si prende la prima data di quella notte, cioè la più
+    // vicina, perché la lista è già in ordine di calendario.
+    const notteIndirizzo = cerca.get("serata");
+    const trovata = generato.find((v) => v.notte === notteIndirizzo);
+    setSerata((trovata ?? generato[0])?.data ?? "");
   }, []);
+
+  const voceSerata = calendario.find((v) => v.data === serata);
 
   function controlla(): Errori {
     const trovati: Errori = {};
@@ -150,7 +155,9 @@ export function Modulo() {
           nome,
           cognome,
           telefono,
-          serata,
+          serata: voceSerata?.valore ?? "",
+          dataSerata: serata,
+          persone,
           ...(tipo === "tavolo" ? { gruppo, budget, occasione, note } : {}),
           ...(tipo === "braccialetto" ? { genere } : {}),
         }),
@@ -231,25 +238,28 @@ export function Modulo() {
         segnaposto="333 123 4567"
       />
 
-      <fieldset className={stili.gruppo}>
-        <legend>Serata</legend>
-        <div className={stili.pillole}>
-          {SERATE_MODULO.map((s) => (
-            <label key={s.valore} className={stili.pillola}>
-              <input
-                type="radio"
-                name="serata"
-                checked={serata === s.valore}
-                onChange={() => setSerata(s.valore)}
-              />
-              <span>
-                <i style={{ background: `var(--${s.colore})` }} aria-hidden />
-                {s.valore}
-              </span>
-            </label>
-          ))}
-        </div>
-      </fieldset>
+      <div className={stili.campo}>
+        <label htmlFor={`${id}-serata`}>Serata</label>
+        <select
+          id={`${id}-serata`}
+          name="serata"
+          value={serata}
+          onChange={(e) => setSerata(e.target.value)}
+          disabled={calendario.length === 0}
+        >
+          {calendario.length === 0 ? (
+            <option value="">Un attimo...</option>
+          ) : (
+            calendario.map((v) => (
+              <option key={v.data} value={v.data}>
+                {v.valore}
+              </option>
+            ))
+          )}
+        </select>
+      </div>
+
+      <Scelta etichetta="Quante persone" nome="persone" voci={PERSONE} scelto={persone} cambia={setPersone} />
 
       {tipo === "tavolo" && (
         <>
@@ -275,8 +285,8 @@ export function Modulo() {
               {errori.genere}
             </p>
           )}
-          {prezzoBraccialetto(serata, genere) !== null && (
-            <p className={stili.prezzo}>{prezzoBraccialetto(serata, genere)}</p>
+          {prezzoBraccialetto(voceSerata?.notte, genere) !== null && (
+            <p className={stili.prezzo}>{prezzoBraccialetto(voceSerata?.notte, genere)}</p>
           )}
         </>
       )}

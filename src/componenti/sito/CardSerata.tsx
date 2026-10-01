@@ -7,9 +7,15 @@ import { legaParole } from "@/lib/tipografia";
 import { Bottone } from "./Bottone";
 import stili from "./CardSerata.module.css";
 
-/** Il link al modulo, già con la serata scelta. */
-export function perPrenotare(serata: string, tipo: "lista" | "tavolo" | "braccialetto" = "lista"): string {
-  return `/prenota?tipo=${tipo}&serata=${encodeURIComponent(serata)}`;
+/**
+ * Il link al modulo, già con la serata scelta.
+ *
+ * "codice" è il codice della notte (milkshake, venerdi, sabato, bailame):
+ * il modulo lo usa per selezionare la prossima data vera di quella notte,
+ * non più una scritta fissa come "Ven Drip".
+ */
+export function perPrenotare(codice: string, tipo: "lista" | "tavolo" | "braccialetto" = "lista"): string {
+  return `/prenota?tipo=${tipo}&serata=${encodeURIComponent(codice)}`;
 }
 
 /** Una serata, col suo colore. */
@@ -43,7 +49,7 @@ export function CardSerata({ serata }: { readonly serata: SerataSito }) {
           <Link href={`/serate/${serata.codice}`} className={stili.musica}>
             {legaParole(serata.musica)}
           </Link>
-          <Bottone href={perPrenotare(serata.perModulo, "tavolo")} aspetto="nero" stretto>
+          <Bottone href={perPrenotare(serata.codice, "tavolo")} aspetto="nero" stretto>
             Prenota
           </Bottone>
         </div>

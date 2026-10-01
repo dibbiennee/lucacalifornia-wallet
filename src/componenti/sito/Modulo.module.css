@@ -107,6 +107,24 @@
 
 .campo input::placeholder { color: #8a8594; }
 
+/*
+ * La serata è l'unico campo a menu a tendina: con mesi di date in fila non
+ * sta più in una pillola. Resta l'aspetto nativo apposta, non "appearance:
+ * none": è quello che il telefono disegna da solo, già pensato per scorrere
+ * con un dito.
+ */
+.campo select {
+  height: 52px;
+  padding: 0 14px;
+  border: 1.5px solid var(--ink);
+  border-radius: 12px;
+  background: #ffffff;
+  color: var(--ink);
+  font: inherit;
+  font-size: 16px;
+  width: 100%;
+}
+
 .campo input[aria-invalid="true"] {
   border-color: #c2002f;
   box-shadow: 0 0 0 3px rgba(194, 0, 47, 0.12);

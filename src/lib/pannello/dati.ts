@@ -34,11 +34,14 @@ export interface RichiestaPannello {
   readonly nomeSerata: string;
   /** Per legare la richiesta alla serata senza confrontare stringhe scritte a mano. */
   readonly codiceSerata: string;
+  /** AAAA-MM-GG: manca solo nelle richieste di prima che il modulo facesse scegliere una data vera. */
+  readonly dataSerata?: string;
   readonly sala?: string;
   readonly tipo: "tavolo" | "braccialetto" | "lista" | "navetta";
   readonly gruppo?: string;
   readonly budget?: string;
   readonly occasione?: string;
+  readonly persone?: string;
   /** Solo per la navetta: da dove parte. */
   readonly zona?: string;
   readonly messaggio?: string;
@@ -63,11 +66,13 @@ interface RigaRichiesta {
   readonly serata: string;
   readonly nome_serata: string;
   readonly codice_serata: string;
+  readonly data_serata: string | null;
   readonly sala: string | null;
   readonly tipo: string;
   readonly gruppo: string | null;
   readonly budget: string | null;
   readonly occasione: string | null;
+  readonly persone: string | null;
   readonly zona: string | null;
   readonly messaggio: string | null;
   readonly provenienza: string;
@@ -97,10 +102,12 @@ function daRiga(r: RigaRichiesta): RichiestaPannello {
     tipo: r.tipo as RichiestaPannello["tipo"],
     provenienza: r.provenienza,
     stato: r.stato as StatoRichiesta,
+    ...(r.data_serata === null ? {} : { dataSerata: r.data_serata }),
     ...(r.sala === null ? {} : { sala: r.sala }),
     ...(r.gruppo === null ? {} : { gruppo: r.gruppo }),
     ...(r.budget === null ? {} : { budget: r.budget }),
     ...(r.occasione === null ? {} : { occasione: r.occasione }),
+    ...(r.persone === null ? {} : { persone: r.persone }),
     ...(r.zona === null ? {} : { zona: r.zona }),
     ...(r.messaggio === null ? {} : { messaggio: r.messaggio }),
     ...(r.note_private === null ? {} : { notePrivate: r.note_private }),
@@ -114,12 +121,15 @@ export interface NuovaRichiesta {
   readonly serata: string;
   readonly nomeSerata: string;
   readonly codiceSerata: string;
+  /** AAAA-MM-GG: la data vera scelta nel modulo. La navetta non la chiede. */
+  readonly dataSerata?: string;
   readonly tipo: RichiestaPannello["tipo"];
   readonly provenienza: string;
   readonly sala?: string;
   readonly gruppo?: string;
   readonly budget?: string;
   readonly occasione?: string;
+  readonly persone?: string;
   readonly zona?: string;
   readonly messaggio?: string;
 }
@@ -143,12 +153,12 @@ export async function creaRichiesta(dati: NuovaRichiesta): Promise<RichiestaPann
 
   await sql`
     INSERT INTO richieste (
-      id, nome, telefono, serata, nome_serata, codice_serata, sala, tipo,
-      gruppo, budget, occasione, zona, messaggio, provenienza, stato
+      id, nome, telefono, serata, nome_serata, codice_serata, data_serata, sala, tipo,
+      gruppo, budget, occasione, persone, zona, messaggio, provenienza, stato
     ) VALUES (
       ${id}, ${dati.nome}, ${dati.telefono}, ${dati.serata}, ${dati.nomeSerata},
-      ${dati.codiceSerata}, ${dati.sala ?? null}, ${dati.tipo}, ${dati.gruppo ?? null},
-      ${dati.budget ?? null}, ${dati.occasione ?? null}, ${dati.zona ?? null},
+      ${dati.codiceSerata}, ${dati.dataSerata ?? null}, ${dati.sala ?? null}, ${dati.tipo}, ${dati.gruppo ?? null},
+      ${dati.budget ?? null}, ${dati.occasione ?? null}, ${dati.persone ?? null}, ${dati.zona ?? null},
       ${dati.messaggio ?? null}, ${dati.provenienza}, 'nuova'
     )
   `;
@@ -285,17 +295,27 @@ export async function richiesta(id: string): Promise<RichiestaPannello | undefin
   return righe[0] === undefined ? undefined : daRiga(righe[0]);
 }
 
+/** "2026-10-01": il giorno di oggi all'ora di Roma, per non confondere "stasera" con un sabato di marzo. */
+function oggiARoma(): string {
+  return new Intl.DateTimeFormat("en-CA", { timeZone: "Europe/Rome" }).format(new Date());
+}
+
 /**
  * Chi è confermato per una serata.
  *
- * Filtra solo sullo stato, non sulla data: lo stesso sabato torna ogni
- * settimana, e finché le serate passate non si archiviano questa vede
- * "confermata" per qualunque sabato sia stato.
+ * Filtra sullo stato e sulla data: con il modulo che fa scegliere una data
+ * vera, lo stesso "sabato" può essere oggi o fra sei mesi, e "stasera" deve
+ * vedere solo chi ha prenotato per oggi. Le richieste di prima che il
+ * modulo chiedesse la data (data_serata vuota) restano visibili com'erano:
+ * il vecchio comportamento, non sparisce nulla di già confermato.
  */
 export async function confermatiPerSerata(codice: string): Promise<readonly RichiestaPannello[]> {
   const sql = await db();
+  const oggi = oggiARoma();
   const righe = (await sql`
-    SELECT * FROM richieste WHERE codice_serata = ${codice} AND stato = 'confermata'
+    SELECT * FROM richieste
+    WHERE codice_serata = ${codice} AND stato = 'confermata'
+      AND (data_serata IS NULL OR data_serata = ${oggi})
     ORDER BY creata_alle DESC
   `) as unknown as RigaRichiesta[];
   return righe.map(daRiga);

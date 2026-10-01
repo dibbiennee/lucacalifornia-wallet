@@ -152,3 +152,28 @@ export function prossimaSerata(giorno: number, adesso: Date = new Date()): Date 
 export function giornoDellaSerata(codice: string): number {
   return SERATE.find((s) => s.codice === codice)?.giorno ?? 6;
 }
+
+/**
+ * L'istante in cui comincia la serata di una data precisa (AAAA-MM-GG), non
+ * "la prossima volta che cade quel giorno" come prossimaSerata: da quando il
+ * modulo fa scegliere una data vera, una richiesta per un giovedì fra sei
+ * mesi deve generare il biglietto per quel giovedì, non per il prossimo.
+ *
+ * Stesso calcolo di prossimaSerata, sull'orologio di Roma e con la stessa
+ * doppia misura per i due giorni all'anno in cui cambia l'ora.
+ */
+export function istanteSerata(dataIso: string, adesso: Date = new Date()): Date {
+  const pezzi = /^(\d{4})-(\d{2})-(\d{2})$/.exec(dataIso);
+  const [anno, mese, giorno] = pezzi === null ? [1970, 1, 1] : pezzi.slice(1).map(Number);
+
+  const comeSeFosseUtc = Date.UTC(
+    anno ?? 1970,
+    (mese ?? 1) - 1,
+    giorno ?? 1,
+    ORARIO_INIZIO.ora,
+    ORARIO_INIZIO.minuti,
+  );
+
+  const primaMisura = new Date(comeSeFosseUtc - scarto(adesso));
+  return new Date(comeSeFosseUtc - scarto(primaMisura));
+}

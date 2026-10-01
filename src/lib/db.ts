@@ -58,11 +58,13 @@ export async function db(): Promise<NeonQueryFunction<false, false>> {
       serata TEXT NOT NULL,
       nome_serata TEXT NOT NULL,
       codice_serata TEXT NOT NULL,
+      data_serata DATE,
       sala TEXT,
       tipo TEXT NOT NULL,
       gruppo TEXT,
       budget TEXT,
       occasione TEXT,
+      persone TEXT,
       zona TEXT,
       messaggio TEXT,
       provenienza TEXT NOT NULL,
@@ -71,6 +73,14 @@ export async function db(): Promise<NeonQueryFunction<false, false>> {
       biglietto_inviato_alle TEXT
     )
   `);
+
+  /*
+   * Le due colonne sopra sono arrivate dopo: su un database che aveva già
+   * la tabella, "CREATE TABLE IF NOT EXISTS" non le aggiunge da solo.
+   * "ADD COLUMN IF NOT EXISTS" è già idempotente di suo in Postgres.
+   */
+  await sql`ALTER TABLE richieste ADD COLUMN IF NOT EXISTS data_serata DATE`;
+  await sql`ALTER TABLE richieste ADD COLUMN IF NOT EXISTS persone TEXT`;
 
   await ignoraCorsaAllaCreazione(sql`
     CREATE TABLE IF NOT EXISTS iscrizioni_push (

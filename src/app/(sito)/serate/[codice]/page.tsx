@@ -76,13 +76,13 @@ export default async function PaginaSerata({ params }: { params: Promise<{ codic
             <CardMappa nome={LOCALE.nome} indirizzo={LOCALE.indirizzo} />
 
             <Azioni>
-              <Bottone href={perPrenotare(serata.perModulo, "tavolo")} classe="cta-prenota">
+              <Bottone href={perPrenotare(serata.codice, "tavolo")} classe="cta-prenota">
                 Prenota il tavolo
               </Bottone>
-              <Bottone href={perPrenotare(serata.perModulo, "braccialetto")} aspetto="contorno" classe="cta-prenota">
+              <Bottone href={perPrenotare(serata.codice, "braccialetto")} aspetto="contorno" classe="cta-prenota">
                 Prenota il bracciale VIP
               </Bottone>
-              <Bottone href={perPrenotare(serata.perModulo)} aspetto="contorno" classe="cta-prenota">
+              <Bottone href={perPrenotare(serata.codice)} aspetto="contorno" classe="cta-prenota">
                 Entra in lista
               </Bottone>
               <Bottone href={`/api/calendario/${serata.codice}`} aspetto="chiaro" esterno>

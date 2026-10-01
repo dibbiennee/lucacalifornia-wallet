@@ -52,7 +52,6 @@ export interface SerataSito {
   /** Il colore della serata, come nome del token: milk, acid, cyan, red. */
   readonly colore: string;
   /** Come si chiama la serata dentro il modulo. */
-  readonly perModulo: string;
   readonly descrizione: string;
   readonly quando: string;
   /** Il marchio della serata, per il badge nella riga sottile in home. Non tutte ce l'hanno ancora. */
@@ -85,7 +84,6 @@ export const SERATE: readonly SerataSito[] = [
     musica: "Afro e reggaeton",
     genere: "Afro e reggaeton",
     colore: "milk",
-    perModulo: "Gio Milkshake",
     alt: "Una ragazza balla sorridendo al Milkshake",
     etichetta: "Disponibilità limitata",
     copertina: "/foto/night8.webp",
@@ -103,7 +101,6 @@ export const SERATE: readonly SerataSito[] = [
     musica: "Commerciale e reggaeton",
     genere: "Commerciale e reggaeton",
     colore: "acid",
-    perModulo: "Ven Drip",
     alt: "Il volantino Drip del venerdì, con gli occhiali a specchio",
     etichetta: "Disponibilità limitata",
     copertina: "/foto/serate/venerdi.jpg",
@@ -121,7 +118,6 @@ export const SERATE: readonly SerataSito[] = [
     musica: "Commerciale, reggaeton e house",
     genere: "Commerciale, reggaeton e house",
     colore: "cyan",
-    perModulo: "Sab International",
     alt: "Il volantino del sabato, con due ballerine e il logo ROOM26",
     etichetta: "Pochi tavoli",
     copertina: "/foto/serate/sabato.jpg",
@@ -140,7 +136,6 @@ export const SERATE: readonly SerataSito[] = [
     musica: "Solo reggaeton",
     genere: "Solo reggaeton",
     colore: "red",
-    perModulo: "Dom Bàilame",
     alt: "Le luci del ROOM26 la domenica",
     etichetta: "Disponibilità limitata",
     copertina: "/foto/night24.webp",

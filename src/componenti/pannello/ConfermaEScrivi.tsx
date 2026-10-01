@@ -6,7 +6,7 @@ import { useState } from "react";
 import { cambiaStato } from "@/app/pannello/azioni";
 import type { RichiestaPannello } from "@/lib/pannello/dati";
 import { tipoBiglietto } from "@/lib/pannello/testi";
-import { giornoDellaSerata, prossimaSerata } from "@/lib/serate";
+import { giornoDellaSerata, istanteSerata, prossimaSerata } from "@/lib/serate";
 
 import { Avviso } from "./Avviso";
 import { Conferma } from "./Conferma";
@@ -50,10 +50,13 @@ export function ConfermaEScrivi({ r }: { readonly r: RichiestaPannello }) {
            */
           serata: r.nomeSerata,
           /*
-           * La prossima volta che cade quella serata, ora di Roma. Prima era
-           * sempre "la prossima domenica", per tutte le richieste.
+           * La data vera scelta nel modulo, ora di Roma. Solo le richieste di
+           * prima che il modulo la chiedesse non ce l'hanno: per quelle resta
+           * "la prossima volta che cade quella serata", come sempre.
            */
-          inizioSerata: prossimaSerata(giornoDellaSerata(r.codiceSerata)).toISOString(),
+          inizioSerata: (
+            r.dataSerata === undefined ? prossimaSerata(giornoDellaSerata(r.codiceSerata)) : istanteSerata(r.dataSerata)
+          ).toISOString(),
           tipo: tipoBiglietto(r),
           locale: "room26",
           ...(r.sala === undefined ? {} : { sala: r.sala }),

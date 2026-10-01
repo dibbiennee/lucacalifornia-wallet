@@ -33,20 +33,30 @@ function tipoBreve(r: RichiestaPannello): string {
   return "lista";
 }
 
-/** "Sabato, Sala 2, tavolo misto, 35–50 € a testa" */
+/** "4 persone", o "1 persona" al singolare. */
+function persone(r: RichiestaPannello): string | null {
+  if (r.persone === undefined) {
+    return null;
+  }
+  return r.persone === "1" ? "1 persona" : `${r.persone} persone`;
+}
+
+/** "Sabato, Sala 2, tavolo misto, 4 persone, 35–50 € a testa" */
 export function riassunto(r: RichiestaPannello): string {
   return unisci([
     r.serata,
     r.sala,
     tipoBreve(r),
+    persone(r),
     r.budget === undefined ? null : `${r.budget} a testa`,
   ]);
 }
 
-/** "Misto, 35–50 € a testa, compleanno": quello che serve sapere al tavolo. */
+/** "Misto, 4 persone, 35–50 € a testa, compleanno": quello che serve sapere al tavolo. */
 export function dettaglioTavolo(r: RichiestaPannello): string {
   return unisci([
     r.gruppo,
+    persone(r),
     r.budget === undefined ? null : `${r.budget} a testa`,
     r.occasione?.toLowerCase(),
   ]);
