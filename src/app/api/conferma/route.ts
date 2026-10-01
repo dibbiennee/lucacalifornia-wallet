@@ -109,13 +109,11 @@ export async function POST(richiesta: Request): Promise<Response> {
 
   const origine = new URL(richiesta.url).origin;
   const linkBiglietto = `${origine}/api/pass/${creaToken(prenotazione)}`;
-  const nome = nomeCliente.split(" ")[0] ?? nomeCliente;
 
   const messaggio =
-    `Ciao ${nome}, sei dentro per ${serata} di ${dataInLettere(inizioSerata)}.\n` +
-    `${tipo}.\n\n` +
-    `Questo è il tuo biglietto, aprilo con Safari e aggiungilo al telefono:\n${linkBiglietto}\n\n` +
-    `All'ingresso fai vedere il QR e passi.`;
+    `Ciao ${nomeCliente}, ti confermo per ${dataInLettere(inizioSerata)} e ${tipo}.\n` +
+    `Questo è il tuo biglietto, puoi aggiungerlo al wallet.\n${linkBiglietto}\n\n` +
+    `All'ingresso mostralo al PR se ti viene richiesto.`;
 
   const risposta: Risposta = {
     linkBiglietto,
