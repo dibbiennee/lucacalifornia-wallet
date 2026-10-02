@@ -86,7 +86,7 @@ export const SERATE: readonly SerataSito[] = [
     colore: "milk",
     alt: "La grafica Milkshake, con il bicchiere e il logo",
     etichetta: "Disponibilità limitata",
-    copertina: "/foto/serate/milkshake.jpg",
+    copertina: "/foto/serate/milkshake-quadrato.jpg",
     badge: "/foto/serate/milkshake-badge.jpg",
     badgePosizione: "center",
     descrizione:
