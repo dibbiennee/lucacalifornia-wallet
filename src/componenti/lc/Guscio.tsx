@@ -13,22 +13,23 @@ import {
   IconaEsci,
   IconaInvia,
   IconaLink,
-  IconaOrologio,
   IconaPuntini,
   IconaRichieste,
-  IconaRiepilogo,
   IconaSquadra,
 } from "./Icone";
 import stili from "./Guscio.module.css";
 import { ToastProvider, useToast } from "./Toast";
 import { useNotifiche } from "./useNotifiche";
 
+/**
+ * Tre voci sole. Il riepilogo e la lista d'attesa non hanno una voce loro:
+ * stanno dentro Richieste (le "sezioni" più sotto), e quando una delle due
+ * è aperta la voce accesa resta Richieste.
+ */
 const VOCI = [
-  { testo: "Richieste", dove: "/pannello/richieste", Icona: IconaRichieste },
-  { testo: "Attesa", dove: "/pannello/attesa", Icona: IconaOrologio },
-  { testo: "Riepilogo", dove: "/pannello/riepilogo", Icona: IconaRiepilogo },
-  { testo: "Squadra", dove: "/pannello/squadra", Icona: IconaSquadra },
-  { testo: "Analisi", dove: "/pannello/analisi", Icona: IconaAndamento },
+  { testo: "Richieste", dove: "/pannello/richieste", anche: ["/pannello/attesa", "/pannello/riepilogo"], Icona: IconaRichieste },
+  { testo: "PR", dove: "/pannello/squadra", anche: [], Icona: IconaSquadra },
+  { testo: "Analisi", dove: "/pannello/analisi", anche: [], Icona: IconaAndamento },
 ] as const;
 
 /**
@@ -81,9 +82,12 @@ function Interno({
   const [menu, setMenu] = useState(false);
   const chiudiMenu = useCallback(() => setMenu(false), []);
 
-  const indice = VOCI.findIndex((v) => percorso.startsWith(v.dove));
-  /** Il numero da mostrare sulla voce: le richieste nuove, o le persone in attesa. */
-  const badgeDi = (dove: string): number => (dove === "/pannello/richieste" ? nuove : dove === "/pannello/attesa" ? attesa : 0);
+  const indice = VOCI.findIndex((v) => [v.dove, ...v.anche].some((d) => percorso.startsWith(d)));
+  /** Il numero da mostrare sulla voce: le richieste da gestire. */
+  const badgeDi = (dove: string): number => (dove === "/pannello/richieste" ? nuove : 0);
+  const nelleRichieste = /^\/pannello\/(richieste|attesa|riepilogo)/.test(percorso);
+  // La lista d'attesa compare solo quando c'è qualcuno da gestire (o se è già aperta).
+  const mostraAttesa = attesa > 0 || percorso.startsWith("/pannello/attesa");
   // Dentro una singola richiesta, sul telefono, il dettaglio copre tutto e la barra sparisce.
   const dentroDettaglio = /^\/pannello\/richieste\/[^/]+/.test(percorso);
 
@@ -135,7 +139,7 @@ function Interno({
               {badgeDi(dove) > 0 && (
                 <span className={`lc-pulse ${stili.badge}`}>
                   {badgeDi(dove)}
-                  <span className="lc-sr"> {dove === "/pannello/attesa" ? "in attesa" : "richieste nuove"}</span>
+                  <span className="lc-sr"> richieste da gestire</span>
                 </span>
               )}
             </Link>
@@ -207,6 +211,34 @@ function Interno({
         </header>
 
         <main id="principale" className={stili.contenuto} tabIndex={-1}>
+          {nelleRichieste && !dentroDettaglio && (
+            <nav aria-label="Sezioni delle richieste" className={stili.sezioni}>
+              <Link
+                href="/pannello/richieste"
+                className={`${stili.sezione} ${percorso.startsWith("/pannello/richieste") ? stili.sezioneAttiva : ""}`}
+                aria-current={percorso.startsWith("/pannello/richieste") ? "page" : undefined}
+              >
+                Richieste
+              </Link>
+              <Link
+                href="/pannello/riepilogo"
+                className={`${stili.sezione} ${percorso.startsWith("/pannello/riepilogo") ? stili.sezioneAttiva : ""}`}
+                aria-current={percorso.startsWith("/pannello/riepilogo") ? "page" : undefined}
+              >
+                Riepilogo
+              </Link>
+              {mostraAttesa && (
+                <Link
+                  href="/pannello/attesa"
+                  className={`${stili.sezione} ${percorso.startsWith("/pannello/attesa") ? stili.sezioneAttiva : ""}`}
+                  aria-current={percorso.startsWith("/pannello/attesa") ? "page" : undefined}
+                >
+                  Lista d&apos;attesa
+                  {attesa > 0 && <span className={stili.sezioneConto}>{attesa}</span>}
+                </Link>
+              )}
+            </nav>
+          )}
           {children}
         </main>
       </div>
@@ -230,7 +262,7 @@ function Interno({
               {badgeDi(dove) > 0 && (
                 <span className={`lc-pulse ${stili.badgeBarra}`}>
                   {badgeDi(dove)}
-                  <span className="lc-sr"> {dove === "/pannello/attesa" ? "in attesa" : "richieste nuove"}</span>
+                  <span className="lc-sr"> richieste da gestire</span>
                 </span>
               )}
             </span>

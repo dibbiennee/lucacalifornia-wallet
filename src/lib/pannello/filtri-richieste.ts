@@ -47,7 +47,14 @@ export interface FiltriRichieste {
   readonly quando: QuandoFiltro;
 }
 
-export const FILTRI_PREDEFINITI: FiltriRichieste = { quando: "futuri" };
+/**
+ * Chi apre l'elenco vede subito le richieste "in attesa", quelle a cui rispondere.
+ * "Tutte" resta una scelta, e nell'indirizzo si scrive stato=tutte.
+ */
+export const FILTRI_PREDEFINITI: FiltriRichieste = { stato: "in attesa", quando: "futuri" };
+
+/** Come si scrive nell'indirizzo (e nei filtri mandati al server) "nessun filtro di stato". */
+export const STATO_TUTTE = "tutte";
 
 export const NOME_NOTTE_FILTRO: Readonly<Record<NotteFiltro, string>> = {
   milkshake: "Giovedì · Milkshake",
@@ -85,8 +92,11 @@ export function filtriDaParametri(leggi: (chiave: string) => string | null | und
   const q = (leggi("q") ?? "").trim().slice(0, MAX_RICERCA);
   const quando = leggi("quando");
 
+  // Senza il parametro vale il filtro di partenza; con "tutte" si vedono tutte le richieste.
+  const statoScelto = incluso(STATI_FILTRO, stato) ? stato : stato === STATO_TUTTE ? undefined : FILTRI_PREDEFINITI.stato;
+
   return {
-    ...(incluso(STATI_FILTRO, stato) ? { stato } : {}),
+    ...(statoScelto === undefined ? {} : { stato: statoScelto }),
     ...(incluso(NOTTI_FILTRO, notte) ? { notte } : {}),
     ...(data !== null && data !== undefined && eDataIso(data) ? { data } : {}),
     ...(incluso(TIPI_FILTRO, tipo) ? { tipo } : {}),
@@ -100,14 +110,18 @@ export function filtriDaParametri(leggi: (chiave: string) => string | null | und
 export function filtriDaOggetto(valore: unknown): FiltriRichieste {
   const o = typeof valore === "object" && valore !== null ? (valore as Record<string, unknown>) : {};
   // Solo proprietà proprie e di tipo testo: niente di ereditato dal prototipo, niente numeri o elenchi.
-  return filtriDaParametri((chiave) => (Object.hasOwn(o, chiave) && typeof o[chiave] === "string" ? (o[chiave] as string) : null));
+  // Qui lo stato assente vuol dire "Tutte": il browser non manda lo stato quando non c'è un filtro di stato.
+  return filtriDaParametri((chiave) =>
+    Object.hasOwn(o, chiave) && typeof o[chiave] === "string" ? (o[chiave] as string) : chiave === "stato" ? STATO_TUTTE : null,
+  );
 }
 
 /** I filtri come stringa per l'indirizzo, senza i valori di partenza ("quando=futuri" non serve scriverlo). */
 export function parametriDaFiltri(f: FiltriRichieste): string {
   const p = new URLSearchParams();
 
-  if (f.stato !== undefined) p.set("stato", f.stato);
+  if (f.stato === undefined) p.set("stato", STATO_TUTTE);
+  else if (f.stato !== FILTRI_PREDEFINITI.stato) p.set("stato", f.stato);
   if (f.notte !== undefined) p.set("notte", f.notte);
   if (f.data !== undefined) p.set("data", f.data);
   if (f.tipo !== undefined) p.set("tipo", f.tipo);

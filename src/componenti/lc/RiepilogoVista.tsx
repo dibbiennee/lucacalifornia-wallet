@@ -137,7 +137,7 @@ export function RiepilogoVista({
                 Classifica PR
               </h2>
               <Link href="/pannello/squadra" className={stili.vediSquadra}>
-                Vedi squadra
+                Vedi i PR
               </Link>
             </div>
             <ol className={stili.tre}>

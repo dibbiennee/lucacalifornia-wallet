@@ -4,7 +4,7 @@ import { squadra } from "@/lib/pannello/dati";
 import { sessioneOAccesso, soloOwnerOAltrove } from "@/lib/pannello/sessione";
 import { iniziali } from "@/lib/pannello/vista";
 
-export const metadata = { title: "Squadra, pannello Luca California" };
+export const metadata = { title: "PR, pannello Luca California" };
 
 /**
  * I PR in classifica per richieste confermate, col loro link personale.

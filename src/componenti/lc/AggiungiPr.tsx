@@ -157,7 +157,7 @@ export function AggiungiPr({
             Annulla
           </button>
           <button type="submit" className={`lc-press ${stili.aggiungi}`} disabled={slug === "" || inCorso}>
-            {inCorso ? "Un attimo…" : "Aggiungi alla squadra"}
+            {inCorso ? "Un attimo…" : "Aggiungi PR"}
           </button>
         </div>
       </form>

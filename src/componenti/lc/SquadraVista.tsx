@@ -98,7 +98,7 @@ export function SquadraVista({ membri, indirizzo }: { readonly membri: readonly 
           <span className="lc-eyebrow">
             {membri.length} PR · {conta(totale, "confermata", "confermate")}
           </span>
-          <h1 className="lc-titolo">Squadra</h1>
+          <h1 className="lc-titolo">PR</h1>
         </div>
         <button type="button" className={`lc-press ${stili.aggiungiPr}`} onClick={() => setAggiungi(true)}>
           <IconaPiu misura={15} />
@@ -165,7 +165,7 @@ export function SquadraVista({ membri, indirizzo }: { readonly membri: readonly 
 
       {/* ----- Computer: una tabella ----- */}
       {membri.length > 0 && (
-        <section className={`lc-up ${stili.tabella}`} style={{ animationDelay: "100ms" }} aria-label="Squadra">
+        <section className={`lc-up ${stili.tabella}`} style={{ animationDelay: "100ms" }} aria-label="PR">
           <div className={`${stili.riga} ${stili.intestazione}`} role="presentation">
             <span>PR</span>
             <span>Link personale</span>

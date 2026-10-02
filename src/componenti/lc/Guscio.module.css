@@ -503,3 +503,54 @@
 .rigaMenu .duePiani {
   flex-grow: 1;
 }
+
+/* ---------------- sezioni di Richieste: riepilogo e lista d'attesa ---------------- */
+
+.sezioni {
+  display: flex;
+  gap: 6px;
+  padding: 4px 0 12px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.sezioni::-webkit-scrollbar {
+  display: none;
+}
+
+.sezione {
+  min-height: 44px;
+  padding: 0 14px;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  flex: none;
+  white-space: nowrap;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--lc-off-text);
+  background: var(--lc-surface);
+  border: 1px solid var(--lc-line);
+  transition: color 0.2s, background 0.2s;
+}
+
+.sezioneAttiva {
+  color: var(--lc-text);
+  background: var(--lc-surface-3);
+  border-color: var(--lc-line-strong);
+}
+
+.sezioneConto {
+  min-width: 20px;
+  height: 20px;
+  padding: 0 6px;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--lc-accent-ink);
+  background: var(--lc-accent);
+}
