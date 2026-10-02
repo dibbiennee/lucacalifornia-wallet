@@ -17,7 +17,7 @@ export async function POST(): Promise<Response> {
 
   risposta.headers.append(
     "Set-Cookie",
-    `${name}=; Max-Age=0; Path=${path}; HttpOnly; Secure; SameSite=Lax`,
+    `${name}=; Max-Age=0; Path=${path}; HttpOnly${process.env.NODE_ENV === "production" ? "; Secure" : ""}; SameSite=Lax`,
   );
 
   return risposta;

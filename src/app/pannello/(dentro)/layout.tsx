@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
 import type { ReactNode } from "react";
 
-import { BarraPannello } from "@/componenti/pannello/BarraPannello";
+import { Guscio } from "@/componenti/lc/Guscio";
 import { richieste } from "@/lib/pannello/dati";
 import { sessioneAperta } from "@/lib/pannello/sessione";
 
@@ -28,10 +28,5 @@ export default async function LayoutDentro({ children }: { children: ReactNode }
 
   const nuove = await richieste("nuova");
 
-  return (
-    <>
-      {children}
-      <BarraPannello nuove={nuove.length} />
-    </>
-  );
+  return <Guscio nuove={nuove.length}>{children}</Guscio>;
 }

@@ -3,11 +3,15 @@
 import { useRouter } from "next/navigation";
 import { useState, type FormEvent } from "react";
 
-import { Campo } from "@/componenti/pannello/Campo";
-import { Pulsante } from "@/componenti/pannello/Pulsante";
-import { Testata } from "@/componenti/pannello/Testata";
+import stili from "./accesso.module.css";
 
-/** L'ingresso al pannello: una password sola, quella che Luca dà a chi serve. */
+/**
+ * L'ingresso al pannello: una password sola, quella che Luca dà a chi serve.
+ *
+ * Il disegno prevedeva un PIN a 4 cifre; si è scelto di tenere la password
+ * di prima e di far restare dentro chi entra (la sessione dura un anno),
+ * quindi qui c'è un campo solo, nello stile nuovo.
+ */
 export default function Accesso() {
   const router = useRouter();
   const [password, setPassword] = useState("");
@@ -53,24 +57,43 @@ export default function Accesso() {
   }
 
   return (
-    <main className="pagina senza-barra pagina-accesso">
-      <Testata occhiello="Pannello" titolo="Entra" />
+    <main className={stili.pagina}>
+      <div className={`lc-fade ${stili.scheda}`}>
+        <div className={`lc-pop ${stili.logo}`} aria-hidden>
+          LC
+        </div>
 
-      <form onSubmit={(e) => void entra(e)} noValidate className="sezione">
-        <Campo
-          id="password"
-          etichetta="Password"
-          type="password"
-          autoComplete="current-password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          errore={errore}
-        />
+        <div className={stili.titoli}>
+          <h1 className={stili.titolo}>Pannello PR</h1>
+          <p className={stili.sotto}>Inserisci la password</p>
+        </div>
 
-        <Pulsante type="submit" disabled={inCorso}>
-          {inCorso ? "Un attimo..." : "Entra"}
-        </Pulsante>
-      </form>
+        <form onSubmit={(e) => void entra(e)} noValidate className={stili.modulo}>
+          <label htmlFor="password" className={stili.etichetta}>
+            Password
+          </label>
+          <input
+            id="password"
+            type="password"
+            autoComplete="current-password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            aria-invalid={errore !== ""}
+            aria-describedby={errore === "" ? undefined : "password-errore"}
+            className={stili.campo}
+          />
+
+          {errore !== "" && (
+            <p id="password-errore" role="alert" className={stili.errore}>
+              {errore}
+            </p>
+          )}
+
+          <button type="submit" className={`lc-press ${stili.entra}`} disabled={inCorso}>
+            {inCorso ? "Un attimo…" : "Entra"}
+          </button>
+        </form>
+      </div>
     </main>
   );
 }

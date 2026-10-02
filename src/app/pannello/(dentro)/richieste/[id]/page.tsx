@@ -1,89 +1,56 @@
 import { notFound } from "next/navigation";
 
-import { ConfermaEScrivi } from "@/componenti/pannello/ConfermaEScrivi";
-import { Etichetta } from "@/componenti/pannello/Etichetta";
-import { Testata } from "@/componenti/pannello/Testata";
+import { DettaglioRichiesta, type DatiInvio } from "@/componenti/lc/DettaglioRichiesta";
 import { richiesta } from "@/lib/pannello/dati";
-import { serataSala, tipoEsteso } from "@/lib/pannello/testi";
+import { tipoBiglietto } from "@/lib/pannello/testi";
+import { daRichiesta } from "@/lib/pannello/vista";
+import { giornoDellaSerata, istanteSerata, prossimaSerata } from "@/lib/serate";
 
-import stili from "./dettaglio.module.css";
+export const metadata = { title: "Richiesta, pannello Luca California" };
 
 /**
  * Una richiesta, con tutto quello che serve a rispondere.
  *
  * Il ritorno indietro sa da dove sei arrivato: dall'elenco filtrato torna a
- * quel filtro, dal Riepilogo torna al Riepilogo. Prima non c'era proprio, e si
- * usciva solo col gesto del browser.
+ * quel filtro. Quello che serve a preparare il biglietto si calcola qui, sul
+ * server, dove l'orologio di Roma è lo stesso per tutti.
  */
 export default async function Dettaglio({
   params,
   searchParams,
 }: {
   params: Promise<{ id: string }>;
-  searchParams: Promise<{ stato?: string; da?: string }>;
+  searchParams: Promise<{ stato?: string }>;
 }) {
   const { id } = await params;
-  const { stato, da } = await searchParams;
+  const { stato } = await searchParams;
   const r = await richiesta(id);
 
   if (r === undefined) {
     notFound();
   }
 
-  const indietro =
-    da === "riepilogo"
-      ? { testo: "Riepilogo", dove: "/pannello/riepilogo" }
-      : {
-          testo: "Richieste",
-          dove:
-            stato === undefined || stato === ""
-              ? "/pannello/richieste"
-              : `/pannello/richieste?stato=${stato}`,
-        };
+  /*
+   * La data vera scelta nel modulo, ora di Roma. Solo le richieste di prima
+   * che il modulo la chiedesse non ce l'hanno: per quelle resta "la prossima
+   * volta che cade quella serata", come sempre.
+   */
+  const inizio =
+    r.dataSerata === undefined ? prossimaSerata(giornoDellaSerata(r.codiceSerata)) : istanteSerata(r.dataSerata);
 
-  const voci: readonly (readonly [string, string])[] = [
-    ["Serata", serataSala(r)],
-    ["Tipo", tipoEsteso(r)],
-    ...(r.budget === undefined ? [] : [["Budget a testa", r.budget] as const]),
-    ...(r.occasione === undefined ? [] : [["Occasione", r.occasione] as const]),
-    ...(r.zona === undefined ? [] : [["Zona", r.zona] as const]),
-  ];
+  const invio: DatiInvio = {
+    nomeCliente: r.nome,
+    telefono: r.telefono,
+    /* Il nome della serata, non il giorno: il messaggio diceva "sei dentro per SABATO di sabato 27 settembre". */
+    serata: r.nomeSerata,
+    inizioSerata: inizio.toISOString(),
+    tipo: tipoBiglietto(r),
+    locale: r.codiceSerata === "ninfeo" ? "ninfeo" : "room26",
+    ...(r.sala === undefined ? {} : { sala: r.sala }),
+  };
 
-  return (
-    <main className="pagina">
-      <Testata
-        occhiello={`Richiesta, oggi ${r.quando}`}
-        titolo={r.nome}
-        indietro={indietro}
-      />
+  const filtro = stato === "nuova" || stato === "confermata" ? stato : undefined;
+  const indietro = filtro === undefined ? "/pannello/richieste" : `/pannello/richieste?stato=${filtro}`;
 
-      <Etichetta stato={r.stato} />
-
-      <a className={stili.telefono} href={`tel:${r.telefono.replace(/\s/g, "")}`}>
-        {r.telefono}
-      </a>
-
-      <dl className={stili.voci}>
-        {voci.map(([voce, valore]) => (
-          <div key={voce}>
-            <dt>{voce}</dt>
-            <dd>{valore}</dd>
-          </div>
-        ))}
-      </dl>
-
-      {r.messaggio !== undefined && <p className={stili.citazione}>{`“${r.messaggio}”`}</p>}
-
-      <ConfermaEScrivi r={r} />
-
-      {r.notePrivate !== undefined && (
-        <section className="sezione" aria-labelledby="note-private">
-          <h2 className="titolo-sezione" id="note-private">
-            Note private, solo tu
-          </h2>
-          <p className={`${stili.citazione} ${stili["nota-privata"]}`}>{r.notePrivate}</p>
-        </section>
-      )}
-    </main>
-  );
+  return <DettaglioRichiesta key={r.id} voce={daRichiesta(r)} invio={invio} indietro={indietro} />;
 }

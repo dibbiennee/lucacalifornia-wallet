@@ -1,0 +1,342 @@
+/*
+ * Squadra. Telefono: una scheda per PR, in classifica. Computer: tabella.
+ */
+
+.pagina {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.testa {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+  padding-top: 20px;
+}
+
+.titoli {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.aggiungiPr {
+  flex: none;
+  height: 44px;
+  padding: 0 14px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--lc-accent);
+  color: var(--lc-accent-ink);
+  font-size: 13px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.soloPc {
+  display: none;
+}
+
+.vuoto {
+  margin: 0;
+  padding: 32px 20px;
+  border-radius: 20px;
+  border: 1px dashed var(--lc-line-strong);
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--lc-muted);
+  text-align: center;
+  text-wrap: pretty;
+}
+
+/* ----------------------------- scheda (telefono) ----------------------------- */
+
+.carte {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.carta {
+  padding: 16px;
+  border-radius: 22px;
+  background: var(--lc-surface);
+  border: 1px solid var(--lc-line);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.rigaTesta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.posizione {
+  flex: none;
+  width: 18px;
+  font-family: var(--lc-mono);
+  font-size: 12px;
+}
+
+.avatar {
+  flex: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 13px;
+  background: var(--lc-surface-3);
+  color: #c9c9d0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.avatarPrimo {
+  background: var(--lc-accent-soft);
+  color: var(--lc-accent);
+}
+
+.chi {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.nome {
+  font-size: 15px;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+.stat {
+  font-size: 12px;
+  color: var(--lc-muted);
+}
+
+.totale {
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+}
+
+.numero {
+  font-family: var(--lc-display);
+  font-stretch: 125%;
+  font-weight: 800;
+  font-size: 18px;
+}
+
+.pista {
+  height: 6px;
+  border-radius: 999px;
+  background: var(--lc-line);
+  overflow: hidden;
+}
+
+.barra {
+  height: 100%;
+  border-radius: 999px;
+}
+
+.campoLink {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 4px 4px 12px;
+  border-radius: 14px;
+  background: var(--lc-inset);
+  border: 1px solid var(--lc-line);
+}
+
+.slug {
+  flex-grow: 1;
+  min-width: 0;
+  font-family: var(--lc-mono);
+  font-size: 12px;
+  color: var(--lc-text-2);
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.copia,
+.copiaTabella {
+  flex: none;
+  border: 0;
+  background: var(--lc-surface-3);
+  color: var(--lc-text);
+  font-size: 13px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.25s, color 0.25s;
+}
+
+.copia {
+  height: 44px;
+  padding: 0 14px;
+  border-radius: 10px;
+}
+
+.copiato {
+  background: var(--lc-ok);
+  color: var(--lc-accent-ink);
+}
+
+.tabella {
+  display: none;
+}
+
+/* ------------------------------ tabella (computer) ------------------------------ */
+
+@media (min-width: 900px) {
+  .pagina {
+    gap: 24px;
+    max-width: 1200px;
+  }
+
+  .testa {
+    padding-top: 0;
+    gap: 24px;
+  }
+
+  .titoli {
+    gap: 8px;
+  }
+
+  .aggiungiPr {
+    height: 44px;
+    padding: 0 18px;
+    border-radius: 14px;
+    font-size: 14px;
+    gap: 8px;
+  }
+
+  .soloPc {
+    display: inline;
+  }
+
+  .carte {
+    display: none;
+  }
+
+  .tabella {
+    display: block;
+    border-radius: 22px;
+    background: #111114;
+    border: 1px solid var(--lc-line);
+    overflow: hidden;
+  }
+
+  .riga {
+    display: grid;
+    grid-template-columns: 2.2fr 2.2fr 2fr 0.8fr 0.8fr 1fr;
+    gap: 16px;
+    align-items: center;
+  }
+
+  .intestazione {
+    padding: 14px 24px;
+    border-bottom: 1px solid var(--lc-line);
+    font-family: var(--lc-mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    color: var(--lc-muted);
+    text-transform: uppercase;
+  }
+
+  .corpoRiga {
+    padding: 18px 24px;
+    border-bottom: 1px solid #1a1a1f;
+  }
+
+  .corpoRiga:last-child {
+    border-bottom: 0;
+  }
+
+  .destra {
+    text-align: right;
+  }
+
+  .cellaPr {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 0;
+  }
+
+  .cellaPr .avatar {
+    border-radius: 12px;
+    font-size: 13px;
+  }
+
+  .cellaLink {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 0;
+  }
+
+  .slugTabella {
+    min-width: 0;
+    font-family: var(--lc-mono);
+    font-size: 13px;
+    color: var(--lc-text-2);
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  .copiaTabella {
+    height: 34px;
+    padding: 0 12px;
+    border-radius: 10px;
+    border: 1px solid var(--lc-line-strong);
+    font-size: 12px;
+  }
+
+  .copiaTabella.copiato {
+    border-color: var(--lc-ok);
+  }
+
+  .cellaBarra {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .cellaBarra .pista {
+    flex-grow: 1;
+  }
+
+  .numeroMono {
+    width: 24px;
+    font-family: var(--lc-mono);
+    font-size: 13px;
+    text-align: right;
+  }
+
+  .cifra {
+    font-size: 15px;
+  }
+}

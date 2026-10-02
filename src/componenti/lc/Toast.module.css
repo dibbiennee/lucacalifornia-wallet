@@ -1,0 +1,59 @@
+.area {
+  position: fixed;
+  top: calc(18px + env(safe-area-inset-top, 0px));
+  left: 50%;
+  z-index: 60;
+  translate: -50% 0;
+  pointer-events: none;
+  max-width: calc(100vw - 32px);
+}
+
+.toast {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 44px;
+  padding: 0 18px 0 12px;
+  border-radius: 999px;
+  background: var(--lc-text);
+  color: var(--lc-accent-ink);
+  font-size: 14px;
+  font-weight: 600;
+  white-space: nowrap;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.55);
+  animation: entra 0.45s cubic-bezier(0.2, 0.9, 0.2, 1.2) both;
+}
+
+.spunta {
+  flex: none;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--lc-accent);
+  color: var(--lc-accent-ink);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@keyframes entra {
+  from {
+    opacity: 0;
+    transform: translateY(-24px) scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes dissolvi {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .toast {
+    animation: dissolvi 0.2s ease both;
+  }
+}

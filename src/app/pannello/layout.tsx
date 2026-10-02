@@ -5,6 +5,7 @@ import type { ReactNode } from "react";
 
 import { carattere } from "@/lib/carattere";
 import "@/stili/pannello.css";
+import "@/stili/lc.css";
 
 /*
  * Geist (testo) e Geist Mono (numeri, orari, etichette) per il nuovo
@@ -24,13 +25,15 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#000000",
+  themeColor: "#09090b",
+  /* Senza, env(safe-area-inset-*) vale zero: la testata finirebbe sotto la barra di stato e le azioni sotto l'indicatore home. */
+  viewportFit: "cover",
 };
 
 /** Il pannello non ha il guscio del sito: è uno strumento, non una pagina. */
 export default function LayoutPannello({ children }: { children: ReactNode }) {
   return (
-    <div className={`pannello ${carattere.variable} ${GeistSans.variable} ${GeistMono.variable}`}>
+    <div className={`pannello lc ${carattere.variable} ${GeistSans.variable} ${GeistMono.variable}`}>
       {children}
     </div>
   );

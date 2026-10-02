@@ -1,0 +1,192 @@
+/*
+ * Il nuovo disegno del pannello (handoff "Pannello PR").
+ *
+ * Token, animazioni e utilità. Tutto sta sotto .lc: il sito, il biglietto e
+ * la porta non devono accorgersi di niente. L'aspetto dei pezzi vive nel
+ * foglio del suo componente, in src/componenti/lc/.
+ *
+ * Una sola deviazione dai token dell'handoff: --lc-faint passa da #6E6E78 a
+ * #7F7F89. Il primo dava 3,96:1 su nero, sotto il 4,5:1 dei testi piccoli
+ * (i contatori da 11px lo sono). Il secondo dà 5,0:1.
+ */
+
+.lc {
+  --lc-bg: #09090b;
+  --lc-surface: #131316;
+  --lc-surface-2: #16161a;
+  --lc-surface-3: #1c1c21;
+  --lc-inset: #0e0e11;
+  --lc-line: #1f1f24;
+  --lc-line-strong: #26262c;
+  --lc-text: #f5f2eb;
+  --lc-text-2: #a8a8b0;
+  --lc-muted: #9a9aa3;
+  --lc-faint: #7f7f89;
+
+  --lc-accent: #ff3d9a;
+  --lc-accent-ink: #0a0a0b;
+  --lc-accent-soft: #24161e;
+
+  --lc-ok: #34d399;
+  --lc-ok-text: #5eeaa8;
+  --lc-ok-bg: rgba(52, 211, 153, 0.12);
+  --lc-wait: #fbbf24;
+  --lc-wait-text: #fcd34d;
+  --lc-wait-bg: rgba(251, 191, 36, 0.12);
+  --lc-new-text: #ff85bf;
+  --lc-new-bg: rgba(255, 61, 154, 0.14);
+  --lc-off: #55555e;
+  --lc-off-text: #8a8a93;
+  --lc-off-bg: #1c1c21;
+  --lc-danger-text: #ff8a8a;
+  --lc-danger-bg: #1a1012;
+  --lc-danger-line: #3a1f24;
+
+  --lc-display: var(--carattere), "Archivo", system-ui, sans-serif;
+  --lc-sans: var(--font-geist-sans), system-ui, sans-serif;
+  --lc-mono: var(--font-geist-mono), ui-monospace, "SF Mono", Menlo, monospace;
+
+  --lc-ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+
+  min-height: 100dvh;
+  background: var(--lc-bg);
+  color: var(--lc-text);
+  font-family: var(--lc-sans);
+  font-size: 16px;
+  line-height: 1.4;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-font-smoothing: antialiased;
+}
+
+html:has(.lc) {
+  background: var(--lc-bg);
+}
+
+.lc *,
+.lc *::before,
+.lc *::after {
+  box-sizing: border-box;
+}
+
+.lc a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.lc button {
+  font-family: var(--lc-sans);
+}
+
+.lc :focus-visible {
+  outline: 2px solid var(--lc-accent);
+  outline-offset: 3px;
+}
+
+.lc [tabindex="-1"]:focus {
+  outline: none;
+}
+
+/* ---------------------------- animazioni ---------------------------- */
+
+.lc .lc-up { animation: lcUp 0.5s var(--lc-ease) both; }
+.lc .lc-new { animation: lcNew 0.6s var(--lc-ease) both; }
+.lc .lc-slide { animation: lcSlide 0.38s var(--lc-ease) both; }
+.lc .lc-sheet { animation: lcSheet 0.42s cubic-bezier(0.2, 0.9, 0.2, 1) both; }
+.lc .lc-fade { animation: lcFade 0.25s ease both; }
+.lc .lc-pop { animation: lcPop 0.6s cubic-bezier(0.2, 0.9, 0.3, 1.3) both; }
+.lc .lc-grow { transform-origin: left center; animation: lcGrow 0.9s var(--lc-ease) both; }
+.lc .lc-pulse { animation: lcPulse 1.8s ease-out infinite; }
+.lc .lc-live { animation: lcLive 1.6s ease-in-out infinite; }
+.lc .lc-spin { animation: lcSpin 0.8s linear infinite; }
+.lc .lc-stamp { animation: lcStamp 0.7s cubic-bezier(0.2, 0.9, 0.3, 1.4) 0.25s both; }
+
+.lc .lc-press { transition: transform 0.15s ease; }
+.lc .lc-press:active { transform: scale(0.97); }
+
+@keyframes lcUp { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+@keyframes lcNew { 0% { opacity: 0; transform: translateY(-18px) scale(0.96); } 100% { opacity: 1; transform: none; } }
+@keyframes lcSlide { from { transform: translateX(100%); } to { transform: none; } }
+@keyframes lcSheet { from { transform: translateY(100%); } to { transform: none; } }
+@keyframes lcFade { from { opacity: 0; } to { opacity: 1; } }
+@keyframes lcPop { 0% { opacity: 0; transform: scale(0.7) rotate(-4deg); } 100% { opacity: 1; transform: none; } }
+@keyframes lcGrow { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+@keyframes lcPulse {
+  0% { box-shadow: 0 0 0 0 rgba(255, 61, 154, 0.55); }
+  70% { box-shadow: 0 0 0 12px rgba(255, 61, 154, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(255, 61, 154, 0); }
+}
+@keyframes lcLive { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+@keyframes lcSpin { to { transform: rotate(360deg); } }
+@keyframes lcStamp { 0% { opacity: 0; transform: scale(2.2) rotate(-18deg); } 100% { opacity: 1; transform: scale(1) rotate(-12deg); } }
+
+/*
+ * Chi ha chiesto meno movimento: niente pulsazioni, niente barre che
+ * crescono, e ogni entrata diventa una dissolvenza. Il conteggio dei numeri
+ * lo ferma il componente stesso (RiepilogoVista), che qui non si vede.
+ */
+@media (prefers-reduced-motion: reduce) {
+  .lc .lc-pulse,
+  .lc .lc-live,
+  .lc .lc-grow {
+    animation: none;
+  }
+
+  .lc .lc-up,
+  .lc .lc-new,
+  .lc .lc-slide,
+  .lc .lc-sheet,
+  .lc .lc-pop,
+  .lc .lc-stamp {
+    animation: lcFade 0.2s ease both;
+  }
+
+  .lc .lc-press:active {
+    transform: none;
+  }
+
+  .lc * {
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Le etichette in Geist Mono: eyebrow, orari, conteggi. */
+.lc .lc-eyebrow {
+  font-family: var(--lc-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  color: var(--lc-muted);
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+/* Il titolo di pagina, in Archivo espanso. */
+.lc .lc-titolo {
+  margin: 0;
+  font-family: var(--lc-display);
+  font-stretch: 125%;
+  font-weight: 800;
+  font-size: 34px;
+  line-height: 1;
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+  hyphens: none;
+}
+
+@media (min-width: 900px) {
+  .lc .lc-titolo {
+    font-size: 44px;
+  }
+}
+
+/* Solo per chi legge con la voce. */
+.lc .lc-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}

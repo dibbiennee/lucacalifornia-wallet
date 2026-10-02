@@ -1,32 +1,30 @@
-import { RiepilogoPrenotazioni } from "@/componenti/pannello/RiepilogoPrenotazioni";
-import { Numeri, Numero } from "@/componenti/pannello/Numero";
-import { Testata } from "@/componenti/pannello/Testata";
-import { richieste } from "@/lib/pannello/dati";
+import { RiepilogoVista } from "@/componenti/lc/RiepilogoVista";
+import { richieste, squadra } from "@/lib/pannello/dati";
+import { daRichiesta, iniziali, perData, statistiche } from "@/lib/pannello/vista";
 
 export const metadata = { title: "Riepilogo, pannello Luca California" };
 
+const GIORNO_ROMA = new Intl.DateTimeFormat("en-CA", { timeZone: "Europe/Rome" });
+
 /**
- * Tutte le prenotazioni confermate, divise per data.
+ * Il riepilogo: numeri, grafici per serata e per tipo, classifica dei PR e le
+ * prenotazioni confermate divise per data. Sono dati veri, dal database.
  *
- * Prima c'era solo "Stasera", una serata sola. Con il modulo che fa
- * scegliere una data vera, le prenotazioni arrivano anche per fra sei mesi:
- * questa schermata le mostra tutte, raggruppate per notte, dalla più vicina.
- * Sono dati veri, dal database: non più un'anteprima.
+ * "Oggi" si decide qui, sul server, e si passa già pronto: chi dovesse
+ * deciderlo nel browser potrebbe avere un'altra data da quella del server, e
+ * la pagina si disegnerebbe in due modi diversi.
  */
 export default async function Riepilogo() {
-  const confermate = await richieste("confermata");
-  const nuove = (await richieste("nuova")).length;
+  const adesso = new Date();
+  const voci = (await richieste()).map((r) => daRichiesta(r, adesso));
+  const confermate = voci.filter((v) => v.stato === "confermata");
+  const pr = [...(await squadra())].sort((a, b) => b.confermate - a.confermate);
 
   return (
-    <main className="pagina">
-      <Testata occhiello="ROOM26" titolo="Riepilogo" sottotitolo="Tutte le prenotazioni confermate, divise per data." />
-
-      <Numeri>
-        <Numero valore={confermate.length} etichetta="confermate" />
-        <Numero valore={nuove} etichetta="nuove" dove="/pannello/richieste?stato=nuova" />
-      </Numeri>
-
-      <RiepilogoPrenotazioni prenotazioni={confermate} />
-    </main>
+    <RiepilogoVista
+      stat={statistiche(voci)}
+      classifica={pr.map((p) => ({ nome: p.nome, iniziali: iniziali(p.nome), confermate: p.confermate }))}
+      gruppiData={perData(confermate, GIORNO_ROMA.format(adesso))}
+    />
   );
 }

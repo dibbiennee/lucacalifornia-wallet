@@ -17,13 +17,17 @@
 
 import { db } from "@/lib/db";
 
+
 export type StatoRichiesta = "nuova" | "confermata" | "in attesa" | "rifiutata";
 
 export interface RichiestaPannello {
   readonly id: string;
   readonly nome: string;
   readonly telefono: string;
+  /** L'ora in cui è arrivata, a Roma: "20:04". */
   readonly quando: string;
+  /** Il momento esatto in cui è arrivata (ISO), per dire "oggi", "ieri" o la data. */
+  readonly creataIso: string;
   /** Come si legge nelle schermate: "Sabato", "Domenica Bàilame". */
   readonly serata: string;
   /**
@@ -60,13 +64,16 @@ export interface RichiestaPannello {
 /** Una riga della tabella "richieste", così come la scrive Postgres. */
 interface RigaRichiesta {
   readonly id: string;
-  readonly quando: Date;
+  /* Il nome vero della colonna: prima qui c'era "quando", che non esiste, e
+     ogni richiesta mostrava l'ora di adesso invece della sua. */
+  readonly creata_alle: Date | string;
   readonly nome: string;
   readonly telefono: string;
   readonly serata: string;
   readonly nome_serata: string;
   readonly codice_serata: string;
-  readonly data_serata: string | null;
+  /* Il driver può restituire un DATE come testo o come Date: comeGiorno() li accetta entrambi. */
+  readonly data_serata: Date | string | null;
   readonly sala: string | null;
   readonly tipo: string;
   readonly gruppo: string | null;
@@ -90,19 +97,32 @@ function comeOra(quando: Date): string {
   }).format(quando);
 }
 
+/** "2026-12-12", sia che il driver abbia dato il testo sia che abbia dato una Date. */
+function comeGiorno(valore: Date | string): string {
+  if (typeof valore === "string") {
+    return valore.slice(0, 10);
+  }
+  const mese = String(valore.getMonth() + 1).padStart(2, "0");
+  const giorno = String(valore.getDate()).padStart(2, "0");
+  return `${valore.getFullYear()}-${mese}-${giorno}`;
+}
+
 function daRiga(r: RigaRichiesta): RichiestaPannello {
+  const creata = new Date(r.creata_alle);
+
   return {
     id: r.id,
     nome: r.nome,
     telefono: r.telefono,
-    quando: comeOra(r.quando),
+    quando: comeOra(creata),
+    creataIso: creata.toISOString(),
     serata: r.serata,
     nomeSerata: r.nome_serata,
     codiceSerata: r.codice_serata,
     tipo: r.tipo as RichiestaPannello["tipo"],
     provenienza: r.provenienza,
     stato: r.stato as StatoRichiesta,
-    ...(r.data_serata === null ? {} : { dataSerata: r.data_serata }),
+    ...(r.data_serata === null ? {} : { dataSerata: comeGiorno(r.data_serata) }),
     ...(r.sala === null ? {} : { sala: r.sala }),
     ...(r.gruppo === null ? {} : { gruppo: r.gruppo }),
     ...(r.budget === null ? {} : { budget: r.budget }),

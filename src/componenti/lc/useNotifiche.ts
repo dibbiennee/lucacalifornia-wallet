@@ -1,13 +1,12 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 import { provaNotifica } from "@/app/pannello/azioni";
 
-import { Avviso } from "./Avviso";
-import { Pulsante } from "./Pulsante";
+import { useToast } from "./Toast";
 
-type Stato = "non-supportato" | "spente" | "accendo" | "accese" | "negate";
+export type StatoNotifiche = "non-supportato" | "spente" | "accendo" | "accese" | "negate";
 
 const CHIAVE_PUBBLICA =
   "BHmNceJ6546XttdQ5jmikCt8esWukbohk5CVq_c9VI4kSBIZJO1_KIFeM9GuGdZymbBX7ZxHko6aZK1-1nEw9d8";
@@ -20,15 +19,17 @@ function chiaveABytes(base64: string): Uint8Array {
 }
 
 /**
- * Il pulsante che accende le notifiche push nel telefono di chi lo preme.
+ * Le notifiche push di questo dispositivo: accendere, spegnere, mandare una
+ * prova. È la stessa logica di prima (AttivaNotifiche), spostata in un hook
+ * perché adesso la usano tre punti dello stesso guscio: la campanella in
+ * testata, il menu e la barra laterale. Un'istanza sola, un solo stato.
  *
  * Un'iscrizione per dispositivo, non per persona: se Luca apre il pannello
- * dal telefono e dal computer, li accende separatamente, e li spegne
- * separatamente.
+ * dal telefono e dal computer, li accende e li spegne separatamente.
  */
-export function AttivaNotifiche() {
-  const [stato, setStato] = useState<Stato>("spente");
-  const [avviso, setAvviso] = useState("");
+export function useNotifiche() {
+  const toast = useToast();
+  const [stato, setStato] = useState<StatoNotifiche>("spente");
   const [provaInCorso, setProvaInCorso] = useState(false);
 
   useEffect(() => {
@@ -48,13 +49,14 @@ export function AttivaNotifiche() {
     });
   }, []);
 
-  async function accendi() {
+  const accendi = useCallback(async () => {
     setStato("accendo");
 
     try {
       const permesso = await Notification.requestPermission();
       if (permesso !== "granted") {
         setStato("negate");
+        toast("Notifiche bloccate nelle impostazioni");
         return;
       }
 
@@ -75,14 +77,14 @@ export function AttivaNotifiche() {
       }
 
       setStato("accese");
-      setAvviso("Notifiche accese su questo telefono.");
+      toast("Notifiche attive");
     } catch {
       setStato("spente");
-      setAvviso("Non sono riuscito ad accenderle. Riprova.");
+      toast("Non sono riuscito ad accenderle");
     }
-  }
+  }, [toast]);
 
-  async function spegni() {
+  const spegni = useCallback(async () => {
     try {
       const registrazione = await navigator.serviceWorker.getRegistration("/sw.js");
       const iscrizione = await registrazione?.pushManager.getSubscription();
@@ -97,49 +99,32 @@ export function AttivaNotifiche() {
       }
 
       setStato("spente");
-      setAvviso("Notifiche spente su questo telefono.");
+      toast("Notifiche spente");
     } catch {
-      setAvviso("Non sono riuscito a spegnerle. Riprova.");
+      toast("Non sono riuscito a spegnerle");
     }
-  }
+  }, [toast]);
 
-  async function prova() {
+  const alterna = useCallback(async () => {
+    if (stato === "accese") {
+      await spegni();
+    } else if (stato === "spente") {
+      await accendi();
+    } else if (stato === "negate") {
+      toast("Sono bloccate nelle impostazioni del telefono");
+    }
+  }, [stato, accendi, spegni, toast]);
+
+  const prova = useCallback(async () => {
     setProvaInCorso(true);
     try {
-      const esito = await provaNotifica();
-      setAvviso(esito);
+      toast(await provaNotifica());
     } catch {
-      setAvviso("Non sono riuscito a mandarla. Riprova.");
+      toast("Non sono riuscito a mandarla");
     } finally {
       setProvaInCorso(false);
     }
-  }
+  }, [toast]);
 
-  if (stato === "non-supportato") {
-    return null;
-  }
-
-  if (stato === "negate") {
-    return <p className="testo-piccolo">Le notifiche sono bloccate per questo sito nelle impostazioni del telefono.</p>;
-  }
-
-  return (
-    <div>
-      {stato === "accese" ? (
-        <>
-          <Pulsante aspetto="vuoto" piccolo onClick={spegni}>
-            Spegni le notifiche
-          </Pulsante>{" "}
-          <Pulsante aspetto="vuoto" piccolo disabled={provaInCorso} onClick={prova}>
-            {provaInCorso ? "Mando..." : "Manda una prova"}
-          </Pulsante>
-        </>
-      ) : (
-        <Pulsante aspetto="pieno" piccolo disabled={stato === "accendo"} onClick={accendi}>
-          {stato === "accendo" ? "Accendo..." : "Accendi le notifiche"}
-        </Pulsante>
-      )}
-      <Avviso testo={avviso} chiudi={() => setAvviso("")} />
-    </div>
-  );
+  return { stato, accese: stato === "accese", provaInCorso, alterna, prova };
 }

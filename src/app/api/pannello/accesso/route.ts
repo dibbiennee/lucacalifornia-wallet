@@ -41,7 +41,8 @@ export async function POST(richiesta: Request): Promise<Response> {
 
   risposta.headers.append(
     "Set-Cookie",
-    `${name}=${valoreBiscotto()}; Max-Age=${resto.maxAge}; Path=${resto.path}; HttpOnly; Secure; SameSite=Lax`,
+    // "Secure" solo in produzione: Safari scarta un biscotto Secure su http://localhost, e in locale non si riuscirebbe a restare dentro.
+    `${name}=${valoreBiscotto()}; Max-Age=${resto.maxAge}; Path=${resto.path}; HttpOnly${process.env.NODE_ENV === "production" ? "; Secure" : ""}; SameSite=Lax`,
   );
 
   return risposta;

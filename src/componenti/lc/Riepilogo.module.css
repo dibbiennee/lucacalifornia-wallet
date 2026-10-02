@@ -1,0 +1,505 @@
+/*
+ * Riepilogo. Sul telefono tutto in colonna, con due KPI per riga; dal
+ * computer quattro KPI in fila, i due grafici affiancati e la classifica in
+ * tre colonne.
+ */
+
+.pagina {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.testa {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 20px 0 10px;
+}
+
+.etichetta {
+  margin: 0;
+  font-family: var(--lc-mono);
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0.08em;
+  color: var(--lc-muted);
+  text-transform: uppercase;
+}
+
+/* ------------------------------- numeri ------------------------------- */
+
+.kpi {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.kpiCard {
+  padding: 16px;
+  border-radius: 20px;
+  background: var(--lc-surface);
+  border: 1px solid var(--lc-line);
+  color: var(--lc-text);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.kpiAccento {
+  background: var(--lc-accent);
+  border-color: var(--lc-accent);
+  color: var(--lc-accent-ink);
+}
+
+.kpiEtichetta {
+  font-size: 12px;
+  /* Niente opacità: sul rosa dell'accento scendeva sotto il 4,5:1. */
+  color: inherit;
+}
+
+.kpiValore {
+  font-family: var(--lc-display);
+  font-stretch: 125%;
+  font-weight: 800;
+  font-size: 34px;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ------------------------------- grafici ------------------------------- */
+
+.dueColonne {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.scheda {
+  padding: 18px;
+  border-radius: 22px;
+  background: var(--lc-surface);
+  border: 1px solid var(--lc-line);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.rigaSerata {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-areas:
+    "nome conta"
+    "pista pista";
+  gap: 8px;
+  align-items: baseline;
+}
+
+.nomeSerata {
+  grid-area: nome;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.giorno {
+  font-weight: 400;
+  font-size: 12px;
+  color: var(--lc-muted);
+}
+
+.conta {
+  grid-area: conta;
+  font-family: var(--lc-mono);
+  font-size: 13px;
+  text-align: right;
+}
+
+.pista {
+  grid-area: pista;
+  height: 8px;
+  border-radius: 999px;
+  background: var(--lc-line);
+  overflow: hidden;
+}
+
+.barra {
+  height: 100%;
+  border-radius: 999px;
+}
+
+.impilata {
+  display: flex;
+  height: 14px;
+  gap: 3px;
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.legenda {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.legenda li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: #c9c9d0;
+}
+
+.chiave {
+  width: 10px;
+  height: 10px;
+  border-radius: 3px;
+}
+
+.legendaConta {
+  font-family: var(--lc-mono);
+  color: var(--lc-text);
+}
+
+.vuoto {
+  margin: 0;
+  font-size: 13px;
+  color: var(--lc-muted);
+}
+
+/* ------------------------------ classifica ------------------------------ */
+
+.topMobile {
+  padding: 16px 18px;
+  border-radius: 22px;
+  background: var(--lc-surface);
+  border: 1px solid var(--lc-line);
+  color: var(--lc-text);
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.avatarTop {
+  flex: none;
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+  background: var(--lc-accent-soft);
+  color: var(--lc-accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+}
+
+.topTesto {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+
+.topEtichetta {
+  font-size: 12px;
+  color: var(--lc-muted);
+}
+
+.topNome {
+  font-size: 15px;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+.topNumero {
+  font-family: var(--lc-display);
+  font-stretch: 125%;
+  font-weight: 800;
+  font-size: 18px;
+}
+
+.freccia {
+  display: flex;
+  color: var(--lc-faint);
+}
+
+.classifica {
+  display: none;
+}
+
+/* -------------------------------- per data -------------------------------- */
+
+.perData {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  margin-top: 14px;
+}
+
+.gruppoData {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.testaData {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 4px;
+}
+
+.titoloData {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.passata .titoloData {
+  color: var(--lc-muted);
+}
+
+.tagPassata {
+  font-family: var(--lc-mono);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--lc-faint);
+}
+
+.filo {
+  flex-grow: 1;
+  height: 1px;
+  background: var(--lc-line);
+}
+
+.conteggio {
+  font-family: var(--lc-mono);
+  font-size: 11px;
+  color: var(--lc-faint);
+}
+
+.elencoData {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.rigaPersona {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  border-radius: 18px;
+  background: var(--lc-surface);
+  border: 1px solid var(--lc-line);
+  color: var(--lc-text);
+}
+
+.avatarPiccolo {
+  flex: none;
+  width: 36px;
+  height: 36px;
+  border-radius: 11px;
+  background: var(--lc-surface-3);
+  color: #c9c9d0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 13px;
+}
+
+.avatarPrimo {
+  background: var(--lc-accent-soft);
+  color: var(--lc-accent);
+}
+
+.testoPersona {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.nomePersona {
+  font-size: 15px;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+.sottoPersona {
+  font-size: 13px;
+  color: var(--lc-text-2);
+  overflow-wrap: anywhere;
+}
+
+.ora {
+  flex: none;
+  font-family: var(--lc-mono);
+  font-size: 12px;
+  color: var(--lc-muted);
+}
+
+/* ------------------------------ dal computer ------------------------------ */
+
+@media (min-width: 900px) {
+  .pagina {
+    gap: 24px;
+    max-width: 1200px;
+  }
+
+  .testa {
+    padding: 0;
+    gap: 8px;
+  }
+
+  .kpi {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 12px;
+  }
+
+  .kpiCard {
+    padding: 22px;
+    border-radius: 22px;
+    gap: 14px;
+  }
+
+  .kpiEtichetta {
+    font-size: 13px;
+  }
+
+  .kpiValore {
+    font-size: 48px;
+  }
+
+  .dueColonne {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap: 12px;
+    align-items: start;
+  }
+
+  .scheda {
+    padding: 24px;
+    gap: 18px;
+  }
+
+  .rigaSerata {
+    grid-template-columns: 160px minmax(0, 1fr) 32px;
+    grid-template-areas: "nome pista conta";
+    gap: 16px;
+    align-items: center;
+  }
+
+  .pista {
+    height: 10px;
+  }
+
+  .conta {
+    font-size: 14px;
+  }
+
+  .impilata {
+    height: 16px;
+  }
+
+  .legenda {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .legenda li {
+    font-size: 14px;
+  }
+
+  .legendaNome {
+    flex-grow: 1;
+  }
+
+  .topMobile {
+    display: none;
+  }
+
+  .classifica {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 24px;
+    border-radius: 22px;
+    background: var(--lc-surface);
+    border: 1px solid var(--lc-line);
+  }
+
+  .testaClassifica {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .vediSquadra {
+    display: inline-flex;
+    align-items: center;
+    min-height: 32px;
+    padding: 0 0 0 8px;
+    color: var(--lc-accent);
+    font-size: 13px;
+    font-weight: 600;
+  }
+
+  .tre {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .tessera {
+    padding: 16px;
+    border-radius: 16px;
+    background: var(--lc-surface-2);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 0;
+  }
+
+  .posizione {
+    font-family: var(--lc-mono);
+    font-size: 12px;
+  }
+
+  .nomePr {
+    flex-grow: 1;
+    font-size: 14px;
+    font-weight: 600;
+    overflow-wrap: anywhere;
+  }
+
+  .numeroPr {
+    font-family: var(--lc-display);
+    font-stretch: 125%;
+    font-weight: 800;
+    font-size: 18px;
+  }
+
+  .perData {
+    margin-top: 0;
+  }
+
+  .elencoData {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 10px;
+  }
+}

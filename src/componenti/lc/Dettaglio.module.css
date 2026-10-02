@@ -1,0 +1,511 @@
+/*
+ * Il dettaglio di una richiesta.
+ *
+ * Telefono: schermo intero (lo copre il pannello di Richieste), testata con
+ * "indietro" in alto, azioni su una barra fissa in basso.
+ * Computer: una scheda accanto all'elenco, azioni in alto a destra, e il
+ * biglietto in una colonna da 300px.
+ */
+
+.dettaglio {
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
+  /* Il layout interno (biglietto accanto o sopra) dipende dalla larghezza del dettaglio, non da quella dello schermo. */
+  container-type: inline-size;
+  container-name: dettaglio;
+}
+
+.barraTop {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: calc(16px + env(safe-area-inset-top, 0px)) 16px 8px;
+  background: rgba(9, 9, 11, 0.92);
+  backdrop-filter: blur(12px);
+}
+
+.indietro {
+  height: 44px;
+  padding: 0 14px 0 8px;
+  border-radius: 14px;
+  border: 1px solid var(--lc-line-strong);
+  background: var(--lc-surface);
+  color: var(--lc-text);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.corpo {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 12px 20px calc(200px + env(safe-area-inset-bottom, 0px));
+}
+
+.intestazione {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.titoli {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 0;
+}
+
+.nome {
+  margin: 0 0 8px;
+  font-family: var(--lc-display);
+  font-stretch: 125%;
+  font-weight: 800;
+  font-size: clamp(24px, 8vw, 30px);
+  line-height: 1.02;
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+  hyphens: none;
+  overflow-wrap: anywhere;
+  text-wrap: balance;
+}
+
+.chipScrivania,
+.azioniAlto {
+  display: none;
+}
+
+.griglia {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.bigliettoCol {
+  order: 0;
+  container-type: inline-size;
+}
+
+/* Sul telefono i pezzi della colonna sinistra si mescolano con il biglietto, nell'ordine del prototipo. */
+.sinistra {
+  display: contents;
+}
+
+.contatto { order: 1; }
+.fatti { order: 2; }
+.richiesta { order: 3; }
+.nota { order: 4; }
+
+.fatti {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.fatto {
+  min-width: 0;
+  padding: 14px 16px;
+  border-radius: 18px;
+  background: var(--lc-surface);
+  border: 1px solid var(--lc-line);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.fattoK {
+  font-family: var(--lc-mono);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  color: var(--lc-muted);
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.fattoV {
+  font-size: 16px;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+.fattoS {
+  min-height: 1.3em;
+  font-size: 13px;
+  color: var(--lc-text-2);
+  overflow-wrap: anywhere;
+}
+
+.contatto {
+  padding: 6px 6px 6px 16px;
+  border-radius: 18px;
+  background: var(--lc-surface);
+  border: 1px solid var(--lc-line);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.contattoTesto {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.etichetta {
+  font-size: 12px;
+  color: var(--lc-muted);
+}
+
+.telefono {
+  font-family: var(--lc-mono);
+  font-size: 15px;
+  overflow-wrap: anywhere;
+}
+
+.contattoAzioni {
+  flex: none;
+  display: flex;
+  gap: 6px;
+}
+
+.chiama,
+.whatsapp {
+  height: 44px;
+  border-radius: 14px;
+  background: var(--lc-surface-3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.chiama {
+  width: 44px;
+}
+
+.whatsapp {
+  padding: 0 14px;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.richiesta {
+  padding: 14px 16px;
+  border-radius: 18px;
+  background: var(--lc-surface);
+  border: 1px solid var(--lc-line);
+}
+
+.richiesta p {
+  margin: 6px 0 0;
+  font-size: 14px;
+  color: var(--lc-text-2);
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+}
+
+.nota {
+  margin: 4px 4px 0;
+  font-size: 13px;
+  color: var(--lc-muted);
+  line-height: 1.5;
+  text-wrap: pretty;
+}
+
+/* --------------------------------- azioni --------------------------------- */
+
+.barraBasso {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 25;
+  padding: 16px 20px calc(28px + env(safe-area-inset-bottom, 0px));
+  background: rgba(9, 9, 11, 0.94);
+  backdrop-filter: blur(16px);
+  border-top: 1px solid var(--lc-line);
+}
+
+.barraAzioni {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.duePulsanti {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.primario,
+.secondario,
+.rifiuta {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.primario {
+  height: 56px;
+  border: 0;
+  border-radius: 16px;
+  background: var(--lc-accent);
+  color: var(--lc-accent-ink);
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.secondario {
+  height: 48px;
+  border-radius: 16px;
+  border: 1px solid var(--lc-line-strong);
+  background: var(--lc-surface);
+  color: var(--lc-text);
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.rifiuta {
+  height: 48px;
+  border-radius: 16px;
+  border: 1px solid var(--lc-danger-line);
+  background: var(--lc-danger-bg);
+  color: var(--lc-danger-text);
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.primario:disabled,
+.secondario:disabled,
+.rifiuta:disabled {
+  opacity: 0.55;
+  cursor: default;
+}
+
+.rotella {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 2.5px solid rgba(10, 10, 11, 0.25);
+  border-top-color: var(--lc-accent-ink);
+}
+
+.errore {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.4;
+  color: var(--lc-danger-text);
+}
+
+/* ------------------------- conferma del rifiuto ------------------------- */
+
+.conferma {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 8px 8px 4px;
+}
+
+.confermaTitolo {
+  margin: 0;
+  font-family: var(--lc-display);
+  font-stretch: 125%;
+  font-weight: 800;
+  font-size: 22px;
+  text-transform: uppercase;
+}
+
+.confermaTesto {
+  margin: 0 0 4px;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--lc-muted);
+  text-wrap: pretty;
+}
+
+.confermaRifiuta,
+.confermaAnnulla {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 16px;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+.confermaRifiuta {
+  height: 52px;
+  border: 1px solid var(--lc-danger-line);
+  background: var(--lc-danger-bg);
+  color: var(--lc-danger-text);
+  font-weight: 600;
+}
+
+.confermaAnnulla {
+  height: 48px;
+  border: 1px solid var(--lc-line-strong);
+  background: transparent;
+  color: var(--lc-text);
+  font-weight: 500;
+}
+
+/* ------------------------------ dal computer ------------------------------ */
+
+@media (min-width: 900px) {
+  .dettaglio {
+    min-height: 0;
+    padding: 28px;
+    gap: 20px;
+    border-radius: 24px;
+    background: #111114;
+    border: 1px solid var(--lc-line);
+  }
+
+  .barraTop,
+  .barraBasso {
+    display: none;
+  }
+
+  .corpo {
+    padding: 0;
+    gap: 20px;
+  }
+
+  .intestazione {
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+
+  .titoli {
+    gap: 12px;
+  }
+
+  .nome {
+    margin: 0;
+    font-size: 32px;
+    line-height: 1;
+  }
+
+  .chipScrivania {
+    display: block;
+    align-self: flex-start;
+  }
+
+  .azioniAlto {
+    display: block;
+  }
+
+  .azioniScrivania {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 8px;
+  }
+
+  .rigaScrivania {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+  }
+
+  .rigaScrivania .primario {
+    height: 44px;
+    padding: 0 18px;
+    border-radius: 14px;
+    font-size: 14px;
+    min-width: 220px;
+    gap: 8px;
+  }
+
+  .rigaScrivania .secondario,
+  .rigaScrivania .rifiuta {
+    height: 44px;
+    padding: 0 16px;
+    border-radius: 14px;
+    font-size: 14px;
+  }
+
+  .fatti {
+    gap: 12px;
+  }
+
+  .fatto {
+    padding: 16px;
+    border: 0;
+    border-radius: 16px;
+    background: var(--lc-surface-2);
+  }
+
+  .contatto {
+    padding: 14px 16px;
+    border-radius: 16px;
+    background: transparent;
+  }
+
+  .chiama,
+  .whatsapp {
+    border-radius: 12px;
+  }
+
+  .richiesta {
+    border-radius: 16px;
+    background: var(--lc-surface-2);
+    border: 0;
+  }
+
+  .nota {
+    margin: 0;
+  }
+}
+
+/*
+ * Il biglietto sta accanto ai dati solo se il dettaglio è abbastanza largo
+ * (600px di contenuto: a 1440px lo schermo, la colonna dei dati resta da
+ * 300px come nel prototipo). Sotto, il biglietto passa sopra e i dati
+ * ricevono tutta la larghezza, nell'ordine del telefono: a 1280px
+ * altrimenti restavano 138px e il testo andava a capo ogni tre parole.
+ */
+@container dettaglio (min-width: 600px) {
+  .griglia {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 300px;
+    gap: 16px;
+    align-items: start;
+  }
+
+  .bigliettoCol {
+    order: 2;
+  }
+
+  .sinistra {
+    order: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    min-width: 0;
+  }
+
+  .contatto,
+  .fatti,
+  .richiesta,
+  .nota {
+    order: 0;
+  }
+}

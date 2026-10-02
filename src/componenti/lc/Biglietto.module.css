@@ -1,0 +1,150 @@
+/*
+ * Il biglietto in anteprima. Sul telefono è orizzontale (testo a sinistra, QR
+ * in basso a destra); sul computer sta in una colonna da 300px, con il QR al
+ * centro e una didascalia.
+ *
+ * Le scritte piccole hanno opacità .85 e non .6/.7 come nel prototipo: sul rosa
+ * dell'accento quelle scendevano sotto il 4,5:1.
+ */
+
+.biglietto {
+  position: relative;
+  margin: 0;
+  padding: 18px;
+  border-radius: 24px;
+  background: var(--lc-accent);
+  color: var(--lc-accent-ink);
+  display: flex;
+  gap: 16px;
+  overflow: hidden;
+}
+
+.testo {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-width: 0;
+  /* Serve a .notte[data-lunga]: la dimensione si ricava dalla larghezza di questa colonna. */
+  container-type: inline-size;
+}
+
+.sopra {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  font-family: var(--lc-mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  opacity: 0.85;
+  white-space: nowrap;
+}
+
+.notte {
+  font-family: var(--lc-display);
+  font-stretch: 125%;
+  font-weight: 800;
+  font-size: 24px;
+  line-height: 1;
+  text-transform: uppercase;
+  hyphens: none;
+  overflow-wrap: break-word;
+}
+
+/*
+ * "INTERNATIONAL" (13 lettere in Archivo espanso) non sta in 24px accanto al
+ * QR: invece di andare a capo a metà parola scende fino a starci, in
+ * proporzione alla colonna. I nomi corti restano a 24px.
+ */
+.notte[data-lunga] {
+  font-size: min(24px, 9cqi);
+}
+
+.dati {
+  display: flex;
+  gap: 16px;
+  margin: 0;
+  font-size: 12px;
+}
+
+.dati div {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.dati dt {
+  opacity: 0.85;
+}
+
+.dati dd {
+  margin: 0;
+  font-weight: 600;
+}
+
+.qr {
+  flex: none;
+  align-self: flex-end;
+  width: 84px;
+  height: 84px;
+  padding: 8px;
+  background: #ffffff;
+  border-radius: 12px;
+}
+
+.didascalia {
+  display: none;
+}
+
+.timbro {
+  position: absolute;
+  right: 108px;
+  top: 34px;
+  padding: 6px 12px;
+  border: 3px solid var(--lc-accent-ink);
+  border-radius: 10px;
+  font-family: var(--lc-display);
+  font-stretch: 125%;
+  font-weight: 800;
+  font-size: 16px;
+  letter-spacing: 0.06em;
+  pointer-events: none;
+}
+
+/*
+ * Nella colonna stretta (300px, accanto ai dati, sul computer) il biglietto
+ * si fa verticale: QR al centro e didascalia. Appena ha più spazio (telefono,
+ * o dettaglio impilato) torna orizzontale. La soglia è 310px, non 330: un
+ * telefono da 360px dà 320px di larghezza utile e deve restare orizzontale.
+ */
+@container (max-width: 310px) {
+  .biglietto {
+    padding: 20px;
+    border-radius: 22px;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .qr {
+    align-self: center;
+    width: 120px;
+    height: 120px;
+    padding: 10px;
+    border-radius: 14px;
+  }
+
+  .didascalia {
+    display: block;
+    font-size: 11px;
+    text-align: center;
+    opacity: 0.85;
+  }
+
+  /* Il timbro sta sull'angolo del QR: più in alto copriva "Ingresso", che è quello che serve leggere. */
+  .timbro {
+    right: 14px;
+    top: 150px;
+  }
+}

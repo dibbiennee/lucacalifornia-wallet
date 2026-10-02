@@ -1,0 +1,463 @@
+/*
+ * Richieste: filtro, elenco per serata, e il pannello del dettaglio.
+ * Sotto i 900px il dettaglio copre tutto; da 900px sta accanto all'elenco.
+ */
+
+.testaArea {
+  display: flex;
+  flex-direction: column;
+}
+
+.titolo {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding-top: 20px;
+}
+
+/* ------------------------------ filtro ------------------------------ */
+
+.segmentato {
+  position: relative;
+  margin-top: 20px;
+  padding: 4px;
+  border-radius: 16px;
+  background: var(--lc-surface);
+  border: 1px solid var(--lc-line);
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 4px;
+}
+
+.indicatore {
+  position: absolute;
+  top: 4px;
+  bottom: 4px;
+  left: 4px;
+  width: calc((100% - 16px) / 3);
+  border-radius: 12px;
+  background: var(--lc-text);
+  transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.segmento {
+  position: relative;
+  /* 44px sul telefono (si preme col pollice), 38px dal computer: vedi in fondo. */
+  height: 44px;
+  border: 0;
+  border-radius: 12px;
+  background: transparent;
+  color: var(--lc-muted);
+  font-size: 14px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: color 0.3s;
+}
+
+.segmentoAttivo {
+  color: var(--lc-accent-ink);
+}
+
+.contaNuove {
+  min-width: 20px;
+  height: 20px;
+  padding: 0 6px;
+  border-radius: 999px;
+  background: var(--lc-accent);
+  color: var(--lc-accent-ink);
+  font-family: var(--lc-mono);
+  font-size: 11px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.contaMono {
+  font-family: var(--lc-mono);
+  font-size: 12px;
+  opacity: 0.85;
+}
+
+/* ------------------------------ elenco ------------------------------ */
+
+.corpo {
+  display: block;
+}
+
+.elenco {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-top: 22px;
+}
+
+.gruppo {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.testaGruppo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 4px 2px;
+}
+
+.filo {
+  flex-grow: 1;
+  height: 1px;
+  background: var(--lc-line);
+}
+
+.conteggio {
+  font-family: var(--lc-mono);
+  font-size: 11px;
+  color: var(--lc-faint);
+}
+
+.scheda {
+  width: 100%;
+  display: flex;
+  gap: 14px;
+  padding: 16px;
+  border-radius: 20px;
+  background: var(--lc-surface);
+  border: 1px solid var(--lc-line);
+  color: var(--lc-text);
+  text-align: left;
+  transition: background 0.25s, border-color 0.25s;
+}
+
+.schedaNuova {
+  border-color: var(--lc-accent);
+}
+
+.schedaAttiva {
+  background: #1a1a1f;
+  border-color: var(--lc-accent);
+}
+
+.avatar {
+  flex: none;
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+  background: var(--lc-surface-3);
+  color: #c9c9d0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.avatarNuovo {
+  background: var(--lc-accent-soft);
+  color: var(--lc-accent);
+}
+
+.testoScheda {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+}
+
+.rigaNome {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.nome {
+  min-width: 0;
+  font-size: 16px;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+.ora {
+  flex: none;
+  font-family: var(--lc-mono);
+  font-size: 12px;
+  color: var(--lc-muted);
+}
+
+.riga {
+  font-size: 13px;
+  color: var(--lc-text-2);
+  line-height: 1.4;
+  text-wrap: pretty;
+}
+
+.chips {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 24px;
+  padding: 0 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.chipGrande {
+  height: 30px;
+  padding: 0 12px;
+  font-size: 13px;
+  font-weight: 600;
+  transition: background 0.3s, color 0.3s;
+}
+
+.chipPunto {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.chipGrande .chipPunto {
+  width: 7px;
+  height: 7px;
+}
+
+.chip_nuova { background: var(--lc-new-bg); color: var(--lc-new-text); }
+.chip_nuova .chipPunto { background: var(--lc-accent); }
+.chip_ok { background: var(--lc-ok-bg); color: var(--lc-ok-text); }
+.chip_ok .chipPunto { background: var(--lc-ok); }
+.chip_attesa { background: var(--lc-wait-bg); color: var(--lc-wait-text); }
+.chip_attesa .chipPunto { background: var(--lc-wait); }
+.chip_off { background: var(--lc-off-bg); color: var(--lc-off-text); }
+.chip_off .chipPunto { background: var(--lc-off); }
+
+.chipOccasione {
+  display: inline-flex;
+  align-items: center;
+  height: 24px;
+  padding: 0 10px;
+  border-radius: 999px;
+  background: var(--lc-surface-3);
+  color: #c9c9d0;
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+.vuoto {
+  padding: 48px 24px;
+  border-radius: 24px;
+  border: 1px dashed var(--lc-line-strong);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  text-align: center;
+}
+
+.vuotoIcona {
+  width: 56px;
+  height: 56px;
+  border-radius: 18px;
+  background: var(--lc-surface);
+  color: var(--lc-ok);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.vuotoTitolo {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.vuotoTesto {
+  font-size: 13px;
+  color: var(--lc-muted);
+  line-height: 1.5;
+  text-wrap: pretty;
+  max-width: 32ch;
+}
+
+/* ------------------------- pannello del dettaglio ------------------------- */
+
+/* Sul telefono il dettaglio c'è solo se una richiesta è aperta, e copre tutto. */
+.pannello {
+  display: none;
+}
+
+/* L'elenco sotto il dettaglio non si legge e non si raggiunge con Tab: resta lì (visibility tiene il posto, e tornando indietro si ritrova alla stessa altezza). */
+@media (max-width: 899px) {
+  .area[data-aperto] .testaArea,
+  .area[data-aperto] .elenco {
+    visibility: hidden;
+  }
+}
+
+.area[data-aperto] .pannello {
+  display: block;
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  background: var(--lc-bg);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  animation: scorri 0.38s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+@keyframes scorri {
+  from { transform: translateX(100%); }
+  to { transform: none; }
+}
+
+@keyframes dissolvi {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .area[data-aperto] .pannello {
+    animation: dissolvi 0.2s ease both;
+  }
+}
+
+/* Il riquadro che sta nel pannello quando non c'è una richiesta aperta (si vede solo dal computer). */
+.segnaposto {
+  padding: 64px 24px;
+  border-radius: 24px;
+  border: 1px dashed var(--lc-line-strong);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  text-align: center;
+}
+
+.segnapostoTitolo {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.segnapostoTesto {
+  font-size: 13px;
+  color: var(--lc-muted);
+}
+
+/* ------------------------------ dal computer ------------------------------ */
+
+@media (min-width: 900px) {
+  .testaArea {
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 24px;
+    flex-wrap: wrap;
+    margin-bottom: 24px;
+  }
+
+  .titolo {
+    padding-top: 0;
+    gap: 8px;
+  }
+
+  .segmentato {
+    margin-top: 0;
+    width: 380px;
+    border-radius: 14px;
+  }
+
+  .indicatore {
+    border-radius: 10px;
+  }
+
+  .segmento {
+    height: 38px;
+    border-radius: 10px;
+  }
+
+  .corpo {
+    display: grid;
+    grid-template-columns: minmax(340px, 420px) minmax(0, 1fr);
+    gap: 20px;
+    align-items: start;
+  }
+
+  .elenco {
+    padding-top: 0;
+    gap: 8px;
+  }
+
+  .gruppo {
+    gap: 8px;
+  }
+
+  .scheda {
+    padding: 14px;
+    border-radius: 18px;
+  }
+
+  .schedaNuova {
+    border-color: rgba(255, 61, 154, 0.5);
+  }
+
+  .schedaAttiva {
+    border-color: var(--lc-accent);
+  }
+
+  .avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    font-size: 13px;
+  }
+
+  .testoScheda {
+    gap: 6px;
+  }
+
+  .nome {
+    font-size: 15px;
+  }
+
+  .chip {
+    height: 22px;
+    padding: 0 9px;
+  }
+
+  .chipGrande {
+    height: 28px;
+    padding: 0 12px;
+  }
+
+  .chipOccasione {
+    display: none;
+  }
+
+  .pannello,
+  .area[data-aperto] .pannello {
+    display: block;
+    position: sticky;
+    inset: auto;
+    top: 24px;
+    z-index: auto;
+    max-height: calc(100dvh - 48px);
+    overflow-y: auto;
+    background: transparent;
+    animation: none;
+    border-radius: 24px;
+  }
+}
