@@ -1,6 +1,7 @@
 import { Bottone } from "@/componenti/sito/Bottone";
 import { Indietro } from "@/componenti/sito/Indietro";
 import { FotoPagina, Introduzione, Pillole, Punti, TestaPagina } from "@/componenti/sito/Pagina";
+import stili from "@/componenti/sito/Pagina.module.css";
 
 export const metadata = {
   title: "Tavoli al ROOM26 - Luca California",
@@ -44,17 +45,21 @@ export default function PaginaTavoli() {
       />
 
       <section className="wrap" style={{ paddingBottom: 56 }}>
-        <FotoPagina src="/foto/atmosfera/tavoli-bottiglie.jpg" alt="Bottiglie dorate al tavolo, con il logo inciso sul vetro" />
+        <div className={stili.corpo}>
+          <FotoPagina src="/foto/atmosfera/tavoli-bottiglie.jpg" alt="Bottiglie dorate al tavolo, con il logo inciso sul vetro" />
 
-        <Introduzione>Compleanno, laurea o solo voglia di festeggiare: dimmi cosa festeggiate e ti preparo
-          tutto io, dalla bottiglia alla torta. Arrivi, ti siedi, la serata è già partita.</Introduzione>
+          <div className={stili.corpoTesto}>
+            <Introduzione>Compleanno, laurea o solo voglia di festeggiare: dimmi cosa festeggiate e ti preparo
+              tutto io, dalla bottiglia alla torta. Arrivi, ti siedi, la serata è già partita.</Introduzione>
 
-        <Pillole voci={OCCASIONI} />
-        <Punti voci={COME_FUNZIONA} />
+            <Pillole voci={OCCASIONI} />
+            <Punti voci={COME_FUNZIONA} />
 
-        <Bottone href="/prenota?tipo=tavolo" pieno classe="cta-prenota" stile={{ background: "var(--sun)", color: "var(--ink)" }}>
-          Prenota un tavolo
-        </Bottone>
+            <Bottone href="/prenota?tipo=tavolo" pieno classe="cta-prenota" stile={{ background: "var(--sun)", color: "var(--ink)" }}>
+              Prenota un tavolo
+            </Bottone>
+          </div>
+        </div>
       </section>
     </>
   );

@@ -18,14 +18,51 @@
   font-size: clamp(29px, 9cqi, 76px);
 }
 
-/* La fotografia grande in cima a una pagina. */
+/*
+ * La fotografia in cima a una pagina interna. Proporzione da rivista (3 a 2)
+ * e un tetto all'altezza, perché non spinga il testo sotto la piega: sul
+ * telefono e sul tablet sta sopra il testo, dal computer in su sta accanto
+ * (vedi .corpo).
+ */
 .foto {
   width: 100%;
   border-radius: var(--r-l);
-  aspect-ratio: 4 / 3;
+  aspect-ratio: 3 / 2;
+  max-height: 380px;
   object-fit: cover;
   margin-bottom: 20px;
   height: auto;
+}
+
+/* Foto e testo insieme: in colonna sul telefono, affiancati dal computer in su. */
+.corpo {
+  display: grid;
+  gap: 0;
+}
+
+.corpoTesto {
+  min-width: 0;
+}
+
+@media (min-width: 900px) {
+  .corpo {
+    grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+    gap: 56px;
+    align-items: start;
+  }
+
+  .corpo .foto {
+    aspect-ratio: 4 / 5;
+    max-height: 600px;
+    margin-bottom: 0;
+    position: sticky;
+    top: 96px;
+  }
+
+  /* Il testo accanto alla foto parte dall'alto, senza il margine che aveva sotto la foto. */
+  .corpoTesto > :first-child {
+    margin-top: 0;
+  }
 }
 
 /* Le etichette che non si toccano: dicono e basta. */
@@ -321,67 +358,6 @@
   font-size: 13px;
   color: var(--acid);
   font-weight: 700;
-}
-
-/*
- * Il locale su Maps: un puntino su un fondo a griglia, che basta a farlo
- * riconoscere come una mappa senza caricarne una vera (a pagamento).
- */
-.mappa {
-  display: grid;
-  grid-template-columns: 52px 1fr 20px;
-  align-items: center;
-  gap: 14px;
-  margin: 10px 0 0;
-  padding: 14px 16px;
-  border-radius: var(--r-m);
-  background: var(--surface);
-  text-decoration: none;
-  color: inherit;
-}
-
-.puntini {
-  width: 52px;
-  height: 52px;
-  border-radius: var(--r-s, 10px);
-  display: grid;
-  place-items: center;
-  background-image: radial-gradient(var(--line) 1.2px, transparent 1.2px);
-  background-size: 9px 9px;
-  background-color: var(--paper);
-}
-
-.mappaTesto {
-  display: flex;
-  flex-direction: column;
-  gap: 1px;
-  min-width: 0;
-}
-
-.mappaTesto small {
-  font-size: 12px;
-  font-weight: 800;
-  color: var(--dim);
-}
-
-.mappaTesto strong {
-  font-size: 15px;
-  font-weight: 800;
-}
-
-.mappaTesto span {
-  font-size: 13px;
-  color: var(--muted);
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-/* Il gallone torna indietro di suo: qui deve puntare fuori, non dentro. */
-.mappa svg:last-child {
-  flex: none;
-  transform: rotate(180deg);
-  color: var(--dim);
 }
 
 /* --- Il ritratto di una serata --- */

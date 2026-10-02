@@ -3,7 +3,6 @@ import type { ReactNode } from "react";
 
 import { legaParole } from "@/lib/tipografia";
 
-import { Gallone } from "./Icone";
 import stili from "./Pagina.module.css";
 
 type Frase = string | readonly string[];
@@ -102,8 +101,19 @@ export function TestaPagina({
   );
 }
 
-export function FotoPagina({ src, alt }: { readonly src: string; readonly alt: string }) {
-  return <Image src={src} alt={alt} width={1280} height={960} sizes="(min-width: 1180px) 1140px, 100vw" className={stili.foto} priority />;
+export function FotoPagina({ src, alt, posizione }: { readonly src: string; readonly alt: string; readonly posizione?: string }) {
+  return (
+    <Image
+      src={src}
+      alt={alt}
+      width={1280}
+      height={960}
+      sizes="(min-width: 900px) 520px, 100vw"
+      className={stili.foto}
+      style={posizione === undefined ? undefined : { objectPosition: posizione }}
+      priority
+    />
+  );
 }
 
 export function Pillole({ voci }: { readonly voci: readonly string[] }) {
@@ -139,44 +149,6 @@ export function Dati({ voci }: { readonly voci: readonly (readonly [string, stri
         </div>
       ))}
     </div>
-  );
-}
-
-/**
- * Il locale, con un pallino sulla mappa: porta dritto a Google Maps, con
- * l'indirizzo già scritto. Niente API a pagamento per una mappa vera: il
- * disegno a puntini basta a farla riconoscere come tale.
- */
-export function CardMappa({ nome, indirizzo }: { readonly nome: string; readonly indirizzo: string }) {
-  return (
-    <a
-      className={stili.mappa}
-      href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(indirizzo)}`}
-      target="_blank"
-      rel="noopener"
-    >
-      <span className={stili.puntini} aria-hidden>
-        <Spillo />
-      </span>
-      <span className={stili.mappaTesto}>
-        <small>Dove</small>
-        <strong>{nome}</strong>
-        <span>{indirizzo}</span>
-      </span>
-      <Gallone />
-    </a>
-  );
-}
-
-function Spillo() {
-  return (
-    <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden focusable="false">
-      <path
-        d="M12 2c-4 0-7 3-7 7 0 5.2 7 13 7 13s7-7.8 7-13c0-4-3-7-7-7z"
-        fill="var(--magenta)"
-      />
-      <circle cx="12" cy="9" r="2.6" fill="var(--paper)" />
-    </svg>
   );
 }
 

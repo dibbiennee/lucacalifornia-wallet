@@ -150,6 +150,9 @@ export const SERATE: readonly SerataSito[] = [
 export const LOCALE = {
   nome: "ROOM26, ROMA",
   indirizzo: "Piazza Guglielmo Marconi 31, Roma",
+  /** Dove cade lo spillo sulla mappa (OpenStreetMap). */
+  lat: 41.8343033,
+  lon: 12.4703946,
 } as const;
 
 export const COME_FUNZIONA = [

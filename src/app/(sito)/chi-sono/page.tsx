@@ -22,24 +22,29 @@ export default function PaginaChiSono() {
       />
 
       <section className="wrap" style={{ paddingBottom: 56 }}>
-        <Image
-          src="/foto/luca.webp"
-          alt="Luca Curella"
-          width={1280} 
-          height={1280}
-          sizes="(min-width: 1180px) 1140px, 100vw"
-          className={stili.foto}
-          priority
-        />
+        <div className={stili.corpo}>
+          <Image
+            src="/foto/luca.webp"
+            alt="Luca Curella"
+            width={1280}
+            height={1280}
+            sizes="(min-width: 900px) 520px, 100vw"
+            className={stili.foto}
+            style={{ objectPosition: "50% 8%" }}
+            priority
+          />
 
-        <Introduzione>Sono Luca Curella, PR e organizzatore di eventi a Roma. Ogni stagione scelgo un locale
-          solo e ci porto tutta la mia passione: d&apos;inverno il ROOM26, d&apos;estate il Ninfeo e
-          il Morgan Beach Club.</Introduzione>
+          <div className={stili.corpoTesto}>
+            <Introduzione>Sono Luca Curella, PR e organizzatore di eventi a Roma. Ogni stagione scelgo un locale
+              solo e ci porto tutta la mia passione: d&apos;inverno il ROOM26, d&apos;estate il Ninfeo e
+              il Morgan Beach Club.</Introduzione>
 
-        <div style={{ marginTop: 24 }}>
-          <Bottone href={INSTAGRAM_URL} aspetto="contorno" esterno>
-            Segui @{INSTAGRAM}
-          </Bottone>
+            <div style={{ marginTop: 24 }}>
+              <Bottone href={INSTAGRAM_URL} aspetto="contorno" esterno>
+                Segui @{INSTAGRAM}
+              </Bottone>
+            </div>
+          </div>
         </div>
       </section>
     </>

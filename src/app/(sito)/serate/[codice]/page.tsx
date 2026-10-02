@@ -3,9 +3,10 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { Bottone } from "@/componenti/sito/Bottone";
+import { CardMappa } from "@/componenti/sito/CardMappa";
 import { perPrenotare } from "@/componenti/sito/CardSerata";
 import { Indietro } from "@/componenti/sito/Indietro";
-import { Altre, Azioni, CardMappa, Dati, Introduzione } from "@/componenti/sito/Pagina";
+import { Altre, Azioni, Dati, Introduzione } from "@/componenti/sito/Pagina";
 import stili from "@/componenti/sito/Pagina.module.css";
 import { LOCALE, SERATE } from "@/contenuti/sito";
 
@@ -73,7 +74,7 @@ export default async function PaginaSerata({ params }: { params: Promise<{ codic
             </div>
 
             <Dati voci={[["Quando", serata.quando]]} />
-            <CardMappa nome={LOCALE.nome} indirizzo={LOCALE.indirizzo} />
+            <CardMappa nome={LOCALE.nome} indirizzo={LOCALE.indirizzo} lat={LOCALE.lat} lon={LOCALE.lon} />
 
             <Azioni>
               <Bottone href={perPrenotare(serata.codice, "tavolo")} classe="cta-prenota">
