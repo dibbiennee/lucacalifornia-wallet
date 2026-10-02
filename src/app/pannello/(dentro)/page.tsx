@@ -1,14 +1,16 @@
 import { redirect } from "next/navigation";
 
+import { sessioneOAccesso } from "@/lib/pannello/sessione";
+
 /**
- * Il pannello si apre sulle richieste.
+ * Dove si arriva aprendo /pannello, o subito dopo l'accesso.
  *
- * Prima si apriva su "Oggi", che raccontava la serata. Ma il pannello serve
- * prima di tutto a rispondere a chi ha prenotato: la prima cosa che si vede
- * aprendolo deve essere chi aspetta una risposta.
- *
- * I numeri della serata non sono spariti: stanno in "Stasera".
+ * Luca si apre sulle richieste: il pannello serve prima di tutto a rispondere
+ * a chi ha prenotato, quindi la prima cosa che vede è chi aspetta. Un PR si
+ * apre sulla sua home, con i suoi numeri. Chi sia lo decide il server.
  */
-export default function Pannello() {
-  redirect("/pannello/richieste");
+export default async function Pannello() {
+  const sessione = await sessioneOAccesso();
+
+  redirect(sessione.ruolo === "owner" ? "/pannello/richieste" : "/pannello/home");
 }

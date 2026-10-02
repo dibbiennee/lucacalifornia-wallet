@@ -33,6 +33,7 @@ export function FoglioAvvisami({
   const [aperto, setAperto] = useState(false);
   const [nome, setNome] = useState("");
   const [contatto, setContatto] = useState("");
+  const [trappola, setTrappola] = useState("");
   const [errori, setErrori] = useState<{ nome?: string; contatto?: string }>({});
   const [inCorso, setInCorso] = useState(false);
   const [fatto, setFatto] = useState(false);
@@ -76,7 +77,7 @@ export function FoglioAvvisami({
       const risposta = await fetch("/api/lista-attesa", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ tipo, nome, contatto }),
+        body: JSON.stringify({ tipo, nome, contatto, sito: trappola }),
       });
 
       if (!risposta.ok) {
@@ -164,6 +165,22 @@ export function FoglioAvvisami({
                     {errori.contatto}
                   </p>
                 )}
+              </div>
+
+              {/*
+                Il campo trappola: fuori dallo schermo e fuori dalla tastiera, per chi usa il
+                sito non esiste. Un bot che riempie ogni campo lo riempie, e il server lo scarta.
+              */}
+              <div aria-hidden style={{ position: "absolute", left: "-9999px", width: 1, height: 1, overflow: "hidden" }}>
+                <label htmlFor={`${id}-sito`}>Non compilare</label>
+                <input
+                  id={`${id}-sito`}
+                  name="sito"
+                  tabIndex={-1}
+                  autoComplete="off"
+                  value={trappola}
+                  onChange={(e) => setTrappola(e.target.value)}
+                />
               </div>
 
               <BottoneAzione aspetto="nero" pieno type="submit" disabled={inCorso}>

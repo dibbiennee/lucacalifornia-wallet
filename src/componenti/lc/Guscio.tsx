@@ -2,16 +2,18 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { useCallback, useState, type ReactNode } from "react";
+import { useCallback, useState, type CSSProperties, type ReactNode } from "react";
 
 import { negliAppunti } from "./appunti";
 import { legaParole } from "@/lib/tipografia";
 import { FoglioInferiore } from "./FoglioInferiore";
 import {
+  IconaAndamento,
   IconaCampanella,
   IconaEsci,
   IconaInvia,
   IconaLink,
+  IconaOrologio,
   IconaPuntini,
   IconaRichieste,
   IconaRiepilogo,
@@ -21,13 +23,12 @@ import stili from "./Guscio.module.css";
 import { ToastProvider, useToast } from "./Toast";
 import { useNotifiche } from "./useNotifiche";
 
-/** L'indirizzo del modulo isolato: quello che Luca gira da solo, senza passare da un PR. */
-const LINK_LUCA = "https://lucacalifornia.satoshiweb.it/pr";
-
 const VOCI = [
   { testo: "Richieste", dove: "/pannello/richieste", Icona: IconaRichieste },
+  { testo: "Attesa", dove: "/pannello/attesa", Icona: IconaOrologio },
   { testo: "Riepilogo", dove: "/pannello/riepilogo", Icona: IconaRiepilogo },
   { testo: "Squadra", dove: "/pannello/squadra", Icona: IconaSquadra },
+  { testo: "Analisi", dove: "/pannello/analisi", Icona: IconaAndamento },
 ] as const;
 
 /**
@@ -39,15 +40,40 @@ const VOCI = [
  * una volta sola): il numero sulla voce "Richieste" deve essere uguale da
  * qualunque schermata lo si guardi.
  */
-export function Guscio({ nuove, children }: { readonly nuove: number; readonly children: ReactNode }) {
+export function Guscio({
+  nuove,
+  attesa,
+  indirizzo,
+  children,
+}: {
+  readonly nuove: number;
+  /** L'indirizzo del sito, con il protocollo: il link di Luca per prenotare senza passare da un PR. */
+  readonly indirizzo: string;
+  /** Persone in lista d'attesa che aspettano una risposta: il numero sulla voce "Attesa". */
+  readonly attesa: number;
+  readonly children: ReactNode;
+}) {
   return (
     <ToastProvider>
-      <Interno nuove={nuove}>{children}</Interno>
+      <Interno nuove={nuove} attesa={attesa} indirizzo={indirizzo}>
+        {children}
+      </Interno>
     </ToastProvider>
   );
 }
 
-function Interno({ nuove, children }: { readonly nuove: number; readonly children: ReactNode }) {
+function Interno({
+  nuove,
+  attesa,
+  indirizzo,
+  children,
+}: {
+  readonly nuove: number;
+  readonly attesa: number;
+  readonly indirizzo: string;
+  readonly children: ReactNode;
+}) {
+  const linkLuca = `${indirizzo}/prenota`;
   const percorso = usePathname();
   const router = useRouter();
   const toast = useToast();
@@ -56,6 +82,8 @@ function Interno({ nuove, children }: { readonly nuove: number; readonly childre
   const chiudiMenu = useCallback(() => setMenu(false), []);
 
   const indice = VOCI.findIndex((v) => percorso.startsWith(v.dove));
+  /** Il numero da mostrare sulla voce: le richieste nuove, o le persone in attesa. */
+  const badgeDi = (dove: string): number => (dove === "/pannello/richieste" ? nuove : dove === "/pannello/attesa" ? attesa : 0);
   // Dentro una singola richiesta, sul telefono, il dettaglio copre tutto e la barra sparisce.
   const dentroDettaglio = /^\/pannello\/richieste\/[^/]+/.test(percorso);
 
@@ -72,7 +100,7 @@ function Interno({ nuove, children }: { readonly nuove: number; readonly childre
 
   async function copiaLink() {
     setMenu(false);
-    toast((await negliAppunti(LINK_LUCA)) ? "Link copiato" : "Non riesco a copiare, selezionalo a mano");
+    toast((await negliAppunti(linkLuca)) ? "Link copiato" : "Non riesco a copiare, selezionalo a mano");
   }
 
   const nomeNotifiche = notifiche.accese
@@ -104,10 +132,10 @@ function Interno({ nuove, children }: { readonly nuove: number; readonly childre
             >
               <Icona misura={18} />
               <span className={stili.testoVoce}>{testo}</span>
-              {i === 0 && nuove > 0 && (
+              {badgeDi(dove) > 0 && (
                 <span className={`lc-pulse ${stili.badge}`}>
-                  {nuove}
-                  <span className="lc-sr"> richieste nuove</span>
+                  {badgeDi(dove)}
+                  <span className="lc-sr"> {dove === "/pannello/attesa" ? "in attesa" : "richieste nuove"}</span>
                 </span>
               )}
             </Link>
@@ -184,7 +212,7 @@ function Interno({ nuove, children }: { readonly nuove: number; readonly childre
       </div>
 
       {/* ----- Barra in basso, solo sul telefono ----- */}
-      <nav aria-label="Navigazione" className={stili.barra}>
+      <nav aria-label="Navigazione" className={stili.barra} style={{ "--n": VOCI.length } as CSSProperties}>
         <span
           className={stili.indicatoreBarra}
           style={{ transform: `translateX(calc(${Math.max(indice, 0) * 100}% + ${Math.max(indice, 0) * 4}px))`, opacity: indice < 0 ? 0 : 1 }}
@@ -199,10 +227,10 @@ function Interno({ nuove, children }: { readonly nuove: number; readonly childre
           >
             <span className={stili.iconaBarra}>
               <Icona />
-              {i === 0 && nuove > 0 && (
+              {badgeDi(dove) > 0 && (
                 <span className={`lc-pulse ${stili.badgeBarra}`}>
-                  {nuove}
-                  <span className="lc-sr"> richieste nuove</span>
+                  {badgeDi(dove)}
+                  <span className="lc-sr"> {dove === "/pannello/attesa" ? "in attesa" : "richieste nuove"}</span>
                 </span>
               )}
             </span>
@@ -240,7 +268,7 @@ function Interno({ nuove, children }: { readonly nuove: number; readonly childre
           <span className={stili.iconaMenu}><IconaLink misura={18} /></span>
           <span className={stili.duePiani}>
             <span className={stili.titoloMenu}>Copia il tuo link</span>
-            <span className={`${stili.sotto} ${stili.mono}`}>lucacalifornia.satoshiweb.it/pr</span>
+            <span className={`${stili.sotto} ${stili.mono}`}>{linkLuca.replace(/^https?:\/\//, "")}</span>
           </span>
         </button>
 

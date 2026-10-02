@@ -1,10 +1,11 @@
 import { notFound } from "next/navigation";
 
-import { DettaglioRichiesta, type DatiInvio } from "@/componenti/lc/DettaglioRichiesta";
+import { DettaglioRichiesta } from "@/componenti/lc/DettaglioRichiesta";
+import { localeDi } from "@/lib/pannello/biglietto";
 import { richiesta } from "@/lib/pannello/dati";
-import { tipoBiglietto } from "@/lib/pannello/testi";
+import { sessioneOAccesso } from "@/lib/pannello/sessione";
+import { filtriDaParametri, suffissoDaFiltri } from "@/lib/pannello/filtri-richieste";
 import { daRichiesta } from "@/lib/pannello/vista";
-import { giornoDellaSerata, istanteSerata, prossimaSerata } from "@/lib/serate";
 
 export const metadata = { title: "Richiesta, pannello Luca California" };
 
@@ -12,45 +13,42 @@ export const metadata = { title: "Richiesta, pannello Luca California" };
  * Una richiesta, con tutto quello che serve a rispondere.
  *
  * Il ritorno indietro sa da dove sei arrivato: dall'elenco filtrato torna a
- * quel filtro. Quello che serve a preparare il biglietto si calcola qui, sul
- * server, dove l'orologio di Roma è lo stesso per tutti.
+ * quel filtro. Per un PR, una richiesta non sua risponde "non trovata", come
+ * una che non esiste (vedi richiesta() in dati.ts).
+ *
+ * Qui non si prepara più niente per il biglietto: ci pensa /api/conferma,
+ * partendo dall'id della richiesta e dal database.
  */
 export default async function Dettaglio({
   params,
   searchParams,
 }: {
   params: Promise<{ id: string }>;
-  searchParams: Promise<{ stato?: string }>;
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
 }) {
   const { id } = await params;
-  const { stato } = await searchParams;
-  const r = await richiesta(id);
+  const parametri = await searchParams;
+  const sessione = await sessioneOAccesso();
+  const r = await richiesta(sessione, id);
 
   if (r === undefined) {
     notFound();
   }
 
-  /*
-   * La data vera scelta nel modulo, ora di Roma. Solo le richieste di prima
-   * che il modulo la chiedesse non ce l'hanno: per quelle resta "la prossima
-   * volta che cade quella serata", come sempre.
-   */
-  const inizio =
-    r.dataSerata === undefined ? prossimaSerata(giornoDellaSerata(r.codiceSerata)) : istanteSerata(r.dataSerata);
+  // Il ritorno conserva i filtri dell'elenco da cui si arriva (stato, serata, data, tipo, ricerca),
+  // ripuliti: dall'indirizzo non si rimanda indietro altro che filtri validi.
+  const indietro = `/pannello/richieste${suffissoDaFiltri(
+    filtriDaParametri((chiave) => (typeof parametri[chiave] === "string" ? (parametri[chiave] as string) : null)),
+  )}`;
 
-  const invio: DatiInvio = {
-    nomeCliente: r.nome,
-    telefono: r.telefono,
-    /* Il nome della serata, non il giorno: il messaggio diceva "sei dentro per SABATO di sabato 27 settembre". */
-    serata: r.nomeSerata,
-    inizioSerata: inizio.toISOString(),
-    tipo: tipoBiglietto(r),
-    locale: r.codiceSerata === "ninfeo" ? "ninfeo" : "room26",
-    ...(r.sala === undefined ? {} : { sala: r.sala }),
-  };
-
-  const filtro = stato === "nuova" || stato === "confermata" ? stato : undefined;
-  const indietro = filtro === undefined ? "/pannello/richieste" : `/pannello/richieste?stato=${filtro}`;
-
-  return <DettaglioRichiesta key={r.id} voce={daRichiesta(r)} invio={invio} indietro={indietro} />;
+  return (
+    <DettaglioRichiesta
+      key={r.id}
+      voce={daRichiesta(r)}
+      locale={localeDi(r)}
+      walletStato={r.walletStato}
+      indietro={indietro}
+      comeLuca={sessione.ruolo === "owner"}
+    />
+  );
 }

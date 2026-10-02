@@ -25,7 +25,7 @@
   background: var(--lc-surface);
   border: 1px solid var(--lc-line);
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(var(--n, 3), minmax(0, 1fr));
   gap: 4px;
 }
 
@@ -34,7 +34,7 @@
   top: 4px;
   bottom: 4px;
   left: 4px;
-  width: calc((100% - 16px) / 3);
+  width: calc((100% - (var(--n, 3) + 1) * 4px) / var(--n, 3));
   border-radius: 12px;
   background: var(--lc-text);
   transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
@@ -81,6 +81,240 @@
   font-family: var(--lc-mono);
   font-size: 12px;
   opacity: 0.85;
+}
+
+/*
+ * Quattro filtri non entrano su un telefono stretto con testo e contatori:
+ * sotto i 520px le etichette si fanno un po' più piccole e restano solo la
+ * pallina rosa delle nuove (quella che serve davvero). Gli altri numeri si
+ * leggono comunque nell'elenco sotto.
+ */
+@media (max-width: 519px) {
+  .segmento {
+    font-size: 13px;
+    gap: 4px;
+  }
+
+  .contaMono {
+    display: none;
+  }
+}
+
+/* ------------------------- ricerca, filtri, date ------------------------- */
+
+.barraFiltri {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.rigaRicerca {
+  display: flex;
+  gap: 8px;
+}
+
+.ricerca {
+  flex-grow: 1;
+  min-width: 0;
+  height: 48px;
+  padding: 0 14px;
+  border-radius: 14px;
+  border: 1px solid var(--lc-line-strong);
+  background: var(--lc-surface);
+  color: var(--lc-text);
+  font-family: inherit;
+  font-size: 16px;
+}
+
+.ricerca:focus-visible,
+.selezione:focus-visible {
+  outline: 2px solid var(--lc-accent);
+  outline-offset: 2px;
+}
+
+.apriFiltri {
+  flex: none;
+  height: 48px;
+  padding: 0 16px;
+  border-radius: 14px;
+  border: 1px solid var(--lc-line-strong);
+  background: transparent;
+  color: var(--lc-text);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.apriFiltri[aria-expanded="true"] {
+  background: var(--lc-surface-3);
+}
+
+.numeroFiltri {
+  min-width: 20px;
+  height: 20px;
+  padding: 0 6px;
+  border-radius: 999px;
+  background: var(--lc-accent);
+  color: var(--lc-accent-ink);
+  font-family: var(--lc-mono);
+  font-size: 11px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pannelloFiltri {
+  padding: 14px;
+  border-radius: 20px;
+  background: var(--lc-surface);
+  border: 1px solid var(--lc-line);
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.campoFiltro {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.campoFiltro label {
+  font-size: 12px;
+  color: var(--lc-text-2);
+}
+
+.selezione {
+  width: 100%;
+  min-width: 0;
+  height: 44px;
+  padding: 0 12px;
+  border-radius: 12px;
+  border: 1px solid var(--lc-line-strong);
+  background: var(--lc-inset);
+  color: var(--lc-text);
+  font-family: inherit;
+  font-size: 16px;
+}
+
+.selezione:disabled {
+  opacity: 0.5;
+}
+
+.azzeraTutto {
+  grid-column: 1 / -1;
+  min-height: 44px;
+  padding: 0 16px;
+  border-radius: 12px;
+  border: 1px solid var(--lc-line-strong);
+  background: transparent;
+  color: var(--lc-text);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.azzeraTutto:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+/* Le prossime serate con richieste: una fila che scorre di lato, un tocco per scegliere. */
+.rail {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding: 2px 2px 6px;
+  scroll-snap-type: x proximity;
+  scrollbar-width: none;
+}
+
+.rail::-webkit-scrollbar {
+  display: none;
+}
+
+.chipData {
+  flex: none;
+  scroll-snap-align: start;
+  min-width: 84px;
+  min-height: 64px;
+  padding: 8px 12px;
+  border-radius: 16px;
+  border: 1px solid var(--lc-line-strong);
+  background: var(--lc-surface);
+  color: var(--lc-text);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 2px;
+  cursor: pointer;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.chipDataAttiva {
+  background: var(--lc-text);
+  border-color: var(--lc-text);
+  color: var(--lc-accent-ink);
+}
+
+.chipDataTesto {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.chipDataNotte {
+  font-size: 11px;
+  color: var(--lc-text-2);
+}
+
+.chipDataAttiva .chipDataNotte,
+.chipDataAttiva .chipDataNumero {
+  color: var(--lc-accent-ink);
+}
+
+.chipDataNumero {
+  font-family: var(--lc-mono);
+  font-size: 11px;
+  color: var(--lc-muted);
+}
+
+.chipDataDaGestire {
+  color: var(--lc-new-text);
+}
+
+.chipDataAttiva .chipDataDaGestire {
+  color: var(--lc-accent-ink);
+  font-weight: 700;
+}
+
+.altre {
+  width: 100%;
+  min-height: 48px;
+  margin-top: 8px;
+  border-radius: 14px;
+  border: 1px solid var(--lc-line-strong);
+  background: transparent;
+  color: var(--lc-text);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.altre:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+/* Mentre la risposta del server arriva si vedono le righe di prima, un po' spente. */
+.sfumato {
+  opacity: 0.55;
+  transition: opacity 0.2s;
 }
 
 /* ------------------------------ elenco ------------------------------ */
@@ -246,6 +480,29 @@
 .chip_off { background: var(--lc-off-bg); color: var(--lc-off-text); }
 .chip_off .chipPunto { background: var(--lc-off); }
 
+/* Da dove arriva: "PR Antonio" in evidenza, "Diretta" spenta. Solo per Luca. */
+.chipPr,
+.chipDiretta {
+  display: inline-flex;
+  align-items: center;
+  height: 24px;
+  padding: 0 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.chipPr {
+  background: var(--lc-new-bg);
+  color: var(--lc-new-text);
+}
+
+.chipDiretta {
+  background: var(--lc-surface-3);
+  color: var(--lc-text-2);
+}
+
 .chipOccasione {
   display: inline-flex;
   align-items: center;
@@ -376,7 +633,7 @@
 
   .segmentato {
     margin-top: 0;
-    width: 380px;
+    width: 460px;
     border-radius: 14px;
   }
 

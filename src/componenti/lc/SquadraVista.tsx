@@ -4,11 +4,16 @@ import { useCallback, useEffect, useRef, useState } from "react";
 
 import { negliAppunti } from "./appunti";
 import { AggiungiPr } from "./AggiungiPr";
+import { GestisciPr, type PrGestito } from "./GestisciPr";
 import { IconaCopia, IconaPiu, IconaSpunta } from "./Icone";
 import stili from "./Squadra.module.css";
 import { useToast } from "./Toast";
 
 export interface MembroSquadra {
+  readonly id: string;
+  readonly attivo: boolean;
+  /** Il link intero: https://dominio/pr/<codice>. */
+  readonly link: string;
   readonly nome: string;
   readonly iniziali: string;
   readonly codice: string;
@@ -17,8 +22,6 @@ export interface MembroSquadra {
   readonly tavoli: number;
   readonly braccialetti: number;
 }
-
-const INDIRIZZO = "https://lucacalifornia.satoshiweb.it";
 
 /** "1 lista", "2 liste": il singolare conta, "1 liste" si legge male. */
 function conta(n: number, singolare: string, plurale: string): string {
@@ -33,9 +36,11 @@ function conta(n: number, singolare: string, plurale: string): string {
  * sono arrivate); non c'è la colonna "provvigioni" del prototipo, perché un
  * importo per prenotazione non esiste da nessuna parte e non va inventato.
  */
-export function SquadraVista({ membri }: { readonly membri: readonly MembroSquadra[] }) {
+export function SquadraVista({ membri, indirizzo }: { readonly membri: readonly MembroSquadra[]; readonly indirizzo: string }) {
   const toast = useToast();
   const [aggiungi, setAggiungi] = useState(false);
+  const [gestito, setGestito] = useState<PrGestito | null>(null);
+  const chiudiGestione = useCallback(() => setGestito(null), []);
   const chiudi = useCallback(() => setAggiungi(false), []);
   const [copiato, setCopiato] = useState<string | null>(null);
   const timer = useRef<number | undefined>(undefined);
@@ -46,7 +51,7 @@ export function SquadraVista({ membri }: { readonly membri: readonly MembroSquad
   const totale = membri.reduce((tot, m) => tot + m.confermate, 0);
 
   async function copia(m: MembroSquadra) {
-    if (!(await negliAppunti(`${INDIRIZZO}/${m.codice}`))) {
+    if (!(await negliAppunti(m.link))) {
       toast("Non riesco a copiare, selezionalo a mano");
       return;
     }
@@ -69,6 +74,19 @@ export function SquadraVista({ membri }: { readonly membri: readonly MembroSquad
       >
         {fatto ? <IconaSpunta misura={14} /> : <IconaCopia misura={14} />}
         {fatto ? "Copiato" : "Copia"}
+      </button>
+    );
+  }
+
+  function bottoneGestisci(m: MembroSquadra, classe: string | undefined) {
+    return (
+      <button
+        type="button"
+        className={`lc-press ${classe ?? ""}`}
+        aria-label={`Gestisci ${m.nome}`}
+        onClick={() => setGestito({ id: m.id, nome: m.nome, codice: m.codice, attivo: m.attivo, link: m.link })}
+      >
+        Gestisci
       </button>
     );
   }
@@ -110,7 +128,10 @@ export function SquadraVista({ membri }: { readonly membri: readonly MembroSquad
                 {m.iniziali}
               </span>
               <div className={stili.chi}>
-                <span className={stili.nome}>{m.nome}</span>
+                <span className={stili.nome}>
+                  {m.nome}
+                  {!m.attivo && " (disattivato)"}
+                </span>
                 <span className={stili.stat}>
                   {conta(m.liste, "lista", "liste")} · {conta(m.tavoli, "tavolo", "tavoli")} ·{" "}
                   {conta(m.braccialetti, "bracciale", "bracciali")}
@@ -134,8 +155,9 @@ export function SquadraVista({ membri }: { readonly membri: readonly MembroSquad
             </div>
 
             <div className={stili.campoLink}>
-              <span className={stili.slug}>/{m.codice}</span>
+              <span className={stili.slug}>/pr/{m.codice}</span>
               {bottoneCopia(m, stili.copia)}
+              {bottoneGestisci(m, stili.copia)}
             </div>
           </li>
         ))}
@@ -161,11 +183,15 @@ export function SquadraVista({ membri }: { readonly membri: readonly MembroSquad
                 <span className={`${stili.avatar} ${i === 0 ? stili.avatarPrimo : ""}`} aria-hidden>
                   {m.iniziali}
                 </span>
-                <span className={stili.nome}>{m.nome}</span>
+                <span className={stili.nome}>
+                  {m.nome}
+                  {!m.attivo && " (disattivato)"}
+                </span>
               </div>
               <div className={stili.cellaLink}>
-                <span className={stili.slugTabella}>/{m.codice}</span>
+                <span className={stili.slugTabella}>/pr/{m.codice}</span>
                 {bottoneCopia(m, stili.copiaTabella)}
+                {bottoneGestisci(m, stili.copiaTabella)}
               </div>
               <div className={stili.cellaBarra}>
                 <div className={stili.pista} aria-hidden>
@@ -188,7 +214,8 @@ export function SquadraVista({ membri }: { readonly membri: readonly MembroSquad
         </section>
       )}
 
-      <AggiungiPr aperto={aggiungi} chiudi={chiudi} />
+      <AggiungiPr aperto={aggiungi} chiudi={chiudi} indirizzo={indirizzo} />
+      <GestisciPr pr={gestito} indirizzo={indirizzo} chiudi={chiudiGestione} />
     </div>
   );
 }

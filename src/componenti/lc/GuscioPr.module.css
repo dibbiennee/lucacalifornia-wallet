@@ -1,0 +1,282 @@
+/*
+ * Il guscio dell'area PR.
+ *
+ * Sotto i 900px: testata in alto (nome e uscita), barra flottante in basso con
+ * due voci. Da 900px: la barra in basso sparisce e le due voci passano nella
+ * testata, il contenuto sta in una colonna centrata. Il contenuto in mezzo
+ * non cambia.
+ */
+
+.guscio {
+  position: relative;
+  min-height: 100dvh;
+}
+
+/* "Vai al contenuto": fuori dallo schermo finché non prende il fuoco (con la tastiera). */
+.salta {
+  position: fixed;
+  top: 8px;
+  left: 8px;
+  z-index: 70;
+  padding: 12px 16px;
+  border-radius: 10px;
+  background: var(--lc-text);
+  color: var(--lc-accent-ink);
+  font-size: 14px;
+  font-weight: 600;
+  transform: translateY(-200%);
+  opacity: 0;
+}
+
+.salta:focus {
+  transform: none;
+  opacity: 1;
+}
+
+/* ------------------------------- testata ------------------------------- */
+
+.testata {
+  position: sticky;
+  top: 0;
+  z-index: 15;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: calc(20px + env(safe-area-inset-top, 0px)) 20px 8px;
+  background: rgba(9, 9, 11, 0.92);
+  backdrop-filter: blur(12px);
+}
+
+.marchio {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+
+.logo {
+  flex: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  background: var(--lc-accent);
+  color: var(--lc-accent-ink);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--lc-display);
+  font-stretch: 125%;
+  font-weight: 800;
+  font-size: 14px;
+}
+
+.duePiani {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.nome {
+  font-size: 15px;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sotto {
+  font-family: var(--lc-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  color: var(--lc-muted);
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.esci {
+  flex: none;
+  height: 44px;
+  padding: 0 14px;
+  border-radius: 14px;
+  border: 1px solid var(--lc-line-strong);
+  background: var(--lc-surface);
+  color: var(--lc-text);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.contenuto {
+  padding: 0 20px calc(112px + env(safe-area-inset-bottom, 0px));
+  min-width: 0;
+}
+
+.contenuto:focus {
+  outline: none;
+}
+
+/* ----------------------- navigazione nella testata ----------------------- */
+
+.navAlta {
+  display: none;
+}
+
+/* --------------------------- barra in basso --------------------------- */
+
+.barra {
+  position: fixed;
+  left: 12px;
+  right: 12px;
+  bottom: calc(20px + env(safe-area-inset-bottom, 0px));
+  z-index: 10;
+  height: 68px;
+  padding: 6px;
+  border-radius: 24px;
+  background: rgba(22, 22, 26, 0.88);
+  backdrop-filter: blur(18px);
+  border: 1px solid var(--lc-line-strong);
+  display: grid;
+  grid-template-columns: repeat(var(--n, 2), minmax(0, 1fr));
+  gap: 4px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+}
+
+.indicatoreBarra {
+  position: absolute;
+  top: 6px;
+  bottom: 6px;
+  left: 6px;
+  width: calc((100% - 12px - (var(--n, 2) - 1) * 4px) / var(--n, 2));
+  border-radius: 18px;
+  background: #232329;
+  transition: transform 0.45s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.3s;
+}
+
+.voceBarra {
+  position: relative;
+  border-radius: 18px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  color: var(--lc-off-text);
+  font-size: 11px;
+  font-weight: 600;
+  white-space: nowrap;
+  transition: color 0.3s;
+}
+
+.voceBarra.attiva {
+  color: var(--lc-text);
+}
+
+.voceBarra.attiva svg {
+  color: var(--lc-accent);
+}
+
+.iconaBarra {
+  position: relative;
+  display: flex;
+}
+
+.badge,
+.badgeBarra {
+  background: var(--lc-accent);
+  color: var(--lc-accent-ink);
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+}
+
+.badgeBarra {
+  position: absolute;
+  top: -4px;
+  right: -8px;
+  min-width: 16px;
+  height: 16px;
+  padding: 0 4px;
+  font-size: 10px;
+}
+
+.badge {
+  min-width: 20px;
+  height: 20px;
+  padding: 0 6px;
+  font-size: 11px;
+}
+
+/*
+ * Dentro una richiesta, sul telefono, il dettaglio copre tutto: la barra
+ * sparisce e la testata resta sotto, nascosta anche a tastiera e lettore di
+ * schermo (visibility, non display: tiene il posto e la pagina non salta).
+ */
+@media (max-width: 899px) {
+  .guscio[data-dettaglio] .barra {
+    display: none;
+  }
+
+  .guscio[data-dettaglio] .testata {
+    visibility: hidden;
+  }
+}
+
+/* ------------------------------ dal computer ------------------------------ */
+
+@media (min-width: 900px) {
+  .testata {
+    padding: 20px 40px 8px;
+    max-width: 1240px;
+    margin: 0 auto;
+  }
+
+  .barra {
+    display: none;
+  }
+
+  .navAlta {
+    display: flex;
+    gap: 4px;
+    margin-left: auto;
+    margin-right: 12px;
+  }
+
+  .voceAlta {
+    height: 44px;
+    padding: 0 16px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--lc-off-text);
+    font-size: 14px;
+    font-weight: 600;
+    transition: color 0.3s, background 0.3s;
+  }
+
+  .voceAlta:hover,
+  .voceAlta.attiva {
+    color: var(--lc-text);
+  }
+
+  .voceAlta.attiva {
+    background: #17171b;
+  }
+
+  .voceAlta.attiva svg {
+    color: var(--lc-accent);
+  }
+
+  .contenuto {
+    max-width: 1240px;
+    margin: 0 auto;
+    padding: 24px 40px 48px;
+  }
+}

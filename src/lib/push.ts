@@ -1,6 +1,7 @@
 import webpush from "web-push";
 
 import { db } from "./db";
+import { INDIRIZZO } from "./pubblico";
 
 /**
  * La chiave pubblica: non è un segreto, la manda il browser di Luca insieme
@@ -17,7 +18,10 @@ function configura(): void {
     throw new Error("Manca VAPID_PRIVATE_KEY");
   }
 
-  webpush.setVapidDetails("https://lucacalifornia.satoshiweb.it", VAPID_PUBLIC_KEY, privata);
+  // L'identità della push deve essere un indirizzo https (o mailto): con altro la libreria rifiuta e le notifiche
+  // si spegnerebbero in silenzio. Se INDIRIZZO_SITO non è https si ripiega sull'indirizzo storico.
+  const soggetto = INDIRIZZO.startsWith("https://") ? INDIRIZZO : "https://lucacalifornia.satoshiweb.it";
+  webpush.setVapidDetails(soggetto, VAPID_PUBLIC_KEY, privata);
 }
 
 export interface Iscrizione {

@@ -1,5 +1,7 @@
 import { SquadraVista } from "@/componenti/lc/SquadraVista";
+import { INDIRIZZO } from "@/lib/pubblico";
 import { squadra } from "@/lib/pannello/dati";
+import { sessioneOAccesso, soloOwnerOAltrove } from "@/lib/pannello/sessione";
 import { iniziali } from "@/lib/pannello/vista";
 
 export const metadata = { title: "Squadra, pannello Luca California" };
@@ -11,11 +13,16 @@ export const metadata = { title: "Squadra, pannello Luca California" };
  * fanno parte del nuovo disegno.
  */
 export default async function Squadra() {
-  const pr = [...(await squadra())].sort((a, b) => b.confermate - a.confermate);
+  await soloOwnerOAltrove();
+  const pr = [...(await squadra(await sessioneOAccesso()))].sort((a, b) => b.confermate - a.confermate);
 
   return (
     <SquadraVista
+      indirizzo={INDIRIZZO}
       membri={pr.map((p) => ({
+        id: p.id,
+        attivo: p.attivo,
+        link: p.link,
         nome: p.nome,
         iniziali: iniziali(p.nome),
         codice: p.codice,

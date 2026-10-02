@@ -1,24 +1,23 @@
+import type { Metadata } from "next";
+
 import { Indietro } from "@/componenti/sito/Indietro";
 import { TestaPagina } from "@/componenti/sito/Pagina";
+import { TestoLegale } from "@/componenti/sito/TestoLegale";
+import { SEZIONI_COOKIE } from "@/contenuti/legale";
 
-export const metadata = { title: "COOKIE - Luca California" };
+export const metadata: Metadata = {
+  title: "Cookie - Luca California",
+  description: "Cosa salva il sito nel tuo browser, a cosa serve e come toglierlo.",
+  alternates: { canonical: "/cookie" },
+};
 
-/**
- * Resta una pagina con un indirizzo suo.
- *
- * Nel sito di riferimento privacy e cookie sono un foglio che si apre col
- * codice: comodo, ma senza indirizzo non si può linkare da fuori, e
- * un'informativa deve essere raggiungibile anche da chi arriva da un altro
- * sito o da un messaggio.
- */
-export default function PaginaCOOKIE() {
+/** Come la privacy: una pagina con un indirizzo suo. Il testo sta in src/contenuti/legale.ts. */
+export default function PaginaCookie() {
   return (
     <>
       <Indietro testo="Home" dove="/" />
-      <TestaPagina
-        righe={["COOKIE"]}
-        introduzione="Questa è un'anteprima del sito. L'informativa completa viene pubblicata insieme al sito vero, prima che il modulo di prenotazione raccolga dati di persone reali."
-      />
+      <TestaPagina righe={["Cookie"]} introduzione="Cosa salva il sito nel tuo browser, a cosa serve e come toglierlo." />
+      <TestoLegale sezioni={SEZIONI_COOKIE} />
     </>
   );
 }

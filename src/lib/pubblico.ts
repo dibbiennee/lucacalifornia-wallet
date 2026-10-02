@@ -10,3 +10,8 @@ export const SITO_PUBBLICO = process.env["SITO_PUBBLICO"] === "1";
 
 /** L'indirizzo del sito, usato per i link assoluti di condivisione. */
 export const INDIRIZZO = process.env["INDIRIZZO_SITO"] ?? "https://lucacalifornia.satoshiweb.it";
+
+/** Il link permanente di un PR: una rotta del dominio principale, mai un dominio a parte. */
+export function linkPr(codice: string): string {
+  return `${INDIRIZZO}/pr/${codice}`;
+}

@@ -6,15 +6,22 @@ import { useState, type FormEvent } from "react";
 import stili from "./accesso.module.css";
 
 /**
- * L'ingresso al pannello: una password sola, quella che Luca dà a chi serve.
+ * L'ingresso al pannello, per due tipi di persona.
  *
- * Il disegno prevedeva un PIN a 4 cifre; si è scelto di tenere la password
- * di prima e di far restare dentro chi entra (la sessione dura un anno),
- * quindi qui c'è un campo solo, nello stile nuovo.
+ * - Luca entra con la sua password, e basta: un campo solo, come sempre.
+ * - Un PR entra con il suo nome (quello del suo link) e la password che gli
+ *   ha dato Luca. Per non complicare l'ingresso di Luca il campo "nome" sta
+ *   dietro a "Sei un PR?", e di solito non si vede.
+ *
+ * Dopo l'accesso si va sempre a /pannello: è il server a decidere dove porta
+ * (le richieste per Luca, la home per un PR), perché è lui a sapere chi sei.
+ * La sessione dura un anno: chi entra una volta resta dentro.
  */
 export default function Accesso() {
   const router = useRouter();
   const [password, setPassword] = useState("");
+  const [comePr, setComePr] = useState(false);
+  const [nome, setNome] = useState("");
   const [errore, setErrore] = useState("");
   const [inCorso, setInCorso] = useState(false);
 
@@ -25,6 +32,12 @@ export default function Accesso() {
      * Il campo vuoto lo fermiamo qui: mandarlo al server farebbe consumare
      * uno dei cinque tentativi per una distrazione.
      */
+    if (comePr && nome.trim() === "") {
+      setErrore("Scrivi il tuo nome");
+      document.getElementById("nome")?.focus();
+      return;
+    }
+
     if (password === "") {
       setErrore("Scrivi la password");
       document.getElementById("password")?.focus();
@@ -38,7 +51,7 @@ export default function Accesso() {
       const risposta = await fetch("/api/pannello/accesso", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ password }),
+        body: JSON.stringify(comePr ? { codice: nome.trim(), password } : { password }),
       });
 
       if (!risposta.ok) {
@@ -47,7 +60,7 @@ export default function Accesso() {
         return;
       }
 
-      router.replace("/pannello/richieste");
+      router.replace("/pannello");
       router.refresh();
     } catch {
       setErrore("Non sono riuscito a parlare col server");
@@ -64,11 +77,31 @@ export default function Accesso() {
         </div>
 
         <div className={stili.titoli}>
-          <h1 className={stili.titolo}>Pannello PR</h1>
-          <p className={stili.sotto}>Inserisci la password</p>
+          <h1 className={stili.titolo}>{comePr ? "Area PR" : "Pannello PR"}</h1>
+          <p className={stili.sotto}>{comePr ? "Nome e password che ti ha dato Luca" : "Inserisci la password"}</p>
         </div>
 
         <form onSubmit={(e) => void entra(e)} noValidate className={stili.modulo}>
+          {comePr && (
+            <>
+              <label htmlFor="nome" className={stili.etichetta}>
+                Il tuo nome
+              </label>
+              <input
+                id="nome"
+                type="text"
+                autoComplete="username"
+                autoCapitalize="none"
+                autoCorrect="off"
+                spellCheck={false}
+                value={nome}
+                onChange={(e) => setNome(e.target.value)}
+                aria-invalid={errore !== ""}
+                className={stili.campo}
+              />
+            </>
+          )}
+
           <label htmlFor="password" className={stili.etichetta}>
             Password
           </label>
@@ -91,6 +124,18 @@ export default function Accesso() {
 
           <button type="submit" className={`lc-press ${stili.entra}`} disabled={inCorso}>
             {inCorso ? "Un attimo…" : "Entra"}
+          </button>
+
+          <button
+            type="button"
+            className={stili.cambia}
+            onClick={() => {
+              setComePr((c) => !c);
+              setErrore("");
+              setPassword("");
+            }}
+          >
+            {comePr ? "Sono Luca" : "Sei un PR? Entra con il tuo nome"}
           </button>
         </form>
       </div>

@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 
+import { EMAIL_PRIVACY, TITOLARE } from "@/contenuti/legale";
 import { INSTAGRAM_URL, MENU } from "@/contenuti/sito";
 
 import { Bottone } from "./Bottone";
@@ -12,7 +13,7 @@ const VOCI = [...MENU, { testo: "Prenota", dove: "/prenota?tipo=tavolo" }];
 
 export function PiePagina() {
   return (
-    <footer className={stili.piede}>
+    <footer className={stili.piede} data-sfondo="/foto/bailame-sfondo.jpg">
       <div className={`wrap ${stili.dentro}`}>
         <Link href="/" className={stili.marchio} aria-label="Luca California, home">
           <Marchio misura={48} />
@@ -47,6 +48,11 @@ export function PiePagina() {
           <Link href="/privacy">Privacy</Link>
           <Link href="/cookie">Cookie</Link>
         </div>
+
+        <p className={stili.titolare}>
+          <span>{TITOLARE}</span>
+          <a href={`mailto:${EMAIL_PRIVACY}`}>{EMAIL_PRIVACY}</a>
+        </p>
 
         <p className={stili.firma}>
           By{" "}

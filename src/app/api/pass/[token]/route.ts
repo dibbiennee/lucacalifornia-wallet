@@ -1,4 +1,5 @@
 import { creaBiglietto } from "@/lib/pass/biglietto";
+import { bigliettoValido } from "@/lib/pannello/dati";
 import { leggiToken } from "@/lib/pass/token";
 
 /** passkit-generator firma con le API di Node: niente runtime edge. */
@@ -8,9 +9,11 @@ export const dynamic = "force-dynamic";
 /**
  * Il biglietto di una prenotazione confermata.
  *
- * Il token è la prenotazione: se si apre, la prenotazione esiste ed è valida.
- * Non c'è uno stato da controllare perché il token viene creato solo al
- * momento della conferma, e senza la chiave non se ne può fabbricare uno.
+ * Il token è la prenotazione: se si apre, la prenotazione esiste. Il token viene
+ * creato solo al momento della conferma, e senza la chiave non se ne può
+ * fabbricare uno. Una cosa si controlla però nel database: Luca può cambiare
+ * decisione, e una richiesta che non è più confermata non dà più il biglietto
+ * (410). Vedi bigliettoValido(): quelli del vecchio flusso restano validi.
  */
 export async function GET(
   _richiesta: Request,
@@ -27,6 +30,13 @@ export async function GET(
   }
 
   try {
+    if (!(await bigliettoValido(prenotazione.serialNumber))) {
+      return new Response("Questo biglietto non è più valido", {
+        status: 410,
+        headers: { "Content-Type": "text/plain; charset=utf-8", "Cache-Control": "no-store" },
+      });
+    }
+
     const pkpass = await creaBiglietto({ ...prenotazione, token });
     const nomeFile = `biglietto-${prenotazione.serata.toLowerCase().replace(/[^a-z0-9]+/g, "-")}.pkpass`;
 

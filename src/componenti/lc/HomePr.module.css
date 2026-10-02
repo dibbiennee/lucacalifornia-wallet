@@ -1,0 +1,370 @@
+/*
+ * La home del PR. Sul telefono tutto in colonna; dal computer le schede
+ * si dispongono su due colonne, con l'azione principale e i numeri in alto
+ * a tutta larghezza.
+ */
+
+.pagina {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.testa {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 20px 0 8px;
+}
+
+.saluto {
+  margin: 0;
+  font-size: 15px;
+  color: var(--lc-text-2);
+  max-width: 48ch;
+}
+
+/* ------------------------- cosa ti aspetta ------------------------- */
+
+.azione,
+.inPari {
+  min-height: 84px;
+  padding: 16px 18px;
+  border-radius: 22px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.azione {
+  background: var(--lc-accent);
+  color: var(--lc-accent-ink);
+}
+
+.inPari {
+  background: var(--lc-surface);
+  border: 1px solid var(--lc-line);
+}
+
+.azioneNumero {
+  flex: none;
+  min-width: 48px;
+  font-family: var(--lc-display);
+  font-stretch: 125%;
+  font-weight: 800;
+  font-size: 40px;
+  line-height: 1;
+}
+
+.inPariIcona {
+  flex: none;
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+  background: var(--lc-ok-bg);
+  color: var(--lc-ok-text);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.azioneTesti {
+  flex-grow: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.azioneTitolo {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.azioneSotto {
+  font-size: 13px;
+  /* Sul rosa: niente opacità, scendeva sotto il 4,5:1. */
+  color: inherit;
+}
+
+.inPari .azioneSotto {
+  color: var(--lc-text-2);
+}
+
+/* ------------------------------- numeri ------------------------------- */
+
+.kpi {
+  display: grid;
+  /* Quattro numeri: due per riga sul telefono, quattro dove c'è posto. Mai tre più uno. */
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+@media (min-width: 560px) {
+  .kpi {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+.kpiCard {
+  padding: 14px;
+  border-radius: 20px;
+  background: var(--lc-surface);
+  border: 1px solid var(--lc-line);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 10px;
+  min-width: 0;
+}
+
+.kpiEtichetta {
+  font-size: 12px;
+  color: var(--lc-text-2);
+}
+
+.kpiValore {
+  font-family: var(--lc-display);
+  font-stretch: 125%;
+  font-weight: 800;
+  font-size: 30px;
+  line-height: 1;
+}
+
+.kpiUnita {
+  margin-left: 2px;
+  font-size: 16px;
+  color: var(--lc-text-2);
+}
+
+/* ------------------------------- schede ------------------------------- */
+
+.scheda {
+  padding: 18px;
+  border-radius: 22px;
+  background: var(--lc-surface);
+  border: 1px solid var(--lc-line);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-width: 0;
+}
+
+.testaScheda {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.titoloScheda {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.testoScheda {
+  margin: 0;
+  font-size: 14px;
+  color: var(--lc-text-2);
+}
+
+.tutte {
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  font-size: 13px;
+  color: var(--lc-text-2);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* --------------------------------- link --------------------------------- */
+
+/* Il dominio e il nome del PR stanno su due pezzi che non si spezzano: se non entrano affiancati, il nome va sotto intero. */
+.indirizzo {
+  padding: 12px 14px;
+  border-radius: 14px;
+  background: var(--lc-inset);
+  border: 1px dashed var(--lc-line-strong);
+  font-family: var(--lc-mono);
+  font-size: 13px;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.dominio {
+  white-space: nowrap;
+}
+
+.codice {
+  color: var(--lc-accent);
+  white-space: nowrap;
+}
+
+.duePulsanti {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 8px;
+}
+
+.primario,
+.secondario {
+  height: 48px;
+  padding: 0 18px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.primario {
+  border: 0;
+  background: var(--lc-accent);
+  color: var(--lc-accent-ink);
+}
+
+.secondario {
+  border: 1px solid var(--lc-line-strong);
+  background: transparent;
+  color: var(--lc-text);
+}
+
+.vuoto {
+  margin: 0;
+  padding: 4px 4px 0;
+  font-size: 14px;
+  color: var(--lc-text-2);
+  max-width: 56ch;
+}
+
+/* ------------------------------- elenchi ------------------------------- */
+
+.elenco {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.riga {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 8px 0;
+  border-top: 1px solid var(--lc-line);
+}
+
+.riga:first-child {
+  border-top: 0;
+}
+
+.rigaTitolo {
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.rigaSotto {
+  font-size: 13px;
+  color: var(--lc-text-2);
+}
+
+.barraRiga {
+  display: grid;
+  grid-template-columns: 80px minmax(0, 1fr) 28px;
+  align-items: center;
+  gap: 12px;
+  min-height: 36px;
+}
+
+.barra {
+  height: 8px;
+  border-radius: 999px;
+  background: var(--lc-surface-3);
+  overflow: hidden;
+}
+
+.barraPiena {
+  display: block;
+  height: 100%;
+  border-radius: 999px;
+  background: var(--lc-accent);
+}
+
+.conteggio {
+  font-family: var(--lc-mono);
+  font-size: 13px;
+  text-align: right;
+}
+
+.recente {
+  min-height: 64px;
+  padding: 10px 0;
+  border-top: 1px solid var(--lc-line);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+li:first-child > .recente {
+  border-top: 0;
+}
+
+.recenteTesti {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.recenteTesti .rigaSotto {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.recenteLato {
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6px;
+}
+
+.arrivata {
+  font-family: var(--lc-mono);
+  font-size: 11px;
+  color: var(--lc-muted);
+  white-space: nowrap;
+}
+
+/* ------------------------------ dal computer ------------------------------ */
+
+@media (min-width: 900px) {
+  .pagina {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 16px;
+    align-items: start;
+  }
+
+  .testa,
+  .azione,
+  .inPari,
+  .kpi,
+  .vuoto {
+    grid-column: 1 / -1;
+  }
+
+  .duePulsanti {
+    grid-template-columns: 1fr 1fr;
+  }
+}

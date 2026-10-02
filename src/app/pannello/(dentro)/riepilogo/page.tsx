@@ -1,5 +1,6 @@
 import { RiepilogoVista } from "@/componenti/lc/RiepilogoVista";
 import { richieste, squadra } from "@/lib/pannello/dati";
+import { soloOwnerOAltrove, sessioneOAccesso } from "@/lib/pannello/sessione";
 import { daRichiesta, iniziali, perData, statistiche } from "@/lib/pannello/vista";
 
 export const metadata = { title: "Riepilogo, pannello Luca California" };
@@ -15,10 +16,12 @@ const GIORNO_ROMA = new Intl.DateTimeFormat("en-CA", { timeZone: "Europe/Rome" }
  * la pagina si disegnerebbe in due modi diversi.
  */
 export default async function Riepilogo() {
+  await soloOwnerOAltrove();
+  const sessione = await sessioneOAccesso();
   const adesso = new Date();
-  const voci = (await richieste()).map((r) => daRichiesta(r, adesso));
+  const voci = (await richieste(sessione)).map((r) => daRichiesta(r, adesso));
   const confermate = voci.filter((v) => v.stato === "confermata");
-  const pr = [...(await squadra())].sort((a, b) => b.confermate - a.confermate);
+  const pr = [...(await squadra(sessione))].sort((a, b) => b.confermate - a.confermate);
 
   return (
     <RiepilogoVista

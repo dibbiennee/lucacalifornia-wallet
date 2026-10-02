@@ -1,0 +1,424 @@
+/*
+ * La lista d'attesa. Sul telefono tutto in colonna, con i filtri in un blocco
+ * in cima; dal computer i filtri stanno su una riga e le persone su due colonne.
+ */
+
+.pagina {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.testa {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 20px 0 8px;
+}
+
+.sottotitolo {
+  margin: 0;
+  font-size: 15px;
+  color: var(--lc-text-2);
+  max-width: 56ch;
+}
+
+/* -------------------------------- filtri -------------------------------- */
+
+.filtri {
+  padding: 14px;
+  border-radius: 22px;
+  background: var(--lc-surface);
+  border: 1px solid var(--lc-line);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 12px;
+}
+
+/* La casella che apre e chiude i filtri sul telefono: invisibile, ma raggiungibile con la tastiera. */
+.interruttore {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  opacity: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.interruttore:focus-visible + .rigaCerca .apriFiltri {
+  outline: 2px solid var(--lc-accent);
+  outline-offset: 2px;
+}
+
+.rigaCerca {
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+}
+
+.cerca {
+  flex-grow: 1;
+}
+
+.apriFiltri {
+  flex: none;
+  height: 48px;
+  padding: 0 18px;
+  border-radius: 14px;
+  border: 1px solid var(--lc-line-strong);
+  color: var(--lc-text);
+  display: flex;
+  align-items: center;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.interruttore:checked + .rigaCerca .apriFiltri {
+  background: var(--lc-surface-3);
+}
+
+/* Chiusi sul telefono finché non si tocca "Filtri" (o se c'è un filtro attivo). */
+.corpoFiltri {
+  display: none;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 12px;
+}
+
+.interruttore:checked ~ .corpoFiltri {
+  display: grid;
+}
+
+.campo {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.campo label {
+  font-size: 12px;
+  color: var(--lc-text-2);
+}
+
+.controllo {
+  width: 100%;
+  min-width: 0;
+  height: 48px;
+  padding: 0 14px;
+  border-radius: 14px;
+  border: 1px solid var(--lc-line-strong);
+  background: var(--lc-inset);
+  color: var(--lc-text);
+  font-family: inherit;
+  font-size: 16px;
+}
+
+.controllo:focus-visible {
+  outline: 2px solid var(--lc-accent);
+  outline-offset: 2px;
+}
+
+.spunta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 44px;
+  font-size: 14px;
+  color: var(--lc-text-2);
+}
+
+.spunta input {
+  flex: none;
+  width: 24px;
+  height: 24px;
+  accent-color: var(--lc-accent);
+}
+
+.pulsantiFiltri {
+  display: flex;
+  gap: 8px;
+}
+
+.filtra,
+.azzera {
+  height: 48px;
+  padding: 0 22px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.filtra {
+  flex-grow: 1;
+  border: 0;
+  background: var(--lc-accent);
+  color: var(--lc-accent-ink);
+}
+
+.azzera {
+  border: 1px solid var(--lc-line-strong);
+  background: transparent;
+  color: var(--lc-text);
+}
+
+/* -------------------------------- elenco -------------------------------- */
+
+.gruppo {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-top: 12px;
+}
+
+.testaGruppo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 0 4px;
+}
+
+.titoloGruppo {
+  margin: 0;
+  font-family: var(--lc-mono);
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--lc-muted);
+}
+
+.conteggio {
+  font-family: var(--lc-mono);
+  font-size: 11px;
+  color: var(--lc-muted);
+}
+
+.elenco {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 8px;
+}
+
+.riga {
+  padding: 14px 16px;
+  border-radius: 20px;
+  background: var(--lc-surface);
+  border: 1px solid var(--lc-line);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.rigaTesta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.nome {
+  font-size: 16px;
+  font-weight: 600;
+  min-width: 0;
+  overflow-wrap: break-word;
+}
+
+.contatto {
+  font-family: var(--lc-mono);
+  font-size: 14px;
+  overflow-wrap: anywhere;
+}
+
+.meta {
+  font-size: 12px;
+  color: var(--lc-text-2);
+}
+
+.azioni {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding-top: 6px;
+}
+
+.azione {
+  min-height: 44px;
+  padding: 0 16px;
+  border-radius: 12px;
+  border: 1px solid var(--lc-line-strong);
+  background: transparent;
+  color: var(--lc-text);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.azione:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+/* -------------------------------- vuoto, note -------------------------------- */
+
+.vuoto {
+  padding: 40px 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  text-align: center;
+}
+
+.vuotoTitolo {
+  font-size: 17px;
+  font-weight: 600;
+}
+
+.vuotoTesto {
+  font-size: 14px;
+  color: var(--lc-text-2);
+  max-width: 40ch;
+}
+
+.nota {
+  margin: 0;
+  padding: 0 4px;
+  font-size: 13px;
+  color: var(--lc-text-2);
+}
+
+/* ------------------------- date degli eventi speciali ------------------------- */
+
+.scheda {
+  margin-top: 12px;
+  padding: 18px;
+  border-radius: 22px;
+  background: var(--lc-surface);
+  border: 1px solid var(--lc-line);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.titoloScheda {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.testoScheda {
+  margin: 0;
+  font-size: 14px;
+  color: var(--lc-text-2);
+  max-width: 60ch;
+}
+
+.elencoDate {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.rigaData {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-areas:
+    "nome nome"
+    "data salva";
+  gap: 8px;
+  align-items: center;
+}
+
+.nomeData {
+  grid-area: nome;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.campoData {
+  grid-area: data;
+  height: 44px;
+  padding: 0 12px;
+  border-radius: 12px;
+  border: 1px solid var(--lc-line-strong);
+  background: var(--lc-inset);
+  color: var(--lc-text);
+  font-family: inherit;
+  font-size: 16px;
+  min-width: 0;
+}
+
+.rigaData .azione {
+  grid-area: salva;
+}
+
+/* ------------------------------ dal computer ------------------------------ */
+
+@media (min-width: 900px) {
+  /* Dal computer i filtri stanno tutti su una riga, sempre in vista: il pulsante non serve. */
+  .filtri {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    align-items: end;
+    padding: 16px;
+  }
+
+  .apriFiltri {
+    display: none;
+  }
+
+  .rigaCerca,
+  .corpoFiltri,
+  .interruttore:checked ~ .corpoFiltri {
+    display: contents;
+  }
+
+  .cerca {
+    order: 4;
+  }
+
+  .spunta,
+  .pulsantiFiltri {
+    order: 5;
+    grid-column: span 2;
+  }
+
+  .pulsantiFiltri {
+    justify-content: flex-end;
+  }
+
+  .filtra {
+    flex-grow: 0;
+  }
+
+  .elenco {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .rigaData {
+    grid-template-columns: 220px 200px auto;
+    grid-template-areas: "nome data salva";
+    justify-content: start;
+  }
+
+  .rigaData .azione {
+    justify-self: start;
+  }
+}

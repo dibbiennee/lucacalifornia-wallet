@@ -1,24 +1,30 @@
+import type { Metadata } from "next";
+
 import { Indietro } from "@/componenti/sito/Indietro";
 import { TestaPagina } from "@/componenti/sito/Pagina";
+import { TestoLegale } from "@/componenti/sito/TestoLegale";
+import { SEZIONI_PRIVACY } from "@/contenuti/legale";
 
-export const metadata = { title: "PRIVACY - Luca California" };
+export const metadata: Metadata = {
+  title: "Privacy - Luca California",
+  description: "Quali dati raccoglie il modulo, a cosa servono, chi li vede e come chiederne la cancellazione.",
+  alternates: { canonical: "/privacy" },
+};
 
 /**
- * Resta una pagina con un indirizzo suo.
- *
- * Nel sito di riferimento privacy e cookie sono un foglio che si apre col
- * codice: comodo, ma senza indirizzo non si può linkare da fuori, e
- * un'informativa deve essere raggiungibile anche da chi arriva da un altro
- * sito o da un messaggio.
+ * Resta una pagina con un indirizzo suo: un'informativa deve essere
+ * raggiungibile anche da chi arriva da un altro sito o da un messaggio.
+ * Il testo sta in src/contenuti/legale.ts.
  */
-export default function PaginaPRIVACY() {
+export default function PaginaPrivacy() {
   return (
     <>
       <Indietro testo="Home" dove="/" />
       <TestaPagina
-        righe={["PRIVACY"]}
-        introduzione="Questa è un'anteprima del sito. L'informativa completa viene pubblicata insieme al sito vero, prima che il modulo di prenotazione raccolga dati di persone reali."
+        righe={["Privacy"]}
+        introduzione="Quello che raccogliamo quando mandi una richiesta, a cosa serve, e come puoi chiederne la cancellazione."
       />
+      <TestoLegale sezioni={SEZIONI_PRIVACY} />
     </>
   );
 }

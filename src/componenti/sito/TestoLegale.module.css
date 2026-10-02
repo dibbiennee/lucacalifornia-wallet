@@ -1,0 +1,58 @@
+/* Le pagine legali: una colonna di testo da leggere, non una pagina da guardare. */
+.colonna {
+  max-width: 64ch;
+  padding-bottom: 72px;
+  display: grid;
+  gap: 36px;
+}
+
+.sezione {
+  display: grid;
+  gap: 14px;
+}
+
+.paragrafo {
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--testo-2);
+  text-wrap: pretty;
+}
+
+.elenco {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 10px;
+}
+
+.elenco li {
+  padding: 16px 18px;
+  border-radius: var(--r-m);
+  background: var(--surface);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.elenco strong {
+  font-size: 15px;
+  font-weight: 900;
+  font-stretch: 112%;
+  text-transform: uppercase;
+}
+
+.elenco span {
+  font-size: 15px;
+  line-height: 1.55;
+  color: var(--testo-2);
+  text-wrap: pretty;
+}
+
+.colonna a {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  overflow-wrap: anywhere;
+}

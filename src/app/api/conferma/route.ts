@@ -1,129 +1,241 @@
+import {
+  richiesta,
+  riservaSerialWallet,
+  salvaWalletPronto,
+  segnaWalletInErrore,
+  transizione,
+  walletDi,
+  type RichiestaPannello,
+} from "@/lib/pannello/dati";
+import { prenotazioneDa } from "@/lib/pannello/biglietto";
+import { linkWhatsapp, messaggioConferma } from "@/lib/pannello/messaggi";
 import { dataInLettere } from "@/lib/serate";
-import { isCodiceLocale, type Prenotazione } from "@/lib/pass/tipi";
-import { creaToken, nuovoSerialNumber } from "@/lib/pass/token";
+import { leggiSessione, type Sessione } from "@/lib/pannello/sessione";
+import { creaToken, leggiToken, nuovoSerialNumber } from "@/lib/pass/token";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 /**
- * La conferma, cioè il gesto che farà Luca dal pannello.
+ * La conferma di una richiesta: il gesto che fa Luca. Solo lui: un PR riceve 403.
  *
- * Non salva niente: in questa versione non c'è un archivio. Prende i dati,
- * ne ricava il biglietto e restituisce due link, quello del biglietto e
- * quello di WhatsApp col messaggio già scritto. Il messaggio parte sempre da
- * lui, mai da solo: è una regola del brief del sito.
+ * POST { "richiestaId": "<id>" }, e basta. Il server decide tutto il resto.
+ *
+ * Il browser dice SOLO quale richiesta. Nome, telefono, serata, data, tipo,
+ * locale e sala li legge il server dal database: non si accetta niente di
+ * quello che finisce nel biglietto da chi chiama, perché chiunque può
+ * scrivere una richiesta a mano. Senza sessione non si entra, e con la
+ * sessione di un PR neppure: decide solo Luca.
+ *
+ * Cosa fa, nell'ordine:
+ *   1. sessione obbligatoria (401), e solo quella di Luca (403);
+ *   2. la richiesta si carica dal database (404);
+ *   3. se è "in attesa" o "rifiutata" (Luca può cambiare idea) la porta a
+ *      "confermata" con un UPDATE condizionale (vedi transizione in dati.ts).
+ *      Se è già "confermata" non rifà la transizione e prosegue: ripetere la
+ *      conferma è innocuo;
+ *   4. il biglietto Wallet. Se è già "pronto" restituisce QUELLO, salvato nel
+ *      database: niente token nuovo, niente serial nuovo, niente effetti. Se
+ *      non c'è o è in "errore" lo prepara (o lo riprepara) con il numero di
+ *      serie legato a quella richiesta, che non cambia mai;
+ *   5. risponde col link del biglietto e col link di WhatsApp già scritto.
+ *
+ * Idempotenza: due clic, due schede, due persone che confermano insieme
+ * ottengono lo stesso biglietto. Se due richieste arrivano nello stesso
+ * istante e generano entrambe un token, il database ne tiene uno solo (il
+ * primo scritto) e restituisce quello a tutte e due.
+ *
+ * Se il Wallet si rompe, la prenotazione RESTA confermata: la risposta è 200
+ * con wallet.stato = "errore", e il pannello può mostrare l'errore e far
+ * riprovare (si richiama questa stessa route: è l'unico caso in cui si
+ * rigenera). WhatsApp non parte mai da qui: il messaggio lo manda chi usa il
+ * pannello, con un tocco.
  */
 
-interface Richiesta {
-  readonly nomeCliente: string;
-  readonly telefono: string;
-  readonly serata: string;
-  readonly inizioSerata: string;
-  readonly tipo: string;
-  readonly locale: string;
-  readonly sala?: string;
-}
+type RispostaWallet =
+  | {
+      readonly stato: "pronto";
+      readonly linkBiglietto: string;
+      /** Null se il numero di telefono della richiesta non è un numero valido. */
+      readonly linkWhatsapp: string | null;
+      readonly messaggio: string;
+    }
+  /** La navetta non ha il biglietto: la conferma è solo il messaggio. */
+  | {
+      readonly stato: "non_previsto";
+      readonly linkWhatsapp: string | null;
+      readonly messaggio: string;
+    }
+  | { readonly stato: "errore"; readonly errore: string };
 
 interface Risposta {
-  readonly linkBiglietto: string;
-  readonly linkWhatsapp: string;
-  readonly messaggio: string;
+  readonly richiestaId: string;
+  readonly stato: "confermata";
+  readonly wallet: RispostaWallet;
 }
 
-function testoRichiesto(valore: unknown, massimo: number): string | null {
-  if (typeof valore !== "string") {
-    return null;
+const NO_STORE = { "Cache-Control": "no-store" } as const;
+
+function errore(messaggio: string, status: number, extra: Record<string, unknown> = {}): Response {
+  return Response.json({ errore: messaggio, ...extra }, { status, headers: NO_STORE });
+}
+
+export async function POST(req: Request): Promise<Response> {
+  // 1. Sessione. Nessun accesso anonimo, nemmeno per "provare".
+  const sessione = await leggiSessione();
+
+  if (sessione === null) {
+    return errore("Non autorizzato", 401);
   }
 
-  const pulito = valore.trim();
-  return pulito.length > 0 && pulito.length <= massimo ? pulito : null;
-}
-
-/** Da "334 854 8735" a "393348548735", che è quello che vuole wa.me. */
-function numeroPerWhatsapp(telefono: string): string | null {
-  const cifre = telefono.replace(/\D/g, "");
-
-  if (cifre.length < 9 || cifre.length > 15) {
-    return null;
+  // Un PR è dentro, ma non decide: la sua sessione non basta.
+  if (sessione.ruolo !== "owner") {
+    return errore("Solo Luca può confermare", 403);
   }
 
-  return cifre.startsWith("39") ? cifre : `39${cifre}`;
-}
-
-export async function POST(richiesta: Request): Promise<Response> {
   let corpo: unknown;
 
   try {
-    corpo = await richiesta.json();
+    corpo = await req.json();
   } catch {
-    return errore("Richiesta illeggibile");
+    return errore("Richiesta illeggibile", 400);
   }
 
-  const c = corpo as Partial<Richiesta>;
+  const id = (corpo as { richiestaId?: unknown } | null)?.richiestaId;
 
-  const nomeCliente = testoRichiesto(c.nomeCliente, 60);
-  const serata = testoRichiesto(c.serata, 40);
-  const tipo = testoRichiesto(c.tipo, 40);
-  const telefono = testoRichiesto(c.telefono, 30);
-  const locale = testoRichiesto(c.locale, 20);
-  const quando = testoRichiesto(c.inizioSerata, 40);
-
-  if (
-    nomeCliente === null ||
-    serata === null ||
-    tipo === null ||
-    telefono === null ||
-    locale === null ||
-    quando === null
-  ) {
-    return errore("Manca qualcosa: servono nome, telefono, serata, data e tipo");
+  if (typeof id !== "string" || id.length === 0 || id.length > 120) {
+    return errore("Manca la richiesta da confermare", 400);
   }
 
-  if (!isCodiceLocale(locale)) {
-    return errore("Locale sconosciuto");
+  // 2. La richiesta, dal database e dentro l'ambito di chi chiede.
+  const trovata = await richiesta(sessione, id);
+
+  if (trovata === undefined) {
+    return errore("Richiesta non trovata", 404);
   }
 
-  const inizioSerata = new Date(quando);
+  // 3. Lo stato. Da "in attesa" o da "rifiutata" si conferma; se è già confermata si prosegue.
+  let corrente: RichiestaPannello = trovata;
 
-  if (Number.isNaN(inizioSerata.getTime())) {
-    return errore("Data non valida");
+  if (trovata.stato !== "confermata") {
+    const esito = await transizione(sessione, id, "confermata");
+
+    if (esito.ok) {
+      corrente = esito.richiesta;
+    } else if (esito.motivo === "inesistente") {
+      return errore("Richiesta non trovata", 404);
+    } else {
+      // Un'altra scheda (o un altro doppio clic) ha confermato un istante prima: non è un errore, si prosegue.
+      corrente = (await richiesta(sessione, id)) ?? trovata;
+    }
   }
 
-  const numero = numeroPerWhatsapp(telefono);
-
-  if (numero === null) {
-    return errore("Numero di telefono non valido");
+  // La navetta non ha il biglietto: la conferma è il solo messaggio WhatsApp, già scritto.
+  if (corrente.tipo === "navetta") {
+    return rispostaNavetta(corrente);
   }
 
-  const sala = testoRichiesto(c.sala, 40);
-
-  const prenotazione: Prenotazione = {
-    serialNumber: nuovoSerialNumber(),
-    nomeCliente,
-    serata,
-    inizioSerata,
-    tipo,
-    locale,
-    ...(sala !== null ? { sala } : {}),
-  };
-
-  const origine = new URL(richiesta.url).origin;
-  const linkBiglietto = `${origine}/api/pass/${creaToken(prenotazione)}`;
-
-  const messaggio =
-    `Ciao ${nomeCliente}, ti confermo per ${dataInLettere(inizioSerata)} e ${tipo}.\n` +
-    `Questo è il tuo biglietto, puoi aggiungerlo al wallet.\n${linkBiglietto}\n\n` +
-    `All'ingresso mostralo al PR se ti viene richiesto.`;
-
-  const risposta: Risposta = {
-    linkBiglietto,
-    linkWhatsapp: `https://wa.me/${numero}?text=${encodeURIComponent(messaggio)}`,
-    messaggio,
-  };
-
-  return Response.json(risposta, { headers: { "Cache-Control": "no-store" } });
+  // 4 e 5. Il biglietto. Un errore qui non annulla la conferma.
+  return await preparaWallet(req, sessione, corrente);
 }
 
-function errore(messaggio: string): Response {
-  return Response.json({ errore: messaggio }, { status: 400 });
+/** La navetta: nessun biglietto, nessun serial, nessuna scrittura sul Wallet. Solo il testo e il link verso il cliente. */
+function rispostaNavetta(r: RichiestaPannello): Response {
+  const messaggio = messaggioConferma({
+    nome: r.nome,
+    tipo: "navetta",
+    serata: r.nomeSerata,
+    data: null,
+    zona: r.zona,
+    linkBiglietto: null,
+  });
+
+  const risposta: Risposta = {
+    richiestaId: r.id,
+    stato: "confermata",
+    wallet: { stato: "non_previsto", linkWhatsapp: linkWhatsapp(r.telefono ?? "", messaggio), messaggio },
+  };
+
+  return Response.json(risposta, { headers: NO_STORE });
+}
+
+/** La risposta "pronto" per un biglietto già deciso: le stesse cose, ogni volta che si chiede. */
+function rispostaPronta(req: Request, r: RichiestaPannello, serial: string, token: string): Response {
+  // I dati si leggono dal biglietto salvato, non si ricalcolano: per le richieste senza data vera la
+  // "prossima serata" cambierebbe di settimana in settimana, e il messaggio non sarebbe più lo stesso.
+  const prenotazione = leggiToken(token) ?? prenotazioneDa(r, serial);
+  const linkBiglietto = `${new URL(req.url).origin}/api/pass/${token}`;
+  const messaggio = messaggioConferma({
+    nome: prenotazione.nomeCliente,
+    tipo: r.tipo,
+    serata: prenotazione.serata,
+    data: dataInLettere(prenotazione.inizioSerata),
+    zona: r.zona,
+    linkBiglietto,
+  });
+
+  const risposta: Risposta = {
+    richiestaId: r.id,
+    stato: "confermata",
+    wallet: {
+      stato: "pronto",
+      linkBiglietto,
+      linkWhatsapp: linkWhatsapp(r.telefono ?? "", messaggio),
+      messaggio,
+    },
+  };
+
+  return Response.json(risposta, { headers: NO_STORE });
+}
+
+async function preparaWallet(req: Request, sessione: Sessione, r: RichiestaPannello): Promise<Response> {
+  try {
+    const salvato = await walletDi(sessione, r.id);
+
+    if (salvato === null) {
+      throw new Error("Wallet non leggibile: la richiesta non è più confermata o non è visibile");
+    }
+
+    // Già pronto: si restituisce quello che c'è. Nessuna generazione, nessuna scrittura.
+    if (salvato.stato === "pronto" && salvato.serial !== null && salvato.token !== null) {
+      return rispostaPronta(req, r, salvato.serial, salvato.token);
+    }
+
+    // Non c'è ancora, o l'ultima volta è andata male: si prepara. Il numero di serie, se c'è già, resta quello.
+    const serial = await riservaSerialWallet(sessione, r.id, nuovoSerialNumber());
+
+    if (serial === null) {
+      throw new Error("Numero di serie non assegnabile");
+    }
+
+    const generato = creaToken(prenotazioneDa(r, serial));
+    // Se un'altra scheda ha salvato il suo token un istante prima, qui torna il suo, non questo.
+    const token = await salvaWalletPronto(sessione, r.id, generato);
+
+    if (token === null) {
+      throw new Error("Biglietto non salvabile");
+    }
+
+    return rispostaPronta(req, r, serial, token);
+  } catch (causa) {
+    // Il dettaglio resta nei log del server; a chi guarda il pannello basta sapere che si può riprovare.
+    console.error(`Wallet non preparato per la richiesta ${r.id}:`, causa);
+
+    try {
+      await segnaWalletInErrore(sessione, r.id);
+    } catch (secondo) {
+      console.error(`Stato del Wallet non registrato per la richiesta ${r.id}:`, secondo);
+    }
+
+    const risposta: Risposta = {
+      richiestaId: r.id,
+      stato: "confermata",
+      wallet: {
+        stato: "errore",
+        errore: "La richiesta è confermata, ma il biglietto non si è generato. Riprova fra un attimo.",
+      },
+    };
+
+    return Response.json(risposta, { headers: NO_STORE });
+  }
 }

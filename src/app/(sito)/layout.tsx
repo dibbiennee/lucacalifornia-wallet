@@ -4,6 +4,8 @@ import { BarraPrenota } from "@/componenti/sito/BarraPrenota";
 import { ChatBot } from "@/componenti/sito/ChatBot";
 import { PiePagina } from "@/componenti/sito/PiePagina";
 import { RivelaScroll } from "@/componenti/sito/RivelaScroll";
+import { SfondiPigri } from "@/componenti/sito/SfondiPigri";
+import { Tracciamento } from "@/componenti/sito/Tracciamento";
 import { Testata } from "@/componenti/sito/Testata";
 import { carattere } from "@/lib/carattere";
 
@@ -25,6 +27,8 @@ export default function LayoutSito({ children }: { children: ReactNode }) {
       <BarraPrenota />
       <ChatBot />
       <RivelaScroll />
+      <SfondiPigri />
+      <Tracciamento />
     </div>
   );
 }

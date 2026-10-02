@@ -10,7 +10,7 @@
 .piede {
   background:
     linear-gradient(to bottom, rgba(5, 4, 7, 0.6) 0%, rgba(5, 4, 7, 0.88) 55%, rgba(5, 4, 7, 1) 100%),
-    url("/foto/bailame-sfondo.jpg") center 20% / cover no-repeat;
+    var(--foto, none) center 20% / cover no-repeat;
   border-top: 1px solid var(--line);
   /* Sotto c'è la barra fissa: il contenuto non deve finirci dietro. */
   padding: 56px 0 calc(56px + var(--barra-h, 0px));
@@ -120,4 +120,24 @@
 
   .marchio { grid-row: span 2; }
   .locale img { height: 26px; }
+}
+
+/* Il titolare del trattamento, in chiaro come chiede l'informativa. */
+.titolare {
+  margin: 0;
+  font-size: 14px;
+  color: var(--muted);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.titolare a {
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  overflow-wrap: anywhere;
 }

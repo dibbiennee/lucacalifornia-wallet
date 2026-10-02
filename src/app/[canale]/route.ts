@@ -1,23 +1,20 @@
-
 import { BISCOTTO_PROVENIENZA, DURATA_PROVENIENZA, riconosci } from "@/contenuti/canali";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 /**
- * Il percorso corto: segna da dove arrivi e ti porta sulla home pulita.
+ * Il percorso corto.
  *
- * Non è una pagina: nessuno deve vederla. Segna il biscotto e rimanda
- * subito, così nell'indirizzo del browser resta il sito e non il codice del
- * canale, che sennò finirebbe in ogni link condiviso.
+ * Un canale (/ig, /tiktok, /storiainstagram...) segna da dove arrivi e ti porta
+ * sulla home pulita: non è una pagina, nessuno deve vederla. Segna il
+ * biscotto e rimanda subito, così nell'indirizzo del browser resta il sito e
+ * non il codice del canale, che sennò finirebbe in ogni link condiviso.
  *
- * I link dei PR fanno eccezione: non portano alla home, ma dritti al modulo
- * isolato in /pr. Un PR manda il link e basta: chi lo apre deve vedere solo
- * il modulo, senza dover prima capire cos'è il sito.
- *
- * Gli indirizzi conosciuti stanno in un elenco chiuso: tutto il resto è
- * pagina non trovata, altrimenti qualsiasi parola dopo la barra diventerebbe
- * un canale.
+ * Un PR attivo (/antonio, il vecchio formato) rimanda al suo link vero,
+ * /pr/antonio, senza biscotti. Un PR spento, o una parola qualunque, è pagina
+ * non trovata: gli indirizzi conosciuti stanno in un elenco chiuso, altrimenti
+ * qualsiasi parola dopo la barra diventerebbe un canale.
  */
 export async function GET(
   _richiesta: Request,
@@ -30,8 +27,11 @@ export async function GET(
     return new Response("Non trovato", { status: 404 });
   }
 
-  const destinazione = trovato.valore.startsWith("pr:") ? "/pr" : "/";
-  const risposta = new Response(null, { status: 307, headers: { Location: destinazione } });
+  if (trovato.tipo === "pr") {
+    return new Response(null, { status: 307, headers: { Location: `/pr/${trovato.codice}` } });
+  }
+
+  const risposta = new Response(null, { status: 307, headers: { Location: "/" } });
 
   risposta.headers.append(
     "Set-Cookie",

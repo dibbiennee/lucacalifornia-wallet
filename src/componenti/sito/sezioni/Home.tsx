@@ -78,7 +78,7 @@ export function TuttoIlResto() {
 /** I tre passi, dalla richiesta alla porta. */
 export function ComeFunziona() {
   return (
-    <section className={`blocco ${stili.comeFunzionaSfondo}`} style={{ paddingTop: 0 }} aria-labelledby="come-funziona">
+    <section className={`blocco ${stili.comeFunzionaSfondo}`} data-sfondo="/foto/atmosfera/come-funziona-dj.jpg" style={{ paddingTop: 0 }} aria-labelledby="come-funziona">
       <div className="wrap">
         <div className="blocco-testa rivela">
           <Titolo2 id="come-funziona" misura='clamp(25px, 7.6vw, 60px)'>Come funziona</Titolo2>
@@ -187,7 +187,7 @@ export function LeFoto() {
  */
 export function SpaccaPagina() {
   return (
-    <section className={stili.spacca} aria-hidden>
+    <section className={stili.spacca} data-sfondo="/foto/atmosfera/spacca-rosso.jpg" aria-hidden>
       <p className="display">{legaParole("La musica non si racconta. Si vive da dentro.", { titolo: true, vedova: true })}</p>
     </section>
   );
@@ -222,7 +222,7 @@ export function SpecialGuest({ avvisami }: { readonly avvisami: React.ReactNode 
   return (
     <section className="blocco" style={{ paddingTop: 0 }} aria-label={SPECIAL_GUEST.titolo}>
       <div className="wrap">
-        <div className={`${stili.ospite} ${stili.ospiteFoto} rivela`}>
+        <div className={`${stili.ospite} ${stili.ospiteFoto} rivela`} data-sfondo="/foto/atmosfera/special-guest.jpg">
           <div className={stili.ospiteTesto}>
             <strong>Special guest</strong>
             <p className={stili.arrivo}>
@@ -247,7 +247,7 @@ export function Halloween({ avvisami }: { readonly avvisami: React.ReactNode }) 
     <section className="blocco" style={{ paddingTop: 0, paddingBottom: 8 }} aria-label={HALLOWEEN.titolo}>
       <div className="wrap">
         <span className={stili.rigaDivisore} aria-hidden />
-        <div className={`${stili.ospite} ${stili.halloween} rivela`}>
+        <div className={`${stili.ospite} ${stili.halloween} rivela`} data-sfondo="/foto/atmosfera/halloween.jpg">
           <div className={stili.ospiteTesto}>
             <strong>Halloween</strong>
             <p className={stili.arrivo}>

@@ -509,3 +509,76 @@
     order: 0;
   }
 }
+
+/* ------------------------- provenienza e decisione ------------------------- */
+
+/* Da dove arriva la richiesta: "PR Antonio" in evidenza, "Richiesta diretta" più spenta. */
+.provenienza {
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  min-height: 28px;
+  padding: 0 12px;
+  border-radius: 999px;
+  border: 1px solid var(--lc-line-strong);
+  background: var(--lc-surface-2);
+  color: var(--lc-text-2);
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.provenienza[data-pr] {
+  border-color: transparent;
+  background: var(--lc-new-bg);
+  color: var(--lc-new-text);
+}
+
+/* L'elenco dei motivi del rifiuto: una scelta sola, bersagli da 48 px. */
+.motivi {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.motivo {
+  display: flex;
+  align-items: center;
+  min-height: 48px;
+  padding: 0 16px;
+  border-radius: 14px;
+  border: 1px solid var(--lc-line-strong);
+  background: var(--lc-surface-2);
+  color: var(--lc-text);
+  font-size: 15px;
+  font-weight: 500;
+  text-align: left;
+  cursor: pointer;
+}
+
+.motivoScelto {
+  border-color: var(--lc-danger-text);
+  background: var(--lc-danger-bg);
+  color: var(--lc-danger-text);
+  font-weight: 600;
+}
+
+.confermaRifiuta:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+/* "Rimetti in attesa": una scelta neutra, non un rifiuto. */
+.confermaNeutra {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 52px;
+  border-radius: 16px;
+  border: 1px solid var(--lc-line-strong);
+  background: var(--lc-surface-2);
+  color: var(--lc-text);
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+}

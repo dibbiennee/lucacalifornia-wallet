@@ -739,20 +739,39 @@ M0 0 H100 V100 H0 Z M0 0 L100 24.7 L100 46.4 Z M0 0 L100 75 L50 100 Z
 
 ### Video
 
-`public/video/`, due tagli dello stesso filmato del Room 26:
+`public/video/`: un solo video verticale (720x1280, 25 fotogrammi al secondo,
+senza audio, circa 6,3 secondi) per telefono e computer, in tre file con il nome
+legato al contenuto:
 
-- `apertura-telefono.mp4` / `.webm` / `.jpg`, taglio verticale
-- `apertura-computer.mp4` / `.webm` / `.jpg`, taglio orizzontale
+- `hero-<impronta>.webm` (VP9, circa 1,2 MB) e `hero-<impronta>.mp4` (H.264,
+  circa 1,3 MB): lo stesso filmato, il webm per chi lo legge, l'mp4 per gli altri
+- `hero-<impronta>.webp`: il primo fotogramma esatto del video, che è anche il
+  poster e l'immagine che si vede sotto
 
-Due tagli perché il filmato è verticale: allargato su un computer si ingrandisce
-fino a sgranare, stretto su un telefono taglia via metà scena.
+I nomi li scrive `scripts/genera-apertura.mjs` in `src/contenuti/hero-video.ts`
+(file generato: non si modifica a mano). Cambiando il video cambia il nome, e per
+questo i file hanno la cache di un anno (`next.config.ts`).
 
-Il fotogramma fermo serve come poster mentre il video arriva, e serve da solo a
-chi ha chiesto meno movimento nelle impostazioni del telefono.
+Un solo video perché sugli schermi larghi la Hero lo mostra in un riquadro 9:16
+accanto al testo, e sul telefono a schermo pieno: lo stesso filmato va bene in
+tutti e due i casi, e non serve nessun JavaScript per scegliere quale scaricare.
 
-Compressione: la scena è scura e ci sta sopra una sfumatura, quindi crf 36 per
-l'mp4 (libx264) e 55 per il webm (libvpx-vp9) sono indistinguibili da valori più
-generosi e pesano quasi la metà.
+Il video parte da solo (`autoplay muted loop playsinline`), senza aspettare che la
+pagina finisca di caricare. Chi ha chiesto meno movimento o ha il risparmio dati
+acceso non lo scarica. Le foto di sfondo della parte bassa della home si caricano
+solo dopo che il video è partito e quando ci si avvicina (`SfondiPigri`): prima
+si dividevano la rete con il video, che con una connessione lenta partiva dopo
+12 secondi.
+
+Il master (`IMG_5910.mp4`, 1080x1920, 50 fps, 142 MB) sta in `sorgenti-video/`, che
+non va né nel repository né in deploy. Per rigenerare:
+`node scripts/genera-apertura.mjs sorgenti-video/IMG_5910.mp4 11.20 6.34`.
+Il segmento comincia e finisce su un taglio del montaggio, scelto guardando i
+fotogrammi: in un montaggio serrato il salto fra ultimo e primo fotogramma è un
+taglio come gli altri e il loop non si nota.
+
+Compressione: misurata con la somiglianza (SSIM) rispetto a una copia quasi senza
+perdita, 0,970 per il webm (crf 44) e 0,967 per l'mp4 (crf 31).
 
 Il secondo di partenza scelto è il **7**: le strutture del soffitto coi fasci blu,
 senza nessuno in campo. Il montaggio è serrato, gli stacchi durano meno di un
@@ -767,7 +786,7 @@ Tutti in `scripts/`, con **sharp** per le immagini e **ffmpeg** per i video.
 | `genera-immagini.mjs` | Le icone del pass dal marchio SVG. Non tocca logo e strip. |
 | `genera-logo.mjs` | Compone il logo del pass: marchio ritagliato dal file ufficiale più il nome su due righe |
 | `genera-strip.mjs` | Prepara la fascia del biglietto da un'immagine, nelle tre densità, con la sfumatura |
-| `genera-apertura.mjs` | I due tagli del video più i fotogrammi fermi |
+| `genera-apertura.mjs` | Il video della Hero (webm, mp4 e poster) dal filmato intero, con i nomi legati al contenuto |
 | `genera-anteprima-social.mjs` | L'immagine 1200x630 per la condivisione |
 | `genera-anteprima-biglietto.mjs` | Disegna l'anteprima del biglietto per la pagina Funzioni |
 | `prova-token.ts` | Prova cifratura e lettura del token senza costruire il progetto |

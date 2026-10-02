@@ -78,10 +78,11 @@ export function ListaSerate({ serate }: { readonly serate: readonly SerataSito[]
             key={s.codice}
             href={`/serate/${s.codice}`}
             className={`${stili.riga} ${conFoto ? stili.rigaConFoto : ""}`}
+            data-sfondo={s.badge}
             style={
               conFoto
                 ? {
-                    backgroundImage: `linear-gradient(to right, rgba(20, 19, 24, 0.45), rgba(20, 19, 24, 0.55)), url(${s.badge})`,
+                    backgroundImage: `linear-gradient(to right, rgba(20, 19, 24, 0.45), rgba(20, 19, 24, 0.55)), var(--foto, none)`,
                     backgroundPosition: s.badgePosizione ?? "center",
                   }
                 : undefined

@@ -8,6 +8,7 @@ import { legaParole } from "@/lib/tipografia";
 
 import { BottoneAzione } from "./Bottone";
 import stili from "./Modulo.module.css";
+import { segnaEvento, sessioneTraffico } from "./traffico-client";
 
 /**
  * Il modulo: l'unica cosa che porta soldi.
@@ -67,7 +68,12 @@ interface Errori {
 
 type TipoIngresso = "lista" | "tavolo" | "braccialetto";
 
-export function Modulo() {
+/**
+ * `codicePr`: il codice della pagina /pr/<codice> da cui si apre il modulo, se è
+ * quella di un PR. Non è un id e non decide niente da solo: il server lo controlla
+ * (un PR attivo) e da lui ricava a chi attribuire la richiesta.
+ */
+export function Modulo({ codicePr }: { readonly codicePr?: string } = {}) {
   const id = useId();
   // Il tavolo è la priorità: chi apre il modulo senza un tipo scelto prima
   // (dal link fisso, per esempio) parte da lì, non dalla lista.
@@ -87,6 +93,7 @@ export function Modulo() {
   const [inCorso, setInCorso] = useState(false);
   const [problema, setProblema] = useState("");
   const [inviata, setInviata] = useState(false);
+  const [trappola, setTrappola] = useState("");
 
   // Le date vere si generano solo nel browser, da "adesso": calcolarle anche
   // sul server darebbe due liste leggermente diverse (secondi di differenza
@@ -160,6 +167,9 @@ export function Modulo() {
           persone,
           ...(tipo === "tavolo" ? { gruppo, budget, occasione, note } : {}),
           ...(tipo === "braccialetto" ? { genere } : {}),
+          ...(codicePr === undefined ? {} : { codicePr }),
+          sessione: sessioneTraffico().sessione,
+          sito: trappola,
         }),
       });
 
@@ -191,7 +201,13 @@ export function Modulo() {
   }
 
   return (
-    <form onSubmit={(e) => void invia(e)} noValidate className={stili.modulo}>
+    <form
+      onSubmit={(e) => void invia(e)}
+      // "Modulo iniziato" = la persona ha toccato davvero un campo, non solo aperto la pagina.
+      onInput={() => segnaEvento("inizio", codicePr)}
+      noValidate
+      className={stili.modulo}
+    >
       <div className={stili["scelta-tipo"]} role="radiogroup" aria-label="Cosa vuoi">
         {(
           [
@@ -319,6 +335,15 @@ export function Modulo() {
         Il modulo raccoglie nome e telefono: chi li lascia deve poter sapere
         che fine fanno, senza doverlo cercare nel piè di pagina.
       */}
+      {/*
+        Il campo trappola: fuori dallo schermo e fuori dalla tastiera, per chi usa il
+        sito non esiste. Un bot che riempie ogni campo lo riempie, e il server lo scarta.
+      */}
+      <div aria-hidden style={{ position: "absolute", left: "-9999px", width: 1, height: 1, overflow: "hidden" }}>
+        <label htmlFor={`${id}-sito`}>Non compilare</label>
+        <input id={`${id}-sito`} name="sito" tabIndex={-1} autoComplete="off" value={trappola} onChange={(e) => setTrappola(e.target.value)} />
+      </div>
+
       <p className={stili.dopo}>
         I tuoi dati servono solo a ricontattarti: <Link href="/privacy">come li trattiamo</Link>.
       </p>

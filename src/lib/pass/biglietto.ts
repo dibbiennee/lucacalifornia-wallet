@@ -88,10 +88,8 @@ export async function creaBiglietto(dati: DatiBiglietto): Promise<Buffer> {
     });
   }
 
-  biglietto.backFields.push(
-    { key: "instagram", label: "INSTAGRAM", value: INSTAGRAM },
-    { key: "ingresso", label: "ALL'INGRESSO", value: "Mostra questo QR all'ingresso" },
-  );
+  // Il biglietto è la conferma della prenotazione: sul retro solo il profilo Instagram, niente istruzioni per l'ingresso.
+  biglietto.backFields.push({ key: "instagram", label: "INSTAGRAM", value: INSTAGRAM });
 
   pass.setBarcodes({
     format: "PKBarcodeFormatQR",

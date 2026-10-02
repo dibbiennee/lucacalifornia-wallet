@@ -68,7 +68,14 @@ html:has(.lc) {
   box-sizing: border-box;
 }
 
-.lc a {
+/*
+ * :where() azzera la specificità: i link di base ereditano il colore, ma
+ * quello che sceglie un componente (il testo scuro su un pulsante rosa, per
+ * esempio) vince sempre. Con ".lc a" (specificità 0,1,1) la regola batteva
+ * ogni classe di un solo livello, e un link-pulsante finiva con testo chiaro
+ * sul rosa, 2,9:1 di contrasto.
+ */
+:where(.lc) a {
   color: inherit;
   text-decoration: none;
 }

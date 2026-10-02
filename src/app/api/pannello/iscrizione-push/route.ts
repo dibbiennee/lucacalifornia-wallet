@@ -1,5 +1,5 @@
 import { salvaIscrizione, togliIscrizione, type Iscrizione } from "@/lib/push";
-import { sessioneAperta } from "@/lib/pannello/sessione";
+import { leggiSessione } from "@/lib/pannello/sessione";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -25,7 +25,7 @@ function iscrizioneValida(corpo: unknown): corpo is Iscrizione {
 }
 
 export async function POST(richiesta: Request): Promise<Response> {
-  if (!(await sessioneAperta())) {
+  if ((await leggiSessione())?.ruolo !== "owner") {
     return Response.json({ errore: "Non autorizzato" }, { status: 401 });
   }
 
@@ -45,7 +45,7 @@ export async function POST(richiesta: Request): Promise<Response> {
 }
 
 export async function DELETE(richiesta: Request): Promise<Response> {
-  if (!(await sessioneAperta())) {
+  if ((await leggiSessione())?.ruolo !== "owner") {
     return Response.json({ errore: "Non autorizzato" }, { status: 401 });
   }
 

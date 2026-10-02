@@ -6,6 +6,7 @@ import { SERATE } from "@/contenuti/sito";
 
 import { BottoneAzione } from "./Bottone";
 import stili from "./FoglioAvvisami.module.css";
+import { sessioneTraffico } from "./traffico-client";
 
 /**
  * La richiesta della navetta.
@@ -27,6 +28,7 @@ export function FoglioNavetta() {
   const [errori, setErrori] = useState<Record<string, string>>({});
   const [inCorso, setInCorso] = useState(false);
   const [fatto, setFatto] = useState(false);
+  const [trappola, setTrappola] = useState("");
 
   useEffect(() => {
     const f = finestra.current;
@@ -68,7 +70,7 @@ export function FoglioNavetta() {
       const risposta = await fetch("/api/richiesta", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ tipo: "navetta", nome, telefono, serata, zona }),
+        body: JSON.stringify({ tipo: "navetta", nome, telefono, serata, zona, sessione: sessioneTraffico().sessione, sito: trappola }),
       });
 
       if (!risposta.ok) {
@@ -158,6 +160,12 @@ export function FoglioNavetta() {
                 errore={errori["zona"]}
                 segnaposto="Zona o quartiere"
               />
+
+              {/* Il campo trappola: invisibile per chi usa il sito, un bot lo riempie e il server scarta la richiesta. */}
+              <div aria-hidden style={{ position: "absolute", left: "-9999px", width: 1, height: 1, overflow: "hidden" }}>
+                <label htmlFor={`${id}-sito`}>Non compilare</label>
+                <input id={`${id}-sito`} name="sito" tabIndex={-1} autoComplete="off" value={trappola} onChange={(e) => setTrappola(e.target.value)} />
+              </div>
 
               <BottoneAzione aspetto="nero" pieno type="submit" disabled={inCorso}>
                 {inCorso ? "Un attimo..." : "Chiedi la navetta"}

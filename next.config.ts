@@ -40,6 +40,16 @@ const config: NextConfig = {
           { key: "Permissions-Policy", value: "geolocation=(), microphone=()" },
         ],
       },
+      /*
+       * I file della Hero hanno il nome legato al contenuto (hero-<impronta>.ext,
+       * vedi scripts/genera-apertura.mjs): se il video cambia, cambia il nome.
+       * Si possono quindi tenere in cache per un anno senza rivalidarli a ogni
+       * visita, come faceva "max-age=0" per i file di public/.
+       */
+      {
+        source: "/video/:file(hero-.*)",
+        headers: [{ key: "Cache-Control", value: "public, max-age=31536000, immutable" }],
+      },
     ];
   },
 

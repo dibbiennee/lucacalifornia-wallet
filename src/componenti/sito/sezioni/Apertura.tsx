@@ -2,6 +2,7 @@ import Image from "next/image";
 
 import { Bottone } from "@/componenti/sito/Bottone";
 import { VideoApertura } from "@/componenti/VideoApertura";
+import { HERO_VIDEO } from "@/contenuti/hero-video";
 
 import stili from "./Apertura.module.css";
 
@@ -13,9 +14,10 @@ import stili from "./Apertura.module.css";
  * un riquadro verticale accanto al testo: allargato riempirebbe lo schermo
  * di pixel sgranati, e il velo coprirebbe un video che nessuno vede.
  *
- * Sotto il video c'è sempre la foto: è quella che si vede subito, quella che
- * resta a chi ha chiesto meno movimento, e quella che resta se il codice non
- * parte.
+ * Sotto il video c'è sempre la foto: il primo fotogramma esatto del video, quindi
+ * si passa dalla foto al filmato senza stacco. È quella che si vede subito,
+ * quella che resta a chi ha chiesto meno movimento, e quella che resta se il
+ * browser non fa partire il video (risparmio batteria, per esempio).
  */
 export function Apertura() {
   return (
@@ -30,12 +32,12 @@ export function Apertura() {
           {/* La foto prima del video: dipinta per ultima gli finirebbe sopra.
               Ha la precedenza sul resto perché riempie subito lo schermo. */}
           <img
-            src="/foto/poster.webp"
+            src={HERO_VIDEO.poster}
             alt=""
             aria-hidden
             fetchPriority="high"
-            width={480}
-            height={853}
+            width={HERO_VIDEO.larghezza}
+            height={HERO_VIDEO.altezza}
           />
           <VideoApertura />
         </div>

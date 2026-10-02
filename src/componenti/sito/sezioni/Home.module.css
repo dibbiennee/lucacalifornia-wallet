@@ -95,7 +95,7 @@
   border-radius: var(--r-m);
   background-image:
     linear-gradient(100deg, rgba(20, 19, 24, 0.55), rgba(20, 19, 24, 0.4)),
-    url("/foto/atmosfera/special-guest.jpg");
+    var(--foto, none);
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -127,7 +127,7 @@
   z-index: -1;
   background-image:
     linear-gradient(100deg, rgba(20, 12, 4, 0.6), rgba(20, 12, 4, 0.35)),
-    url("/foto/atmosfera/halloween.jpg");
+    var(--foto, none);
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -406,7 +406,7 @@
       rgba(5, 4, 7, 0.9) 70%,
       var(--bg) 100%
     ),
-    url("/foto/atmosfera/come-funziona-dj.jpg");
+    var(--foto, none);
   background-size: cover;
   background-position: center 35%;
   background-repeat: no-repeat;
@@ -435,7 +435,7 @@
   z-index: -1;
   background-image:
     linear-gradient(rgba(5, 4, 7, 0.55), rgba(5, 4, 7, 0.55)),
-    url("/foto/atmosfera/spacca-rosso.jpg");
+    var(--foto, none);
   background-size: cover;
   background-position: center 30%;
   background-repeat: no-repeat;
