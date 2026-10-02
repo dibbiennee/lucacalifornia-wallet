@@ -84,9 +84,9 @@ export const SERATE: readonly SerataSito[] = [
     musica: "Afro e reggaeton",
     genere: "Afro e reggaeton",
     colore: "milk",
-    alt: "Una ragazza balla sorridendo al Milkshake",
+    alt: "La grafica Milkshake, con il bicchiere e il logo",
     etichetta: "Disponibilità limitata",
-    copertina: "/foto/night8.webp",
+    copertina: "/foto/serate/milkshake.jpg",
     badge: "/foto/serate/milkshake-badge.jpg",
     badgePosizione: "center",
     descrizione:
@@ -136,9 +136,9 @@ export const SERATE: readonly SerataSito[] = [
     musica: "Solo reggaeton",
     genere: "Solo reggaeton",
     colore: "red",
-    alt: "Le luci del ROOM26 la domenica",
+    alt: "La grafica Bàilame, con l'orsetto in giacca bianca",
     etichetta: "Disponibilità limitata",
-    copertina: "/foto/night24.webp",
+    copertina: "/foto/serate/bailame-quadrato.jpg",
     badge: "/foto/serate/bailame-badge.jpg",
     badgePosizione: "center",
     descrizione:
