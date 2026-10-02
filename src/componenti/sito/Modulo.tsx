@@ -94,6 +94,16 @@ export function Modulo({ codicePr }: { readonly codicePr?: string } = {}) {
   const [problema, setProblema] = useState("");
   const [inviata, setInviata] = useState(false);
   const [trappola, setTrappola] = useState("");
+  /*
+   * Il modulo si apre a gradini: all'inizio il tipo, il nome e il cognome; poi,
+   * man mano che si compila, il telefono, la data e il resto. Una fase aperta
+   * non si richiude (se si cancella il nome, il telefono non sparisce).
+   *   0 tipo, nome, cognome
+   *   1 + telefono          (nome e cognome scritti)
+   *   2 + data              (telefono completo)
+   *   3 + persone, il resto del tipo e il pulsante   (data scelta)
+   */
+  const [fase, setFase] = useState(0);
 
   // Le date vere si generano solo nel browser, da "adesso": calcolarle anche
   // sul server darebbe due liste leggermente diverse (secondi di differenza
@@ -114,6 +124,26 @@ export function Modulo({ codicePr }: { readonly codicePr?: string } = {}) {
   }, []);
 
   const voceSerata = calendario.find((v) => v.data === serata);
+
+  // Fino a dove si può arrivare coi dati che ci sono adesso.
+  const cifre = telefono.replace(/\D/g, "").length;
+  const raggiungibile = nome.trim().length >= 2 && cognome.trim().length >= 2 ? (cifre >= 9 ? (serata !== "" ? 3 : 2) : 1) : 0;
+
+  useEffect(() => {
+    setFase((prima) => Math.max(prima, raggiungibile));
+  }, [raggiungibile]);
+
+  // Quando si apre un gruppo, lo si porta in vista (con la tastiera aperta sul telefono resterebbe sotto).
+  useEffect(() => {
+    if (fase === 0) {
+      return;
+    }
+    const riduci = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const attesa = window.setTimeout(() => {
+      document.getElementById(`${id}-fase-${fase}`)?.scrollIntoView({ block: "nearest", behavior: riduci ? "auto" : "smooth" });
+    }, 180);
+    return () => window.clearTimeout(attesa);
+  }, [fase, id]);
 
   function controlla(): Errori {
     const trovati: Errori = {};
@@ -143,11 +173,25 @@ export function Modulo({ codicePr }: { readonly codicePr?: string } = {}) {
     evento.preventDefault();
     setProblema("");
 
-    const trovati = controlla();
+    // Si controllano solo i campi già comparsi: gli altri non si vedono e non possono dare errore.
+    const tutti = controlla();
+    const visibili: (keyof Errori)[] = ["nome", "cognome", ...(fase >= 1 ? (["telefono"] as const) : []), ...(fase >= 2 ? (["serata"] as const) : []), ...(fase >= 3 ? (["genere"] as const) : [])];
+    const trovati: Errori = {};
+    for (const chiave of visibili) {
+      if (tutti[chiave] !== undefined) {
+        trovati[chiave] = tutti[chiave];
+      }
+    }
     setErrori(trovati);
 
     if (Object.keys(trovati).length > 0) {
       document.getElementById(`${id}-${Object.keys(trovati)[0]}`)?.focus();
+      return;
+    }
+
+    // "Invio" dalla tastiera con il modulo non ancora aperto del tutto: si apre il gruppo dopo, non si invia.
+    if (fase < 3) {
+      setFase(fase + 1);
       return;
     }
 
@@ -242,87 +286,93 @@ export function Modulo({ codicePr }: { readonly codicePr?: string } = {}) {
         />
       </div>
 
-      <Campo
-        id={`${id}-telefono`}
-        etichetta="Telefono"
-        valore={telefono}
-        cambia={setTelefono}
-        errore={errori.telefono}
-        autoComplete="tel"
-        inputMode="tel"
-        tipo="tel"
-        segnaposto="333 123 4567"
-      />
+      <Fase id={`${id}-fase-1`} aperta={fase >= 1}>
+        <Campo
+          id={`${id}-telefono`}
+          etichetta="Telefono"
+          valore={telefono}
+          cambia={setTelefono}
+          errore={errori.telefono}
+          autoComplete="tel"
+          inputMode="tel"
+          tipo="tel"
+          segnaposto="333 123 4567"
+        />
+      </Fase>
 
-      <div className={stili.campo}>
-        <label htmlFor={`${id}-serata`}>Data</label>
-        <select
-          id={`${id}-serata`}
-          name="serata"
-          required
-          value={serata}
-          onChange={(e) => setSerata(e.target.value)}
-          disabled={calendario.length === 0}
-          aria-invalid={errori.serata !== undefined}
-          aria-describedby={errori.serata === undefined ? undefined : `${id}-serata-errore`}
-        >
-          <option value="" disabled hidden>
-            {calendario.length === 0 ? "Un attimo..." : "Tocca per scegliere la data"}
-          </option>
-          {calendario.map((v) => (
-            <option key={v.data} value={v.data}>
-              {v.valore}
+      <Fase id={`${id}-fase-2`} aperta={fase >= 2}>
+        <div className={stili.campo}>
+          <label htmlFor={`${id}-serata`}>Data</label>
+          <select
+            id={`${id}-serata`}
+            name="serata"
+            required
+            value={serata}
+            onChange={(e) => setSerata(e.target.value)}
+            disabled={calendario.length === 0}
+            aria-invalid={errori.serata !== undefined}
+            aria-describedby={errori.serata === undefined ? undefined : `${id}-serata-errore`}
+          >
+            <option value="" disabled hidden>
+              {calendario.length === 0 ? "Un attimo..." : "Tocca per scegliere la data"}
             </option>
-          ))}
-        </select>
-        {errori.serata !== undefined && (
-          <p id={`${id}-serata-errore`} role="alert" className={stili.errore}>
-            {errori.serata}
-          </p>
-        )}
-      </div>
-
-      <Scelta etichetta="Quante persone" nome="persone" voci={PERSONE} scelto={persone} cambia={setPersone} />
-
-      {tipo === "tavolo" && (
-        <>
-          <Scelta etichetta="Chi c'è al tavolo" nome="gruppo" voci={GRUPPI} scelto={gruppo} cambia={setGruppo} />
-          <Scelta etichetta="Budget a testa" nome="budget" voci={BUDGET} scelto={budget} cambia={setBudget} />
-          <Scelta etichetta="Occasione speciale" nome="occasione" voci={OCCASIONI} scelto={occasione} cambia={setOccasione} />
-          <Campo
-            id={`${id}-note`}
-            etichetta="Altre richieste"
-            facoltativo
-            valore={note}
-            cambia={setNote}
-            segnaposto="Torta, bottiglia, decorazioni..."
-          />
-        </>
-      )}
-
-      {tipo === "braccialetto" && (
-        <>
-          <Scelta etichetta="Per chi è" nome="genere" voci={GENERI} scelto={genere} cambia={setGenere} />
-          {errori.genere !== undefined && (
-            <p role="alert" className={stili.errore}>
-              {errori.genere}
+            {calendario.map((v) => (
+              <option key={v.data} value={v.data}>
+                {v.valore}
+              </option>
+            ))}
+          </select>
+          {errori.serata !== undefined && (
+            <p id={`${id}-serata-errore`} role="alert" className={stili.errore}>
+              {errori.serata}
             </p>
           )}
-          {prezzoBraccialetto(voceSerata?.notte, genere) !== null && (
-            <p className={stili.prezzo}>{prezzoBraccialetto(voceSerata?.notte, genere)}</p>
-          )}
-        </>
-      )}
+        </div>
+      </Fase>
 
-      {problema !== "" && (
-        <p role="alert" className={stili.errore}>
-          {problema}
-        </p>
-      )}
+      <Fase id={`${id}-fase-3`} aperta={fase >= 3}>
+        <Scelta etichetta="Quante persone" nome="persone" voci={PERSONE} scelto={persone} cambia={setPersone} />
 
-      <BottoneAzione aspetto="nero" pieno type="submit" disabled={inCorso}>
-        {inCorso ? "Un attimo..." : "Invia la richiesta"}
-      </BottoneAzione>
+        {tipo === "tavolo" && (
+          <>
+            <Scelta etichetta="Chi c'è al tavolo" nome="gruppo" voci={GRUPPI} scelto={gruppo} cambia={setGruppo} />
+            <Scelta etichetta="Budget a testa" nome="budget" voci={BUDGET} scelto={budget} cambia={setBudget} />
+            <Scelta etichetta="Occasione speciale" nome="occasione" voci={OCCASIONI} scelto={occasione} cambia={setOccasione} />
+            <Campo
+              id={`${id}-note`}
+              etichetta="Altre richieste"
+              facoltativo
+              valore={note}
+              cambia={setNote}
+              segnaposto="Torta, bottiglia, decorazioni..."
+            />
+          </>
+        )}
+
+        {tipo === "braccialetto" && (
+          <>
+            <Scelta etichetta="Per chi è" nome="genere" voci={GENERI} scelto={genere} cambia={setGenere} />
+            {errori.genere !== undefined && (
+              <p role="alert" className={stili.errore}>
+                {errori.genere}
+              </p>
+            )}
+            {prezzoBraccialetto(voceSerata?.notte, genere) !== null && (
+              <p className={stili.prezzo}>{prezzoBraccialetto(voceSerata?.notte, genere)}</p>
+            )}
+          </>
+        )}
+
+        {problema !== "" && (
+          <p role="alert" className={stili.errore}>
+            {problema}
+          </p>
+        )}
+
+        <BottoneAzione aspetto="nero" pieno type="submit" disabled={inCorso}>
+          {inCorso ? "Un attimo..." : "Invia la richiesta"}
+        </BottoneAzione>
+      </Fase>
 
       <p className={stili.dopo}>
         {legaParole(
@@ -348,6 +398,19 @@ export function Modulo({ codicePr }: { readonly codicePr?: string } = {}) {
         I tuoi dati servono solo a ricontattarti: <Link href="/privacy">come li trattiamo</Link>.
       </p>
     </form>
+  );
+}
+
+/**
+ * Un gruppo di campi che compare quando serve. Chiuso non occupa spazio e non
+ * si raggiunge con la tastiera (inert); si apre con un'animazione di altezza e
+ * dissolvenza, che col movimento ridotto diventa un cambio secco.
+ */
+function Fase({ id, aperta, children }: { readonly id: string; readonly aperta: boolean; readonly children: React.ReactNode }) {
+  return (
+    <div id={id} className={stili.fase} data-aperta={aperta ? "" : undefined} inert={!aperta}>
+      <div className={stili.faseDentro}>{children}</div>
+    </div>
   );
 }
 

@@ -255,3 +255,59 @@
 
   .modulo { max-width: 620px; }
 }
+
+/*
+ * Il modulo a gradini: un gruppo di campi compare quando serve. L'altezza
+ * si anima con grid-template-rows (da 0fr a 1fr), che non ha bisogno di
+ * sapere quanto è alto il contenuto. Il margine negativo cancella lo spazio
+ * che la griglia metterebbe comunque fra un gruppo chiuso e il successivo.
+ */
+.fase {
+  display: grid;
+  grid-template-rows: 0fr;
+  margin-top: -18px;
+  opacity: 0;
+  transform: translateY(10px);
+  transition:
+    grid-template-rows 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+    margin-top 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 0.4s ease 0.1s,
+    transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.fase[data-aperta] {
+  grid-template-rows: 1fr;
+  margin-top: 0;
+  opacity: 1;
+  transform: none;
+}
+
+/*
+ * Taglia il contenuto mentre l'altezza cresce. Da aperto ha 6px di respiro
+ * (e un margine uguale e contrario, che non sposta niente) perché il contorno
+ * del campo in primo piano non venga tagliato; da chiuso non ha nemmeno quello,
+ * così il gruppo non occupa neppure un pixel.
+ */
+.faseDentro {
+  display: grid;
+  gap: 18px;
+  min-height: 0;
+  overflow: hidden;
+  padding: 0;
+  margin: 0;
+  transition:
+    padding 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+    margin 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.fase[data-aperta] .faseDentro {
+  padding: 6px;
+  margin: -6px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fase,
+  .faseDentro {
+    transition: none;
+  }
+}
