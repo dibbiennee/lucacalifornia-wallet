@@ -28,16 +28,7 @@ export default function Home() {
           />
         }
       />
-      <SpecialGuest
-        avvisami={
-          <FoglioAvvisami
-            tipo="special_guest"
-            etichetta="Avvisami"
-            titolo="Ti avviso appena esce il nome"
-            spiegazione="Quando c'è un ospite, lo sai prima degli altri. Niente messaggi per altro."
-          />
-        }
-      />
+      <SpecialGuest />
       <TuttoIlResto />
       <ComeFunziona />
       <LeFoto />

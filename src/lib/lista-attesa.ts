@@ -22,6 +22,18 @@ export type CategoriaAttesa = "serata" | "speciale";
 export const EVENTI_SPECIALI = ["special_guest", "halloween", "capodanno", "ninfeo", "morgan"] as const;
 export type EventoSpeciale = (typeof EVENTI_SPECIALI)[number];
 
+/**
+ * Gli eventi per cui si può entrare in lista dal sito. Lo special guest non
+ * ha lista: sul sito è solo "In arrivo", senza modulo e senza dati raccolti.
+ * Resta in EVENTI_SPECIALI solo perché una riga già salvata si legga ancora.
+ */
+export const EVENTI_CON_LISTA = ["halloween", "capodanno", "ninfeo", "morgan"] as const satisfies readonly EventoSpeciale[];
+export type EventoConLista = (typeof EVENTI_CON_LISTA)[number];
+
+export function eEventoConLista(valore: unknown): valore is EventoConLista {
+  return typeof valore === "string" && (EVENTI_CON_LISTA as readonly string[]).includes(valore);
+}
+
 export const NOTTI: readonly NotteSerata[] = ["milkshake", "venerdi", "sabato", "bailame", "ninfeo"];
 
 export function eEventoSpeciale(valore: unknown): valore is EventoSpeciale {

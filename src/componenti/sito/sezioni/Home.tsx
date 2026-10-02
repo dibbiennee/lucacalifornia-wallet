@@ -217,8 +217,8 @@ export function ChiELuca() {
   );
 }
 
-/** Lo special guest: non c'è ancora un nome, ma c'è una lista. */
-export function SpecialGuest({ avvisami }: { readonly avvisami: React.ReactNode }) {
+/** Lo special guest: non c'è ancora un nome, quindi solo "In arrivo". Niente modulo, niente dati raccolti. */
+export function SpecialGuest() {
   return (
     <section className="blocco" style={{ paddingTop: 0 }} aria-label={SPECIAL_GUEST.titolo}>
       <div className="wrap">
@@ -230,7 +230,6 @@ export function SpecialGuest({ avvisami }: { readonly avvisami: React.ReactNode 
               In arrivo
             </p>
           </div>
-          {avvisami}
         </div>
       </div>
     </section>

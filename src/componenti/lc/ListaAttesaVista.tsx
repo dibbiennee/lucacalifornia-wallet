@@ -1,7 +1,8 @@
 import Link from "next/link";
 
 import {
-  EVENTI_SPECIALI,
+  EVENTI_CON_LISTA,
+  eEventoConLista,
   NOME_NOTTE,
   NOME_SPECIALE,
   NOTTI,
@@ -174,7 +175,7 @@ export function ListaAttesaVista({
                 })}
               </optgroup>
               <optgroup label="Eventi speciali">
-                {EVENTI_SPECIALI.map((e) => {
+                {EVENTI_CON_LISTA.map((e) => {
                   const chiave: ChiaveEvento = { categoria: "speciale", evento: e };
                   const quante = inAttesa(chiave);
                   const data = speciali.find((s) => s.codice === e)?.dataIso ?? null;
@@ -264,7 +265,7 @@ export function ListaAttesaVista({
         </p>
       )}
 
-      {proprietario && <DateEventi eventi={speciali} />}
+      {proprietario && <DateEventi eventi={speciali.filter((s) => eEventoConLista(s.codice))} />}
     </div>
   );
 }

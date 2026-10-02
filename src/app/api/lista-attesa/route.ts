@@ -4,7 +4,7 @@ import { serataPerData } from "@/lib/calendario-serate";
 import { BISCOTTO_PROVENIENZA, nomeProvenienza } from "@/contenuti/canali";
 import {
   eDataIso,
-  eEventoSpeciale,
+  eEventoConLista,
   normalizzaContatto,
   oggiARoma,
   type ChiaveEvento,
@@ -23,7 +23,7 @@ export const dynamic = "force-dynamic";
  * in lista compare nel pannello di Luca. Non parte nessun messaggio alla persona: se ne occupa chi usa il
  * pannello, a mano, come per le richieste.
  *
- * POST { nome, contatto, tipo } per un evento speciale (special_guest,
+ * POST { nome, contatto, tipo } per un evento speciale (halloween,
  *   halloween, capodanno, ninfeo, morgan);
  * POST { nome, contatto, dataSerata } per una serata del calendario
  *   (AAAA-MM-GG). La notte la ricava il server dalla data, con la stessa
@@ -102,7 +102,7 @@ export async function POST(richiesta: Request): Promise<Response> {
 
     evento = { categoria: "serata", notte: serata.notte };
     dataSerata = data;
-  } else if (eEventoSpeciale(c["tipo"])) {
+  } else if (eEventoConLista(c["tipo"])) {
     evento = { categoria: "speciale", evento: c["tipo"] };
   } else {
     return errore("Tipo di lista sconosciuto");
