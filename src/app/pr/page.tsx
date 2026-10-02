@@ -14,13 +14,21 @@ export const metadata: Metadata = {
   alternates: { canonical: "/pr" },
   /* Pagina fatta solo per i link dei PR: non deve comparire nelle ricerche. */
   robots: { index: false, follow: false },
+  /*
+   * L'anteprima che esce su WhatsApp quando un PR gira il suo link: il
+   * marchio in negativo, quadrato (scripts/genera-anteprima-pr.py). Quadrato
+   * e non 1200x630: WhatsApp lo mostra com'è, senza ritagliarlo.
+   */
   openGraph: {
     type: "website",
+    siteName: "Luca California",
+    locale: "it_IT",
+    url: "/pr",
     title: TITOLO,
     description: DESCRIZIONE,
-    images: [{ url: "/anteprima.jpg", width: 1200, height: 630, alt: TITOLO }],
+    images: [{ url: "/anteprima-pr.png", width: 1200, height: 1200, alt: "Luca California" }],
   },
-  twitter: { card: "summary_large_image", title: TITOLO, description: DESCRIZIONE, images: ["/anteprima.jpg"] },
+  twitter: { card: "summary", title: TITOLO, description: DESCRIZIONE, images: ["/anteprima-pr.png"] },
 };
 
 /**
