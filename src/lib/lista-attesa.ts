@@ -23,11 +23,12 @@ export const EVENTI_SPECIALI = ["special_guest", "halloween", "capodanno", "ninf
 export type EventoSpeciale = (typeof EVENTI_SPECIALI)[number];
 
 /**
- * Gli eventi per cui si può entrare in lista dal sito. Lo special guest non
- * ha lista: sul sito è solo "In arrivo", senza modulo e senza dati raccolti.
- * Resta in EVENTI_SPECIALI solo perché una riga già salvata si legga ancora.
+ * Gli eventi per cui si può entrare in lista dal sito: solo Halloween e
+ * Capodanno. Special guest, Ninfeo e Morgan non hanno lista: sul sito sono solo
+ * "In arrivo", senza modulo e senza dati raccolti. Restano in EVENTI_SPECIALI
+ * solo perché una riga già salvata si legga ancora.
  */
-export const EVENTI_CON_LISTA = ["halloween", "capodanno", "ninfeo", "morgan"] as const satisfies readonly EventoSpeciale[];
+export const EVENTI_CON_LISTA = ["halloween", "capodanno"] as const satisfies readonly EventoSpeciale[];
 export type EventoConLista = (typeof EVENTI_CON_LISTA)[number];
 
 export function eEventoConLista(valore: unknown): valore is EventoConLista {
