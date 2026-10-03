@@ -2,7 +2,11 @@
 
 import { useEffect, useId, useRef, useState, type FormEvent } from "react";
 
+import { ISO_PREDEFINITO } from "@/contenuti/prefissi";
+import { cifreMinime, telefonoCompleto } from "@/lib/telefono";
+
 import { BottoneAzione } from "./Bottone";
+import { CampoTelefono } from "./CampoTelefono";
 import stili from "./FoglioAvvisami.module.css";
 
 /**
@@ -32,7 +36,11 @@ export function FoglioAvvisami({
   const finestra = useRef<HTMLDialogElement | null>(null);
   const [aperto, setAperto] = useState(false);
   const [nome, setNome] = useState("");
-  const [contatto, setContatto] = useState("");
+  // Come avvisarti: per telefono (con il prefisso del paese) o per email.
+  const [modo, setModo] = useState<"telefono" | "email">("telefono");
+  const [paeseTel, setPaeseTel] = useState<string>(ISO_PREDEFINITO);
+  const [numeroTel, setNumeroTel] = useState("");
+  const [email, setEmail] = useState("");
   const [trappola, setTrappola] = useState("");
   const [errori, setErrori] = useState<{ nome?: string; contatto?: string }>({});
   const [inCorso, setInCorso] = useState(false);
@@ -58,10 +66,16 @@ export function FoglioAvvisami({
     if (nome.trim() === "") {
       trovati.nome = "Scrivi il tuo nome";
     }
-    if (contatto.trim() === "") {
-      trovati.contatto = "Serve un telefono o un'email per avvisarti";
-    } else if (!contatto.includes("@") && contatto.replace(/\D/g, "").length < 9) {
-      trovati.contatto = "Scrivi un telefono valido o un'email";
+    if (modo === "telefono") {
+      if (numeroTel.trim() === "") {
+        trovati.contatto = "Serve un numero per avvisarti";
+      } else if (numeroTel.replace(/\D/g, "").length < cifreMinime(paeseTel)) {
+        trovati.contatto = "Questo numero sembra incompleto";
+      }
+    } else if (email.trim() === "") {
+      trovati.contatto = "Serve un'email per avvisarti";
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email.trim())) {
+      trovati.contatto = "Scrivi un'email valida";
     }
 
     setErrori(trovati);
@@ -70,6 +84,9 @@ export function FoglioAvvisami({
       document.getElementById(`${id}-${Object.keys(trovati)[0]}`)?.focus();
       return;
     }
+
+    // Quello che parte è un contatto solo: il numero col prefisso (+39 333...) oppure l'email.
+    const contatto = modo === "telefono" ? telefonoCompleto(paeseTel, numeroTel) : email.trim();
 
     setInCorso(true);
 
@@ -150,22 +167,61 @@ export function FoglioAvvisami({
                 )}
               </div>
 
-              <div className={stili.campo}>
-                <label htmlFor={`${id}-contatto`}>Telefono o email</label>
-                <input
-                  id={`${id}-contatto`}
-                  value={contatto}
-                  onChange={(e) => setContatto(e.target.value)}
-                  autoComplete="tel"
-                  maxLength={80}
-                  aria-invalid={errori.contatto !== undefined}
-                />
-                {errori.contatto !== undefined && (
-                  <p className={stili.errore} role="alert">
-                    {errori.contatto}
-                  </p>
-                )}
+              <div className={stili.modi} role="group" aria-label="Come vuoi essere avvisato">
+                {(
+                  [
+                    ["telefono", "Telefono"],
+                    ["email", "Email"],
+                  ] as const
+                ).map(([valore, testo]) => (
+                  <button
+                    key={valore}
+                    type="button"
+                    className={stili.modo}
+                    aria-pressed={modo === valore}
+                    onClick={() => {
+                      setModo(valore);
+                      setErrori((e) => (e.nome === undefined ? {} : { nome: e.nome }));
+                    }}
+                  >
+                    {testo}
+                  </button>
+                ))}
               </div>
+
+              {modo === "telefono" ? (
+                <CampoTelefono
+                  id={`${id}-contatto`}
+                  iso={paeseTel}
+                  numero={numeroTel}
+                  cambia={(v) => {
+                    setPaeseTel(v.iso);
+                    setNumeroTel(v.numero);
+                  }}
+                  errore={errori.contatto}
+                  bordo="lieve"
+                />
+              ) : (
+                <div className={stili.campo}>
+                  <label htmlFor={`${id}-contatto`}>Email</label>
+                  <input
+                    id={`${id}-contatto`}
+                    type="email"
+                    inputMode="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    autoComplete="email"
+                    maxLength={80}
+                    placeholder="nome@esempio.it"
+                    aria-invalid={errori.contatto !== undefined}
+                  />
+                  {errori.contatto !== undefined && (
+                    <p className={stili.errore} role="alert">
+                      {errori.contatto}
+                    </p>
+                  )}
+                </div>
+              )}
 
               {/*
                 Il campo trappola: fuori dallo schermo e fuori dalla tastiera, per chi usa il

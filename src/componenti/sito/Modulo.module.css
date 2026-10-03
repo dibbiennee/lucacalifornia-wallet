@@ -23,7 +23,7 @@
 }
 
 .pagina.pagina :global(.occhiello) {
-  color: var(--magenta-scuro);
+  color: var(--ink-2);
 }
 
 .modulo {
@@ -131,13 +131,13 @@
 }
 
 .campo input[aria-invalid="true"] {
-  border-color: #c2002f;
-  box-shadow: 0 0 0 3px rgba(194, 0, 47, 0.12);
+  border-color: var(--avviso-bordo-su-chiaro);
+  box-shadow: 0 0 0 3px rgba(194, 120, 0, 0.16);
 }
 
 .errore {
   font-size: 13px;
-  color: #b0002a;
+  color: var(--avviso-su-chiaro);
   font-weight: 600;
   margin: 0;
 }

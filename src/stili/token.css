@@ -34,12 +34,21 @@
   /* Lo stesso accento sul fondo chiaro: quello sopra lì darebbe 2,9:1. */
   --magenta-scuro: #c2005f;
 
-  /* i colori delle serate, per etichette e dettagli */
+  /*
+   * I colori dei giorni: ognuno vuol dire UNA serata, e si usa solo dove si parla di quella serata,
+   * sempre accanto al nome del giorno. Mai su pagine, menu o pulsanti.
+   *   milk = giovedì Milkshake, acid = venerdì Drip, cyan = sabato International, red = domenica Bàilame.
+   * Il magenta (--magenta) è l'azione: se è magenta, si preme.
+   */
   --milk: #ffb3da;
   --acid: #e6ff4d;
   --cyan: #4de1ff;
   --red: #ff4a3d;
+  /* sun è l'unico colore di avviso (errori, ultimi posti): non appartiene a nessuna serata. */
   --sun: #ffb35c;
+  /* Lo stesso avviso sui fondi chiari dei moduli: l'arancio pieno lì darebbe 1,6:1. */
+  --avviso-su-chiaro: #8a5a00;
+  --avviso-bordo-su-chiaro: #c27800;
 
   /* stati */
   --ok: #2fd37a;

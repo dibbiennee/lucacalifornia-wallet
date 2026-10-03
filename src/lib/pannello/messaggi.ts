@@ -1,3 +1,5 @@
+import { normalizzaTelefono } from "@/lib/telefono";
+
 import type { CodiceMotivo } from "./motivi";
 
 /**
@@ -69,15 +71,13 @@ export function messaggioRifiuto(d: DatiRifiuto): string {
   return `Ciao ${d.nome}, per ${d.serata}${PER_DATA(d.data)} purtroppo non riesco a confermarti${frase === null ? "" : `: ${frase}`}.\nGrazie per averci scritto.`;
 }
 
-/** Da un telefono scritto come capita a quello che vuole wa.me (con il 39). Null se non è un numero. */
+/**
+ * Da un telefono scritto come capita a quello che vuole wa.me: le cifre col prefisso.
+ * Un numero già internazionale ("+44 7911 123456") resta com'è; uno senza prefisso è italiano e prende il 39.
+ * Null se non è un numero. Le regole stanno in lib/telefono.ts, le stesse del modulo.
+ */
 export function numeroPerWhatsapp(telefono: string): string | null {
-  const cifre = telefono.replace(/\D/g, "");
-
-  if (cifre.length < 9 || cifre.length > 15) {
-    return null;
-  }
-
-  return cifre.startsWith("39") ? cifre : `39${cifre}`;
+  return normalizzaTelefono(telefono);
 }
 
 /** Il link che apre WhatsApp verso quel numero con quel testo già scritto. Non invia niente. */

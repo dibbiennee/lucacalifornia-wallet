@@ -1,6 +1,10 @@
 .apertura {
   position: relative;
-  min-height: min(88svh, 820px);
+  /*
+   * Alta come lo schermo meno la testata e la barra di Safari che copre il fondo: così i tre pulsanti,
+   * che stanno in basso, si vedono tutti senza scorrere (prima era l'88% dello schermo, e finivano sotto la barra).
+   */
+  min-height: min(calc(100svh - 130px), 820px);
   display: flex;
   align-items: flex-end;
   overflow: hidden;
@@ -47,7 +51,7 @@
 }
 
 .dentro {
-  padding-top: 110px;
+  padding-top: 28px;
   /*
    * Niente spazio riservato alla barra fissa qui sotto: nell'apertura la
    * barra è sempre nascosta (sparisce solo quando questa sezione non si
@@ -57,7 +61,7 @@
   padding-bottom: 32px;
   display: flex;
   flex-direction: column;
-  gap: 18px;
+  gap: 14px;
 }
 
 .california {
@@ -86,7 +90,7 @@
   container-type: inline-size;
   display: flex;
   flex-direction: column;
-  gap: 18px;
+  gap: 14px;
 }
 
 /*
@@ -118,7 +122,7 @@
 }
 
 .apertura h1 {
-  font-size: clamp(30px, 10.6cqi, 112px);
+  font-size: clamp(28px, 9.6cqi, 112px);
   max-width: 13ch;
 }
 
@@ -138,6 +142,16 @@
 
 .azioni a {
   padding: 0 12px;
+  /* 48 px sul telefono: si prende bene con il pollice e i tre pulsanti entrano nello schermo. */
+  min-height: 48px;
+}
+
+/* Schermi bassi (iPhone SE e simili): il logo e la riga dei giorni lasciano il posto ai pulsanti. */
+@media (max-height: 700px) and (max-width: 959px) {
+  .california,
+  .giorni {
+    display: none;
+  }
 }
 
 /*
@@ -197,5 +211,5 @@
     justify-content: start;
   }
 
-  .azioni a { padding: 0 28px; }
+  .azioni a { padding: 0 28px; min-height: 52px; }
 }

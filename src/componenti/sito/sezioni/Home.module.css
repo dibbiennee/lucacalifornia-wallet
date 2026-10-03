@@ -293,10 +293,6 @@
  */
 .tesseraFoto {
   color: var(--text);
-  /* Opaco e non semi-trasparente: su una foto chiara (il cielo di "D'estate")
-     un bianco al 50% si confondeva col colore sotto invece di restare un
-     bordo visibile. */
-  box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.9);
 }
 
 .tesseraFoto img {
@@ -305,7 +301,23 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+  display: block;
   z-index: -2;
+}
+
+/*
+ * Il bordo è disegnato SOPRA la foto, non sotto: come ombra interna della card finiva dietro l'immagine e si
+ * vedeva solo agli angoli arrotondati (i "cosetti bianchi"). Così la foto riempie tutta la card e il filo bianco
+ * da 2 px è aderente ai bordi, uguale su ogni card. Opaco e non semi-trasparente: su una foto chiara (il cielo
+ * di "D'estate") un bianco al 50% si confondeva col colore sotto invece di restare un bordo visibile.
+ */
+.tesseraFoto::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.9);
+  pointer-events: none;
 }
 
 .tesseraFoto::after {

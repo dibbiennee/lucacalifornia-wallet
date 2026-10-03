@@ -16,6 +16,7 @@
  */
 
 import type { NotteSerata } from "./calendario-serate";
+import { normalizzaTelefono } from "./telefono";
 
 export type CategoriaAttesa = "serata" | "speciale";
 
@@ -148,23 +149,10 @@ export function normalizzaContatto(contatto: string): ContattoNormalizzato | nul
     return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(pulito) ? { tipo: "email", norma: pulito.toLowerCase() } : null;
   }
 
-  let cifre = pulito.replace(/\D/g, "");
+  // Le regole del numero (prefisso internazionale compreso) stanno in lib/telefono.ts, le stesse del modulo.
+  const norma = normalizzaTelefono(pulito);
 
-  if (cifre.startsWith("00")) {
-    cifre = cifre.slice(2);
-  }
-
-  if (cifre.length < 9 || cifre.length > 15) {
-    return null;
-  }
-
-  // Un numero scritto senza prefisso (da 9 a 10 cifre) è italiano e prende il 39. Conta la lunghezza, non l'inizio:
-  // un cellulare come 393 123 4567 comincia per 39 ma è un numero senza prefisso, mentre col prefisso ne ha 12.
-  if (cifre.length <= 10) {
-    cifre = `39${cifre}`;
-  }
-
-  return { tipo: "telefono", norma: cifre };
+  return norma === null ? null : { tipo: "telefono", norma };
 }
 
 /** I caratteri speciali di LIKE, perché chi cerca "50%" non trovi tutto. */

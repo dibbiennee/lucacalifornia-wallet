@@ -173,7 +173,7 @@ export function LeFoto() {
 
         <div className={`${stili.canali} rivela`}>
           <CanaleFoto titolo="Bàilame" colore="var(--red)" foto={FOTO_BAILAME} href="https://t.me/BAILAMEOFFICIAL" />
-          <CanaleFoto titolo="ROOM26" colore="var(--cyan)" foto={FOTO_ROOM26} href="https://t.me/room26official" />
+          <CanaleFoto titolo="ROOM26" colore="var(--text)" foto={FOTO_ROOM26} href="https://t.me/room26official" />
         </div>
       </div>
     </section>

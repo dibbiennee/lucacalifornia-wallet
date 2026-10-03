@@ -84,3 +84,8 @@
   .apri.apri { display: none; }
   .prenota-largo.prenota-largo { display: inline-flex; }
 }
+
+/* La pagina in cui sei, nella fila delle voci: in magenta. */
+.voci a[aria-current="page"] {
+  color: var(--magenta);
+}

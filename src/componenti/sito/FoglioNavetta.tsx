@@ -2,9 +2,12 @@
 
 import { useEffect, useId, useRef, useState, type FormEvent } from "react";
 
+import { ISO_PREDEFINITO } from "@/contenuti/prefissi";
 import { SERATE } from "@/contenuti/sito";
+import { cifreMinime, telefonoCompleto } from "@/lib/telefono";
 
 import { BottoneAzione } from "./Bottone";
+import { CampoTelefono } from "./CampoTelefono";
 import stili from "./FoglioAvvisami.module.css";
 import { sessioneTraffico } from "./traffico-client";
 
@@ -23,6 +26,7 @@ export function FoglioNavetta() {
   const [aperto, setAperto] = useState(false);
   const [nome, setNome] = useState("");
   const [telefono, setTelefono] = useState("");
+  const [paeseTel, setPaeseTel] = useState<string>(ISO_PREDEFINITO);
   const [serata, setSerata] = useState<string>(SERATE_NAVETTA[0] ?? "");
   const [zona, setZona] = useState("");
   const [errori, setErrori] = useState<Record<string, string>>({});
@@ -50,7 +54,7 @@ export function FoglioNavetta() {
     if (nome.trim() === "") {
       trovati["nome"] = "Scrivi il tuo nome";
     }
-    if (telefono.replace(/\D/g, "").length < 9) {
+    if (telefono.replace(/\D/g, "").length < cifreMinime(paeseTel)) {
       trovati["telefono"] = "Serve un numero per ricontattarti";
     }
     if (zona.trim() === "") {
@@ -70,7 +74,7 @@ export function FoglioNavetta() {
       const risposta = await fetch("/api/richiesta", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ tipo: "navetta", nome, telefono, serata, zona, sessione: sessioneTraffico().sessione, sito: trappola }),
+        body: JSON.stringify({ tipo: "navetta", nome, telefono: telefonoCompleto(paeseTel, telefono), serata, zona, sessione: sessioneTraffico().sessione, sito: trappola }),
       });
 
       if (!risposta.ok) {
@@ -92,7 +96,7 @@ export function FoglioNavetta() {
       <BottoneAzione
         pieno
         onClick={() => setAperto(true)}
-        style={{ background: "var(--cyan)", color: "var(--ink)" }}
+        style={{ background: "var(--magenta)", color: "var(--ink)" }}
       >
         Chiedi la navetta
       </BottoneAzione>
@@ -128,7 +132,17 @@ export function FoglioNavetta() {
               </p>
 
               <Campo id={`${id}-nome`} etichetta="Nome" valore={nome} cambia={setNome} errore={errori["nome"]} autoComplete="given-name" />
-              <Campo id={`${id}-telefono`} etichetta="Telefono" valore={telefono} cambia={setTelefono} errore={errori["telefono"]} autoComplete="tel" />
+              <CampoTelefono
+                id={`${id}-telefono`}
+                iso={paeseTel}
+                numero={telefono}
+                cambia={(v) => {
+                  setPaeseTel(v.iso);
+                  setTelefono(v.numero);
+                }}
+                errore={errori["telefono"]}
+                bordo="lieve"
+              />
 
               <div className={stili.campo}>
                 <label htmlFor={`${id}-serata`}>Serata</label>

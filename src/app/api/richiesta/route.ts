@@ -8,6 +8,7 @@ import { eDataIso, oggiARoma } from "@/lib/lista-attesa";
 import { creaRichiesta, type NuovaRichiesta } from "@/lib/pannello/dati";
 import { chiaveIndirizzo, segnaFallito, statoBlocco } from "@/lib/pannello/blocco-tentativi";
 import { avvisaTutti } from "@/lib/push";
+import { normalizzaTelefono } from "@/lib/telefono";
 import { FORMA_SESSIONE, registraEvento } from "@/lib/traffico";
 
 export const runtime = "nodejs";
@@ -122,7 +123,7 @@ export async function POST(richiesta: Request): Promise<Response> {
     return errore("Dicci se il braccialetto è per una donna o un uomo");
   }
 
-  if (telefono.replace(/\D/g, "").length < 9) {
+  if (normalizzaTelefono(telefono) === null) {
     return errore("Il numero di telefono non sembra giusto");
   }
 

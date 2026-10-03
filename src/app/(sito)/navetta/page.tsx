@@ -3,7 +3,7 @@ import { DatiBriciole } from "@/componenti/DatiBriciole";
 import { Indietro } from "@/componenti/sito/Indietro";
 import { Introduzione, TestaPagina, Titolo2 } from "@/componenti/sito/Pagina";
 import stili from "@/componenti/sito/Pagina.module.css";
-import { NAVETTA, WHATSAPP } from "@/contenuti/sito";
+import { linkWhatsapp, MESSAGGI_WHATSAPP, NAVETTA } from "@/contenuti/sito";
 import { legaParole } from "@/lib/tipografia";
 
 import stiliPagina from "./page.module.css";
@@ -20,9 +20,7 @@ export const metadata = metadatiPagina({
  * Il messaggio che si apre in WhatsApp. La zona non si può precompilare in un
  * link, quindi il testo non la nomina: la dice chi scrive.
  */
-const MESSAGGIO_WHATSAPP =
-  "Ciao Luca, vorrei avere informazioni sulla navetta per il ROOM26. Vorrei sapere disponibilità, orari e costo.";
-const LINK_WHATSAPP = `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(MESSAGGIO_WHATSAPP)}`;
+const LINK_WHATSAPP = linkWhatsapp(MESSAGGI_WHATSAPP.navetta);
 
 const IN_MACCHINA = [
   "Uno di voi non beve per tutta la sera",
@@ -44,7 +42,6 @@ export default function PaginaNavetta() {
       <div className={stiliPagina.sfondo}>
         <TestaPagina
           occhiello={NAVETTA.occhiello.charAt(0) + NAVETTA.occhiello.slice(1).toLowerCase()}
-          colore="var(--cyan)"
           righe={["Navetta per il ROOM26"]}
           introduzione="Vieni da fuori Roma? Posso organizzare la navetta per il ROOM26 da qualsiasi zona. Disponibilità, orari e costo li concordiamo insieme, in base alla tua richiesta."
         />

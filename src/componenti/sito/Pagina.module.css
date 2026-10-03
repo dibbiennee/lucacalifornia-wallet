@@ -303,10 +303,11 @@
   stroke-linecap: round;
 }
 
-.male p { color: var(--red); }
-.male svg { stroke: var(--red); }
-.bene p { color: var(--cyan); }
-.bene svg { stroke: var(--cyan); }
+/* Niente rosso e niente azzurro: sono domenica e sabato. Il no è una X grigia, il sì una spunta chiara. */
+.male p { color: var(--muted); }
+.male svg { stroke: var(--dim); }
+.bene p { color: var(--text); }
+.bene svg { stroke: var(--text); }
 
 @media (min-width: 720px) {
   .confronto { grid-template-columns: 1fr 1fr; }
@@ -356,7 +357,7 @@
 .pacchetti em {
   font-style: normal;
   font-size: 13px;
-  color: var(--acid);
+  color: var(--muted);
   font-weight: 700;
 }
 

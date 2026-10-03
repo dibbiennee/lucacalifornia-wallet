@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useCallback, useState } from "react";
 
 import { MENU } from "@/contenuti/sito";
@@ -19,6 +20,7 @@ import stili from "./Testata.module.css";
  */
 export function Testata() {
   const [aperto, setAperto] = useState(false);
+  const percorso = usePathname();
 
   // Stabile, perché il menu la usa dentro un effetto.
   const chiudi = useCallback(() => setAperto(false), []);
@@ -38,7 +40,11 @@ export function Testata() {
 
           <nav className={stili.voci} aria-label="Principale">
             {MENU.map((voce) => (
-              <Link key={voce.dove} href={voce.dove}>
+              <Link
+                key={voce.dove}
+                href={voce.dove}
+                aria-current={percorso === voce.dove || percorso.startsWith(`${voce.dove}/`) ? "page" : undefined}
+              >
                 {voce.testo}
               </Link>
             ))}
@@ -63,7 +69,7 @@ export function Testata() {
         </div>
       </header>
 
-      {aperto && <Menu chiudi={chiudi} />}
+      <Menu aperto={aperto} chiudi={chiudi} />
     </>
   );
 }

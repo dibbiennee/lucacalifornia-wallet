@@ -2,7 +2,11 @@
 
 import { useEffect, useId, useRef, useState, type FormEvent } from "react";
 
+import { ISO_PREDEFINITO } from "@/contenuti/prefissi";
+import { cifreMinime } from "@/lib/telefono";
+
 import { BottoneAzione } from "./Bottone";
+import { CampoTelefono } from "./CampoTelefono";
 import stili from "./FoglioAvvisami.module.css";
 
 /**
@@ -18,7 +22,11 @@ export function FoglioCandidatura() {
   const [aperto, setAperto] = useState(false);
   const [nome, setNome] = useState("");
   const [citta, setCitta] = useState("");
-  const [contatto, setContatto] = useState("");
+  // Come risponderti: per telefono (con il prefisso del paese) o su Instagram.
+  const [modo, setModo] = useState<"telefono" | "instagram">("telefono");
+  const [paeseTel, setPaeseTel] = useState<string>(ISO_PREDEFINITO);
+  const [numeroTel, setNumeroTel] = useState("");
+  const [instagram, setInstagram] = useState("");
   const [errori, setErrori] = useState<Record<string, string>>({});
   const [fatto, setFatto] = useState(false);
 
@@ -44,8 +52,14 @@ export function FoglioCandidatura() {
     if (citta.trim() === "") {
       trovati["citta"] = "Dimmi da dove vieni";
     }
-    if (contatto.trim() === "") {
-      trovati["contatto"] = "Serve un contatto per risponderti";
+    if (modo === "telefono") {
+      if (numeroTel.trim() === "") {
+        trovati["contatto"] = "Serve un numero per risponderti";
+      } else if (numeroTel.replace(/\D/g, "").length < cifreMinime(paeseTel)) {
+        trovati["contatto"] = "Questo numero sembra incompleto";
+      }
+    } else if (instagram.trim().replace(/^@/, "") === "") {
+      trovati["contatto"] = "Serve il tuo nome su Instagram";
     }
 
     setErrori(trovati);
@@ -101,14 +115,53 @@ export function FoglioCandidatura() {
 
               <Campo id={`${id}-nome`} etichetta="Nome" valore={nome} cambia={setNome} errore={errori["nome"]} autoComplete="name" />
               <Campo id={`${id}-citta`} etichetta="Città o zona" valore={citta} cambia={setCitta} errore={errori["citta"]} />
-              <Campo
-                id={`${id}-contatto`}
-                etichetta="Telefono o Instagram"
-                valore={contatto}
-                cambia={setContatto}
-                errore={errori["contatto"]}
-                segnaposto="333 123 4567 oppure @iltuonome"
-              />
+              <div className={stili.modi} role="group" aria-label="Come vuoi essere ricontattato">
+                {(
+                  [
+                    ["telefono", "Telefono"],
+                    ["instagram", "Instagram"],
+                  ] as const
+                ).map(([valore, testo]) => (
+                  <button
+                    key={valore}
+                    type="button"
+                    className={stili.modo}
+                    aria-pressed={modo === valore}
+                    onClick={() => {
+                      setModo(valore);
+                      setErrori((e) => {
+                        const { contatto: _tolto, ...resto } = e;
+                        return resto;
+                      });
+                    }}
+                  >
+                    {testo}
+                  </button>
+                ))}
+              </div>
+
+              {modo === "telefono" ? (
+                <CampoTelefono
+                  id={`${id}-contatto`}
+                  iso={paeseTel}
+                  numero={numeroTel}
+                  cambia={(v) => {
+                    setPaeseTel(v.iso);
+                    setNumeroTel(v.numero);
+                  }}
+                  errore={errori["contatto"]}
+                  bordo="lieve"
+                />
+              ) : (
+                <Campo
+                  id={`${id}-contatto`}
+                  etichetta="Instagram"
+                  valore={instagram}
+                  cambia={setInstagram}
+                  errore={errori["contatto"]}
+                  segnaposto="@iltuonome"
+                />
+              )}
 
               <BottoneAzione aspetto="nero" pieno type="submit">
                 Manda la candidatura

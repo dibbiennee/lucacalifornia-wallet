@@ -25,7 +25,6 @@ export default function PaginaCapodanno() {
       <div className={stiliPagina.sfondo}>
         <TestaPagina
           occhiello="31 dicembre"
-          colore="var(--acid)"
           righe={["Capodanno", "2026/2027"]}
           introduzione="Solo a Capodanno lavoro con più strutture. Strutture, date e prezzi arrivano a breve: ti metto in lista d'attesa e ti avviso io per primo."
         />

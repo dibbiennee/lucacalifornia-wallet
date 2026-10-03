@@ -36,7 +36,6 @@ export default function PaginaDiventaPr() {
       <Indietro testo="Home" dove="/" />
       <div className={stili.sfondo}>
         <TestaPagina
-          colore="var(--red)"
           righe={["Per la figura", "di PR"]}
           introduzione="Cerco nuovi PR per la mia squadra, a Roma e sul litorale. Non serve esperienza: la formazione la faccio io, di persona, in un percorso individuale in due giorni."
         />

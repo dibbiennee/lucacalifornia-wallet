@@ -26,7 +26,19 @@ export const INSTAGRAM_URL = `https://instagram.com/${INSTAGRAM}`;
 /** Telefono di Luca, da confermare con lui prima di pubblicare davvero. */
 export const WHATSAPP = "393348548735";
 
+/** Il link che apre WhatsApp con un messaggio già scritto. Il numero è uno solo, quello qui sopra. */
+export function linkWhatsapp(messaggio: string): string {
+  return `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(messaggio)}`;
+}
+
+/** I messaggi già scritti: stessi sulla pagina della navetta e nel chatbot. */
+export const MESSAGGI_WHATSAPP = {
+  navetta: "Ciao Luca, vorrei avere informazioni sulla navetta per il ROOM26. Vorrei sapere disponibilità, orari e costo.",
+  generico: "Ciao Luca, ho visto il sito e vorrei avere qualche informazione.",
+} as const;
+
 export const MENU = [
+  { testo: "Serate", dove: "/serate" },
   { testo: "Tavoli", dove: "/tavoli" },
   { testo: "Navetta", dove: "/navetta" },
   { testo: "Capodanno", dove: "/capodanno" },
@@ -185,6 +197,11 @@ export const LOCALE = {
   lat: 41.8343033,
   lon: 12.4703946,
 } as const;
+
+/** Apre la mappa del locale (Google Maps, funziona su ogni telefono e sul computer). */
+export function linkMappaLocale(): string {
+  return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${LOCALE.nome}, ${LOCALE.indirizzo}`)}`;
+}
 
 export const COME_FUNZIONA = [
   {

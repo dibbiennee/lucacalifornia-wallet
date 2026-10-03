@@ -29,7 +29,17 @@ html:has(.sito) {
   font-size: 16px;
   line-height: 1.5;
   -webkit-tap-highlight-color: transparent;
+  /*
+   * Niente scorrimento orizzontale, ma con "clip" e non con "hidden": hidden fa del guscio un contenitore di
+   * scorrimento, e dentro un contenitore così la testata "sticky" non resta mai in alto mentre si scorre.
+   */
   overflow-x: hidden;
+}
+
+@supports (overflow: clip) {
+  .sito {
+    overflow-x: clip;
+  }
 }
 
 /* Quanto spazio prende la barra in basso: serve al piè di pagina. */

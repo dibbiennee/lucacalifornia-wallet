@@ -32,7 +32,7 @@ export default function PaginaPrenota() {
       <div className={`wrap ${stili.colonne}`}>
         <TestaPagina
           occhiello="In 30 secondi"
-          colore="var(--magenta-scuro)"
+          colore="var(--ink-2)"
           righe={["Prenota il tuo", "ingresso"]}
           introduzione="Nessun pagamento qui: ti rispondo io su WhatsApp con disponibilità e prezzo. Quando confermo, ricevi il biglietto da aggiungere al Wallet."
           senzaColonna

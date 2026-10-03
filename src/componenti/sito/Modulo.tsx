@@ -3,11 +3,14 @@
 import Link from "next/link";
 import { useEffect, useId, useState, type FormEvent } from "react";
 
+import { ISO_PREDEFINITO } from "@/contenuti/prefissi";
 import { calendarioSerate, type VoceCalendarioSerata } from "@/lib/calendario-serate";
 import { prezzoBraccialetto } from "@/lib/prezzo-braccialetto";
+import { cifreMinime, telefonoCompleto } from "@/lib/telefono";
 import { legaParole } from "@/lib/tipografia";
 
 import { BottoneAzione } from "./Bottone";
+import { CampoTelefono } from "./CampoTelefono";
 import stili from "./Modulo.module.css";
 import { segnaEvento, sessioneTraffico } from "./traffico-client";
 
@@ -63,6 +66,8 @@ export function Modulo({ codicePr }: { readonly codicePr?: string } = {}) {
   const [nome, setNome] = useState("");
   const [cognome, setCognome] = useState("");
   const [telefono, setTelefono] = useState("");
+  // Il prefisso internazionale: l'Italia, finché chi scrive non sceglie un altro paese.
+  const [paeseTel, setPaeseTel] = useState<string>(ISO_PREDEFINITO);
   const [calendario, setCalendario] = useState<readonly VoceCalendarioSerata[]>([]);
   const [serata, setSerata] = useState<string>("");
   const [persone, setPersone] = useState<string>(PERSONE[0]);
@@ -109,7 +114,7 @@ export function Modulo({ codicePr }: { readonly codicePr?: string } = {}) {
 
   // Fino a dove si può arrivare coi dati che ci sono adesso.
   const cifre = telefono.replace(/\D/g, "").length;
-  const raggiungibile = nome.trim().length >= 2 && cognome.trim().length >= 2 ? (cifre >= 9 ? (serata !== "" ? 3 : 2) : 1) : 0;
+  const raggiungibile = nome.trim().length >= 2 && cognome.trim().length >= 2 ? (cifre >= cifreMinime(paeseTel) ? (serata !== "" ? 3 : 2) : 1) : 0;
 
   useEffect(() => {
     setFase((prima) => Math.max(prima, raggiungibile));
@@ -127,7 +132,7 @@ export function Modulo({ codicePr }: { readonly codicePr?: string } = {}) {
   if (cognome.trim().length < 2) {
     mancanti.push("cognome");
   }
-  if (cifre < 9) {
+  if (cifre < cifreMinime(paeseTel)) {
     mancanti.push("telefono");
   }
   if (serata === "") {
@@ -155,7 +160,7 @@ export function Modulo({ codicePr }: { readonly codicePr?: string } = {}) {
       return tolto ? resta : prima;
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [nome, cognome, telefono, serata, genere, tipo]);
+  }, [nome, cognome, telefono, paeseTel, serata, genere, tipo]);
   const passo = fase <= 1 ? 1 : fase === 2 ? 2 : 3;
 
   // Quando si apre un gruppo, lo si porta in vista (con la tastiera aperta sul telefono resterebbe sotto).
@@ -181,7 +186,7 @@ export function Modulo({ codicePr }: { readonly codicePr?: string } = {}) {
     }
     if (telefono.trim() === "") {
       trovati.telefono = "Serve un numero per ricontattarti";
-    } else if (telefono.replace(/\D/g, "").length < 9) {
+    } else if (cifre < cifreMinime(paeseTel)) {
       trovati.telefono = "Questo numero sembra incompleto";
     }
     if (serata === "") {
@@ -230,7 +235,7 @@ export function Modulo({ codicePr }: { readonly codicePr?: string } = {}) {
           tipo,
           nome,
           cognome,
-          telefono,
+          telefono: telefonoCompleto(paeseTel, telefono),
           serata: voceSerata?.valore ?? "",
           dataSerata: serata,
           persone,
@@ -329,16 +334,15 @@ export function Modulo({ codicePr }: { readonly codicePr?: string } = {}) {
 
       <div className={stili.fasi} data-vuoto={fase === 0 ? "" : undefined}>
       <Fase id={`${id}-fase-1`} aperta={fase >= 1}>
-        <Campo
+        <CampoTelefono
           id={`${id}-telefono`}
-          etichetta="Telefono"
-          valore={telefono}
-          cambia={setTelefono}
+          iso={paeseTel}
+          numero={telefono}
+          cambia={(v) => {
+            setPaeseTel(v.iso);
+            setTelefono(v.numero);
+          }}
           errore={errori.telefono}
-          autoComplete="tel"
-          inputMode="tel"
-          tipo="tel"
-          segnaposto="333 123 4567"
         />
       </Fase>
 

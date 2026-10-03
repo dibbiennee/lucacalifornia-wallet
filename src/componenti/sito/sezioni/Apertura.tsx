@@ -60,9 +60,7 @@ export function Apertura() {
           </h1>
 
           <p className="introduzione">
-            <span className="cl">Ciao, sono&nbsp;Luca California, PR</span> <span className="cl">ed organizzatore di eventi a&nbsp;Roma.</span>{" "}
-            <span className="cl">Liste, tavoli e bracciali per le serate del ROOM26,</span>{" "}
-            <span className="cl">con la navetta per chi viene da fuori Roma.</span>
+            <span className="cl">Ciao, sono&nbsp;Luca California, PR</span> <span className="cl">ed organizzatore di eventi a&nbsp;Roma.</span>
           </p>
 
           <div className={stili.azioni}>

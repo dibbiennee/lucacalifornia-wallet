@@ -75,7 +75,7 @@
 .testa {
   padding: 16px 14px 16px 18px;
   background: var(--ink);
-  color: var(--milk);
+  color: var(--text);
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
@@ -101,8 +101,11 @@
   border: 0;
   background: none;
   color: inherit;
-  padding: 6px;
-  margin: -6px -4px 0 0;
+  /* 44 px: si prende con il pollice. I margini negativi tengono la testata alta com'era. */
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  margin: -12px -10px -12px 0;
   border-radius: 50%;
   display: grid;
   place-items: center;
@@ -153,24 +156,105 @@
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
-  padding: 12px 16px calc(14px + env(safe-area-inset-bottom, 0px));
+  padding: 12px 16px 10px;
   border-top: 1px solid var(--line);
   background: var(--surface);
+  /* Con molte scelte non deve mangiare tutta la conversazione. */
+  max-height: 46%;
+  overflow-y: auto;
 }
 
 .domanda {
   appearance: none;
-  min-height: 36px;
-  padding: 8px 14px;
+  /* 44 px: si prende con il pollice senza mirare. Vale per i pulsanti e per i link. */
+  min-height: 44px;
+  padding: 0 16px;
+  display: inline-flex;
+  align-items: center;
   border-radius: 999px;
   border: 1.5px solid var(--line);
   background: var(--surface-2);
   color: var(--text);
+  font: inherit;
   font-size: 13px;
   font-weight: 700;
+  text-decoration: none;
   cursor: pointer;
+}
+
+/* Le scelte che portano via dalla chat (una pagina, WhatsApp, la mappa) si distinguono da quelle che continuano la conversazione. */
+.cta {
+  border-color: var(--magenta);
+  background: var(--magenta);
+  color: var(--ink);
+}
+
+/* Il ritorno al menu: sempre lì, ma più discreto. */
+.menu {
+  background: transparent;
+  color: var(--muted);
+}
+
+/* Con il mouse sopra, le scelte d'azione restano rosa e leggibili (la regola dell'hover delle altre le scuriva). */
+@media (hover: hover) {
+  .domanda.cta:hover {
+    background: #ff62b6;
+    border-color: #ff62b6;
+    color: var(--ink);
+  }
+
+  .domanda.menu:hover {
+    background: var(--surface-2);
+    color: var(--text);
+  }
 }
 
 @media (hover: hover) {
   .domanda:hover { border-color: var(--muted); background: var(--nav); }
+}
+
+/* Il campo per scrivere, sotto le scelte: una riga sola. */
+.scrivi {
+  flex: none;
+  display: flex;
+  gap: 8px;
+  padding: 0 16px calc(14px + env(safe-area-inset-bottom, 0px));
+  background: var(--surface);
+}
+
+.scrivi input {
+  flex: 1;
+  min-width: 0;
+  height: 44px;
+  padding: 0 14px;
+  border-radius: 999px;
+  border: 1.5px solid var(--line);
+  background: var(--bg);
+  color: var(--text);
+  font: inherit;
+  /* 16 px esatti: sotto, iOS ingrandisce la pagina appena tocchi il campo. */
+  font-size: 16px;
+}
+
+.scrivi input::placeholder {
+  color: var(--muted);
+}
+
+.scrivi button {
+  appearance: none;
+  flex: none;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 0;
+  background: var(--magenta);
+  color: var(--ink);
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+}
+
+.scrivi button:disabled {
+  opacity: 0.4;
+  cursor: default;
 }
