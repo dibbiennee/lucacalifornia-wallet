@@ -92,8 +92,8 @@ export default async function PaginaSerata({ params }: { params: Promise<{ codic
       domanda: "C'è la navetta?",
       risposta: (
         <>
-          Sì, su richiesta, per chi viene da fuori Roma, anche da Civitavecchia e dal litorale.{" "}
-          <Link href="/navetta">Come funziona la navetta</Link>.
+          Sì: se vieni da&nbsp;fuori Roma posso organizzarla da&nbsp;qualsiasi zona. Disponibilità, orari e&nbsp;costo li
+          concordiamo insieme. <Link href="/navetta">Scopri la&nbsp;navetta</Link>.
         </>
       ),
     },
@@ -203,6 +203,9 @@ export default async function PaginaSerata({ params }: { params: Promise<{ codic
               Prenota con me
             </Bottone>
           </div>
+          <p className="nota">
+            Vieni da&nbsp;fuori Roma? <Link href="/navetta">Scopri la&nbsp;navetta</Link>
+          </p>
 
           <Titolo2 id="domande" misura="clamp(22px, 6vw, 30px)">
             Domande frequenti

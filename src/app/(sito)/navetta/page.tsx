@@ -1,19 +1,28 @@
-import { FoglioNavetta } from "@/componenti/sito/FoglioNavetta";
+import { Bottone } from "@/componenti/sito/Bottone";
 import { DatiBriciole } from "@/componenti/DatiBriciole";
 import { Indietro } from "@/componenti/sito/Indietro";
-import { Introduzione, Punti, TestaPagina } from "@/componenti/sito/Pagina";
+import { Introduzione, TestaPagina, Titolo2 } from "@/componenti/sito/Pagina";
 import stili from "@/componenti/sito/Pagina.module.css";
-import { NAVETTA } from "@/contenuti/sito";
+import { NAVETTA, WHATSAPP } from "@/contenuti/sito";
+import { legaParole } from "@/lib/tipografia";
 
 import stiliPagina from "./page.module.css";
 import { metadatiPagina } from "@/lib/seo";
 
 export const metadata = metadatiPagina({
   percorso: "/navetta",
-  titolo: "Navetta per il ROOM26 da fuori Roma - Luca California",
+  titolo: "Navetta per il ROOM26, da qualsiasi zona - Luca California",
   descrizione:
-    "Navetta per le serate al ROOM26, su richiesta, per chi viene da fuori Roma: anche da Civitavecchia e dal litorale. Andata e ritorno a fine serata.",
+    "Vieni da fuori Roma? Organizzo la navetta per le serate al ROOM26 da qualsiasi zona. Disponibilità, orari e costo li concordiamo insieme.",
 });
+
+/**
+ * Il messaggio che si apre in WhatsApp. La zona non si può precompilare in un
+ * link, quindi il testo non la nomina: la dice chi scrive.
+ */
+const MESSAGGIO_WHATSAPP =
+  "Ciao Luca, vorrei avere informazioni sulla navetta per il ROOM26. Vorrei sapere disponibilità, orari e costo.";
+const LINK_WHATSAPP = `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(MESSAGGIO_WHATSAPP)}`;
 
 const IN_MACCHINA = [
   "Uno di voi non beve per tutta la sera",
@@ -23,14 +32,8 @@ const IN_MACCHINA = [
 
 const CON_LA_NAVETTA = [
   "Bevete tutti, nessuno escluso",
-  "Ti lascia davanti all'ingresso",
-  "Ti riporta nella tua zona",
-] as const;
-
-const COME_VA = [
-  { titolo: "Dimmi da dove parti", testo: "Zona o quartiere, e la serata in cui vieni." },
-  { titolo: "Ti ricontatto io", testo: "Su WhatsApp, con orario e punto di ritrovo." },
-  { titolo: "A fine serata", testo: "Ti riporto nella stessa zona." },
+  "Niente parcheggio da cercare",
+  "Si va e si torna in navetta",
 ] as const;
 
 export default function PaginaNavetta() {
@@ -42,12 +45,40 @@ export default function PaginaNavetta() {
         <TestaPagina
           occhiello={NAVETTA.occhiello.charAt(0) + NAVETTA.occhiello.slice(1).toLowerCase()}
           colore="var(--cyan)"
-          righe={["Servizio navetta"]}
-          introduzione={`${NAVETTA.testo} Su richiesta, per chi viene da fuori Roma, anche da Civitavecchia e dal litorale.`}
+          righe={["Navetta per il ROOM26"]}
+          introduzione="Vieni da fuori Roma? Posso organizzare la navetta per il ROOM26 da qualsiasi zona. Disponibilità, orari e costo li concordiamo insieme, in base alla tua richiesta."
         />
       </div>
 
       <section className="wrap" style={{ paddingBottom: 56 }}>
+        <div style={{ marginTop: 28 }}>
+          <Titolo2 id="come-fare" misura="clamp(22px, 6vw, 30px)">
+            Come vuoi partire
+          </Titolo2>
+        </div>
+
+        <div className={stiliPagina.percorsi}>
+          <div className={stiliPagina.percorso}>
+            <strong>{legaParole("Voglio prenotare la serata", { vedova: false })}</strong>
+            <p>
+              {legaParole("Scegli tavolo, bracciale VIP o lista. Quando ti ricontatto, concordiamo anche la navetta.", {
+                vedova: true,
+              })}
+            </p>
+            <Bottone href="/prenota" pieno classe="cta-prenota">
+              Prenota la tua serata
+            </Bottone>
+          </div>
+
+          <div className={stiliPagina.percorso}>
+            <strong>{legaParole("Prima voglio informazioni", { vedova: false })}</strong>
+            <p>{legaParole("Scrivimi su WhatsApp: ti dico disponibilità, orari e costo.", { vedova: true })}</p>
+            <Bottone href={LINK_WHATSAPP} esterno pieno aspetto="contorno">
+              Info navetta su WhatsApp
+            </Bottone>
+          </div>
+        </div>
+
         <div className={stili.confronto}>
           <div className={stili.male}>
             <p>In macchina</p>
@@ -82,16 +113,12 @@ export default function PaginaNavetta() {
           <span className="cl">Meglio&nbsp;la&nbsp;navetta</span>{" "}
           <span className="cl">che&nbsp;perdere la&nbsp;patente</span>
         </h2>
-        <div style={{ marginBottom: 28 }}>
+        <div>
           <Introduzione>
-            Neopatentato o sotto i 21 anni? Per te il limite è zero: basta un drink per rischiare
-            la sospensione. Per tutti gli altri, un posto in navetta costa meno di una multa.
+            Neopatentato o sotto i 21 anni? Per te il limite è zero: basta un drink per rischiare la sospensione.
+            Con la navetta, di chi guida non devi preoccuparti.
           </Introduzione>
         </div>
-
-        <Punti voci={COME_VA} />
-
-        <FoglioNavetta />
       </section>
     </>
   );

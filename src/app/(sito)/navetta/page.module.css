@@ -21,3 +21,40 @@
   -webkit-mask-image: linear-gradient(to left, rgba(0, 0, 0, 0.9) 0%, transparent 62%);
   mask-image: linear-gradient(to left, rgba(0, 0, 0, 0.9) 0%, transparent 62%);
 }
+
+/* I due modi di partire: prenotare la serata, o chiedere prima informazioni. */
+.percorsi {
+  display: grid;
+  gap: 10px;
+  margin: 16px 0 28px;
+}
+
+.percorso {
+  padding: 20px;
+  border-radius: var(--r-m);
+  background: var(--surface);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 0;
+}
+
+.percorso strong {
+  font-size: 16px;
+  font-weight: 900;
+  font-stretch: 112%;
+  text-transform: uppercase;
+}
+
+.percorso p {
+  margin: 0 0 6px;
+  font-size: 14.5px;
+  color: var(--muted);
+  flex: 1;
+}
+
+@media (min-width: 720px) {
+  .percorsi {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}

@@ -34,7 +34,7 @@ const DOMANDE: readonly Domanda[] = [
   {
     id: "navetta",
     domanda: "C'è la navetta?",
-    risposta: "Sì: ti viene a prendere dalla tua zona e ti riporta a fine serata. La trovi nella pagina Navetta.",
+    risposta: "Sì: se vieni da fuori Roma posso organizzarla da qualsiasi zona. Disponibilità, orari e costo li concordiamo insieme. La trovi nella pagina Navetta.",
   },
   {
     id: "prezzo",
