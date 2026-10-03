@@ -509,6 +509,26 @@ export async function walletDi(ambito: Ambito, id: string): Promise<WalletSalvat
 }
 
 /**
+ * Il token del biglietto, dal suo numero di serie: serve al link corto (/api/b/<serie>).
+ * Solo per richieste ancora confermate e con il biglietto pronto; il formato del numero
+ * si controlla prima, così al database non arriva niente che non somigli a un numero di serie.
+ */
+export async function tokenDaSerial(serial: string): Promise<string | null> {
+  if (!/^[A-Za-z0-9_-]{8,24}$/.test(serial)) {
+    return null;
+  }
+
+  const sql = await db();
+  const righe = (await sql`
+    SELECT wallet_token FROM richieste
+    WHERE wallet_serial = ${serial} AND wallet_stato = 'pronto' AND stato = 'confermata' AND wallet_token IS NOT NULL
+    LIMIT 1
+  `) as unknown as readonly { readonly wallet_token: string | null }[];
+
+  return righe[0]?.wallet_token ?? null;
+}
+
+/**
  * Il numero di serie del biglietto di una richiesta confermata.
  *
  * La prima volta lo scrive, le volte dopo restituisce quello che c'è già:

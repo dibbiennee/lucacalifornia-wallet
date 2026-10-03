@@ -164,7 +164,8 @@ function rispostaPronta(req: Request, r: RichiestaPannello, serial: string, toke
   // I dati si leggono dal biglietto salvato, non si ricalcolano: per le richieste senza data vera la
   // "prossima serata" cambierebbe di settimana in settimana, e il messaggio non sarebbe più lo stesso.
   const prenotazione = leggiToken(token) ?? prenotazioneDa(r, serial);
-  const linkBiglietto = `${new URL(req.url).origin}/api/pass/${token}`;
+  // Il link corto, col numero di serie (12 caratteri) invece del biglietto intero (circa 270): vedi api/b/[serial]/route.ts.
+  const linkBiglietto = `${new URL(req.url).origin}/api/b/${serial}`;
   const messaggio = messaggioConferma({
     nome: prenotazione.nomeCliente,
     tipo: r.tipo,
