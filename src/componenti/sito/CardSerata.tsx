@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 
-import type { SerataSito } from "@/contenuti/sito";
+import { percorsoSerata, type SerataSito } from "@/contenuti/sito";
 import { legaParole } from "@/lib/tipografia";
 
 import { Bottone } from "./Bottone";
@@ -24,7 +24,7 @@ export function CardSerata({ serata }: { readonly serata: SerataSito }) {
 
   return (
     <article className={stili.card} style={{ background: colore }}>
-      <Link href={`/serate/${serata.codice}`} className={stili.foto} aria-label={`${serata.nome}, dettagli`}>
+      <Link href={percorsoSerata(serata)} className={stili.foto} aria-label={`${serata.nome}, dettagli`}>
         <Image
           src={serata.copertina}
           alt={serata.alt}
@@ -42,11 +42,11 @@ export function CardSerata({ serata }: { readonly serata: SerataSito }) {
         <p className={stili.giorno}>{serata.giorno}</p>
 
         <h3 className="display" style={serata.codice === "sabato" ? { fontStretch: "100%" } : undefined}>
-          <Link href={`/serate/${serata.codice}`}>{serata.nome}</Link>
+          <Link href={percorsoSerata(serata)}>{serata.nome}</Link>
         </h3>
 
         <div className={stili.piede}>
-          <Link href={`/serate/${serata.codice}`} className={stili.musica}>
+          <Link href={percorsoSerata(serata)} className={stili.musica}>
             {legaParole(serata.musica)}
           </Link>
           <Bottone href={perPrenotare(serata.codice, "tavolo")} aspetto="nero" stretto>
@@ -76,7 +76,7 @@ export function ListaSerate({ serate }: { readonly serate: readonly SerataSito[]
         return (
           <Link
             key={s.codice}
-            href={`/serate/${s.codice}`}
+            href={percorsoSerata(s)}
             className={`${stili.riga} ${conFoto ? stili.rigaConFoto : ""}`}
             data-sfondo={s.badge}
             style={

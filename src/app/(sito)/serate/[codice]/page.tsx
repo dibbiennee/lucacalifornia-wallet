@@ -7,31 +7,43 @@ import { CardMappa } from "@/componenti/sito/CardMappa";
 import { perPrenotare } from "@/componenti/sito/CardSerata";
 import { DatiBriciole } from "@/componenti/DatiBriciole";
 import { Indietro } from "@/componenti/sito/Indietro";
-import { Altre, Azioni, Dati, Introduzione } from "@/componenti/sito/Pagina";
+import { Altre, Azioni, Dati, Domande, Introduzione, Punti, Titolo2 } from "@/componenti/sito/Pagina";
 import stili from "@/componenti/sito/Pagina.module.css";
-import { LOCALE, SERATE } from "@/contenuti/sito";
+import { LOCALE, percorsoSerata, SERATE } from "@/contenuti/sito";
 import { metadatiPagina } from "@/lib/seo";
 
 export function generateStaticParams() {
-  return SERATE.map((serata) => ({ codice: serata.codice }));
+  return SERATE.map((serata) => ({ codice: serata.slug }));
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ codice: string }> }) {
   const { codice } = await params;
-  const serata = SERATE.find((s) => s.codice === codice);
+  const serata = SERATE.find((s) => s.slug === codice);
 
   return serata === undefined
     ? {}
     : metadatiPagina({
-        percorso: `/serate/${serata.codice}`,
-        titolo: `${serata.nome}, ${serata.quando.toLowerCase()} al ROOM26 - Luca California`,
-        descrizione: serata.descrizione,
+        percorso: percorsoSerata(serata),
+        titolo: `Serate ${serata.giorno.toLowerCase()} a Roma: ${serata.nome} al ROOM26 - Luca California`,
+        descrizione: serata.presentazione,
       });
 }
 
+const ARTICOLO: Record<string, string> = { Giovedì: "Il", Venerdì: "Il", Sabato: "Il", Domenica: "La" };
+
+const COME_ENTRI = [
+  {
+    titolo: "Tavolo",
+    testo:
+      "Per te e il tuo gruppo, misto, solo ragazzi o solo ragazze. Scegli la fascia di budget a persona e dimmi se c'è un'occasione da festeggiare.",
+  },
+  { titolo: "Bracciale VIP", testo: "Accesso all'area tavoli dietro la consolle, senza prenotare il tavolo." },
+  { titolo: "Lista", testo: "Ingresso in pista, senza tavolo." },
+] as const;
+
 export default async function PaginaSerata({ params }: { params: Promise<{ codice: string }> }) {
   const { codice } = await params;
-  const serata = SERATE.find((s) => s.codice === codice);
+  const serata = SERATE.find((s) => s.slug === codice);
 
   if (serata === undefined) {
     notFound();
@@ -39,10 +51,37 @@ export default async function PaginaSerata({ params }: { params: Promise<{ codic
 
   const colore = `var(--${serata.colore})`;
   const altre = SERATE.filter((s) => s.codice !== serata.codice);
+  const articolo = ARTICOLO[serata.giorno] ?? "Il";
+  const giornoMinuscolo = serata.giorno.toLowerCase();
+  const domande = [
+    {
+      domanda: `Che serata c'è ${articolo.toLowerCase()} ${giornoMinuscolo} a Roma?`,
+      risposta: `Al ROOM26 c'è ${serata.nome}, con ${serata.genere.toLowerCase()}.`,
+    },
+    {
+      domanda: "Come prenoto una serata con te?",
+      risposta:
+        "Scegli tavolo, bracciale VIP o lista e compili il modulo in circa mezzo minuto. Ti rispondo io su WhatsApp e, quando confermo, il biglietto ti arriva da aggiungere al Wallet. Sul sito non si paga niente.",
+    },
+    {
+      domanda: "Che differenza c'è tra tavolo, bracciale VIP e lista?",
+      risposta:
+        "Il tavolo è per il tuo gruppo. Il bracciale VIP dà accesso all'area tavoli dietro la consolle, senza prenotare il tavolo. La lista è l'ingresso in pista.",
+    },
+    {
+      domanda: "C'è la navetta?",
+      risposta: (
+        <>
+          Sì, su richiesta, per chi viene da fuori Roma, anche da Civitavecchia e dal litorale.{" "}
+          <Link href="/navetta">Come funziona la navetta</Link>.
+        </>
+      ),
+    },
+  ];
 
   return (
     <>
-      <DatiBriciole voci={[{ nome: "Home", percorso: "/" }, { nome: "Le serate", percorso: "/serate" }, { nome: serata.nome, percorso: `/serate/${serata.codice}` }]} />
+      <DatiBriciole voci={[{ nome: "Home", percorso: "/" }, { nome: "Le serate", percorso: "/serate" }, { nome: serata.nome, percorso: percorsoSerata(serata) }]} />
       <Indietro testo="Tutte le serate" dove="/serate" />
 
       <section className="wrap" style={{ padding: "10px 20px 56px" }}>
@@ -64,9 +103,8 @@ export default async function PaginaSerata({ params }: { params: Promise<{ codic
             </div>
 
             <div className={stili.banda}>
-              <p className={stili.giorno}>{serata.giorno}</p>
               <h1 className="display" style={serata.codice === "sabato" ? { fontStretch: "100%" } : undefined} tabIndex={-1}>
-                {serata.nome}
+                <span className={stili.giorno}>{serata.giorno}</span> {serata.nome}
               </h1>
               <p className={stili.musica}>{serata.genere}</p>
             </div>
@@ -74,7 +112,7 @@ export default async function PaginaSerata({ params }: { params: Promise<{ codic
 
           <div>
             <div style={{ marginTop: 22 }}>
-              <Introduzione>{serata.descrizione}</Introduzione>
+              <Introduzione>{serata.presentazione}</Introduzione>
             </div>
 
             <Dati voci={[["Quando", serata.quando]]} />
@@ -101,13 +139,55 @@ export default async function PaginaSerata({ params }: { params: Promise<{ codic
               </p>
               <Altre>
                 {altre.map((a) => (
-                  <Link key={a.codice} href={`/serate/${a.codice}`} style={{ background: `var(--${a.colore})` }}>
+                  <Link key={a.codice} href={percorsoSerata(a)} style={{ background: `var(--${a.colore})` }}>
                     {a.breve} {a.nome}
                   </Link>
                 ))}
               </Altre>
             </div>
           </div>
+        </div>
+
+        <div className={stili.serataSezioni}>
+          <Titolo2 id="musica" misura="clamp(22px, 6vw, 30px)">
+            {`La musica ${articolo.toLowerCase() === "la" ? "della" : "del"} ${giornoMinuscolo}`}
+          </Titolo2>
+          <Introduzione>{serata.musicaTesto}</Introduzione>
+          <p className="nota">Ogni giorno al ROOM26 c&apos;è una musica diversa:</p>
+          <ul className={stili.settimana}>
+            {SERATE.map((s) => (
+              <li key={s.codice}>
+                {s.codice === serata.codice ? (
+                  <span aria-current="page">
+                    <strong>{s.giorno}</strong> {s.nome} <em>{s.genere}</em>
+                  </span>
+                ) : (
+                  <Link href={percorsoSerata(s)}>
+                    <strong>{s.giorno}</strong> {s.nome} <em>{s.genere}</em>
+                  </Link>
+                )}
+              </li>
+            ))}
+          </ul>
+
+          <Titolo2 id="come-entri" misura="clamp(22px, 6vw, 30px)">
+            Come entri con me
+          </Titolo2>
+          <Punti voci={COME_ENTRI} />
+          <p className="nota">
+            Vuoi sapere come funzionano i&nbsp;tavoli?{" "}
+            <Link href="/tavoli">Guarda qui</Link>.
+          </p>
+          <div>
+            <Bottone href={perPrenotare(serata.codice)} classe="cta-prenota">
+              Prenota con me
+            </Bottone>
+          </div>
+
+          <Titolo2 id="domande" misura="clamp(22px, 6vw, 30px)">
+            Domande frequenti
+          </Titolo2>
+          <Domande voci={domande} />
         </div>
       </section>
     </>

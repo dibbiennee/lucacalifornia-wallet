@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 import { FoglioAvvisami } from "@/componenti/sito/FoglioAvvisami";
 import { DatiBriciole } from "@/componenti/DatiBriciole";
 import { Indietro } from "@/componenti/sito/Indietro";
@@ -10,8 +12,9 @@ import { metadatiPagina } from "@/lib/seo";
 
 export const metadata = metadatiPagina({
   percorso: "/capodanno",
-  titolo: "Capodanno - Luca California",
-  descrizione: "Il 31 dicembre lavoro con più strutture. Tre pacchetti, lista d'attesa aperta.",
+  titolo: "Capodanno 2026/2027 con Luca California",
+  descrizione:
+    "Capodanno 2026/2027: serata, cena e serata, oppure cena, serata e hotel. Strutture e prezzi in arrivo: entra in lista d'attesa.",
 });
 
 export default function PaginaCapodanno() {
@@ -23,8 +26,8 @@ export default function PaginaCapodanno() {
         <TestaPagina
           occhiello="31 dicembre"
           colore="var(--acid)"
-          righe={["Capodanno"]}
-          introduzione="Solo a Capodanno lavoro con più strutture. Prezzi e strutture a breve: ti metto in lista d'attesa e te lo dico appena ci sono."
+          righe={["Capodanno", "2026/2027"]}
+          introduzione="Solo a Capodanno lavoro con più strutture. Strutture, date e prezzi arrivano a breve: ti metto in lista d'attesa e ti avviso io per primo."
         />
       </div>
 
@@ -47,6 +50,10 @@ export default function PaginaCapodanno() {
           titolo="Ti avviso appena escono prezzi e strutture"
           spiegazione="Il Capodanno si riempie prima di tutto il resto: chi è in lista lo sa per primo."
         />
+
+        <p className="nota" style={{ marginTop: 24 }}>
+          Nel&nbsp;frattempo trovi <Link href="/serate">le&nbsp;serate del&nbsp;ROOM26</Link>, da&nbsp;giovedì a&nbsp;domenica.
+        </p>
       </section>
     </>
   );

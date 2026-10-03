@@ -12,8 +12,8 @@
  * È come sta scritto nel logo della serata, quello che si vede nelle foto
  * dentro al locale, ed è anche come si scrive in spagnolo.
  *
- * Senza accento restano solo l'indirizzo della pagina (/serate/bailame) e i
- * nomi dei file: lì un accento crea solo problemi.
+ * Senza accento restano solo l'indirizzo della pagina (/serate/domenica, che
+ * è il giorno) e i nomi dei file: lì un accento crea solo problemi.
  */
 
 export const MARCHIO = { riga1: "LUCA", riga2: "CALIFORNIA" } as const;
@@ -38,6 +38,8 @@ export type Etichetta = "Disponibilità limitata" | "Pochi tavoli" | "Tutto pien
 
 export interface SerataSito {
   readonly codice: string;
+  /** Ultima parte dell'indirizzo della pagina: è il giorno, non il nome del format. */
+  readonly slug: string;
   readonly giorno: string;
   /** Il giorno in tre lettere, per la striscia della settimana. */
   readonly breve: string;
@@ -53,6 +55,10 @@ export interface SerataSito {
   readonly colore: string;
   /** Come si chiama la serata dentro il modulo. */
   readonly descrizione: string;
+  /** La frase in cima alla pagina e nell'anteprima di Google: giorno, città, locale, come prenotare. */
+  readonly presentazione: string;
+  /** Cosa si balla quel giorno e in cosa si distingue dagli altri: solo il genere, nessun'altra caratteristica. */
+  readonly musicaTesto: string;
   readonly quando: string;
   /** Il marchio della serata, per il badge nella riga sottile in home. Non tutte ce l'hanno ancora. */
   readonly badge?: string;
@@ -78,6 +84,7 @@ export interface SerataSito {
 export const SERATE: readonly SerataSito[] = [
   {
     codice: "milkshake",
+    slug: "giovedi",
     giorno: "Giovedì",
     breve: "Gio",
     nome: "Milkshake",
@@ -91,10 +98,15 @@ export const SERATE: readonly SerataSito[] = [
     badgePosizione: "center",
     descrizione:
       "Il giovedì è Milkshake: afro e reggaeton tutta la sera. Prenota qui e ti ricontatto io con disponibilità e prezzo.",
+    presentazione:
+      "Giovedì sera a Roma: Milkshake al ROOM26, con afro e reggaeton. Prenota con me un tavolo, il bracciale VIP o la lista.",
+    musicaTesto:
+      "Il giovedì al ROOM26 è Milkshake: afro e reggaeton. È l'unica serata della settimana con l'afro.",
     quando: "Ogni giovedì",
   },
   {
     codice: "venerdi",
+    slug: "venerdi",
     giorno: "Venerdì",
     breve: "Ven",
     nome: "Drip",
@@ -108,15 +120,20 @@ export const SERATE: readonly SerataSito[] = [
     badgePosizione: "center",
     descrizione:
       "Il venerdì si balla commerciale e reggaeton. Prenota qui e ti ricontatto io con disponibilità e prezzo.",
+    presentazione:
+      "Venerdì sera a Roma: Drip al ROOM26, con commerciale e reggaeton. Prenota con me un tavolo, il bracciale VIP o la lista.",
+    musicaTesto:
+      "Il venerdì al ROOM26 è Drip: commerciale e reggaeton, senza house.",
     quando: "Ogni venerdì",
   },
   {
     codice: "sabato",
+    slug: "sabato",
     giorno: "Sabato",
     breve: "Sab",
     nome: "International",
-    musica: "Commerciale, reggaeton e house",
-    genere: "Commerciale, reggaeton e house",
+    musica: "Reggaeton, commerciale e house",
+    genere: "Reggaeton, commerciale e house",
     colore: "cyan",
     alt: "Il volantino del sabato, con due ballerine e il logo ROOM26",
     etichetta: "Pochi tavoli",
@@ -125,16 +142,21 @@ export const SERATE: readonly SerataSito[] = [
     badge: "/foto/serate/sabato-riga.jpg",
     badgePosizione: "center",
     descrizione:
-      "Il sabato si balla soprattutto commerciale e reggaeton, con un po' di house. Dimmi che formato musicale ti piace e ti sistemo io.",
+      "Il sabato è International: reggaeton, commerciale e house. Dimmi che formato musicale ti piace e ti sistemo io.",
+    presentazione:
+      "Sabato sera a Roma: International al ROOM26, con reggaeton, commerciale e house. Prenota con me un tavolo, il bracciale VIP o la lista.",
+    musicaTesto:
+      "Il sabato al ROOM26 è International: reggaeton, commerciale e house. È l'unica serata della settimana con la house.",
     quando: "Ogni sabato",
   },
   {
     codice: "bailame",
+    slug: "domenica",
     giorno: "Domenica",
     breve: "Dom",
     nome: "Bàilame",
-    musica: "Solo reggaeton",
-    genere: "Solo reggaeton",
+    musica: "Reggaeton",
+    genere: "Reggaeton",
     colore: "red",
     alt: "La grafica Bàilame, con l'orsetto in giacca bianca",
     etichetta: "Disponibilità limitata",
@@ -142,10 +164,19 @@ export const SERATE: readonly SerataSito[] = [
     badge: "/foto/serate/bailame-badge.jpg",
     badgePosizione: "center",
     descrizione:
-      "La domenica si chiude la settimana con Bàilame: tutta la sera solo reggaeton. Prenota qui e ti ricontatto io con disponibilità e prezzo.",
+      "La domenica si chiude la settimana con Bàilame: tutta la sera reggaeton. Prenota qui e ti ricontatto io con disponibilità e prezzo.",
+    presentazione:
+      "Domenica sera a Roma: Bàilame al ROOM26, tutto reggaeton. Prenota con me un tavolo, il bracciale VIP o la lista.",
+    musicaTesto:
+      "La domenica al ROOM26 è Bàilame: tutto reggaeton. Gli altri giorni la musica cambia, qui resta una sola.",
     quando: "Ogni domenica",
   },
 ];
+
+/** Indirizzo della pagina di una serata. */
+export function percorsoSerata(serata: Pick<SerataSito, "slug">): string {
+  return `/serate/${serata.slug}`;
+}
 
 export const LOCALE = {
   nome: "ROOM26, ROMA",

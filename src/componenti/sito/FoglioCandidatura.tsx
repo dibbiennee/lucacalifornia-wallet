@@ -87,7 +87,7 @@ export function FoglioCandidatura() {
           {fatto ? (
             <>
               <p className={stili.fatto} role="status">
-                Luca ti scrive su WhatsApp.
+                Ti scrivo io su WhatsApp.
               </p>
               <p className={stili.spiega}>
                 Questa è un&apos;anteprima: la candidatura non viene conservata da nessuna parte.

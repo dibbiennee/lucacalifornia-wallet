@@ -4,12 +4,19 @@ import { TestaPagina } from "@/componenti/sito/Pagina";
 import stili from "@/componenti/sito/Modulo.module.css";
 import { metadatiPagina } from "@/lib/seo";
 
-export const metadata = metadatiPagina({
-  percorso: "/prenota",
-  titolo: "Prenota il tuo ingresso - Luca California",
-  descrizione:
-    "Tavolo, braccialetto o lista al ROOM26 di Roma in mezzo minuto. Nessun pagamento: prezzo e disponibilità te li dice Luca su WhatsApp.",
-});
+/*
+ * Pagina di sola conversione: non ha un contenuto suo da posizionare e
+ * competerebbe con /tavoli. Non si indicizza, ma i link che contiene si seguono.
+ */
+export const metadata = {
+  ...metadatiPagina({
+    percorso: "/prenota",
+    titolo: "Prenota il tuo ingresso - Luca California",
+    descrizione:
+      "Tavolo, braccialetto o lista al ROOM26 di Roma in mezzo minuto. Nessun pagamento sul sito: ti rispondo io su WhatsApp con disponibilità e prezzo.",
+  }),
+  robots: { index: false, follow: true },
+};
 
 /**
  * La pagina del modulo.
@@ -27,7 +34,7 @@ export default function PaginaPrenota() {
           occhiello="In 30 secondi"
           colore="var(--magenta-scuro)"
           righe={["Prenota il tuo", "ingresso"]}
-          introduzione="Nessun pagamento qui: prezzo e disponibilità te li dice Luca su WhatsApp. Quando conferma, ricevi il biglietto da aggiungere al Wallet."
+          introduzione="Nessun pagamento qui: ti rispondo io su WhatsApp con disponibilità e prezzo. Quando confermo, ricevi il biglietto da aggiungere al Wallet."
           senzaColonna
         />
         <Modulo />

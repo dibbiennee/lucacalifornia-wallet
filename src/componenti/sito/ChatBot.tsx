@@ -24,7 +24,7 @@ const DOMANDE: readonly Domanda[] = [
     id: "come-funziona",
     domanda: "Come funziona?",
     risposta:
-      "Scegli tavolo, braccialetto o lista dal modulo, Luca ti conferma su WhatsApp con disponibilità e prezzo, e il biglietto ti arriva nel telefono.",
+      "Scegli tavolo, braccialetto o lista dal modulo, ti confermo io su WhatsApp con disponibilità e prezzo, e il biglietto ti arriva nel telefono.",
   },
   {
     id: "dove",
@@ -39,12 +39,12 @@ const DOMANDE: readonly Domanda[] = [
   {
     id: "prezzo",
     domanda: "Quanto costa entrare?",
-    risposta: "Dipende dalla serata e da cosa scegli: te lo dice Luca su WhatsApp appena confermi la richiesta.",
+    risposta: "Nel modulo scegli una fascia di budget a persona: 25–30 €, 35–50 € oppure oltre 50 €. Il resto lo definiamo su WhatsApp appena mi mandi la richiesta.",
   },
   {
     id: "tavolo",
     domanda: "Come prenoto un tavolo?",
-    risposta: "Vai al modulo, scegli «Tavolo» e la serata: Luca ti ricontatta con disponibilità e prezzo.",
+    risposta: "Vai al modulo, scegli «Tavolo» e la serata: ti ricontatto io con disponibilità e prezzo.",
   },
 ];
 
@@ -117,7 +117,7 @@ export function ChatBot() {
         <div className={stili.testa}>
           <div>
             <strong>Assistente Luca California</strong>
-            <span>Risposte rapide, o scrivi a Luca su WhatsApp</span>
+            <span>Risposte rapide, o scrivimi su WhatsApp</span>
           </div>
           <button type="button" className={stili.chiudi} onClick={() => setAperto(false)} aria-label="Chiudi">
             <IconaChiudi />

@@ -1,4 +1,4 @@
-import { SERATE } from "@/contenuti/sito";
+import { percorsoSerata, SERATE } from "@/contenuti/sito";
 import { INDIRIZZO, SITO_PUBBLICO } from "@/lib/pubblico";
 
 export const dynamic = "force-static";
@@ -23,13 +23,13 @@ export function GET(): Response {
     "",
     "## Serate al ROOM26",
     "",
-    ...SERATE.map((s) => `- [${s.giorno} ${s.nome}](${INDIRIZZO}/serate/${s.codice}): ${s.musica.toLowerCase()}`),
+    ...SERATE.map((s) => `- [${s.giorno} ${s.nome}](${INDIRIZZO}${percorsoSerata(s)}): ${s.musica.toLowerCase()}`),
     "",
     "## Altro",
     "",
     `- [Tavoli](${INDIRIZZO}/tavoli): compleanni, lauree e bottiglie al ROOM26`,
     `- [Prenota](${INDIRIZZO}/prenota): tavolo, braccialetto o lista in mezzo minuto`,
-    `- [Servizio navetta](${INDIRIZZO}/navetta): dalla tua zona al locale e ritorno a fine serata`,
+    `- [Servizio navetta](${INDIRIZZO}/navetta): su richiesta, per chi viene da fuori Roma, anche da Civitavecchia e dal litorale`,
     `- [Capodanno](${INDIRIZZO}/capodanno): pacchetti serata, cena e hotel`,
     `- [Diventa PR](${INDIRIZZO}/diventa-pr): candidature aperte, formazione in due giorni`,
     `- [Chi è Luca California](${INDIRIZZO}/chi-sono)`,

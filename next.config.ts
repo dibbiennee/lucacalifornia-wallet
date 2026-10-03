@@ -71,6 +71,17 @@ const config: NextConfig = {
   },
 
   /**
+   * Gli indirizzi delle serate sono il giorno, non il nome del format.
+   * I due vecchi indirizzi rimandano ai nuovi in modo permanente.
+   */
+  async redirects() {
+    return [
+      { source: "/serate/milkshake", destination: "/serate/giovedi", permanent: true },
+      { source: "/serate/bailame", destination: "/serate/domenica", permanent: true },
+    ];
+  },
+
+  /**
    * Le immagini del pass vivono su disco in assets/pass. Vercel include in una
    * funzione solo i file che riesce a tracciare leggendo il codice, e un
    * percorso costruito a runtime non lo vede: qui glieli dichiariamo a mano.

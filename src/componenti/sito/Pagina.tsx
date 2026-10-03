@@ -142,6 +142,20 @@ export function Punti({ voci }: { readonly voci: readonly { readonly titolo: str
   );
 }
 
+/** Domande e risposte: il testo sta nel sorgente, a vista solo la domanda. */
+export function Domande({ voci }: { readonly voci: readonly { readonly domanda: string; readonly risposta: ReactNode }[] }) {
+  return (
+    <div className={stili.domande}>
+      {voci.map((v) => (
+        <details key={v.domanda}>
+          <summary>{legaParole(v.domanda, { vedova: false })}</summary>
+          <p>{typeof v.risposta === "string" ? legaParole(v.risposta, { vedova: true }) : v.risposta}</p>
+        </details>
+      ))}
+    </div>
+  );
+}
+
 export function Dati({ voci }: { readonly voci: readonly (readonly [string, string])[] }) {
   return (
     <div className={stili.dati}>

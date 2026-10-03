@@ -236,7 +236,7 @@ export function Modulo({ codicePr }: { readonly codicePr?: string } = {}) {
       <div className={stili.fatto} role="status">
         <h2>Richiesta inviata</h2>
         <p className="introduzione">
-          {legaParole("Luca la vede e ti scrive su WhatsApp con disponibilità e prezzo.", {
+          {legaParole("La vedo io e ti scrivo su WhatsApp con disponibilità e prezzo.", {
             vedova: true,
           })}
         </p>

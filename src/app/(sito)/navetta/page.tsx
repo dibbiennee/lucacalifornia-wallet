@@ -10,9 +10,9 @@ import { metadatiPagina } from "@/lib/seo";
 
 export const metadata = metadatiPagina({
   percorso: "/navetta",
-  titolo: "Servizio navetta - Luca California",
+  titolo: "Navetta per il ROOM26 da fuori Roma - Luca California",
   descrizione:
-    "Dalla tua zona al ROOM26 e ritorno a fine serata. Niente macchina, niente parcheggio, nessuno che deve restare sobrio per guidare.",
+    "Navetta per le serate al ROOM26, su richiesta, per chi viene da fuori Roma: anche da Civitavecchia e dal litorale. Andata e ritorno a fine serata.",
 });
 
 const IN_MACCHINA = [
@@ -43,7 +43,7 @@ export default function PaginaNavetta() {
           occhiello={NAVETTA.occhiello.charAt(0) + NAVETTA.occhiello.slice(1).toLowerCase()}
           colore="var(--cyan)"
           righe={["Servizio navetta"]}
-          introduzione={NAVETTA.testo}
+          introduzione={`${NAVETTA.testo} Su richiesta, per chi viene da fuori Roma, anche da Civitavecchia e dal litorale.`}
         />
       </div>
 

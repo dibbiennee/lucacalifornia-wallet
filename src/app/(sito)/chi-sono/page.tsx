@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 
 import { Bottone } from "@/componenti/sito/Bottone";
 import { DatiBriciole } from "@/componenti/DatiBriciole";
@@ -12,7 +13,7 @@ export const metadata = metadatiPagina({
   percorso: "/chi-sono",
   titolo: "Chi è Luca California, PR a Roma",
   descrizione:
-    "Luca California è un PR di Roma: mette in lista e prenota tavoli al ROOM26. Ogni stagione un locale solo, e tutta la lista dentro.",
+    "Sono Luca California, PR a Roma: ti metto in lista e ti prenoto il tavolo al ROOM26. Ogni stagione un locale solo, e tutta la lista dentro.",
 });
 
 export default function PaginaChiSono() {
@@ -42,6 +43,15 @@ export default function PaginaChiSono() {
             <Introduzione>Sono Luca California, PR e organizzatore di eventi a Roma. Ogni stagione scelgo un locale
               solo e ci porto tutta la mia passione: d&apos;inverno il ROOM26, d&apos;estate il Ninfeo e
               il Morgan Beach Club.</Introduzione>
+
+            <div style={{ marginTop: 16 }}>
+              <Introduzione>Con me prenoti liste, tavoli e bracciali per le serate del ROOM26, e se vieni da fuori
+                Roma organizzo la navetta su richiesta.</Introduzione>
+            </div>
+
+            <p className="nota" style={{ marginTop: 16 }}>
+              Guarda <Link href="/serate">le&nbsp;serate</Link> oppure <Link href="/tavoli">come prenotare un&nbsp;tavolo</Link>.
+            </p>
 
             <div style={{ marginTop: 24 }}>
               <Bottone href={INSTAGRAM_URL} aspetto="contorno" esterno>

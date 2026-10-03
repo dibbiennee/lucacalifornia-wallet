@@ -119,7 +119,7 @@ export function FoglioNavetta() {
 
           {fatto ? (
             <p className={stili.fatto} role="status">
-              Richiesta ricevuta: Luca ti scrive con orari e posti.
+              Richiesta ricevuta: ti scrivo io con orari e posti.
             </p>
           ) : (
             <form onSubmit={(e) => void manda(e)} noValidate style={{ display: "grid", gap: 18 }}>
