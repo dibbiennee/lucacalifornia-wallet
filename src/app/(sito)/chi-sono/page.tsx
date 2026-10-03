@@ -1,20 +1,24 @@
 import Image from "next/image";
 
 import { Bottone } from "@/componenti/sito/Bottone";
+import { DatiBriciole } from "@/componenti/DatiBriciole";
 import { Indietro } from "@/componenti/sito/Indietro";
 import { Introduzione, TestaPagina } from "@/componenti/sito/Pagina";
 import stili from "@/componenti/sito/Pagina.module.css";
 import { INSTAGRAM, INSTAGRAM_URL } from "@/contenuti/sito";
+import { metadatiPagina } from "@/lib/seo";
 
-export const metadata = {
-  title: "Chi è Luca - Luca California",
-  description:
-    "Luca Curella, PR e organizzatore di eventi a Roma. Ogni stagione un locale solo, e tutta la lista dentro.",
-};
+export const metadata = metadatiPagina({
+  percorso: "/chi-sono",
+  titolo: "Chi è Luca California, PR a Roma",
+  descrizione:
+    "Luca California è un PR di Roma: mette in lista e prenota tavoli al ROOM26. Ogni stagione un locale solo, e tutta la lista dentro.",
+});
 
 export default function PaginaChiSono() {
   return (
     <>
+      <DatiBriciole voci={[{ nome: "Home", percorso: "/" }, { nome: "Chi è Luca California", percorso: "/chi-sono" }]} />
       <Indietro testo="Home" dove="/" />
       <TestaPagina
         occhiello="Chi sono"
@@ -26,7 +30,7 @@ export default function PaginaChiSono() {
         <div className={`${stili.corpo} ${stili.corpoCentro}`}>
           <Image
             src="/foto/luca-ritratto.webp"
-            alt="Luca Curella"
+            alt="Luca California"
             width={1066}
             height={1600}
             sizes="(min-width: 900px) 520px, 100vw"
@@ -35,7 +39,7 @@ export default function PaginaChiSono() {
           />
 
           <div className={stili.corpoTesto}>
-            <Introduzione>Sono Luca Curella, PR e organizzatore di eventi a Roma. Ogni stagione scelgo un locale
+            <Introduzione>Sono Luca California, PR e organizzatore di eventi a Roma. Ogni stagione scelgo un locale
               solo e ci porto tutta la mia passione: d&apos;inverno il ROOM26, d&apos;estate il Ninfeo e
               il Morgan Beach Club.</Introduzione>
 

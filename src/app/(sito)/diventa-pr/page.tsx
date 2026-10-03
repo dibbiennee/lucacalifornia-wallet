@@ -1,16 +1,19 @@
 import { Bottone } from "@/componenti/sito/Bottone";
 import { FoglioCandidatura } from "@/componenti/sito/FoglioCandidatura";
+import { DatiBriciole } from "@/componenti/DatiBriciole";
 import { Indietro } from "@/componenti/sito/Indietro";
 import { Punti, TestaPagina } from "@/componenti/sito/Pagina";
 import { INSTAGRAM_URL } from "@/contenuti/sito";
 
 import stili from "./page.module.css";
+import { metadatiPagina } from "@/lib/seo";
 
-export const metadata = {
-  title: "Diventa PR - Luca California",
-  description:
+export const metadata = metadatiPagina({
+  percorso: "/diventa-pr",
+  titolo: "Diventa PR - Luca California",
+  descrizione:
     "Cerco nuovi PR per la mia squadra, a Roma e sul litorale. Non serve esperienza: la formazione la faccio io, di persona.",
-};
+});
 
 const PERCHE = [
   { titolo: "Festa e networking", testo: "Lavori dove ti diverti e conosci gente nuova ogni settimana." },
@@ -29,6 +32,7 @@ const FORMAZIONE = [
 export default function PaginaDiventaPr() {
   return (
     <>
+      <DatiBriciole voci={[{ nome: "Home", percorso: "/" }, { nome: "Diventa PR", percorso: "/diventa-pr" }]} />
       <Indietro testo="Home" dove="/" />
       <div className={stili.sfondo}>
         <TestaPagina

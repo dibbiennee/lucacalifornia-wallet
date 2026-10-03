@@ -1,16 +1,19 @@
 import { FoglioNavetta } from "@/componenti/sito/FoglioNavetta";
+import { DatiBriciole } from "@/componenti/DatiBriciole";
 import { Indietro } from "@/componenti/sito/Indietro";
 import { Introduzione, Punti, TestaPagina } from "@/componenti/sito/Pagina";
 import stili from "@/componenti/sito/Pagina.module.css";
 import { NAVETTA } from "@/contenuti/sito";
 
 import stiliPagina from "./page.module.css";
+import { metadatiPagina } from "@/lib/seo";
 
-export const metadata = {
-  title: "Servizio navetta - Luca California",
-  description:
+export const metadata = metadatiPagina({
+  percorso: "/navetta",
+  titolo: "Servizio navetta - Luca California",
+  descrizione:
     "Dalla tua zona al ROOM26 e ritorno a fine serata. Niente macchina, niente parcheggio, nessuno che deve restare sobrio per guidare.",
-};
+});
 
 const IN_MACCHINA = [
   "Uno di voi non beve per tutta la sera",
@@ -33,6 +36,7 @@ const COME_VA = [
 export default function PaginaNavetta() {
   return (
     <>
+      <DatiBriciole voci={[{ nome: "Home", percorso: "/" }, { nome: "Servizio navetta", percorso: "/navetta" }]} />
       <Indietro testo="Home" dove="/" />
       <div className={stiliPagina.sfondo}>
         <TestaPagina

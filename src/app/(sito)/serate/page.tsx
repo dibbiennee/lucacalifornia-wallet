@@ -1,10 +1,17 @@
 import { Bottone } from "@/componenti/sito/Bottone";
 import { ElencoSerate } from "@/componenti/sito/CardSerata";
+import { DatiBriciole } from "@/componenti/DatiBriciole";
 import { Indietro } from "@/componenti/sito/Indietro";
 import { Galleria, TestaPagina } from "@/componenti/sito/Pagina";
 import { INSTAGRAM, INSTAGRAM_URL, SERATE } from "@/contenuti/sito";
+import { metadatiPagina } from "@/lib/seo";
 
-export const metadata = { title: "Le serate al ROOM26 - Luca California" };
+export const metadata = metadatiPagina({
+  percorso: "/serate",
+  titolo: "Le serate al ROOM26 - Luca California",
+  descrizione:
+    "Le quattro serate del ROOM26 a Roma: giovedì Milkshake, venerdì Drip, sabato International, domenica Bàilame. Scegli la tua e prenota lista o tavolo.",
+});
 
 /*
  * Le quattro foto sono fotogrammi del video del locale: non sono inventate,
@@ -22,6 +29,7 @@ const STORIE = [
 export default function PaginaSerate() {
   return (
     <>
+      <DatiBriciole voci={[{ nome: "Home", percorso: "/" }, { nome: "Le serate", percorso: "/serate" }]} />
       <Indietro testo="Home" dove="/" />
       <TestaPagina
         occhiello="D'inverno, ROOM26, Roma"

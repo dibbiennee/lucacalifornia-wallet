@@ -202,7 +202,7 @@ export function ChiELuca() {
     <section className="blocco" style={{ paddingTop: 0 }}>
       <div className="wrap">
         <div className={`${stili.luca} rivela`}>
-          <Image src="/foto/luca.webp" alt="Luca Curella" width={192} height={192} sizes="96px" />
+          <Image src="/foto/luca.webp" alt="Luca California" width={192} height={192} sizes="96px" />
           <strong>
             <span className="cl">Non&nbsp;importa chi&nbsp;tu&nbsp;sia,</span>{" "}
             <span className="cl">importa che&nbsp;ti&nbsp;sappia divertire</span>

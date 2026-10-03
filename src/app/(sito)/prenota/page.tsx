@@ -2,12 +2,14 @@ import { Modulo } from "@/componenti/sito/Modulo";
 import { Indietro } from "@/componenti/sito/Indietro";
 import { TestaPagina } from "@/componenti/sito/Pagina";
 import stili from "@/componenti/sito/Modulo.module.css";
+import { metadatiPagina } from "@/lib/seo";
 
-export const metadata = {
-  title: "Prenota il tuo ingresso - Luca California",
-  description:
+export const metadata = metadatiPagina({
+  percorso: "/prenota",
+  titolo: "Prenota il tuo ingresso - Luca California",
+  descrizione:
     "Tavolo, braccialetto o lista al ROOM26 di Roma in mezzo minuto. Nessun pagamento: prezzo e disponibilità te li dice Luca su WhatsApp.",
-};
+});
 
 /**
  * La pagina del modulo.

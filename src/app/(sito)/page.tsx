@@ -1,3 +1,5 @@
+import type { Metadata } from "next";
+
 import { DatiStrutturati } from "@/componenti/DatiStrutturati";
 import { FoglioAvvisami } from "@/componenti/sito/FoglioAvvisami";
 import { Apertura } from "@/componenti/sito/sezioni/Apertura";
@@ -11,6 +13,10 @@ import {
   SpecialGuest,
   TuttoIlResto,
 } from "@/componenti/sito/sezioni/Home";
+
+import { DESCRIZIONE_HOME, metadatiPagina, TITOLO_HOME } from "@/lib/seo";
+
+export const metadata: Metadata = metadatiPagina({ percorso: "/", titolo: TITOLO_HOME, descrizione: DESCRIZIONE_HOME });
 
 export default function Home() {
   return (

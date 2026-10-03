@@ -5,10 +5,12 @@ import { notFound } from "next/navigation";
 import { Bottone } from "@/componenti/sito/Bottone";
 import { CardMappa } from "@/componenti/sito/CardMappa";
 import { perPrenotare } from "@/componenti/sito/CardSerata";
+import { DatiBriciole } from "@/componenti/DatiBriciole";
 import { Indietro } from "@/componenti/sito/Indietro";
 import { Altre, Azioni, Dati, Introduzione } from "@/componenti/sito/Pagina";
 import stili from "@/componenti/sito/Pagina.module.css";
 import { LOCALE, SERATE } from "@/contenuti/sito";
+import { metadatiPagina } from "@/lib/seo";
 
 export function generateStaticParams() {
   return SERATE.map((serata) => ({ codice: serata.codice }));
@@ -20,10 +22,11 @@ export async function generateMetadata({ params }: { params: Promise<{ codice: s
 
   return serata === undefined
     ? {}
-    : {
-        title: `${serata.nome}, ${serata.quando.toLowerCase()} al ROOM26 - Luca California`,
-        description: serata.descrizione,
-      };
+    : metadatiPagina({
+        percorso: `/serate/${serata.codice}`,
+        titolo: `${serata.nome}, ${serata.quando.toLowerCase()} al ROOM26 - Luca California`,
+        descrizione: serata.descrizione,
+      });
 }
 
 export default async function PaginaSerata({ params }: { params: Promise<{ codice: string }> }) {
@@ -39,6 +42,7 @@ export default async function PaginaSerata({ params }: { params: Promise<{ codic
 
   return (
     <>
+      <DatiBriciole voci={[{ nome: "Home", percorso: "/" }, { nome: "Le serate", percorso: "/serate" }, { nome: serata.nome, percorso: `/serate/${serata.codice}` }]} />
       <Indietro testo="Tutte le serate" dove="/serate" />
 
       <section className="wrap" style={{ padding: "10px 20px 56px" }}>

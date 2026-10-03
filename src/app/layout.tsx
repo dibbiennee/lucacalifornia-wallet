@@ -3,24 +3,27 @@ import type { ReactNode } from "react";
 
 import { carattere } from "@/lib/carattere";
 import { INDIRIZZO, SITO_PUBBLICO } from "@/lib/pubblico";
+import { DESCRIZIONE_HOME, TITOLO_HOME } from "@/lib/seo";
 
 import "./globals.css";
 
-const TITOLO = "Luca California, liste e tavoli al ROOM26 di Roma";
-const DESCRIZIONE =
-  "Liste e tavoli al ROOM26 di Roma, da giovedì a domenica, con la navetta per arrivarci. Prenoti in mezzo minuto e il biglietto ti arriva nel telefono.";
+const TITOLO = TITOLO_HOME;
+const DESCRIZIONE = DESCRIZIONE_HOME;
 
 export const metadata: Metadata = {
   metadataBase: new URL(INDIRIZZO),
   title: TITOLO,
   description: DESCRIZIONE,
-  alternates: { canonical: "/" },
+  /*
+   * Niente "alternates.canonical" qui: nel layout varrebbe per TUTTE le pagine
+   * che non lo ridefiniscono, e le dichiarerebbe copie della home (era il
+   * difetto di prima). Il canonical lo dice ogni pagina, vedi src/lib/seo.ts.
+   */
   openGraph: {
     type: "website",
     siteName: "Luca California",
     title: TITOLO,
     description: DESCRIZIONE,
-    url: "/",
     locale: "it_IT",
     /*
      * Senza questa immagine il link condiviso su WhatsApp arriva nudo, e un

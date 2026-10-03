@@ -22,7 +22,7 @@ import { INDIRIZZO } from "@/lib/pubblico";
  */
 export default function robots(): MetadataRoute.Robots {
   return {
-    rules: { userAgent: "*", allow: "/", disallow: ["/pannello", "/biglietto", "/staff", "/api"] },
+    rules: { userAgent: "*", allow: "/", disallow: ["/pannello", "/api"] },
     sitemap: `${INDIRIZZO}/sitemap.xml`,
   };
 }

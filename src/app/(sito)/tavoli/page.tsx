@@ -1,13 +1,16 @@
 import { Bottone } from "@/componenti/sito/Bottone";
+import { DatiBriciole } from "@/componenti/DatiBriciole";
 import { Indietro } from "@/componenti/sito/Indietro";
 import { FotoPagina, Introduzione, Pillole, Punti, TestaPagina } from "@/componenti/sito/Pagina";
 import stili from "@/componenti/sito/Pagina.module.css";
+import { metadatiPagina } from "@/lib/seo";
 
-export const metadata = {
-  title: "Tavoli al ROOM26 - Luca California",
-  description:
+export const metadata = metadatiPagina({
+  percorso: "/tavoli",
+  titolo: "Tavoli al ROOM26 - Luca California",
+  descrizione:
     "Compleanni, lauree e bottiglie al ROOM26 di Roma: dimmi cosa festeggiate e preparo tutto io, dalla bottiglia alla torta.",
-};
+});
 
 /** Le occasioni sono le stesse che si scelgono nel modulo. */
 const OCCASIONI = [
@@ -37,6 +40,7 @@ const COME_FUNZIONA = [
 export default function PaginaTavoli() {
   return (
     <>
+      <DatiBriciole voci={[{ nome: "Home", percorso: "/" }, { nome: "Tavoli", percorso: "/tavoli" }]} />
       <Indietro testo="Home" dove="/" />
       <TestaPagina
         occhiello="Tavoli"

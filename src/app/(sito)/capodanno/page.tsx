@@ -1,19 +1,23 @@
 import { FoglioAvvisami } from "@/componenti/sito/FoglioAvvisami";
+import { DatiBriciole } from "@/componenti/DatiBriciole";
 import { Indietro } from "@/componenti/sito/Indietro";
 import { TestaPagina } from "@/componenti/sito/Pagina";
 import stili from "@/componenti/sito/Pagina.module.css";
 import { CAPODANNO } from "@/contenuti/sito";
 
 import stiliPagina from "./page.module.css";
+import { metadatiPagina } from "@/lib/seo";
 
-export const metadata = {
-  title: "Capodanno - Luca California",
-  description: "Il 31 dicembre lavoro con più strutture. Tre pacchetti, lista d'attesa aperta.",
-};
+export const metadata = metadatiPagina({
+  percorso: "/capodanno",
+  titolo: "Capodanno - Luca California",
+  descrizione: "Il 31 dicembre lavoro con più strutture. Tre pacchetti, lista d'attesa aperta.",
+});
 
 export default function PaginaCapodanno() {
   return (
     <>
+      <DatiBriciole voci={[{ nome: "Home", percorso: "/" }, { nome: "Capodanno", percorso: "/capodanno" }]} />
       <Indietro testo="Home" dove="/" />
       <div className={stiliPagina.sfondo}>
         <TestaPagina

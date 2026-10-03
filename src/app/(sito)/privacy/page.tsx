@@ -4,12 +4,13 @@ import { Indietro } from "@/componenti/sito/Indietro";
 import { TestaPagina } from "@/componenti/sito/Pagina";
 import { TestoLegale } from "@/componenti/sito/TestoLegale";
 import { SEZIONI_PRIVACY } from "@/contenuti/legale";
+import { metadatiPagina } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Privacy - Luca California",
-  description: "Quali dati raccoglie il modulo, a cosa servono, chi li vede e come chiederne la cancellazione.",
-  alternates: { canonical: "/privacy" },
-};
+export const metadata: Metadata = metadatiPagina({
+  percorso: "/privacy",
+  titolo: "Privacy - Luca California",
+  descrizione: "Quali dati raccoglie il modulo, a cosa servono, chi li vede e come chiederne la cancellazione.",
+});
 
 /**
  * Resta una pagina con un indirizzo suo: un'informativa deve essere

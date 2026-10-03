@@ -41,6 +41,23 @@ const config: NextConfig = {
         ],
       },
       /*
+       * I domini secondari (il vecchio indirizzo di prova e quello di Vercel)
+       * servono lo stesso sito, ma non devono comparire nei risultati: il
+       * canonical di ogni pagina già indica il dominio vero, e questa
+       * intestazione lo conferma anche per i motori che il canonical lo
+       * trattano solo come un suggerimento. Il dominio principale NON è qui.
+       */
+      {
+        source: "/:percorso*",
+        has: [{ type: "host", value: "lucacalifornia.satoshiweb.it" }],
+        headers: [{ key: "X-Robots-Tag", value: "noindex, nofollow" }],
+      },
+      {
+        source: "/:percorso*",
+        has: [{ type: "host", value: "lucacurellapr.vercel.app" }],
+        headers: [{ key: "X-Robots-Tag", value: "noindex, nofollow" }],
+      },
+      /*
        * I file della Hero hanno il nome legato al contenuto (hero-<impronta>.ext,
        * vedi scripts/genera-apertura.mjs): se il video cambia, cambia il nome.
        * Si possono quindi tenere in cache per un anno senza rivalidarli a ogni

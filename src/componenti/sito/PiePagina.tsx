@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 
-import { EMAIL_PRIVACY, TITOLARE } from "@/contenuti/legale";
+import { EMAIL_PRIVACY } from "@/contenuti/legale";
 import { INSTAGRAM_URL, MENU } from "@/contenuti/sito";
 
 import { Bottone } from "./Bottone";
@@ -50,7 +50,7 @@ export function PiePagina() {
         </div>
 
         <p className={stili.titolare}>
-          <span>{TITOLARE}</span>
+          <span>Contatti</span>
           <a href={`mailto:${EMAIL_PRIVACY}`}>{EMAIL_PRIVACY}</a>
         </p>
 
