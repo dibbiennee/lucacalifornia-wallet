@@ -265,6 +265,7 @@ export function DettaglioRichiesta({
   }
 
   return (
+    <>
     <article className={stili.dettaglio}>
       <header className={stili.barraTop}>
         <Link href={indietro} scroll={false} className={`lc-press ${stili.indietro}`}>
@@ -372,6 +373,12 @@ export function DettaglioRichiesta({
         </div>
       </div>
 
+    </article>
+
+      {/*
+        La barra e i fogli stanno fuori dall'article: l'article ha container-type, che crea un contenimento di layout,
+        e un elemento fixed lì dentro si ancora all'article invece che allo schermo (la barra finiva a metà pagina).
+      */}
       {/* Il PR non decide: nessuna barra di azioni. */}
       {comeLuca && <div className={stili.barraBasso}>{azioni("barra")}</div>}
 
@@ -439,7 +446,7 @@ export function DettaglioRichiesta({
           </FoglioInferiore>
         </>
       )}
-    </article>
+    </>
   );
 }
 

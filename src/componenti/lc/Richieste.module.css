@@ -573,7 +573,12 @@
   background: var(--lc-bg);
   overflow-y: auto;
   overscroll-behavior: contain;
-  animation: scorri 0.38s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  /*
+   * "backwards", non "both": con "both" l'animazione resta attiva dopo la fine (anche se il valore finale è nessuna
+   * trasformazione) e il browser tratta il pannello come un elemento trasformato, che diventa il riferimento degli
+   * elementi fixed dentro di lui. La barra Conferma/Rifiuta si muoveva con lo scorrimento invece di restare al fondo.
+   */
+  animation: scorri 0.38s cubic-bezier(0.2, 0.8, 0.2, 1) backwards;
 }
 
 @keyframes scorri {
