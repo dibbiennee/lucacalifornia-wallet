@@ -1,3 +1,4 @@
+import { LOCALE } from "@/contenuti/sito";
 import { normalizzaTelefono } from "@/lib/telefono";
 
 import type { CodiceMotivo } from "./motivi";
@@ -24,7 +25,7 @@ export const FRASE_MOTIVO: Readonly<Record<CodiceMotivo, string | null>> = {
   tavoli_esauriti: "i tavoli sono esauriti",
   lista_chiusa: "la lista è chiusa",
   gruppo: "il gruppo non è adatto alla serata",
-  dati: "i dati che ci hai lasciato non risultano validi",
+  dati: "i dati che mi hai lasciato non risultano validi",
   altro: null,
 };
 
@@ -41,20 +42,61 @@ export interface DatiConferma {
   readonly linkBiglietto: string | null;
 }
 
-const PER_DATA = (data: string | null): string => (data === null ? "" : ` di ${data}`);
+const IN_MAIUSCOLO = (testo: string): string => testo.charAt(0).toUpperCase() + testo.slice(1);
+
+/**
+ * L'aspetto dei messaggi: blocchi separati da una riga vuota, la frase che conta in
+ * grassetto (WhatsApp: *testo*), una emoji per riga di dettaglio e il link su una
+ * riga sua, così WhatsApp ci mostra sotto l'anteprima. Poche emoji, sempre le stesse.
+ * Il messaggio è in prima persona (lo manda Luca) e finisce con la sua firma.
+ */
+const FIRMA = "Luca";
+
+/** Le righe di dettaglio: la serata, il giorno e (per chi ha un posto) dove. */
+function dettagli(d: { readonly serata: string; readonly data: string | null }, conLuogo: boolean): string[] {
+  return [
+    `🎶 ${d.serata}`,
+    ...(d.data === null ? [] : [`📅 ${IN_MAIUSCOLO(d.data)}`]),
+    ...(conLuogo ? [`📍 ROOM26, ${LOCALE.indirizzo}`] : []),
+  ];
+}
 
 export function messaggioConferma(d: DatiConferma): string {
-  const biglietto = `Questo è il tuo biglietto, puoi aggiungerlo al Wallet:\n${d.linkBiglietto ?? ""}`;
+  const biglietto = `🎟️ Il tuo biglietto, da aggiungere al Wallet:\n${d.linkBiglietto ?? ""}`;
+  const saluto = `Ciao ${d.nome}! 👋`;
 
   switch (d.tipo) {
     case "tavolo":
-      return `Ciao ${d.nome}, il tuo tavolo per ${d.serata}${PER_DATA(d.data)} è confermato.\n${biglietto}\nPer i dettagli del tavolo ti scrivo io.`;
+      return [
+        saluto,
+        ["✅ *Il tuo tavolo è confermato*", ...dettagli(d, true)].join("\n"),
+        biglietto,
+        `I dettagli del tavolo te li scrivo io.\nA presto!\n${FIRMA}`,
+      ].join("\n\n");
     case "lista":
-      return `Ciao ${d.nome}, sei in lista per ${d.serata}${PER_DATA(d.data)}.\n${biglietto}\nAll'ingresso mostralo se ti viene richiesto.`;
+      return [
+        saluto,
+        ["✅ *Sei in lista*", ...dettagli(d, true)].join("\n"),
+        biglietto,
+        `All'ingresso mostra il biglietto se ti viene richiesto.\nA presto!\n${FIRMA}`,
+      ].join("\n\n");
     case "braccialetto":
-      return `Ciao ${d.nome}, il tuo bracciale per ${d.serata}${PER_DATA(d.data)} è confermato.\n${biglietto}\nAll'ingresso mostralo se ti viene richiesto.`;
+      return [
+        saluto,
+        ["✅ *Il tuo bracciale è confermato*", ...dettagli(d, true)].join("\n"),
+        biglietto,
+        `All'ingresso mostra il biglietto se ti viene richiesto.\nA presto!\n${FIRMA}`,
+      ].join("\n\n");
     case "navetta":
-      return `Ciao ${d.nome}, la tua navetta per ${d.serata}${PER_DATA(d.data)} è confermata.${d.zona === undefined || d.zona === "" ? "" : ` Parti da ${d.zona}.`}\nTi scrivo qui orario e punto di ritrovo.`;
+      return [
+        saluto,
+        [
+          "✅ *La tua navetta è confermata*",
+          ...dettagli(d, false),
+          ...(d.zona === undefined || d.zona === "" ? [] : [`🚌 Parti da: ${d.zona}`]),
+        ].join("\n"),
+        `Orario e punto di ritrovo te li scrivo qui.\nA presto!\n${FIRMA}`,
+      ].join("\n\n");
   }
 }
 
@@ -67,8 +109,13 @@ export interface DatiRifiuto {
 
 export function messaggioRifiuto(d: DatiRifiuto): string {
   const frase = d.motivo === undefined ? null : FRASE_MOTIVO[d.motivo];
+  const quando = d.data === null ? "" : ` di ${d.data}`;
 
-  return `Ciao ${d.nome}, per ${d.serata}${PER_DATA(d.data)} purtroppo non riesco a confermarti${frase === null ? "" : `: ${frase}`}.\nGrazie per averci scritto.`;
+  return [
+    `Ciao ${d.nome}, 👋`,
+    `per ${d.serata}${quando} purtroppo non riesco a confermarti.${frase === null ? "" : `\nMotivo: ${frase}.`}`,
+    `Grazie per avermi scritto 🙏\nA presto,\n${FIRMA}`,
+  ].join("\n\n");
 }
 
 /**

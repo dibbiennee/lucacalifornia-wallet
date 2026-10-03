@@ -26,6 +26,15 @@ export const INSTAGRAM_URL = `https://instagram.com/${INSTAGRAM}`;
 /** Telefono di Luca, da confermare con lui prima di pubblicare davvero. */
 export const WHATSAPP = "393348548735";
 
+/** I due contatti della pagina Contatti: mail e telefono, niente altro. */
+export const CONTATTI = {
+  email: "luca.curella91@gmail.com",
+  /** Come si legge a video. */
+  telefono: "+39 334 854 8735",
+  /** Come lo vuole il link tel: (senza spazi). */
+  telefonoLink: "+393348548735",
+} as const;
+
 /** Il link che apre WhatsApp con un messaggio già scritto. Il numero è uno solo, quello qui sopra. */
 export function linkWhatsapp(messaggio: string): string {
   return `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(messaggio)}`;
@@ -44,6 +53,7 @@ export const MENU = [
   { testo: "Capodanno", dove: "/capodanno" },
   { testo: "Diventa PR", dove: "/diventa-pr" },
   { testo: "Chi sono", dove: "/chi-sono" },
+  { testo: "Contatti", dove: "/contatti" },
 ] as const;
 
 export type Etichetta = "Disponibilità limitata" | "Pochi tavoli" | "Tutto pieno";

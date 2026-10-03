@@ -33,6 +33,7 @@ export function GET(): Response {
     `- [Capodanno](${INDIRIZZO}/capodanno): date, strutture e prezzi in arrivo, lista d'attesa aperta`,
     `- [Diventa PR](${INDIRIZZO}/diventa-pr): candidature aperte, formazione in due giorni`,
     `- [Chi è Luca California](${INDIRIZZO}/chi-sono)`,
+    `- [Contatti](${INDIRIZZO}/contatti): email e telefono di Luca California`,
     "",
     SITO_PUBBLICO ? "" : "## Nota\n\nQuesta è un'anteprima del sito, non ancora pubblica.",
   ];

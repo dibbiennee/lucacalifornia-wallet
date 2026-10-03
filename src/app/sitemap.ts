@@ -21,6 +21,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/capodanno",
     "/diventa-pr",
     "/chi-sono",
+    "/contatti",
     "/privacy",
     "/cookie",
   ];
