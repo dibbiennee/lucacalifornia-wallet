@@ -65,7 +65,7 @@ export function TuttoIlResto() {
           </Link>
 
           <Link href="/diventa-pr" className={`${stili.tessera} ${stili["con-foto"]} ${stili.tesseraIntera} ${stili.tesseraFoto}`}>
-            <Image src="/foto/atmosfera/pr-dj.jpg" alt="" width={1500} height={480} sizes="(min-width: 1180px) 1140px, 100vw" />
+            <Image src="/foto/atmosfera/pr-radio.jpg" alt="" width={2000} height={776} sizes="(min-width: 1180px) 1140px, 100vw" />
             <strong>Diventa PR</strong>
             <span>{legaParole("Candidature aperte")}</span>
           </Link>

@@ -545,7 +545,7 @@
   width: auto;
 }
 
-/* "Diventa PR": su telefono il ritaglio mostra il DJ e le persone, a sinistra nella foto, non l'altoparlante sfocato al centro. */
+/* "Diventa PR": la foto ha il pass, il walkie-talkie e il braccialetto a destra, la parte sinistra è buio: il ritaglio parte da destra. */
 .tesseraIntera img {
-  object-position: 22% 50%;
+  object-position: 85% 60%;
 }
