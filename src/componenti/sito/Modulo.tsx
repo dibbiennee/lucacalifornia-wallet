@@ -115,6 +115,49 @@ export function Modulo({ codicePr }: { readonly codicePr?: string } = {}) {
     setFase((prima) => Math.max(prima, raggiungibile));
   }, [raggiungibile]);
 
+  /*
+   * Cosa manca prima di poter inviare, nell'ordine in cui compare. Serve al
+   * pulsante (spento finché manca qualcosa) e alla riga che lo spiega: così chi
+   * guarda il modulo vede subito quanto è lungo, anche prima che i campi si aprano.
+   */
+  const mancanti: string[] = [];
+  if (nome.trim().length < 2) {
+    mancanti.push("nome");
+  }
+  if (cognome.trim().length < 2) {
+    mancanti.push("cognome");
+  }
+  if (cifre < 9) {
+    mancanti.push("telefono");
+  }
+  if (serata === "") {
+    mancanti.push("data");
+  }
+  if (tipo === "braccialetto" && genere === "") {
+    mancanti.push("per chi è");
+  }
+  const incompleto = mancanti.length > 0;
+
+  // Un errore sparisce appena il campo è a posto: restare a schermo dopo averlo corretto fa pensare che non abbia funzionato.
+  useEffect(() => {
+    setErrori((prima) => {
+      const ancora = controlla();
+      const resta: Errori = {};
+      let tolto = false;
+      for (const chiave of Object.keys(prima) as (keyof Errori)[]) {
+        const messaggio = prima[chiave];
+        if (ancora[chiave] !== undefined && messaggio !== undefined) {
+          resta[chiave] = messaggio;
+        } else {
+          tolto = true;
+        }
+      }
+      return tolto ? resta : prima;
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [nome, cognome, telefono, serata, genere, tipo]);
+  const passo = fase <= 1 ? 1 : fase === 2 ? 2 : 3;
+
   // Quando si apre un gruppo, lo si porta in vista (con la tastiera aperta sul telefono resterebbe sotto).
   useEffect(() => {
     if (fase === 0) {
@@ -130,10 +173,10 @@ export function Modulo({ codicePr }: { readonly codicePr?: string } = {}) {
   function controlla(): Errori {
     const trovati: Errori = {};
 
-    if (nome.trim() === "") {
+    if (nome.trim().length < 2) {
       trovati.nome = "Scrivi il tuo nome";
     }
-    if (cognome.trim() === "") {
+    if (cognome.trim().length < 2) {
       trovati.cognome = "Scrivi il tuo cognome";
     }
     if (telefono.trim() === "") {
@@ -234,7 +277,23 @@ export function Modulo({ codicePr }: { readonly codicePr?: string } = {}) {
       noValidate
       className={stili.modulo}
     >
-      <div className={stili["scelta-tipo"]} role="radiogroup" aria-label="Cosa vuoi">
+      <div className={stili.passi} aria-live="polite">
+        <p className={stili.passiTesto}>
+          <span>
+            Passo {passo} di 3: <strong>{NOMI_PASSI[passo - 1]}</strong>
+          </span>
+        </p>
+        <div className={stili.barre} aria-hidden>
+          {[1, 2, 3].map((n) => (
+            <i key={n} data-fatto={n < passo ? "" : undefined} data-attuale={n === passo ? "" : undefined} />
+          ))}
+        </div>
+      </div>
+
+      <p className={stili.domanda} id={`${id}-cosa`}>
+        Cosa vuoi prenotare
+      </p>
+      <div className={stili["scelta-tipo"]} role="radiogroup" aria-labelledby={`${id}-cosa`}>
         {(
           [
             ["Tavolo", "tavolo"],
@@ -346,16 +405,30 @@ export function Modulo({ codicePr }: { readonly codicePr?: string } = {}) {
           </>
         )}
 
+      </Fase>
+      </div>
+
+      <div className={stili.invio}>
         {problema !== "" && (
           <p role="alert" className={stili.errore}>
             {problema}
           </p>
         )}
 
-        <BottoneAzione aspetto="nero" pieno type="submit" disabled={inCorso}>
+        <BottoneAzione
+          aspetto="nero"
+          pieno
+          type="submit"
+          disabled={inCorso}
+          classe={incompleto ? stili.inviaSpento : ""}
+          aria-describedby={`${id}-mancano`}
+        >
           {inCorso ? "Un attimo..." : "Invia la richiesta"}
         </BottoneAzione>
-      </Fase>
+
+        <p id={`${id}-mancano`} className={stili.mancano} aria-live="polite">
+          {incompleto ? `Per inviare mi servono ancora: ${elenco(mancanti)}.` : "Tutto pronto: puoi inviare la richiesta."}
+        </p>
       </div>
 
       <p className={stili.dopo}>
@@ -390,6 +463,16 @@ export function Modulo({ codicePr }: { readonly codicePr?: string } = {}) {
  * si raggiunge con la tastiera (inert); si apre con un'animazione di altezza e
  * dissolvenza, che col movimento ridotto diventa un cambio secco.
  */
+const NOMI_PASSI = ["I tuoi dati", "Quando vieni", "Ultimi dettagli"] as const;
+
+/** "nome", "nome e cognome", "nome, cognome e telefono". */
+function elenco(voci: readonly string[]): string {
+  if (voci.length <= 1) {
+    return voci.join("");
+  }
+  return `${voci.slice(0, -1).join(", ")} e ${voci[voci.length - 1]}`;
+}
+
 function Fase({ id, aperta, children }: { readonly id: string; readonly aperta: boolean; readonly children: React.ReactNode }) {
   return (
     <div id={id} className={stili.fase} data-aperta={aperta ? "" : undefined} inert={!aperta}>

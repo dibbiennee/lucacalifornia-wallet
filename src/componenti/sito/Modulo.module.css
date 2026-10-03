@@ -331,3 +331,66 @@
     transition: none;
   }
 }
+
+/* In cima al modulo: a che passo siamo, su tre. */
+.passi {
+  display: grid;
+  gap: 8px;
+}
+
+.passiTesto {
+  margin: 0;
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--ink-2);
+}
+
+.passiTesto strong {
+  color: var(--ink);
+  font-weight: 800;
+}
+
+.barre {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+}
+
+.barre i {
+  height: 6px;
+  border-radius: 999px;
+  background: #e2ddd3;
+  transition: background-color 0.3s ease;
+}
+
+.barre i[data-fatto] {
+  background: var(--ink);
+}
+
+.barre i[data-attuale] {
+  background: var(--magenta-scuro);
+}
+
+/* "Cosa vuoi prenotare": l'etichetta dell'interruttore, come quella dei campi. */
+.domanda {
+  margin: 0 0 -10px;
+  font-size: 14px;
+  font-weight: 800;
+}
+
+/* Il pulsante sta sempre in fondo; la riga sotto dice cosa manca. */
+.invio {
+  display: grid;
+  gap: 10px;
+}
+
+.inviaSpento {
+  opacity: 0.4;
+}
+
+.mancano {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ink-2);
+}
