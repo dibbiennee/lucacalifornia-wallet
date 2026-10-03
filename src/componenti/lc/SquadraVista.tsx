@@ -43,12 +43,21 @@ export function SquadraVista({ membri, indirizzo }: { readonly membri: readonly 
   const chiudiGestione = useCallback(() => setGestito(null), []);
   const chiudi = useCallback(() => setAggiungi(false), []);
   const [copiato, setCopiato] = useState<string | null>(null);
+  const [conNascosti, setConNascosti] = useState(false);
   const timer = useRef<number | undefined>(undefined);
 
   useEffect(() => () => window.clearTimeout(timer.current), []);
 
-  const massimo = Math.max(1, ...membri.map((m) => m.confermate));
-  const totale = membri.reduce((tot, m) => tot + m.confermate, 0);
+  /*
+   * I PR disattivati non stanno in classifica: si vedono solo con "Mostra nascosti", in fondo,
+   * dopo quelli attivi (che tengono la loro posizione).
+   */
+  const attivi = membri.filter((m) => m.attivo);
+  const nascosti = membri.filter((m) => !m.attivo);
+  const elenco = conNascosti ? [...attivi, ...nascosti] : attivi;
+
+  const massimo = Math.max(1, ...elenco.map((m) => m.confermate));
+  const totale = elenco.reduce((tot, m) => tot + m.confermate, 0);
 
   async function copia(m: MembroSquadra) {
     if (!(await negliAppunti(m.link))) {
@@ -96,7 +105,7 @@ export function SquadraVista({ membri, indirizzo }: { readonly membri: readonly 
       <section className={`lc-up ${stili.testa}`}>
         <div className={stili.titoli}>
           <span className="lc-eyebrow">
-            {membri.length} PR · {conta(totale, "confermata", "confermate")}
+            {elenco.length} PR · {conta(totale, "confermata", "confermate")}
           </span>
           <h1 className="lc-titolo">PR</h1>
         </div>
@@ -112,12 +121,16 @@ export function SquadraVista({ membri, indirizzo }: { readonly membri: readonly 
         <p className={stili.vuoto}>Nessun PR ancora. Con “PR” ne aggiungi uno e ricevi il suo link personale.</p>
       )}
 
+      {membri.length > 0 && elenco.length === 0 && (
+        <p className={stili.vuoto}>Nessun PR attivo. Quelli disattivati si vedono con “Mostra nascosti”.</p>
+      )}
+
       {/* ----- Telefono: una scheda per PR ----- */}
       <ul className={stili.carte}>
-        {membri.map((m, i) => (
+        {elenco.map((m, i) => (
           <li
             key={m.codice}
-            className={`lc-up ${stili.carta}`}
+            className={`lc-up ${stili.carta} ${m.attivo ? "" : (stili.spenta ?? "")}`}
             style={{ animationDelay: `${i * 70}ms` }}
           >
             <div className={stili.rigaTesta}>
@@ -164,7 +177,7 @@ export function SquadraVista({ membri, indirizzo }: { readonly membri: readonly 
       </ul>
 
       {/* ----- Computer: una tabella ----- */}
-      {membri.length > 0 && (
+      {elenco.length > 0 && (
         <section className={`lc-up ${stili.tabella}`} style={{ animationDelay: "100ms" }} aria-label="PR">
           <div className={`${stili.riga} ${stili.intestazione}`} role="presentation">
             <span>PR</span>
@@ -174,8 +187,8 @@ export function SquadraVista({ membri, indirizzo }: { readonly membri: readonly 
             <span>Tavoli</span>
             <span className={stili.destra}>Bracciali</span>
           </div>
-          {membri.map((m, i) => (
-            <div key={m.codice} className={`${stili.riga} ${stili.corpoRiga}`}>
+          {elenco.map((m, i) => (
+            <div key={m.codice} className={`${stili.riga} ${stili.corpoRiga} ${m.attivo ? "" : (stili.spenta ?? "")}`}>
               <div className={stili.cellaPr}>
                 <span className={stili.posizione} style={{ color: i === 0 ? "var(--lc-accent)" : "var(--lc-muted)" }}>
                   {String(i + 1).padStart(2, "0")}
@@ -212,6 +225,19 @@ export function SquadraVista({ membri, indirizzo }: { readonly membri: readonly 
             </div>
           ))}
         </section>
+      )}
+
+      {nascosti.length > 0 && (
+        <div className={stili.nascostiBlocco}>
+          <button
+            type="button"
+            className={`lc-press ${stili.mostraNascosti}`}
+            aria-expanded={conNascosti}
+            onClick={() => setConNascosti((prima) => !prima)}
+          >
+            {conNascosti ? "Nascondi i disattivati" : `Mostra nascosti (${nascosti.length})`}
+          </button>
+        </div>
       )}
 
       <AggiungiPr aperto={aggiungi} chiudi={chiudi} indirizzo={indirizzo} />

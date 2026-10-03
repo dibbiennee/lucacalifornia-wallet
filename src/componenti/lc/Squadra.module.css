@@ -340,3 +340,26 @@
     font-size: 15px;
   }
 }
+
+/* I PR disattivati, quando si scelgono di mostrare: più spenti degli altri. */
+.spenta {
+  opacity: 0.6;
+}
+
+/* Il tasto sotto tutta la sezione: scopre o nasconde i PR disattivati. */
+.nascostiBlocco {
+  margin-top: 4px;
+}
+
+.mostraNascosti {
+  width: 100%;
+  min-height: 44px;
+  padding: 0 16px;
+  border: 1px dashed var(--lc-line-strong);
+  border-radius: 14px;
+  background: transparent;
+  color: var(--lc-muted);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
