@@ -19,10 +19,13 @@
  * lo stesso filmato va bene in tutti e due i casi, quindi non c'è più nessun
  * taglio da computer e nessuna scelta da fare in JavaScript su quale scaricare.
  *
- * CON AUDIO, ma muto di partenza. I browser non fanno partire un video col suono
- * da solo: il video parte muto, e un tasto (TastoAudio.tsx) lo attiva. La traccia
- * ha una dissolvenza di 40 ms in entrata e in uscita, perché nel loop il salto
- * fra fine e inizio non faccia "clic". Costa poche decine di KB per file.
+ * IL VIDEO È SENZA AUDIO, e il suono è un file a parte (hero-*.m4a). Il video è un
+ * loop di 6 secondi e finiva appena prima del drop della musica: con l'audio
+ * dentro il video, il suono si tagliava lì. Il file audio parte dallo stesso punto
+ * del video (11,20 s, la salita) e va avanti oltre il drop (17,5 s) fino a 35,3 s,
+ * dove la musica finisce, con una dissolvenza in uscita e poi ricomincia dalla salita.
+ * Non si scarica finché qualcuno non tocca il tasto (TastoAudio.tsx): sul primo
+ * schermo non pesa niente. Il video resta muto e in loop sotto.
  *
  * IL SEGMENTO. Comincia sul primo fotogramma stabile di un'inquadratura e
  * finisce sull'ultimo prima di un taglio: 11,20 s è la DJ con le mani ai piatti,
@@ -78,9 +81,11 @@ const kb = (file) => `${Math.round(statSync(file).size / 1024)} KB`;
 mkdirSync(lavoro, { recursive: true });
 
 const filtro = `scale=${LARGHEZZA}:${ALTEZZA}:flags=lanczos,fps=${FOTOGRAMMI},format=yuv420p`;
-const fine = (Number(durata) - 0.04).toFixed(2);
-const audio = ["-af", `afade=t=in:d=0.04,afade=t=out:st=${fine}:d=0.04`, "-ac", "2", "-ar", "48000"];
-const comuni = ["-ss", inizio, "-t", durata, "-i", master, "-vf", filtro, ...audio];
+const comuni = ["-ss", inizio, "-t", durata, "-i", master, "-vf", filtro, "-an"];
+
+// il suono: dalla salita, oltre il drop, fino alla fine della musica del master
+const DURATA_AUDIO = 24.1;
+const suono = path.join(lavoro, "hero.m4a");
 
 const webm = path.join(lavoro, "hero.webm");
 const mp4 = path.join(lavoro, "hero.mp4");
@@ -88,11 +93,17 @@ const poster = path.join(lavoro, "hero.png");
 const posterWebp = path.join(lavoro, "hero.webp");
 
 // webm: più leggero, dove viene accettato.
-ffmpeg([...comuni, "-c:v", "libvpx-vp9", "-crf", CRF_VP9, "-b:v", "0", "-row-mt", "1", "-deadline", "good", "-cpu-used", "2", "-c:a", "libopus", "-b:a", "64k", webm]);
+ffmpeg([...comuni, "-c:v", "libvpx-vp9", "-crf", CRF_VP9, "-b:v", "0", "-row-mt", "1", "-deadline", "good", "-cpu-used", "2", webm]);
 
 // mp4: lo leggono tutti. Il primo fotogramma è sempre un fotogramma chiave, e +faststart mette l'indice in testa:
 // il video può partire senza aver scaricato tutto.
-ffmpeg([...comuni, "-c:v", "libx264", "-profile:v", "high", "-crf", CRF_H264, "-preset", "slow", "-c:a", "aac", "-b:a", "96k", "-movflags", "+faststart", mp4]);
+ffmpeg([...comuni, "-c:v", "libx264", "-profile:v", "high", "-crf", CRF_H264, "-preset", "slow", "-movflags", "+faststart", mp4]);
+
+ffmpeg([
+  "-ss", inizio, "-t", String(DURATA_AUDIO), "-i", master, "-vn",
+  "-af", `afade=t=in:d=0.04,afade=t=out:st=${(DURATA_AUDIO - 0.3).toFixed(2)}:d=0.3`,
+  "-c:a", "aac", "-b:a", "96k", "-ac", "2", "-ar", "48000", "-movflags", "+faststart", suono,
+]);
 
 // il poster: il primo fotogramma dell'mp4 già compresso
 ffmpeg(["-i", mp4, "-frames:v", "1", poster]);
@@ -104,6 +115,7 @@ const nomi = {
   webm: `hero-${impronta(webm)}.webm`,
   mp4: `hero-${impronta(mp4)}.mp4`,
   poster: `hero-${impronta(posterWebp)}.webp`,
+  audio: `hero-${impronta(suono)}.m4a`,
 };
 
 // via gli hero-* di prima e i vecchi apertura-*, che nessuno referenzia più
@@ -118,6 +130,7 @@ for (const f of readdirSync(uscita)) {
 renameSync(webm, path.join(uscita, nomi.webm));
 renameSync(mp4, path.join(uscita, nomi.mp4));
 renameSync(posterWebp, path.join(uscita, nomi.poster));
+renameSync(suono, path.join(uscita, nomi.audio));
 rmSync(lavoro, { recursive: true, force: true });
 
 writeFileSync(
@@ -131,6 +144,7 @@ export const HERO_VIDEO = {
   webm: "/video/${nomi.webm}",
   mp4: "/video/${nomi.mp4}",
   poster: "/video/${nomi.poster}",
+  audio: "/video/${nomi.audio}",
   larghezza: ${LARGHEZZA},
   altezza: ${ALTEZZA},
 } as const;
@@ -140,3 +154,4 @@ export const HERO_VIDEO = {
 console.log(`  ${nomi.webm}   ${kb(path.join(uscita, nomi.webm))}`);
 console.log(`  ${nomi.mp4}    ${kb(path.join(uscita, nomi.mp4))}`);
 console.log(`  ${nomi.poster}   ${kb(path.join(uscita, nomi.poster))}`);
+console.log(`  ${nomi.audio}   ${kb(path.join(uscita, nomi.audio))}`);

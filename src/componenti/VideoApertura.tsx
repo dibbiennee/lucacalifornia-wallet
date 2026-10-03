@@ -20,9 +20,9 @@ import { HERO_VIDEO } from "@/contenuti/hero-video";
  * immagine che Apertura.tsx mette sotto il video (e che si vede da sola a chi
  * ha chiesto meno movimento).
  *
- * CON AUDIO, MUTO DI PARTENZA: il filmato ha la traccia, ma i browser non fanno
- * partire un video col suono da soli. Lo accende chi tocca il tasto (TastoAudio,
- * messo accanto a questo video in Apertura.tsx).
+ * SENZA AUDIO DENTRO: il video è muto. La musica è un file a parte (hero-*.m4a),
+ * che parte dal tasto di TastoAudio (accanto a questo video in Apertura.tsx):
+ * il loop finisce appena prima del drop, e col suono dentro si sarebbe tagliato lì.
  *
  * Chi ha chiesto meno movimento, o ha il risparmio dati acceso, non scarica il
  * video: il CSS lo nasconde (vedi Apertura.module.css) e questo piccolo script,

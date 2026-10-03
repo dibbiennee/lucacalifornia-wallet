@@ -45,3 +45,14 @@
     background: rgba(0, 0, 0, 0.75);
   }
 }
+
+/*
+ * Musica accesa e apertura fuori dallo schermo: il tasto resta fisso sotto la
+ * testata (alta 68px), per poterla spegnere senza tornare su.
+ */
+.fisso {
+  position: fixed;
+  top: 80px;
+  right: 16px;
+  z-index: 45;
+}
