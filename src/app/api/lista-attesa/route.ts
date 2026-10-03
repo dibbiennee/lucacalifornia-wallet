@@ -1,16 +1,19 @@
 import { cookies } from "next/headers";
 
 import { serataPerData } from "@/lib/calendario-serate";
+import { dataInLettere } from "@/lib/serate";
 import { BISCOTTO_PROVENIENZA, nomeProvenienza } from "@/contenuti/canali";
 import {
   eDataIso,
   eEventoConLista,
+  nomeEvento,
   normalizzaContatto,
   oggiARoma,
   type ChiaveEvento,
 } from "@/lib/lista-attesa";
 import { chiaveIndirizzo, segnaFallito, statoBlocco } from "@/lib/pannello/blocco-tentativi";
 import { iscriviListaAttesa } from "@/lib/pannello/attesa";
+import { avvisaTutti } from "@/lib/push";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -20,7 +23,8 @@ export const dynamic = "force-dynamic";
  * serata del calendario.
  *
  * Salva davvero su Postgres (tabella lista_attesa): da qui in poi chi si mette
- * in lista compare nel pannello di Luca. Non parte nessun messaggio alla persona: se ne occupa chi usa il
+ * in lista compare nel pannello di Luca, e a lui arriva la notifica push, come per
+ * le richieste. Non parte nessun messaggio alla persona: se ne occupa chi usa il
  * pannello, a mano, come per le richieste.
  *
  * POST { nome, contatto, tipo } per un evento speciale (halloween,
@@ -40,6 +44,8 @@ export const dynamic = "force-dynamic";
  */
 
 const INVII_PER_INDIRIZZO = 20;
+/** Quanto si aspetta la push prima di rispondere: una push lenta non deve far aspettare chi si mette in lista. */
+const ATTESA_PUSH_MS = 4000;
 
 function testo(valore: unknown, massimo: number): string | null {
   if (typeof valore !== "string") {
@@ -127,7 +133,7 @@ export async function POST(richiesta: Request): Promise<Response> {
   const biscotto = (await cookies()).get(BISCOTTO_PROVENIENZA)?.value;
   const provenienza = nomeProvenienza(biscotto);
 
-  await iscriviListaAttesa({
+  const { nuova } = await iscriviListaAttesa({
     nome,
     contatto: contattoGrezzo,
     contattoTipo: contatto.tipo,
@@ -136,6 +142,17 @@ export async function POST(richiesta: Request): Promise<Response> {
     ...(dataSerata === undefined ? {} : { dataSerata }),
     provenienza,
   });
+
+  // La notifica solo per chi si iscrive davvero adesso: chi preme due volte non deve farne partire due.
+  // Se la push fallisce (nessuno iscritto, un endpoint scaduto, un ritardo...) l'iscrizione è comunque salvata:
+  // Luca la vede aprendo il pannello. Nel testo non ci sono né telefono né email.
+  if (nuova) {
+    const quando = dataSerata === undefined ? "" : `, ${dataInLettere(new Date(`${dataSerata}T12:00:00`))}`;
+    await Promise.race([
+      avvisaTutti(`${nome} · Lista d'attesa`, `${nomeEvento(evento)}${quando}`, "/pannello/attesa").catch(() => undefined),
+      new Promise<void>((risolvi) => setTimeout(risolvi, ATTESA_PUSH_MS)),
+    ]);
+  }
 
   // Stessa risposta se la persona era già in lista: dire "c'era già" farebbe scoprire a chiunque quali numeri ci sono.
   return Response.json({ salvata: true }, { headers: { "Cache-Control": "no-store" } });
