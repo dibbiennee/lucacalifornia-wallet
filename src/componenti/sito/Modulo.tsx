@@ -1,9 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useId, useState, type FormEvent } from "react";
+import { useEffect, useId, useRef, useState, type FormEvent, type ReactNode } from "react";
 
 import { ISO_PREDEFINITO } from "@/contenuti/prefissi";
+import { LOCALE, linkMappaLocale } from "@/contenuti/sito";
 import { calendarioSerate, type VoceCalendarioSerata } from "@/lib/calendario-serate";
 import { prezzoBraccialetto } from "@/lib/prezzo-braccialetto";
 import { cifreMinime, telefonoCompleto } from "@/lib/telefono";
@@ -57,8 +58,12 @@ type TipoIngresso = "lista" | "tavolo" | "braccialetto";
  * `codicePr`: il codice della pagina /pr/<codice> da cui si apre il modulo, se è
  * quella di un PR. Non è un id e non decide niente da solo: il server lo controlla
  * (un PR attivo) e da lui ricava a chi attribuire la richiesta.
+ *
+ * `testata`: il titolo della pagina. Sta qui perché a richiesta inviata deve
+ * sparire ("Prenota il tuo ingresso" non ha più senso): la pagina resta, ma
+ * mostra solo la conferma.
  */
-export function Modulo({ codicePr }: { readonly codicePr?: string } = {}) {
+export function Modulo({ codicePr, testata }: { readonly codicePr?: string; readonly testata?: ReactNode } = {}) {
   const id = useId();
   // Il tavolo è la priorità: chi apre il modulo senza un tipo scelto prima
   // (dal link fisso, per esempio) parte da lì, non dalla lista.
@@ -81,6 +86,9 @@ export function Modulo({ codicePr }: { readonly codicePr?: string } = {}) {
   const [problema, setProblema] = useState("");
   const [inviata, setInviata] = useState(false);
   const [trappola, setTrappola] = useState("");
+  // Per il tavolo, budget e occasione si aprono dopo "Avanti": non tutto insieme.
+  const [altri, setAltri] = useState(false);
+  const titoloFatto = useRef<HTMLHeadingElement | null>(null);
   /*
    * Il modulo si apre a gradini: all'inizio il tipo, il nome e il cognome; poi,
    * man mano che si compila, il telefono, la data e il resto. Una fase aperta
@@ -175,6 +183,27 @@ export function Modulo({ codicePr }: { readonly codicePr?: string } = {}) {
     return () => window.clearTimeout(attesa);
   }, [fase, id]);
 
+  // Il secondo gruppo del tavolo (budget, occasione) si porta in vista quando si apre.
+  useEffect(() => {
+    if (!altri) {
+      return;
+    }
+    const riduci = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const attesa = window.setTimeout(() => {
+      document.getElementById(`${id}-fase-4`)?.scrollIntoView({ block: "nearest", behavior: riduci ? "auto" : "smooth" });
+    }, 180);
+    return () => window.clearTimeout(attesa);
+  }, [altri, id]);
+
+  // Inviata: si torna in cima e il fuoco va alla conferma, così chi usa lo screen reader la sente.
+  useEffect(() => {
+    if (!inviata) {
+      return;
+    }
+    window.scrollTo({ top: 0, behavior: "auto" });
+    titoloFatto.current?.focus({ preventScroll: true });
+  }, [inviata]);
+
   function controlla(): Errori {
     const trovati: Errori = {};
 
@@ -262,19 +291,78 @@ export function Modulo({ codicePr }: { readonly codicePr?: string } = {}) {
   }
 
   if (inviata) {
+    const cosa = tipo === "tavolo" ? "Tavolo" : tipo === "braccialetto" ? "Bracciale" : "Lista";
+
     return (
-      <div className={stili.fatto} role="status">
-        <h2>Richiesta inviata</h2>
-        <p className="introduzione">
-          {legaParole("La vedo io e ti scrivo su WhatsApp con disponibilità e prezzo.", {
-            vedova: true,
-          })}
-        </p>
-      </div>
+      <>
+        <div className={stili.fatto} role="status">
+          <h2 ref={titoloFatto} tabIndex={-1}>
+            Richiesta inviata
+          </h2>
+          <p className="introduzione">
+            {legaParole("La tua richiesta è stata inviata. Ti ricontatterò il prima possibile su WhatsApp per la conferma.", {
+              vedova: true,
+            })}
+          </p>
+
+          <div className={stili.riepilogo}>
+            <p className={stili.riepilogoTitolo}>La tua richiesta</p>
+            <dl>
+              <div>
+                <dt>Cosa</dt>
+                <dd>{cosa}{tipo === "tavolo" || persone !== "1" ? `, ${persone === "1" ? "1 persona" : `${persone} persone`}` : ""}</dd>
+              </div>
+              <div>
+                <dt>Serata</dt>
+                <dd>{voceSerata?.valore ?? ""}</dd>
+              </div>
+              <div>
+                <dt>Ti scrivo al</dt>
+                <dd>{telefonoCompleto(paeseTel, telefono)}</dd>
+              </div>
+            </dl>
+          </div>
+
+          <div className={stili.utile}>
+            <p className={stili.riepilogoTitolo}>Intanto, quello che ti serve sapere</p>
+            <ul>
+              <li>
+                <strong>Dove</strong>
+                <span>
+                  ROOM26, {LOCALE.indirizzo}.{" "}
+                  <a href={linkMappaLocale()} target="_blank" rel="noopener noreferrer">
+                    Apri la mappa
+                  </a>
+                </span>
+              </li>
+              <li>
+                <strong>Età minima</strong>
+                <span>Si entra dai 18 anni.</span>
+              </li>
+              <li>
+                <strong>Dopo la conferma</strong>
+                <span>Ricevi il biglietto da aggiungere al Wallet e lo mostri all&apos;ingresso se ti viene richiesto.</span>
+              </li>
+              <li>
+                <strong>Vieni da fuori Roma?</strong>
+                <span>
+                  C&apos;è la navetta. <Link href="/navetta">Scopri come funziona</Link>.
+                </span>
+              </li>
+            </ul>
+          </div>
+
+          <p className={stili.dopo}>
+            Vuoi vedere altre serate? <Link href="/serate">Guarda il calendario</Link>.
+          </p>
+        </div>
+      </>
     );
   }
 
   return (
+    <>
+    {testata}
     <form
       onSubmit={(e) => void invia(e)}
       // "Modulo iniziato" = la persona ha toccato davvero un campo, non solo aperto la pagina.
@@ -382,16 +470,11 @@ export function Modulo({ codicePr }: { readonly codicePr?: string } = {}) {
         {tipo === "tavolo" && (
           <>
             <Scelta etichetta="Chi c'è al tavolo" nome="gruppo" voci={GRUPPI} scelto={gruppo} cambia={setGruppo} />
-            <Scelta etichetta="Budget a testa" nome="budget" voci={BUDGET} scelto={budget} cambia={setBudget} />
-            <Scelta etichetta="Occasione speciale" nome="occasione" voci={OCCASIONI} scelto={occasione} cambia={setOccasione} />
-            <Campo
-              id={`${id}-note`}
-              etichetta="Altre richieste"
-              facoltativo
-              valore={note}
-              cambia={setNote}
-              segnaposto="Torta, bottiglia, decorazioni..."
-            />
+            {!altri && (
+              <button type="button" className={stili.avanti} onClick={() => setAltri(true)}>
+                Avanti
+              </button>
+            )}
           </>
         )}
 
@@ -409,6 +492,19 @@ export function Modulo({ codicePr }: { readonly codicePr?: string } = {}) {
           </>
         )}
 
+      </Fase>
+
+      <Fase id={`${id}-fase-4`} aperta={fase >= 3 && tipo === "tavolo" && altri}>
+        <Scelta etichetta="Budget a testa" nome="budget" voci={BUDGET} scelto={budget} cambia={setBudget} />
+        <Scelta etichetta="Occasione speciale" nome="occasione" voci={OCCASIONI} scelto={occasione} cambia={setOccasione} />
+        <Campo
+          id={`${id}-note`}
+          etichetta="Altre richieste"
+          facoltativo
+          valore={note}
+          cambia={setNote}
+          segnaposto="Torta, bottiglia, decorazioni..."
+        />
       </Fase>
       </div>
 
@@ -459,6 +555,7 @@ export function Modulo({ codicePr }: { readonly codicePr?: string } = {}) {
         I tuoi dati servono solo a ricontattarti: <Link href="/privacy">come li trattiamo</Link>.
       </p>
     </form>
+    </>
   );
 }
 

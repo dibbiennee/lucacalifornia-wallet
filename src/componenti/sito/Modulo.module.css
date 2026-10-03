@@ -394,3 +394,115 @@
   font-weight: 600;
   color: var(--ink-2);
 }
+
+/* "Avanti": apre il gruppo dopo, per il tavolo. Un solo gesto, grande come gli altri campi. */
+.avanti {
+  appearance: none;
+  min-height: 52px;
+  padding: 0 24px;
+  border: 1.5px solid var(--ink);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--ink);
+  font: inherit;
+  font-size: 16px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.avanti:hover {
+  background: rgba(0, 0, 0, 0.06);
+}
+
+.avanti:focus-visible {
+  outline: 3px solid var(--magenta);
+  outline-offset: 2px;
+}
+
+/*
+ * Il cerchietto della chat sta in basso a destra anche qui: in fondo al modulo
+ * si lascia spazio, così "Invia" e le due righe sotto si possono sempre
+ * scorrere fuori dalla sua strada.
+ */
+.modulo {
+  padding-bottom: 96px;
+}
+
+/* La conferma, a tutta larghezza: sotto il titolo sparito resta solo lei. */
+.fatto {
+  max-width: 640px;
+  padding-bottom: 96px;
+}
+
+@media (min-width: 960px) {
+  .colonne > .fatto:first-child {
+    grid-column: 1 / -1;
+    position: static;
+  }
+}
+
+.riepilogo,
+.utile {
+  border: 1.5px solid var(--ink);
+  border-radius: 16px;
+  padding: 18px 18px 6px;
+  background: #ffffff;
+}
+
+.riepilogoTitolo {
+  margin: 0 0 10px;
+  font-size: 13.5px;
+  font-weight: 800;
+  color: var(--ink-2);
+}
+
+.riepilogo dl {
+  margin: 0;
+}
+
+.riepilogo dl > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 10px 0;
+  border-top: 1px solid rgba(0, 0, 0, 0.12);
+}
+
+.riepilogo dt {
+  font-size: 14px;
+  color: var(--ink-2);
+}
+
+.riepilogo dd {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 800;
+  text-align: right;
+}
+
+.utile ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.utile li {
+  display: grid;
+  gap: 2px;
+  padding: 12px 0;
+  border-top: 1px solid rgba(0, 0, 0, 0.12);
+  font-size: 15px;
+}
+
+.utile li strong {
+  font-weight: 800;
+}
+
+.utile li span {
+  color: var(--ink-2);
+}
+
+.utile a {
+  color: var(--ink);
+  font-weight: 700;
+}

@@ -181,7 +181,8 @@ export function Menu({ aperto, chiudi }: { readonly aperto: boolean; readonly ch
         })}
       </ul>
 
-      <div className={stili.piede}>
+      {/* Bottone non ha un suo onClick: il clic risale fin qui e chiude il menu, come per le voci sopra. */}
+      <div className={stili.piede} onClick={chiudi}>
         <Bottone href="/prenota?tipo=tavolo">Tavolo</Bottone>
         <Bottone href="/prenota?tipo=braccialetto" aspetto="contorno">
           Bracciale

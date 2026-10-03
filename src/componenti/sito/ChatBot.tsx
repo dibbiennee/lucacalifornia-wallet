@@ -2,7 +2,6 @@
 
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 
 import { linkMappaLocale, linkWhatsapp } from "@/contenuti/sito";
 import { capisci, MENU, risposta, type Azione, type Destinazione, type Risposta } from "@/lib/assistente";
@@ -27,11 +26,10 @@ const BOLLE_MASSIME = 8;
  * come si vedono. Si può toccare un pulsante o scrivere una frase; quello che
  * non si capisce, o non è un dato confermato, manda a WhatsApp.
  *
- * Sparisce sul modulo, come la barra in basso: sei già arrivato, e coprirebbe
- * proprio il pulsante che manda la richiesta.
+ * Sta su ogni pagina, modulo compreso: è lì che servono i dubbi. Sul modulo
+ * lascia spazio in fondo (vedi Modulo.module.css) per non coprire "Invia".
  */
 export function ChatBot() {
-  const percorso = usePathname();
   const barraFissa = useBarraFissa();
   const [aperto, setAperto] = useState(false);
   const [corrente, setCorrente] = useState<{ readonly id: Destinazione["id"]; readonly risposta: Risposta }>(() => ({
@@ -63,10 +61,6 @@ export function ChatBot() {
     document.addEventListener("keydown", suEsc);
     return () => document.removeEventListener("keydown", suEsc);
   }, [aperto]);
-
-  if (percorso === "/prenota") {
-    return null;
-  }
 
   /** Va a una risposta. "eco" è quello che ha toccato o scritto la persona. */
   function vai(dove: Destinazione, eco?: string) {

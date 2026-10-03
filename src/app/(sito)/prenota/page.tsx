@@ -30,14 +30,17 @@ export default function PaginaPrenota() {
       <Indietro testo="Home" dove="/" />
 
       <div className={`wrap ${stili.colonne}`}>
-        <TestaPagina
-          occhiello="In 30 secondi"
-          colore="var(--ink-2)"
-          righe={["Prenota il tuo", "ingresso"]}
-          introduzione="Nessun pagamento qui: ti rispondo io su WhatsApp con disponibilità e prezzo. Quando confermo, ricevi il biglietto da aggiungere al Wallet."
-          senzaColonna
+        <Modulo
+          testata={
+            <TestaPagina
+              occhiello="In 30 secondi"
+              colore="var(--ink-2)"
+              righe={["Prenota il tuo", "ingresso"]}
+              introduzione="Nessun pagamento qui: ti rispondo io su WhatsApp con disponibilità e prezzo. Quando confermo, ricevi il biglietto da aggiungere al Wallet."
+              senzaColonna
+            />
+          }
         />
-        <Modulo />
       </div>
     </div>
   );
