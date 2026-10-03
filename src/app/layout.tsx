@@ -30,9 +30,9 @@ export const metadata: Metadata = {
      * link nudo sembra sospetto. Luca lo manderà centinaia di volte: è la
      * prima cosa che vede la gente, prima ancora del sito.
      */
-    images: [{ url: "/anteprima-sito.jpg", width: 1200, height: 630, alt: TITOLO }],
+    images: [{ url: "/anteprima-sito-2.jpg", width: 1200, height: 630, alt: TITOLO }],
   },
-  twitter: { card: "summary_large_image", title: TITOLO, description: DESCRIZIONE, images: ["/anteprima-sito.jpg"] },
+  twitter: { card: "summary_large_image", title: TITOLO, description: DESCRIZIONE, images: ["/anteprima-sito-2.jpg"] },
   robots: SITO_PUBBLICO ? { index: true, follow: true } : { index: false, follow: false },
   /* Senza, la scheda del browser resta col foglio bianco e iOS mette uno
      scatto sbiadito della pagina quando la aggiungi alla schermata home. */

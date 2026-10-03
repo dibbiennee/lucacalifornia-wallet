@@ -22,7 +22,19 @@ import { INDIRIZZO } from "@/lib/pubblico";
  */
 export default function robots(): MetadataRoute.Robots {
   return {
-    rules: { userAgent: "*", allow: "/", disallow: ["/pannello", "/api"] },
+    rules: [
+      /*
+       * Chi fa l'anteprima di un link (Facebook, Telegram, Slack...) rispetta il robots.txt: il link corto del
+       * biglietto Wallet (/api/b/...) sta sotto /api, e senza questa eccezione quelle anteprime non partirebbero.
+       * La paginetta che ricevono non ha dati del cliente (vedi api/b/[serial]/route.ts).
+       */
+      {
+        userAgent: ["facebookexternalhit", "Facebot", "Twitterbot", "TelegramBot", "Slackbot", "LinkedInBot", "Discordbot"],
+        allow: ["/", "/api/b/"],
+        disallow: ["/pannello"],
+      },
+      { userAgent: "*", allow: "/", disallow: ["/pannello", "/api"] },
+    ],
     sitemap: `${INDIRIZZO}/sitemap.xml`,
   };
 }

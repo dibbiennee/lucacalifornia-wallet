@@ -139,7 +139,7 @@
   padding: 6px 12px env(safe-area-inset-bottom, 0px);
   border-radius: 0;
   background: rgba(14, 14, 17, 0.97);
-  backdrop-filter: blur(18px);
+  transform: translateZ(0);
   border-top: 1px solid var(--lc-line-strong);
   display: grid;
   grid-template-columns: repeat(var(--n, 2), minmax(0, 1fr));

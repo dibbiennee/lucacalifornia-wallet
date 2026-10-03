@@ -3,7 +3,7 @@
  *
  *   node scripts/genera-anteprima-social.mjs
  *
- * Parte dalla grafica "La notte ti dà libertà" (design/anteprima-sorgente.webp,
+ * Parte dalla grafica "Tu scegli la serata. Io ti faccio entrare" (design/anteprima-sorgente.webp,
  * 1536x1024, 3:2) e la porta a 1200x630, la misura che usano tutti.
  *
  * NIENTE TAGLIO. La grafica ha il logo in alto e "ROOM26 • ROMA" in basso: un
@@ -24,7 +24,7 @@ import sharp from "sharp";
 const L = 1200;
 const A = 630;
 const SORGENTE = path.join(process.cwd(), "design", "anteprima-sorgente.webp");
-const USCITA = path.join(process.cwd(), "public", "anteprima-sito.jpg");
+const USCITA = path.join(process.cwd(), "public", "anteprima-sito-2.jpg");
 
 // la grafica intera, alta quanto l'anteprima
 const intera = await sharp(SORGENTE).resize({ height: A }).toBuffer({ resolveWithObject: true });
@@ -58,4 +58,4 @@ await sharp(uscita, { raw: { width: L, height: A, channels: 3 } })
   .jpeg({ quality: 84, progressive: true, mozjpeg: true })
   .toFile(USCITA);
 
-console.log(`  public/anteprima-sito.jpg ${L}x${A}`);
+console.log(`  public/anteprima-sito-2.jpg ${L}x${A}`);
