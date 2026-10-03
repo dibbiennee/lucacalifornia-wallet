@@ -8,7 +8,7 @@ export const DESCRIZIONE_HOME =
  * L'immagine che esce quando un link viene condiviso (WhatsApp, Instagram, social).
  * Luca manda i link centinaia di volte: un link nudo sembra sospetto.
  */
-const ANTEPRIMA = "/anteprima.jpg";
+const ANTEPRIMA = "/anteprima-sito.jpg";
 
 /**
  * I metadati di una pagina pubblica: titolo, descrizione, indirizzo canonico

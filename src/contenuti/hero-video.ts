@@ -4,8 +4,8 @@
  * i file si servono con la cache lunga (vedi next.config.ts).
  */
 export const HERO_VIDEO = {
-  webm: "/video/hero-5ce6b624c5.webm",
-  mp4: "/video/hero-9d13a33a7d.mp4",
+  webm: "/video/hero-dc19998730.webm",
+  mp4: "/video/hero-91abd9b3ff.mp4",
   poster: "/video/hero-2407ac2672.webp",
   larghezza: 720,
   altezza: 1280,

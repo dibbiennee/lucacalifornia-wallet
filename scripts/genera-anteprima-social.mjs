@@ -1,88 +1,61 @@
 /**
- * L'immagine che compare quando si condivide il link.
+ * L'immagine che compare quando si condivide il link (WhatsApp, Instagram, messaggi).
  *
  *   node scripts/genera-anteprima-social.mjs
  *
- * Serve a WhatsApp, Instagram e ai messaggi: senza, il link arriva nudo e
- * sembra sospetto. Luca manderà quel link centinaia di volte, quindi è la
- * prima cosa che vede la gente, prima ancora del sito.
+ * Parte dalla grafica "La notte ti dà libertà" (design/anteprima-sorgente.webp,
+ * 1536x1024, 3:2) e la porta a 1200x630, la misura che usano tutti.
  *
- * 1200x630 è la misura che usano tutti: più piccola viene sgranata, più
- * grande viene tagliata.
+ * NIENTE TAGLIO. La grafica ha il logo in alto e "ROOM26 • ROMA" in basso: un
+ * taglio al centro (da 3:2 a 1,91:1) li mangerebbe. Così la grafica intera sta
+ * a sinistra, a tutta altezza, e a destra il suo stesso bordo continua sfocato
+ * e scurito, con una dissolvenza al posto di uno stacco netto.
+ *
+ * Il file di uscita ha il nome nuovo: WhatsApp e gli altri tengono in memoria
+ * l'immagine per indirizzo, e con lo stesso nome continuerebbero a mostrare la vecchia.
+ * Se cambi la grafica, cambia anche il nome (e src/lib/seo.ts, src/app/layout.tsx).
  */
 
 import { Buffer } from "node:buffer";
 import path from "node:path";
+import process from "node:process";
 import sharp from "sharp";
 
 const L = 1200;
 const A = 630;
-const USCITA = path.join(process.cwd(), "public", "anteprima.jpg");
+const SORGENTE = path.join(process.cwd(), "design", "anteprima-sorgente.webp");
+const USCITA = path.join(process.cwd(), "public", "anteprima-sito.jpg");
 
-const sfondo = await sharp(path.join(process.cwd(), "public", "video", "apertura-computer.jpg"))
-  .resize(L, A, { fit: "cover", position: "top" })
+// la grafica intera, alta quanto l'anteprima
+const intera = await sharp(SORGENTE).resize({ height: A }).toBuffer({ resolveWithObject: true });
+const larghezzaIntera = intera.info.width;
+
+// sotto, la stessa grafica allargata e sfocata, un po' più scura
+const sfondo = await sharp(SORGENTE)
+  .resize(L, A, { fit: "cover" })
+  .blur(28)
+  .modulate({ brightness: 0.55 })
   .toBuffer();
 
-const velo = Buffer.from(
-  `<svg xmlns="http://www.w3.org/2000/svg" width="${L}" height="${A}">
-    <defs><linearGradient id="v" x1="0" y1="1" x2="0.4" y2="0">
-      <stop offset="0" stop-color="#140C5C" stop-opacity="0.95"/>
-      <stop offset="0.7" stop-color="#140C5C" stop-opacity="0.45"/>
-      <stop offset="1" stop-color="#140C5C" stop-opacity="0.3"/>
-    </linearGradient></defs>
-    <rect width="${L}" height="${A}" fill="url(#v)"/>
-  </svg>`,
-);
-
-/*
- * Le scritte nei riquadri, come sul sito: è il marchio, non un titolo.
- * La larghezza del riquadro si misura sull'inchiostro vero, non si stima sul
- * numero di lettere: stimandola restava mezzo dito di bianco a destra.
- */
-async function larghezzaTesto(testo, misura) {
-  const prova = Buffer.from(
-    `<svg xmlns="http://www.w3.org/2000/svg" width="2400" height="${misura * 2}">` +
-      `<text x="0" y="${misura}" fill="#fff" font-family="Anton, Impact, Helvetica, sans-serif" ` +
-      `font-size="${misura}" letter-spacing="1">${testo}</text></svg>`,
-  );
-  const { info } = await sharp(prova).png().trim().toBuffer({ resolveWithObject: true });
-  return info.width;
+// Si mescolano i pixel a mano: la grafica intera resta piena e negli ultimi FASCIA pixel
+// sfuma nello sfondo, da 1 a 0, con una curva dolce (niente stacco netto)
+const FASCIA = 140;
+const sopra = await sharp(intera.data).removeAlpha().raw().toBuffer();
+const sotto = await sharp(sfondo).removeAlpha().raw().toBuffer();
+const uscita = Buffer.from(sotto);
+for (let y = 0; y < A; y += 1) {
+  for (let x = 0; x < larghezzaIntera; x += 1) {
+    const t = Math.min(1, (larghezzaIntera - 1 - x) / FASCIA);
+    const peso = t * t * (3 - 2 * t);
+    for (let c = 0; c < 3; c += 1) {
+      const dove = (y * L + x) * 3 + c;
+      uscita[dove] = Math.round((sopra[(y * larghezzaIntera + x) * 3 + c] ?? 0) * peso + (sotto[dove] ?? 0) * (1 - peso));
+    }
+  }
 }
 
-const riquadro = (testo, x, y, misura, largo) => {
-  return (
-    `<rect x="${x}" y="${y}" width="${largo + 36}" height="${Math.round(misura * 1.34)}" fill="#ffffff"/>` +
-    `<text x="${x + 18}" y="${y + Math.round(misura * 1.02)}" fill="#140C5C" ` +
-    `font-family="Anton, Impact, Helvetica, sans-serif" font-size="${misura}" letter-spacing="1">${testo}</text>`
-  );
-};
-
-const largoUno = await larghezzaTesto("LA NOTTE", 64);
-const largoDue = await larghezzaTesto("TI DÀ LIBERTÀ", 64);
-
-const scritte = Buffer.from(
-  `<svg xmlns="http://www.w3.org/2000/svg" width="${L}" height="${A}">
-    <text x="72" y="405" fill="#C9C3FF" font-family="Helvetica, Arial, sans-serif" font-size="22"
-      font-weight="700" letter-spacing="4">GIOVEDÌ, VENERDÌ, SABATO, DOMENICA</text>
-    ${riquadro("LA NOTTE", 72, 425, 64, largoUno)}
-    ${riquadro("TI DÀ LIBERTÀ", 72, 512, 64, largoDue)}
-    <text x="${L - 72}" y="${A - 48}" fill="#ffffff" text-anchor="end"
-      font-family="Helvetica, Arial, sans-serif" font-size="26" font-weight="600">
-      Liste e tavoli al Room 26 di Roma</text>
-  </svg>`,
-);
-
-const logo = await sharp(path.join(process.cwd(), "assets", "pass", "logo@3x.png"))
-  .resize({ height: 64 })
-  .toBuffer();
-
-await sharp(sfondo)
-  .composite([
-    { input: velo, top: 0, left: 0 },
-    { input: scritte, top: 0, left: 0 },
-    { input: logo, top: 64, left: 72 },
-  ])
-  .jpeg({ quality: 82, mozjpeg: true })
+await sharp(uscita, { raw: { width: L, height: A, channels: 3 } })
+  .jpeg({ quality: 84, progressive: true, mozjpeg: true })
   .toFile(USCITA);
 
-console.log(`  public/anteprima.jpg ${L}x${A}`);
+console.log(`  public/anteprima-sito.jpg ${L}x${A}`);

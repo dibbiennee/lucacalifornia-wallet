@@ -20,8 +20,9 @@ import { HERO_VIDEO } from "@/contenuti/hero-video";
  * immagine che Apertura.tsx mette sotto il video (e che si vede da sola a chi
  * ha chiesto meno movimento).
  *
- * SENZA AUDIO: il filmato non ha nemmeno la traccia, quindi non c'è niente da
- * attivare e nessun pulsante.
+ * CON AUDIO, MUTO DI PARTENZA: il filmato ha la traccia, ma i browser non fanno
+ * partire un video col suono da soli. Lo accende chi tocca il tasto (TastoAudio,
+ * messo accanto a questo video in Apertura.tsx).
  *
  * Chi ha chiesto meno movimento, o ha il risparmio dati acceso, non scarica il
  * video: il CSS lo nasconde (vedi Apertura.module.css) e questo piccolo script,

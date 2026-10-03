@@ -1,7 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useId, useRef, useState, type FormEvent, type ReactNode } from "react";
+import { useSearchParams } from "next/navigation";
+import { Suspense, useEffect, useId, useRef, useState, type FormEvent, type ReactNode } from "react";
 
 import { ISO_PREDEFINITO } from "@/contenuti/prefissi";
 import { LOCALE, linkMappaLocale } from "@/contenuti/sito";
@@ -107,13 +108,7 @@ export function Modulo({ codicePr, testata }: { readonly codicePr?: string; read
     const generato = calendarioSerate();
     setCalendario(generato);
 
-    const cerca = new URLSearchParams(window.location.search);
-
-    const tipoIndirizzo = cerca.get("tipo");
-    if (tipoIndirizzo === "tavolo" || tipoIndirizzo === "braccialetto" || tipoIndirizzo === "lista") {
-      setTipo(tipoIndirizzo);
-    }
-
+    // Il tipo dall'indirizzo lo legge TipoDaIndirizzo, che segue anche i cambi di indirizzo senza ricaricare la pagina.
     // Nessuna data preselezionata: è una scelta vera, non va data per
     // scontata nemmeno quando si arriva da un link già sulla notte giusta.
   }, []);
@@ -370,6 +365,10 @@ export function Modulo({ codicePr, testata }: { readonly codicePr?: string; read
       noValidate
       className={stili.modulo}
     >
+      <Suspense fallback={null}>
+        <TipoDaIndirizzo cambia={setTipo} />
+      </Suspense>
+
       <div className={stili.passi} aria-live="polite">
         <p className={stili.passiTesto}>
           <span>
@@ -564,6 +563,23 @@ export function Modulo({ codicePr, testata }: { readonly codicePr?: string; read
  * si raggiunge con la tastiera (inert); si apre con un'animazione di altezza e
  * dissolvenza, che col movimento ridotto diventa un cambio secco.
  */
+/**
+ * Il tipo scelto nell'indirizzo (?tipo=lista). Va riletto a ogni cambio di
+ * indirizzo, non solo all'apertura: dal menu si arriva a /prenota?tipo=tavolo
+ * anche stando già su /prenota?tipo=lista, e la pagina non si ricarica.
+ */
+function TipoDaIndirizzo({ cambia }: { readonly cambia: (t: TipoIngresso) => void }) {
+  const tipo = useSearchParams().get("tipo");
+
+  useEffect(() => {
+    if (tipo === "tavolo" || tipo === "braccialetto" || tipo === "lista") {
+      cambia(tipo);
+    }
+  }, [tipo, cambia]);
+
+  return null;
+}
+
 const NOMI_PASSI = ["I tuoi dati", "Quando vieni", "Ultimi dettagli"] as const;
 
 /** "nome", "nome e cognome", "nome, cognome e telefono". */

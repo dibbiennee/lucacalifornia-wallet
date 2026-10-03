@@ -5,6 +5,7 @@ import { VideoApertura } from "@/componenti/VideoApertura";
 import { HERO_VIDEO } from "@/contenuti/hero-video";
 
 import stili from "./Apertura.module.css";
+import { TastoAudio } from "./TastoAudio";
 
 /**
  * La prima schermata: il video del locale, il marchio, e le due strade.
@@ -40,6 +41,7 @@ export function Apertura() {
             height={HERO_VIDEO.altezza}
           />
           <VideoApertura />
+          <TastoAudio />
         </div>
 
         <div className={stili.testo}>

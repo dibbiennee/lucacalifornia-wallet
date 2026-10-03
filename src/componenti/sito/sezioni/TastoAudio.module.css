@@ -1,0 +1,47 @@
+/*
+ * In alto a destra del video: sul telefono rispetto all'apertura intera, sul
+ * computer rispetto al riquadro (che è posizionato). Sopra al velo scuro.
+ */
+.tasto {
+  position: absolute;
+  top: 14px;
+  right: 16px;
+  z-index: 3;
+  appearance: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 0 16px 0 12px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  color: var(--text);
+  font: inherit;
+  font-size: 14px;
+  font-weight: 800;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.tasto[hidden] {
+  display: none;
+}
+
+.tasto[aria-pressed="true"] {
+  border-color: var(--magenta);
+  color: var(--magenta);
+}
+
+.tasto:focus-visible {
+  outline: 3px solid var(--magenta);
+  outline-offset: 2px;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .tasto:hover {
+    background: rgba(0, 0, 0, 0.75);
+  }
+}

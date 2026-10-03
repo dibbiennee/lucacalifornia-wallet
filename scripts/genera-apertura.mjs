@@ -19,8 +19,10 @@
  * lo stesso filmato va bene in tutti e due i casi, quindi non c'è più nessun
  * taglio da computer e nessuna scelta da fare in JavaScript su quale scaricare.
  *
- * SENZA AUDIO. Parte muto in loop come sfondo: la traccia audio era peso
- * (circa 140 KB) per un suono che nessuno sente.
+ * CON AUDIO, ma muto di partenza. I browser non fanno partire un video col suono
+ * da solo: il video parte muto, e un tasto (TastoAudio.tsx) lo attiva. La traccia
+ * ha una dissolvenza di 40 ms in entrata e in uscita, perché nel loop il salto
+ * fra fine e inizio non faccia "clic". Costa poche decine di KB per file.
  *
  * IL SEGMENTO. Comincia sul primo fotogramma stabile di un'inquadratura e
  * finisce sull'ultimo prima di un taglio: 11,20 s è la DJ con le mani ai piatti,
@@ -76,7 +78,9 @@ const kb = (file) => `${Math.round(statSync(file).size / 1024)} KB`;
 mkdirSync(lavoro, { recursive: true });
 
 const filtro = `scale=${LARGHEZZA}:${ALTEZZA}:flags=lanczos,fps=${FOTOGRAMMI},format=yuv420p`;
-const comuni = ["-ss", inizio, "-t", durata, "-i", master, "-vf", filtro, "-an"];
+const fine = (Number(durata) - 0.04).toFixed(2);
+const audio = ["-af", `afade=t=in:d=0.04,afade=t=out:st=${fine}:d=0.04`, "-ac", "2", "-ar", "48000"];
+const comuni = ["-ss", inizio, "-t", durata, "-i", master, "-vf", filtro, ...audio];
 
 const webm = path.join(lavoro, "hero.webm");
 const mp4 = path.join(lavoro, "hero.mp4");
@@ -84,11 +88,11 @@ const poster = path.join(lavoro, "hero.png");
 const posterWebp = path.join(lavoro, "hero.webp");
 
 // webm: più leggero, dove viene accettato.
-ffmpeg([...comuni, "-c:v", "libvpx-vp9", "-crf", CRF_VP9, "-b:v", "0", "-row-mt", "1", "-deadline", "good", "-cpu-used", "2", webm]);
+ffmpeg([...comuni, "-c:v", "libvpx-vp9", "-crf", CRF_VP9, "-b:v", "0", "-row-mt", "1", "-deadline", "good", "-cpu-used", "2", "-c:a", "libopus", "-b:a", "64k", webm]);
 
 // mp4: lo leggono tutti. Il primo fotogramma è sempre un fotogramma chiave, e +faststart mette l'indice in testa:
 // il video può partire senza aver scaricato tutto.
-ffmpeg([...comuni, "-c:v", "libx264", "-profile:v", "high", "-crf", CRF_H264, "-preset", "slow", "-movflags", "+faststart", mp4]);
+ffmpeg([...comuni, "-c:v", "libx264", "-profile:v", "high", "-crf", CRF_H264, "-preset", "slow", "-c:a", "aac", "-b:a", "96k", "-movflags", "+faststart", mp4]);
 
 // il poster: il primo fotogramma dell'mp4 già compresso
 ffmpeg(["-i", mp4, "-frames:v", "1", poster]);
