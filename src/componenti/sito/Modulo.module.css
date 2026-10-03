@@ -265,7 +265,7 @@
 .fase {
   display: grid;
   grid-template-rows: 0fr;
-  margin-top: -18px;
+  margin-top: 0;
   opacity: 0;
   transform: translateY(10px);
   transition:
@@ -277,9 +277,29 @@
 
 .fase[data-aperta] {
   grid-template-rows: 1fr;
-  margin-top: 0;
+  margin-top: 18px;
   opacity: 1;
   transform: none;
+}
+
+/*
+ * I tre gruppi stanno in un contenitore solo. La griglia del modulo mette
+ * 18px di spazio fra ogni elemento anche quando è alto zero, e tre gruppi
+ * chiusi lasciavano 54px di vuoto prima delle note: qui lo spazio fra i
+ * gruppi lo mette il gruppo aperto (il suo margine), e il contenitore
+ * vuoto rinuncia a uno dei due spazi che gli toccano.
+ */
+.fasi {
+  display: grid;
+  transition: margin-top 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.fasi[data-vuoto] {
+  margin-top: -18px;
+}
+
+.fasi > .fase:first-child[data-aperta] {
+  margin-top: 0;
 }
 
 /*

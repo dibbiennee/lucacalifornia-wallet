@@ -516,6 +516,8 @@
 @media (min-width: 760px) {
   .tessere { grid-template-columns: repeat(4, minmax(0, 1fr)); }
   .con-foto { grid-column: span 2; }
+  /* L'ultima riga: una tessera sola, a tutta larghezza, invece di lasciare mezza riga vuota. */
+  .tesseraIntera { grid-column: 1 / -1; }
   .luca { grid-template-columns: 96px 1fr auto; }
   .luca img { width: 96px; height: 96px; }
   .luca-link { grid-column: auto; margin-top: 0; display: flex; }
@@ -541,4 +543,9 @@
 .testa-riga img {
   height: 24px;
   width: auto;
+}
+
+/* "Diventa PR": su telefono il ritaglio mostra il DJ e le persone, a sinistra nella foto, non l'altoparlante sfocato al centro. */
+.tesseraIntera img {
+  object-position: 22% 50%;
 }

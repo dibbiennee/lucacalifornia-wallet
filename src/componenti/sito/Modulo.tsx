@@ -286,6 +286,7 @@ export function Modulo({ codicePr }: { readonly codicePr?: string } = {}) {
         />
       </div>
 
+      <div className={stili.fasi} data-vuoto={fase === 0 ? "" : undefined}>
       <Fase id={`${id}-fase-1`} aperta={fase >= 1}>
         <Campo
           id={`${id}-telefono`}
@@ -373,6 +374,7 @@ export function Modulo({ codicePr }: { readonly codicePr?: string } = {}) {
           {inCorso ? "Un attimo..." : "Invia la richiesta"}
         </BottoneAzione>
       </Fase>
+      </div>
 
       <p className={stili.dopo}>
         {legaParole(

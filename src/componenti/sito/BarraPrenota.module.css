@@ -22,6 +22,18 @@
 
 .barra a { width: 100%; min-height: 50px; }
 
+/* Sul tablet la barra a tutta larghezza (700 px e più) era sproporzionata: resta una barra da telefono, al centro. */
+@media (min-width: 600px) {
+  .barra {
+    left: 0;
+    right: 0;
+    width: min(480px, 100%);
+    margin-inline: auto;
+    border-radius: 20px 20px 0 0;
+    border-inline: 1px solid var(--line);
+  }
+}
+
 /*
  * In home parte già fuori dallo schermo: sull'apertura ci sono già i due
  * pulsanti dell'hero, e vederne un terzo appena si apre il sito è confusione,

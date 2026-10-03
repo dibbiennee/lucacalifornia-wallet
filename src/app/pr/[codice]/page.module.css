@@ -7,3 +7,8 @@
   margin: 0 auto;
   padding: 32px 20px 56px;
 }
+
+/* Lo sfondo chiaro del modulo riempie tutto lo schermo: sotto il modulo non resta una fascia nera. */
+.intera.intera {
+  min-height: 100svh;
+}

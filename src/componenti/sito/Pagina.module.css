@@ -490,3 +490,53 @@
   .biglietto { grid-template-columns: 280px 1fr; }
   .biglietto img { width: 100%; }
 }
+
+/* ===== Revisione visuale: titolo lungo, foto di Luca, serata a tablet, riquadri ===== */
+
+/* Un titolo di più frasi (come "Non importa chi tu sia, importa che ti sappia divertire"): più piccolo, perché non occupi mezza pagina. */
+.testaLunga h1 {
+  font-size: clamp(29px, 9cqi, 60px);
+}
+
+/* La foto di Luca: il viso sta nel terzo alto. Il ritaglio basso (telefono e tablet, 3 a 2) e quello alto (computer, 4 a 5) vogliono un punto diverso. */
+.fotoLuca {
+  object-position: 50% 28%;
+}
+
+@media (min-width: 900px) {
+  .fotoLuca {
+    object-position: 50% 40%;
+  }
+
+  /* Il testo accanto alla foto sta a metà della sua altezza, non attaccato in alto con il resto della colonna vuoto. */
+  .corpoCentro {
+    align-items: center;
+  }
+}
+
+/* L'etichetta ("Pochi tavoli") in basso a sinistra: in alto copriva la scritta della grafica (SATURDAY). */
+.targhetta {
+  top: auto;
+  bottom: 14px;
+}
+
+/* Tablet: la serata già a due colonne dai 700 px, non dagli 860. A larghezza piena la foto occupava il 60% dello schermo. */
+@media (min-width: 700px) and (max-width: 859px) {
+  .serata-griglia {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+    align-items: start;
+  }
+}
+
+/* I riquadri di testo non devono stirarsi su tutta la riga del computer con una riga dentro. */
+.punti {
+  max-width: 760px;
+}
+
+@media (min-width: 720px) {
+  .pacchetti {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}

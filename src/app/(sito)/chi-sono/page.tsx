@@ -4,7 +4,7 @@ import { Bottone } from "@/componenti/sito/Bottone";
 import { Indietro } from "@/componenti/sito/Indietro";
 import { Introduzione, TestaPagina } from "@/componenti/sito/Pagina";
 import stili from "@/componenti/sito/Pagina.module.css";
-import { INSTAGRAM, INSTAGRAM_URL, MOTTO } from "@/contenuti/sito";
+import { INSTAGRAM, INSTAGRAM_URL } from "@/contenuti/sito";
 
 export const metadata = {
   title: "Chi è Luca - Luca California",
@@ -18,19 +18,19 @@ export default function PaginaChiSono() {
       <Indietro testo="Home" dove="/" />
       <TestaPagina
         occhiello="Chi sono"
-        righe={[`${MOTTO[0]},`, MOTTO[1]]}
+        titoloLungo
+        righe={["Non importa", "chi tu sia,", "importa", "che ti sappia", "divertire"]}
       />
 
       <section className="wrap" style={{ paddingBottom: 56 }}>
-        <div className={stili.corpo}>
+        <div className={`${stili.corpo} ${stili.corpoCentro}`}>
           <Image
-            src="/foto/luca.webp"
+            src="/foto/luca-ritratto.webp"
             alt="Luca Curella"
-            width={1280}
-            height={1280}
+            width={1066}
+            height={1600}
             sizes="(min-width: 900px) 520px, 100vw"
-            className={stili.foto}
-            style={{ objectPosition: "50% 8%" }}
+            className={`${stili.foto} ${stili.fotoLuca}`}
             priority
           />
 

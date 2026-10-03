@@ -66,6 +66,7 @@ export function TestaPagina({
   righe,
   introduzione,
   senzaColonna = false,
+  titoloLungo = false,
 }: {
   readonly occhiello?: string;
   readonly colore?: string;
@@ -73,9 +74,11 @@ export function TestaPagina({
   readonly introduzione?: ReactNode;
   /** Vero quando la testa sta già dentro una griglia che le fa da colonna. */
   readonly senzaColonna?: boolean;
+  /** Titolo di più frasi: si misura più piccolo, per non occupare mezza pagina. */
+  readonly titoloLungo?: boolean;
 }) {
   return (
-    <div className={senzaColonna ? stili.testa : `wrap ${stili.testa}`}>
+    <div className={`${senzaColonna ? "" : "wrap "}${stili.testa}${titoloLungo ? ` ${stili.testaLunga}` : ""}`}>
       {occhiello !== undefined && (
         <p className="occhiello" style={{ color: colore, margin: 0 }}>
           {occhiello}

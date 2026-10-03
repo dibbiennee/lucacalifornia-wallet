@@ -11,6 +11,11 @@
   gap: 14px;
 }
 
+/* I titoli di sezione vanno su 2-3 righe sul telefono: un'interlinea da titolo singolo li schiacciava. */
+.sezione h2 {
+  line-height: 1.12;
+}
+
 .paragrafo {
   margin: 0;
   font-size: 16px;
@@ -28,7 +33,7 @@
 }
 
 .elenco li {
-  padding: 16px 18px;
+  padding: 14px 16px;
   border-radius: var(--r-m);
   background: var(--surface);
   display: flex;

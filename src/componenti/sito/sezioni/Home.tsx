@@ -64,8 +64,8 @@ export function TuttoIlResto() {
             <span>{legaParole("Tre pacchetti, lista d'attesa aperta", { vedova: true })}</span>
           </Link>
 
-          <Link href="/diventa-pr" className={`${stili.tessera} ${stili["con-foto"]} ${stili.tesseraFoto}`}>
-            <Image src="/foto/atmosfera/pr-radio.jpg" alt="" width={640} height={248} sizes="(min-width: 720px) 33vw, 50vw" />
+          <Link href="/diventa-pr" className={`${stili.tessera} ${stili["con-foto"]} ${stili.tesseraIntera} ${stili.tesseraFoto}`}>
+            <Image src="/foto/atmosfera/pr-dj.jpg" alt="" width={1500} height={480} sizes="(min-width: 1180px) 1140px, 100vw" />
             <strong>Diventa PR</strong>
             <span>{legaParole("Candidature aperte")}</span>
           </Link>
@@ -188,7 +188,10 @@ export function LeFoto() {
 export function SpaccaPagina() {
   return (
     <section className={stili.spacca} data-sfondo="/foto/atmosfera/spacca-rosso.jpg" aria-hidden>
-      <p className="display">{legaParole("La musica non si racconta. Si vive da dentro.", { titolo: true, vedova: true })}</p>
+      <p className="display">
+        <span className="cl">{legaParole("La musica non si racconta.", { titolo: true, vedova: false })}</span>{" "}
+        <span className="cl">{legaParole("Si vive da dentro.", { titolo: true, vedova: false })}</span>
+      </p>
     </section>
   );
 }
@@ -220,7 +223,7 @@ export function ChiELuca() {
 /** Lo special guest: non c'è ancora un nome, quindi solo "In arrivo". Niente modulo, niente dati raccolti. */
 export function SpecialGuest() {
   return (
-    <section className="blocco" style={{ paddingTop: 0 }} aria-label={SPECIAL_GUEST.titolo}>
+    <section className="blocco" style={{ paddingTop: 0, paddingBottom: 24 }} aria-label={SPECIAL_GUEST.titolo}>
       <div className="wrap">
         <div className={`${stili.ospite} ${stili.ospiteFoto} rivela`} data-sfondo="/foto/atmosfera/special-guest.jpg">
           <div className={stili.ospiteTesto}>

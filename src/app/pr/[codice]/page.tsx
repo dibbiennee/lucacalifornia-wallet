@@ -64,7 +64,7 @@ export default async function PaginaPr({ params }: Parametri) {
   }
 
   return (
-    <div className={stiliModulo.pagina}>
+    <div className={`${stiliModulo.pagina} ${stili.intera}`}>
       <Tracciamento pr={pr.codice} />
       {/* Il titolo della pagina per chi legge con la voce: il modulo non ne ha uno visibile. */}
       <h1 style={{ position: "absolute", width: 1, height: 1, margin: -1, overflow: "hidden", clip: "rect(0 0 0 0)", whiteSpace: "nowrap" }}>
