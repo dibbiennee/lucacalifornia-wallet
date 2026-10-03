@@ -30,7 +30,7 @@ export function GET(): Response {
     `- [Tavoli](${INDIRIZZO}/tavoli): compleanni, lauree e bottiglie al ROOM26`,
     `- [Prenota](${INDIRIZZO}/prenota): tavolo, braccialetto o lista in mezzo minuto`,
     `- [Servizio navetta](${INDIRIZZO}/navetta): su richiesta, per chi viene da fuori Roma, anche da Civitavecchia e dal litorale`,
-    `- [Capodanno](${INDIRIZZO}/capodanno): pacchetti serata, cena e hotel`,
+    `- [Capodanno](${INDIRIZZO}/capodanno): date, strutture e prezzi in arrivo, lista d'attesa aperta`,
     `- [Diventa PR](${INDIRIZZO}/diventa-pr): candidature aperte, formazione in due giorni`,
     `- [Chi è Luca California](${INDIRIZZO}/chi-sono)`,
     "",

@@ -60,6 +60,10 @@ const DOMANDE = [
       "Scegli serata e data, mi dici come siete (misto, solo ragazzi o solo ragazze), il budget a persona e se c'è un'occasione da festeggiare. Poi ti confermo e ricevi il biglietto da aggiungere al Wallet.",
   },
   {
+    domanda: "Qual è l'età minima?",
+    risposta: "L'età minima per entrare è 18 anni.",
+  },
+  {
     domanda: "Posso entrare senza prenotare un tavolo?",
     risposta:
       "Sì. Con il bracciale VIP accedi all'area tavoli dietro la consolle senza prenotare il tavolo, con la lista entri in pista.",

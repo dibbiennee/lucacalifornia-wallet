@@ -99,7 +99,7 @@ export const SERATE: readonly SerataSito[] = [
     descrizione:
       "Il giovedì è Milkshake: afro e reggaeton tutta la sera. Prenota qui e ti ricontatto io con disponibilità e prezzo.",
     presentazione:
-      "Giovedì sera a Roma: Milkshake al ROOM26, con afro e reggaeton. Prenota con me un tavolo, il bracciale VIP o la lista.",
+      "Giovedì sera a Roma, all'EUR: Milkshake al ROOM26, con afro e reggaeton. Prenota con me un tavolo, il bracciale VIP o la lista.",
     musicaTesto:
       "Il giovedì al ROOM26 è Milkshake: afro e reggaeton. È l'unica serata della settimana con l'afro.",
     quando: "Ogni giovedì",
@@ -121,7 +121,7 @@ export const SERATE: readonly SerataSito[] = [
     descrizione:
       "Il venerdì si balla commerciale e reggaeton. Prenota qui e ti ricontatto io con disponibilità e prezzo.",
     presentazione:
-      "Venerdì sera a Roma: Drip al ROOM26, con commerciale e reggaeton. Prenota con me un tavolo, il bracciale VIP o la lista.",
+      "Venerdì sera a Roma, all'EUR: Drip al ROOM26, con commerciale e reggaeton. Prenota con me un tavolo, il bracciale VIP o la lista.",
     musicaTesto:
       "Il venerdì al ROOM26 è Drip: commerciale e reggaeton, senza house.",
     quando: "Ogni venerdì",
@@ -144,7 +144,7 @@ export const SERATE: readonly SerataSito[] = [
     descrizione:
       "Il sabato è International: reggaeton, commerciale e house. Dimmi che formato musicale ti piace e ti sistemo io.",
     presentazione:
-      "Sabato sera a Roma: International al ROOM26, con reggaeton, commerciale e house. Prenota con me un tavolo, il bracciale VIP o la lista.",
+      "Sabato sera a Roma, all'EUR: International al ROOM26, con reggaeton, commerciale e house. Prenota con me un tavolo, il bracciale VIP o la lista.",
     musicaTesto:
       "Il sabato al ROOM26 è International: reggaeton, commerciale e house. È l'unica serata della settimana con la house.",
     quando: "Ogni sabato",
@@ -166,7 +166,7 @@ export const SERATE: readonly SerataSito[] = [
     descrizione:
       "La domenica si chiude la settimana con Bàilame: tutta la sera reggaeton. Prenota qui e ti ricontatto io con disponibilità e prezzo.",
     presentazione:
-      "Domenica sera a Roma: Bàilame al ROOM26, tutto reggaeton. Prenota con me un tavolo, il bracciale VIP o la lista.",
+      "Domenica sera a Roma, all'EUR: Bàilame al ROOM26, tutto reggaeton. Prenota con me un tavolo, il bracciale VIP o la lista.",
     musicaTesto:
       "La domenica al ROOM26 è Bàilame: tutto reggaeton. Gli altri giorni la musica cambia, qui resta una sola.",
     quando: "Ogni domenica",

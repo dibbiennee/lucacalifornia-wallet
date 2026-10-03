@@ -61,7 +61,7 @@ export function TuttoIlResto() {
           <Link href="/capodanno" className={`${stili.tessera} ${stili.tesseraFoto}`}>
             <Image src="/foto/atmosfera/capodanno.jpg" alt="" width={640} height={518} sizes="50vw" />
             <strong>Capodanno</strong>
-            <span>{legaParole("Tre pacchetti, lista d'attesa aperta", { vedova: true })}</span>
+            <span>{legaParole("Dettagli in arrivo, lista d'attesa aperta", { vedova: true })}</span>
           </Link>
 
           <Link href="/diventa-pr" className={`${stili.tessera} ${stili["con-foto"]} ${stili.tesseraIntera} ${stili.tesseraFoto}`}>

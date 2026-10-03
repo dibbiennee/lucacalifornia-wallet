@@ -10,6 +10,8 @@ import { Indietro } from "@/componenti/sito/Indietro";
 import { Altre, Azioni, Dati, Domande, Introduzione, Punti, Titolo2 } from "@/componenti/sito/Pagina";
 import stili from "@/componenti/sito/Pagina.module.css";
 import { LOCALE, percorsoSerata, SERATE } from "@/contenuti/sito";
+import type { NotteSerata } from "@/lib/calendario-serate";
+import { prezzoBraccialetto } from "@/lib/prezzo-braccialetto";
 import { metadatiPagina } from "@/lib/seo";
 
 export function generateStaticParams() {
@@ -31,15 +33,20 @@ export async function generateMetadata({ params }: { params: Promise<{ codice: s
 
 const ARTICOLO: Record<string, string> = { Giovedì: "Il", Venerdì: "Il", Sabato: "Il", Domenica: "La" };
 
-const COME_ENTRI = [
-  {
-    titolo: "Tavolo",
-    testo:
-      "Per te e il tuo gruppo, misto, solo ragazzi o solo ragazze. Scegli la fascia di budget a persona e dimmi se c'è un'occasione da festeggiare.",
-  },
-  { titolo: "Bracciale VIP", testo: "Accesso all'area tavoli dietro la consolle, senza prenotare il tavolo." },
-  { titolo: "Lista", testo: "Ingresso in pista, senza tavolo." },
-] as const;
+function comeEntri(prezzo: string | null) {
+  return [
+    {
+      titolo: "Tavolo",
+      testo:
+        "Per te e il tuo gruppo, misto, solo ragazzi o solo ragazze. Scegli la fascia di budget a persona e dimmi se c'è un'occasione da festeggiare.",
+    },
+    {
+      titolo: "Bracciale VIP",
+      testo: `Accesso all'area tavoli dietro la consolle, senza prenotare il tavolo.${prezzo === null ? "" : ` ${prezzo}`}`,
+    },
+    { titolo: "Lista", testo: "Ingresso in pista, senza tavolo." },
+  ];
+}
 
 export default async function PaginaSerata({ params }: { params: Promise<{ codice: string }> }) {
   const { codice } = await params;
@@ -51,6 +58,7 @@ export default async function PaginaSerata({ params }: { params: Promise<{ codic
 
   const colore = `var(--${serata.colore})`;
   const altre = SERATE.filter((s) => s.codice !== serata.codice);
+  const prezzo = prezzoBraccialetto(serata.codice as NotteSerata, "Misti");
   const articolo = ARTICOLO[serata.giorno] ?? "Il";
   const giornoMinuscolo = serata.giorno.toLowerCase();
   const domande = [
@@ -63,6 +71,18 @@ export default async function PaginaSerata({ params }: { params: Promise<{ codic
       risposta:
         "Scegli tavolo, bracciale VIP o lista e compili il modulo in circa mezzo minuto. Ti rispondo io su WhatsApp e, quando confermo, il biglietto ti arriva da aggiungere al Wallet. Sul sito non si paga niente.",
     },
+    {
+      domanda: "Qual è l'età minima?",
+      risposta: "L'età minima per entrare è 18 anni.",
+    },
+    ...(prezzo === null
+      ? []
+      : [
+          {
+            domanda: `Quanto costa il bracciale VIP ${serata.giorno === "Venerdì" ? "il venerdì" : "il sabato"}?`,
+            risposta: prezzo,
+          },
+        ]),
     {
       domanda: "Che differenza c'è tra tavolo, bracciale VIP e lista?",
       risposta:
@@ -173,7 +193,7 @@ export default async function PaginaSerata({ params }: { params: Promise<{ codic
           <Titolo2 id="come-entri" misura="clamp(22px, 6vw, 30px)">
             Come entri con me
           </Titolo2>
-          <Punti voci={COME_ENTRI} />
+          <Punti voci={comeEntri(prezzo)} />
           <p className="nota">
             Vuoi sapere come funzionano i&nbsp;tavoli?{" "}
             <Link href="/tavoli">Guarda qui</Link>.

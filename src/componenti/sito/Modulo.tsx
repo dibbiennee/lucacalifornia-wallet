@@ -3,7 +3,8 @@
 import Link from "next/link";
 import { useEffect, useId, useState, type FormEvent } from "react";
 
-import { calendarioSerate, type NotteSerata, type VoceCalendarioSerata } from "@/lib/calendario-serate";
+import { calendarioSerate, type VoceCalendarioSerata } from "@/lib/calendario-serate";
+import { prezzoBraccialetto } from "@/lib/prezzo-braccialetto";
 import { legaParole } from "@/lib/tipografia";
 
 import { BottoneAzione } from "./Bottone";
@@ -38,25 +39,6 @@ const OCCASIONI = [
 
 const GENERI = ["Donna", "Uomo", "Misti"] as const;
 const PERSONE = ["1", "2", "3", "4", "5", "6+"] as const;
-
-/**
- * Il prezzo del braccialetto, dove c'è: solo venerdì e sabato, e solo sabato
- * cambia fra donna e uomo. Le altre notti Luca lo dice su WhatsApp come per
- * lista e tavolo, perché il prezzo non c'è ancora.
- */
-function prezzoBraccialetto(notte: NotteSerata | undefined, genere: string): string | null {
-  if (notte === "venerdi") {
-    return "25 € a testa, con 2 drink inclusi.";
-  }
-  if (notte === "sabato") {
-    return genere === "Uomo"
-      ? "30 € a testa, con 2 drink inclusi."
-      : genere === "Donna"
-        ? "25 € a testa, con 2 drink inclusi."
-        : "25 € donna, 30 € uomo, con 2 drink inclusi."; // "Misti", o ancora da scegliere
-  }
-  return null;
-}
 
 interface Errori {
   nome?: string;
