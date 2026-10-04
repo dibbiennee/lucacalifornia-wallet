@@ -43,12 +43,27 @@
 }
 
 .testa h2 {
-  font-size: 30px;
+  /*
+   * Accanto c'è il tasto di chiusura: il titolo ha meno larghezza di quanta sembri, e un titolo
+   * spezzato dal browser dà righe come "IL" da solo. Le righe le decide chi scrive (separate da |),
+   * e il corpo si adatta alla più lunga: ogni riga sta sempre intera, mai troncata, mai a capo da sola.
+   */
+  flex: 1;
+  min-width: 0;
+  container-type: inline-size;
+  margin: 0;
   font-weight: 900;
   font-stretch: 125%;
   text-transform: uppercase;
-  line-height: 0.95;
-  margin: 0;
+  hyphens: none;
+}
+
+.riga {
+  display: block;
+  white-space: nowrap;
+  line-height: 1.02;
+  /* 0,95 em per carattere: il corsivo largo (125%) del titolo, con un po' d'aria. */
+  font-size: min(30px, calc(100cqi / (var(--n, 12) * 0.95)));
 }
 
 .chiudi {

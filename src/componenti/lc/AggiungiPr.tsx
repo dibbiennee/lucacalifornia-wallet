@@ -5,6 +5,7 @@ import { useId, useState, type FormEvent } from "react";
 
 import { nuovoPr, type CredenzialiPr } from "@/app/pannello/azioni";
 import { slugDaNome } from "@/lib/pannello/vista";
+import { messaggioAccesso } from "@/lib/pannello/messaggi";
 import { legaParole } from "@/lib/tipografia";
 
 import { negliAppunti } from "./appunti";
@@ -53,13 +54,7 @@ export function AggiungiPr({
   }
 
   async function copiaAccesso(c: CredenzialiPr) {
-    const testo =
-      `Ciao ${c.nome.split(/\s+/)[0] ?? c.nome}, ecco il tuo accesso al pannello di Luca California.\n` +
-      `Indirizzo: ${indirizzo}/pannello/accesso\n` +
-      `Nome: ${c.codice}\nPassword: ${c.password}\n\n` +
-      `Il tuo link per le prenotazioni: ${c.link}`;
-
-    toast((await negliAppunti(testo)) ? "Accesso copiato" : "Non riesco a copiare, selezionalo a mano");
+    toast((await negliAppunti(messaggioAccesso(c, indirizzo))) ? "Messaggio copiato" : "Non riesco a copiare, selezionalo a mano");
   }
 
   async function aggiungi(evento: FormEvent) {
@@ -92,7 +87,7 @@ export function AggiungiPr({
           <div className={stili.testa}>
             <h2 className={stili.titolo}>Accesso di {credenziali.nome.split(/\s+/)[0] ?? credenziali.nome}</h2>
             <p className={stili.testo}>
-              {legaParole("Copia la password adesso e mandala a lui: non si potrà più rivedere. Se la perdi, ne generi un'altra.", { vedova: true })}
+              {legaParole("Copia il messaggio e mandalo a lui su WhatsApp: dentro ci sono link, nome e password, e la password non si potrà più rivedere. Se la perdi, ne generi un'altra.", { vedova: true })}
             </p>
           </div>
 
@@ -108,7 +103,7 @@ export function AggiungiPr({
 
           <div className={stili.azioni}>
             <button type="button" className={`lc-press ${stili.aggiungi}`} onClick={() => void copiaAccesso(credenziali)}>
-              Copia l&apos;accesso
+              Copia il messaggio per {credenziali.nome.split(/\s+/)[0] ?? credenziali.nome}
             </button>
           </div>
           <div className={stili.azioni}>

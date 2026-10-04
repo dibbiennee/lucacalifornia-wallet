@@ -1,0 +1,52 @@
+.mosaico {
+  list-style: none;
+  margin: 0;
+  padding: 0 0 24px;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.mosaico li {
+  min-width: 0;
+  overflow: hidden;
+  border-radius: var(--r-m);
+}
+
+/* Le colonne pari un po' più in basso: un ritmo, non una tabella. */
+.mosaico li:nth-child(even) {
+  transform: translateY(24px);
+}
+
+.mosaico img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  object-position: center 30%;
+  transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@media (min-width: 900px) {
+  .mosaico {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 20px;
+    /* Lo sfalsamento sposta le foto in basso: lo spazio in fondo lo rende. */
+    padding-bottom: 40px;
+  }
+
+  .mosaico li:nth-child(even) {
+    transform: translateY(40px);
+  }
+
+  .mosaico li:hover img {
+    transform: scale(1.05);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mosaico img {
+    transition: none;
+  }
+}

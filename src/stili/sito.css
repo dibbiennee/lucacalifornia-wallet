@@ -124,6 +124,18 @@ html:has(.sito) {
   color: var(--magenta);
 }
 
+/* Il link dell'hero porta qui: la testata fissa non deve coprire il titolo. */
+#testa-serate {
+  scroll-margin-top: 96px;
+}
+
+/* Un titolo che va a capo si bilancia: niente "DATI" o "TE" da soli sull'ultima riga. */
+.sito h1,
+.sito h2,
+.sito h3 {
+  text-wrap: balance;
+}
+
 .sito .introduzione {
   font-size: 17px;
   line-height: 1.5;

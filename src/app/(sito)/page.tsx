@@ -29,7 +29,7 @@ export default function Home() {
           <FoglioAvvisami
             tipo="halloween"
             etichetta="Avvisami"
-            titolo="Ti avviso appena esce il programma"
+            titolo="Ti avviso|appena esce|il programma"
             spiegazione="Quando pubblico data e biglietti, lo sai prima degli altri. Niente messaggi per altro."
           />
         }

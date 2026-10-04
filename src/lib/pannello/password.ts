@@ -9,11 +9,6 @@ import { randomBytes, randomInt, scrypt, timingSafeEqual, type ScryptOptions } f
  * generata, e Luca la vede in quel momento. Se la perde, la rigenera.
  */
 
-/* Senza 0/O, 1/I/l: chi la ricopia da un messaggio non deve indovinare. */
-const ALFABETO = "ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnpqrstuvwxyz23456789";
-const GRUPPI = 4;
-const PER_GRUPPO = 4;
-
 /* Parametri scrypt: 2^15 costa circa 50-100 ms, abbastanza per rallentare chi indovina, poco per chi entra. */
 const N = 1 << 15;
 const R = 8;
@@ -35,21 +30,28 @@ function derivata(password: string, sale: Buffer, opzioni: ScryptOptions): Promi
 }
 
 /**
- * Una password casuale: quattro gruppi da quattro caratteri (XXXX-XXXX-XXXX-XXXX),
- * oltre 90 bit. Si legge e si detta bene, e nessuno la indovina.
+ * Una password facile da scrivere: il nome del PR in minuscolo e sei cifre ("lorenzo482915").
+ * Prima erano sedici caratteri a caso, poi tre parole: nessuna delle due si ricordava o si
+ * dettava bene. Il nome lo si ha già in testa, le cifre sono sei.
+ *
+ * Quanto è difficile da indovinare: il nome lo sa chiunque conosca il link del PR, quindi conta
+ * solo il numero: un milione di combinazioni (20 bit). È poco rispetto a una password a caso,
+ * e regge perché chi prova ha cinque tentativi per indirizzo e poi dieci minuti di blocco (vedi
+ * blocco-tentativi.ts), ogni tentativo costa uno scrypt, e l'area PR non mostra telefoni. Le
+ * password già date restano valide: cambia solo come se ne fanno di nuove.
  */
-export function generaPassword(): string {
-  const gruppi: string[] = [];
+export function generaPassword(nome: string): string {
+  const primo = nome
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .split(/\s+/)[0]
+    ?.replace(/[^a-z]/g, "")
+    .slice(0, 12);
 
-  for (let g = 0; g < GRUPPI; g += 1) {
-    let gruppo = "";
-    for (let i = 0; i < PER_GRUPPO; i += 1) {
-      gruppo += ALFABETO.charAt(randomInt(ALFABETO.length));
-    }
-    gruppi.push(gruppo);
-  }
+  const cifre = String(randomInt(0, 1_000_000)).padStart(6, "0");
 
-  return gruppi.join("-");
+  return `${primo === undefined || primo === "" ? "pr" : primo}${cifre}`;
 }
 
 /** Gli spazi attorno si tolgono: chi incolla la password da un messaggio non deve inciampare. */

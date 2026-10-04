@@ -51,6 +51,10 @@ interface Errori {
   telefono?: string;
   serata?: string;
   genere?: string;
+  persone?: string;
+  gruppo?: string;
+  budget?: string;
+  occasione?: string;
 }
 
 type TipoIngresso = "lista" | "tavolo" | "braccialetto";
@@ -76,10 +80,11 @@ export function Modulo({ codicePr, testata }: { readonly codicePr?: string; read
   const [paeseTel, setPaeseTel] = useState<string>(ISO_PREDEFINITO);
   const [calendario, setCalendario] = useState<readonly VoceCalendarioSerata[]>([]);
   const [serata, setSerata] = useState<string>("");
-  const [persone, setPersone] = useState<string>(PERSONE[0]);
-  const [gruppo, setGruppo] = useState<string>("Misto");
-  const [budget, setBudget] = useState<string>(BUDGET[0]);
-  const [occasione, setOccasione] = useState<string>("Nessuna");
+  // Nessuna scelta è preimpostata (né "1 persona" né "Misto"): le fa chi compila, e "Invia" si accende solo a modulo completo.
+  const [persone, setPersone] = useState<string>("");
+  const [gruppo, setGruppo] = useState<string>("");
+  const [budget, setBudget] = useState<string>("");
+  const [occasione, setOccasione] = useState<string>("");
   const [genere, setGenere] = useState<string>("");
   const [note, setNote] = useState("");
   const [errori, setErrori] = useState<Errori>({});
@@ -141,6 +146,18 @@ export function Modulo({ codicePr, testata }: { readonly codicePr?: string; read
   if (serata === "") {
     mancanti.push("data");
   }
+  if (persone === "") {
+    mancanti.push("quante persone");
+  }
+  if (tipo === "tavolo" && gruppo === "") {
+    mancanti.push("chi c'è al tavolo");
+  }
+  if (tipo === "tavolo" && budget === "") {
+    mancanti.push("il budget");
+  }
+  if (tipo === "tavolo" && occasione === "") {
+    mancanti.push("l'occasione");
+  }
   if (tipo === "braccialetto" && genere === "") {
     mancanti.push("per chi è");
   }
@@ -163,7 +180,7 @@ export function Modulo({ codicePr, testata }: { readonly codicePr?: string; read
       return tolto ? resta : prima;
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [nome, cognome, telefono, paeseTel, serata, genere, tipo]);
+  }, [nome, cognome, telefono, paeseTel, serata, genere, tipo, persone, gruppo, budget, occasione]);
   const passo = fase <= 1 ? 1 : fase === 2 ? 2 : 3;
 
   // Quando si apre un gruppo, lo si porta in vista (con la tastiera aperta sul telefono resterebbe sotto).
@@ -173,7 +190,7 @@ export function Modulo({ codicePr, testata }: { readonly codicePr?: string; read
     }
     const riduci = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const attesa = window.setTimeout(() => {
-      document.getElementById(`${id}-fase-${fase}`)?.scrollIntoView({ block: "nearest", behavior: riduci ? "auto" : "smooth" });
+      document.getElementById(`${id}-fase-${fase}`)?.scrollIntoView({ block: window.matchMedia("(min-width: 960px)").matches ? "center" : "nearest", behavior: riduci ? "auto" : "smooth" });
     }, 180);
     return () => window.clearTimeout(attesa);
   }, [fase, id]);
@@ -185,7 +202,7 @@ export function Modulo({ codicePr, testata }: { readonly codicePr?: string; read
     }
     const riduci = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const attesa = window.setTimeout(() => {
-      document.getElementById(`${id}-fase-4`)?.scrollIntoView({ block: "nearest", behavior: riduci ? "auto" : "smooth" });
+      document.getElementById(`${id}-fase-4`)?.scrollIntoView({ block: window.matchMedia("(min-width: 960px)").matches ? "center" : "nearest", behavior: riduci ? "auto" : "smooth" });
     }, 180);
     return () => window.clearTimeout(attesa);
   }, [altri, id]);
@@ -198,6 +215,25 @@ export function Modulo({ codicePr, testata }: { readonly codicePr?: string; read
     window.scrollTo({ top: 0, behavior: "auto" });
     titoloFatto.current?.focus({ preventScroll: true });
   }, [inviata]);
+
+  /*
+   * Dal computer il modulo accompagna chi compila: quando si apre un gruppo (con Invio, scegliendo la data, con
+   * "Avanti") il fuoco va al suo primo campo, senza dover cercare con il mouse. Non succede mentre si scrive
+   * (il gruppo dopo si apre da solo quando nome e cognome sono scritti, e rubare il fuoco a metà parola darebbe
+   * fastidio) e non succede sul telefono, dove il fuoco aprirebbe la tastiera.
+   */
+  function portaAlCampo(numeroFase: number) {
+    if (!window.matchMedia("(min-width: 960px) and (pointer: fine)").matches) {
+      return;
+    }
+    // Dopo l'apertura (il gruppo si espande in mezzo secondo): un campo ancora chiuso non prende il fuoco.
+    window.setTimeout(() => {
+      document
+        .getElementById(`${id}-fase-${numeroFase}`)
+        ?.querySelector<HTMLElement>("input:not([type=hidden]), select")
+        ?.focus({ preventScroll: true });
+    }, 420);
+  }
 
   function controlla(): Errori {
     const trovati: Errori = {};
@@ -216,6 +252,18 @@ export function Modulo({ codicePr, testata }: { readonly codicePr?: string; read
     if (serata === "") {
       trovati.serata = "Scegli una data";
     }
+    if (persone === "") {
+      trovati.persone = "Scegli quante persone siete";
+    }
+    if (tipo === "tavolo" && gruppo === "") {
+      trovati.gruppo = "Dicci chi c'è al tavolo";
+    }
+    if (tipo === "tavolo" && budget === "") {
+      trovati.budget = "Scegli il budget a testa";
+    }
+    if (tipo === "tavolo" && occasione === "") {
+      trovati.occasione = "Scegli l'occasione (anche \"Nessuna\")";
+    }
     if (tipo === "braccialetto" && genere === "") {
       trovati.genere = "Dicci se è per una donna o un uomo";
     }
@@ -229,7 +277,15 @@ export function Modulo({ codicePr, testata }: { readonly codicePr?: string; read
 
     // Si controllano solo i campi già comparsi: gli altri non si vedono e non possono dare errore.
     const tutti = controlla();
-    const visibili: (keyof Errori)[] = ["nome", "cognome", ...(fase >= 1 ? (["telefono"] as const) : []), ...(fase >= 2 ? (["serata"] as const) : []), ...(fase >= 3 ? (["genere"] as const) : [])];
+    const visibili: (keyof Errori)[] = [
+      "nome",
+      "cognome",
+      ...(fase >= 1 ? (["telefono"] as const) : []),
+      ...(fase >= 2 ? (["serata"] as const) : []),
+      ...(fase >= 3 ? (["persone", "genere"] as const) : []),
+      ...(fase >= 3 && tipo === "tavolo" ? (["gruppo"] as const) : []),
+      ...(fase >= 3 && tipo === "tavolo" && altri ? (["budget", "occasione"] as const) : []),
+    ];
     const trovati: Errori = {};
     for (const chiave of visibili) {
       if (tutti[chiave] !== undefined) {
@@ -243,9 +299,17 @@ export function Modulo({ codicePr, testata }: { readonly codicePr?: string; read
       return;
     }
 
+    // Tavolo con persone e gruppo scelti ma budget e occasione ancora chiusi: si aprono, non si invia a metà.
+    if (tipo === "tavolo" && !altri) {
+      setAltri(true);
+      portaAlCampo(4);
+      return;
+    }
+
     // "Invio" dalla tastiera con il modulo non ancora aperto del tutto: si apre il gruppo dopo, non si invia.
     if (fase < 3) {
       setFase(fase + 1);
+      portaAlCampo(fase + 1);
       return;
     }
 
@@ -441,7 +505,10 @@ export function Modulo({ codicePr, testata }: { readonly codicePr?: string; read
             name="serata"
             required
             value={serata}
-            onChange={(e) => setSerata(e.target.value)}
+            onChange={(e) => {
+              setSerata(e.target.value);
+              portaAlCampo(3);
+            }}
             disabled={calendario.length === 0}
             aria-invalid={errori.serata !== undefined}
             aria-describedby={errori.serata === undefined ? undefined : `${id}-serata-errore`}
@@ -464,13 +531,21 @@ export function Modulo({ codicePr, testata }: { readonly codicePr?: string; read
       </Fase>
 
       <Fase id={`${id}-fase-3`} aperta={fase >= 3}>
-        <Scelta etichetta="Quante persone" nome="persone" voci={PERSONE} scelto={persone} cambia={setPersone} />
+        <Scelta etichetta="Quante persone" nome="persone" voci={PERSONE} scelto={persone} cambia={setPersone} errore={errori.persone} />
 
         {tipo === "tavolo" && (
           <>
-            <Scelta etichetta="Chi c'è al tavolo" nome="gruppo" voci={GRUPPI} scelto={gruppo} cambia={setGruppo} />
+            <Scelta etichetta="Chi c'è al tavolo" nome="gruppo" voci={GRUPPI} scelto={gruppo} cambia={setGruppo} errore={errori.gruppo} />
             {!altri && (
-              <button type="button" className={stili.avanti} onClick={() => setAltri(true)}>
+              <button
+                type="button"
+                className={stili.avanti}
+                disabled={persone === "" || gruppo === ""}
+                onClick={() => {
+                  setAltri(true);
+                  portaAlCampo(4);
+                }}
+              >
                 Avanti
               </button>
             )}
@@ -486,7 +561,7 @@ export function Modulo({ codicePr, testata }: { readonly codicePr?: string; read
               </p>
             )}
             {prezzoBraccialetto(voceSerata?.notte, genere) !== null && (
-              <p className={stili.prezzo}>{prezzoBraccialetto(voceSerata?.notte, genere)}</p>
+              <p className={stili.prezzo}>{legaParole(prezzoBraccialetto(voceSerata?.notte, genere) ?? "", { vedova: true })}</p>
             )}
           </>
         )}
@@ -494,8 +569,8 @@ export function Modulo({ codicePr, testata }: { readonly codicePr?: string; read
       </Fase>
 
       <Fase id={`${id}-fase-4`} aperta={fase >= 3 && tipo === "tavolo" && altri}>
-        <Scelta etichetta="Budget a testa" nome="budget" voci={BUDGET} scelto={budget} cambia={setBudget} />
-        <Scelta etichetta="Occasione speciale" nome="occasione" voci={OCCASIONI} scelto={occasione} cambia={setOccasione} />
+        <Scelta etichetta="Budget a testa" nome="budget" voci={BUDGET} scelto={budget} cambia={setBudget} errore={errori.budget} />
+        <Scelta etichetta="Occasione speciale" nome="occasione" voci={OCCASIONI} scelto={occasione} cambia={setOccasione} errore={errori.occasione} />
         <Campo
           id={`${id}-note`}
           etichetta="Altre richieste"
@@ -654,12 +729,14 @@ function Scelta({
   voci,
   scelto,
   cambia,
+  errore,
 }: {
   readonly etichetta: string;
   readonly nome: string;
   readonly voci: readonly string[];
   readonly scelto: string;
   readonly cambia: (v: string) => void;
+  readonly errore?: string | undefined;
 }) {
   return (
     <fieldset className={stili.gruppo}>
@@ -672,6 +749,11 @@ function Scelta({
           </label>
         ))}
       </div>
+      {errore !== undefined && (
+        <p role="alert" className={stili.errore}>
+          {errore}
+        </p>
+      )}
     </fieldset>
   );
 }

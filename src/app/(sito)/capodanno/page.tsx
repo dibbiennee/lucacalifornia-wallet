@@ -46,7 +46,7 @@ export default function PaginaCapodanno() {
         <FoglioAvvisami
           tipo="capodanno"
           etichetta="Mettimi in lista d'attesa"
-          titolo="Ti avviso appena escono prezzi e strutture"
+          titolo="Ti avviso|appena escono|prezzi|e strutture"
           spiegazione="Il Capodanno si riempie prima di tutto il resto: chi è in lista lo sa per primo."
         />
 

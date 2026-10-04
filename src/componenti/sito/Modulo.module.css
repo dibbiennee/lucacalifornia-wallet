@@ -506,3 +506,8 @@
   color: var(--ink);
   font-weight: 700;
 }
+
+.avanti:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}

@@ -1,9 +1,10 @@
 "use client";
 
-import { useEffect, useId, useRef, useState, type FormEvent } from "react";
+import { useEffect, useId, useRef, useState, type CSSProperties, type FormEvent } from "react";
 
 import { ISO_PREDEFINITO } from "@/contenuti/prefissi";
 import { cifreMinime } from "@/lib/telefono";
+import { legaParole } from "@/lib/tipografia";
 
 import { BottoneAzione } from "./Bottone";
 import { CampoTelefono } from "./CampoTelefono";
@@ -90,7 +91,13 @@ export function FoglioCandidatura() {
       >
         <div className={stili.foglio}>
           <div className={stili.testa}>
-            <h2>{fatto ? "Ricevuta" : "Raccontami di te"}</h2>
+            <h2 style={{ "--n": 10 } as CSSProperties}>
+              {(fatto ? ["Ricevuta"] : ["Raccontami", "di te"]).map((riga) => (
+                <span key={riga} className={stili.riga}>
+                  {legaParole(riga, { titolo: true, vedova: false })}
+                </span>
+              ))}
+            </h2>
             <button type="button" className={stili.chiudi} onClick={() => setAperto(false)} aria-label="Chiudi">
               <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden focusable="false">
                 <path d="M6 6l12 12M18 6L6 18" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" fill="none" />
@@ -104,13 +111,13 @@ export function FoglioCandidatura() {
                 Ti scrivo io su WhatsApp.
               </p>
               <p className={stili.spiega}>
-                Questa è un&apos;anteprima: la candidatura non viene conservata da nessuna parte.
+                {legaParole("Questa è un'anteprima: la candidatura non viene conservata da nessuna parte.", { vedova: true })}
               </p>
             </>
           ) : (
             <form onSubmit={manda} noValidate style={{ display: "grid", gap: 18 }}>
               <p className={stili.spiega}>
-                Non serve esperienza. Dimmi chi sei e dove vivi, al resto pensiamo insieme.
+                {legaParole("Non serve esperienza. Dimmi chi sei e dove vivi, al resto pensiamo insieme.", { vedova: true })}
               </p>
 
               <Campo id={`${id}-nome`} etichetta="Nome" valore={nome} cambia={setNome} errore={errori["nome"]} autoComplete="name" />

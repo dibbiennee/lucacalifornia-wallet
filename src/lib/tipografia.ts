@@ -78,7 +78,8 @@ export function legaParole(testo: string, opzioni: Opzioni = {}): string {
   if (!testo) return testo;
   const lingua = opzioni.lingua ?? "it";
   const brevi = [...(lingua === "it" ? PAROLE_BREVI_IT : PAROLE_BREVI_EN)];
-  if (opzioni.titolo && lingua === "it") brevi.push("è", "ho", "ha");
+  // "è", "ho", "ha" come le altre parole brevi, ovunque: "il limite è / zero" è una riga brutta come "il / limite".
+  if (lingua === "it") brevi.push("è", "ho", "ha");
 
   let t = testo;
 

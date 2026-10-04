@@ -2,7 +2,8 @@ import { Bottone } from "@/componenti/sito/Bottone";
 import { ElencoSerate } from "@/componenti/sito/CardSerata";
 import { DatiBriciole } from "@/componenti/DatiBriciole";
 import { Indietro } from "@/componenti/sito/Indietro";
-import { Galleria, TestaPagina } from "@/componenti/sito/Pagina";
+import { MosaicoFoto } from "@/componenti/sito/MosaicoFoto";
+import { TestaPagina } from "@/componenti/sito/Pagina";
 import { INSTAGRAM, INSTAGRAM_URL, SERATE } from "@/contenuti/sito";
 import { metadatiPagina } from "@/lib/seo";
 
@@ -14,16 +15,19 @@ export const metadata = metadatiPagina({
 });
 
 /*
- * Le quattro foto sono fotogrammi del video del locale: non sono inventate,
- * ma non sono nemmeno le storie dei clienti. Nel sito vero le carica Luca.
- * Ognuna ha la sua descrizione: raccontano com'è la serata, quindi chi non
- * le vede deve poter sapere cosa c'è dentro.
+ * Le foto vere delle serate, alternate fra Bàilame e ROOM26, scelte fra le più nitide
+ * (le Bàilame sono 1333 x 2000, le ROOM26 786 x 1400). Prima c'erano quattro fotogrammi
+ * presi da un video, sgranati: stavano male accanto a foto così.
  */
-const STORIE = [
-  { src: "/foto/night12.webp", alt: "Il dj alla consolle, con la sala illuminata di blu alle spalle" },
-  { src: "/foto/night4.webp", alt: "Una ragazza saluta in mezzo alla folla, sotto le luci" },
-  { src: "/foto/night3.webp", alt: "Una ragazza sorride vicino al bancone" },
-  { src: "/foto/night1.webp", alt: "Una ragazza al bancone con il drink in mano" },
+const FOTO = [
+  { src: "/foto/bailame/bailame5.jpg", alt: "Due amiche fanno le boccucce in posa per la foto" },
+  { src: "/foto/room26/room26-1.jpg", alt: "Tre amiche abbracciate in posa per la foto" },
+  { src: "/foto/bailame/bailame8.jpg", alt: "Tre amici abbracciati sorridono alla foto" },
+  { src: "/foto/room26/room26-7.jpg", alt: "Tre amiche con i drink in mano fanno le linguacce" },
+  { src: "/foto/bailame/bailame7.jpg", alt: "Un gruppo di amici in posa sotto le luci colorate" },
+  { src: "/foto/room26/room26-5.jpg", alt: "Due amiche vicine, una beve con la cannuccia" },
+  { src: "/foto/bailame/bailame10.jpg", alt: "Una ragazza in posa con la maglia del Brasile" },
+  { src: "/foto/room26/room26-11.jpg", alt: "Un gruppo di amici abbracciati sorride alla foto" },
 ] as const;
 
 export default function PaginaSerate() {
@@ -45,16 +49,22 @@ export default function PaginaSerate() {
         <div className="wrap">
           <div className="blocco-testa">
             <p className="occhiello" style={{ margin: 0 }}>
-              Dalle vostre storie
+              Dalle vostre serate
             </p>
             <h2 className="display" id="voi-al-room26">
-              <span className="ph">Voi</span> <span className="ph">al ROOM26</span>
+              <span className="ph">Le foto</span>
             </h2>
           </div>
 
-          <Galleria foto={STORIE} />
+          <MosaicoFoto foto={FOTO} etichetta="Foto delle serate Bàilame e ROOM26" />
 
-          <div style={{ marginTop: 18 }}>
+          <div style={{ marginTop: 18, display: "flex", flexWrap: "wrap", gap: 10 }}>
+            <Bottone href="https://t.me/BAILAMEOFFICIAL" aspetto="contorno" esterno>
+              Tutte le foto Bàilame
+            </Bottone>
+            <Bottone href="https://t.me/room26official" aspetto="contorno" esterno>
+              Tutte le foto ROOM26
+            </Bottone>
             <Bottone href={INSTAGRAM_URL} aspetto="contorno" esterno>
               Segui @{INSTAGRAM}
             </Bottone>

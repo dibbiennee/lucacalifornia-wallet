@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import type { CSSProperties } from "react";
 
 import { percorsoSerata, type SerataSito } from "@/contenuti/sito";
 import { legaParole } from "@/lib/tipografia";
@@ -68,6 +69,41 @@ export function CardSerata({ serata }: { readonly serata: SerataSito }) {
  * il giorno in tre lettere dentro: non un pallino qualunque.
  */
 export function ListaSerate({ serate }: { readonly serate: readonly SerataSito[] }) {
+  return (
+    <>
+      <RigheSerate serate={serate} />
+      <LocandineSerate serate={serate} />
+    </>
+  );
+}
+
+/**
+ * Dal computer in su le quattro serate sono quattro locandine una accanto all'altra,
+ * intere: le righe sottili della versione telefono tagliavano la grafica a strisce
+ * (un pezzo di bicchiere, un pezzo di faccia). Qui la locandina si vede com'è, con sotto
+ * il giorno nel suo colore, il nome e la musica. Sul telefono resta la riga.
+ */
+function LocandineSerate({ serate }: { readonly serate: readonly SerataSito[] }) {
+  return (
+    <div className={stili.locandine}>
+      {serate.map((s) => (
+        <Link key={s.codice} href={percorsoSerata(s)} className={stili.locandina} style={{ "--giorno": `var(--${s.colore})` } as CSSProperties}>
+          <span className={stili.locandinaFoto}>
+            <Image src={s.copertina} alt={s.alt} width={640} height={640} sizes="(min-width: 900px) 280px, 0px" />
+          </span>
+          <span className={stili.locandinaTesto}>
+            <span className={stili.locandinaGiorno}>{s.giorno}</span>
+            <strong className={`display ${stili.locandinaNome}`}>{s.nome}</strong>
+            <span className={stili.locandinaGenere}>{legaParole(s.genere, { vedova: true })}</span>
+          </span>
+          <Freccia />
+        </Link>
+      ))}
+    </div>
+  );
+}
+
+function RigheSerate({ serate }: { readonly serate: readonly SerataSito[] }) {
   return (
     <div className={stili.righe}>
       {serate.map((s) => {

@@ -213,3 +213,60 @@
 
   .azioni a { padding: 0 28px; min-height: 52px; }
 }
+
+/*
+ * "4 serate a settimana" con la freccia, sotto i tre pulsanti: solo dal computer, dove sotto c'è il vuoto.
+ * Porta alle quattro locandine. La freccia respira piano per chiamare l'occhio; col movimento ridotto sta ferma.
+ */
+.scorri {
+  display: none;
+}
+
+@media (min-width: 960px) {
+  .scorri {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 28px;
+    width: fit-content;
+    color: var(--muted);
+    font-size: 14px;
+    font-weight: 700;
+    text-decoration: none;
+  }
+
+  .scorri svg {
+    box-sizing: content-box;
+    padding: 9px;
+    border: 1px solid var(--line);
+    border-radius: 50%;
+    animation: scorriSu 2.2s ease-in-out infinite;
+    transition: border-color 0.2s ease, color 0.2s ease;
+  }
+
+  .scorri:hover {
+    color: var(--text);
+  }
+
+  .scorri:hover svg {
+    border-color: var(--magenta);
+    color: var(--magenta);
+  }
+
+  .scorri:focus-visible {
+    outline: 3px solid var(--magenta);
+    outline-offset: 6px;
+    border-radius: 999px;
+  }
+}
+
+@keyframes scorriSu {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(5px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scorri svg {
+    animation: none;
+  }
+}

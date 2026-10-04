@@ -786,7 +786,8 @@ export async function cambiaCodicePr(prId: string, grezzo: string): Promise<Esit
 /** Genera la password, ne salva l'hash, e restituisce quella in chiaro. Un solo account per PR (pr_id è UNIQUE). */
 async function creaOAggiornaAccesso(prId: string): Promise<string> {
   const sql = await db();
-  const password = generaPassword();
+  const [pr] = (await sql`SELECT nome FROM pr WHERE id = ${prId}`) as unknown as readonly { readonly nome: string }[];
+  const password = generaPassword(pr?.nome ?? "");
   const hash = await hashPassword(password);
 
   // "attivo" segue il PR: rigenerare la password a un PR spento non lo riaccende.

@@ -1,9 +1,10 @@
 "use client";
 
-import { useEffect, useId, useRef, useState, type FormEvent } from "react";
+import { useEffect, useId, useRef, useState, type CSSProperties, type FormEvent } from "react";
 
 import { ISO_PREDEFINITO } from "@/contenuti/prefissi";
 import { cifreMinime, telefonoCompleto } from "@/lib/telefono";
+import { legaParole } from "@/lib/tipografia";
 
 import { BottoneAzione } from "./Bottone";
 import { CampoTelefono } from "./CampoTelefono";
@@ -28,6 +29,7 @@ export function FoglioAvvisami({
   readonly tipo: "halloween" | "capodanno";
   /** Il testo del pulsante che lo apre. */
   readonly etichetta: string;
+  /** Le righe del titolo, separate da | (le va a capo chi scrive: lo spazio è poco, e un titolo spezzato dal browser viene male). */
   readonly titolo: string;
   readonly spiegazione: string;
   readonly aspetto?: "chiaro" | "caldo" | "contorno" | "nero";
@@ -45,6 +47,8 @@ export function FoglioAvvisami({
   const [errori, setErrori] = useState<{ nome?: string; contatto?: string }>({});
   const [inCorso, setInCorso] = useState(false);
   const [fatto, setFatto] = useState(false);
+  // Le righe le decide chi scrive il titolo; "Fatto" è una riga sola.
+  const righe = fatto ? ["Fatto"] : titolo.split("|").map((r) => r.trim());
 
   useEffect(() => {
     const f = finestra.current;
@@ -129,7 +133,13 @@ export function FoglioAvvisami({
       >
         <div className={stili.foglio}>
           <div className={stili.testa}>
-            <h2>{fatto ? "Fatto" : titolo}</h2>
+            <h2 style={{ "--n": Math.max(...righe.map((r) => r.length)) } as CSSProperties}>
+              {righe.map((riga) => (
+                <span key={riga} className={stili.riga}>
+                  {legaParole(riga, { titolo: true, vedova: false })}
+                </span>
+              ))}
+            </h2>
             <button
               type="button"
               className={stili.chiudi}
@@ -148,7 +158,7 @@ export function FoglioAvvisami({
             </p>
           ) : (
             <form onSubmit={(e) => void manda(e)} noValidate style={{ display: "grid", gap: 18 }}>
-              <p className={stili.spiega}>{spiegazione}</p>
+              <p className={stili.spiega}>{legaParole(spiegazione, { vedova: true })}</p>
 
               <div className={stili.campo}>
                 <label htmlFor={`${id}-nome`}>Nome</label>

@@ -9,6 +9,7 @@ import {
 } from "@/lib/pannello/dati";
 import { prenotazioneDa } from "@/lib/pannello/biglietto";
 import { linkWhatsapp, messaggioConferma } from "@/lib/pannello/messaggi";
+import { INDIRIZZO } from "@/lib/pubblico";
 import { dataInLettere } from "@/lib/serate";
 import { leggiSessione, type Sessione } from "@/lib/pannello/sessione";
 import { creaToken, leggiToken, nuovoSerialNumber } from "@/lib/pass/token";
@@ -136,7 +137,7 @@ export async function POST(req: Request): Promise<Response> {
   }
 
   // 4 e 5. Il biglietto. Un errore qui non annulla la conferma.
-  return await preparaWallet(req, sessione, corrente);
+  return await preparaWallet(sessione, corrente);
 }
 
 /** La navetta: nessun biglietto, nessun serial, nessuna scrittura sul Wallet. Solo il testo e il link verso il cliente. */
@@ -160,12 +161,14 @@ function rispostaNavetta(r: RichiestaPannello): Response {
 }
 
 /** La risposta "pronto" per un biglietto già deciso: le stesse cose, ogni volta che si chiede. */
-function rispostaPronta(req: Request, r: RichiestaPannello, serial: string, token: string): Response {
+function rispostaPronta(r: RichiestaPannello, serial: string, token: string): Response {
   // I dati si leggono dal biglietto salvato, non si ricalcolano: per le richieste senza data vera la
   // "prossima serata" cambierebbe di settimana in settimana, e il messaggio non sarebbe più lo stesso.
   const prenotazione = leggiToken(token) ?? prenotazioneDa(r, serial);
   // Il link corto, col numero di serie (12 caratteri) invece del biglietto intero (circa 270): vedi api/b/[serial]/route.ts.
-  const linkBiglietto = `${new URL(req.url).origin}/api/b/${serial}`;
+  // Il dominio vero del sito (INDIRIZZO), non quello da cui Luca ha aperto il pannello: un biglietto mandato da un indirizzo
+  // di servizio (come un alias di prova) arriverebbe al cliente con quel nome nel link.
+  const linkBiglietto = `${INDIRIZZO}/api/b/${serial}`;
   const messaggio = messaggioConferma({
     nome: prenotazione.nomeCliente,
     tipo: r.tipo,
@@ -189,7 +192,7 @@ function rispostaPronta(req: Request, r: RichiestaPannello, serial: string, toke
   return Response.json(risposta, { headers: NO_STORE });
 }
 
-async function preparaWallet(req: Request, sessione: Sessione, r: RichiestaPannello): Promise<Response> {
+async function preparaWallet(sessione: Sessione, r: RichiestaPannello): Promise<Response> {
   try {
     const salvato = await walletDi(sessione, r.id);
 
@@ -199,7 +202,7 @@ async function preparaWallet(req: Request, sessione: Sessione, r: RichiestaPanne
 
     // Già pronto: si restituisce quello che c'è. Nessuna generazione, nessuna scrittura.
     if (salvato.stato === "pronto" && salvato.serial !== null && salvato.token !== null) {
-      return rispostaPronta(req, r, salvato.serial, salvato.token);
+      return rispostaPronta(r, salvato.serial, salvato.token);
     }
 
     // Non c'è ancora, o l'ultima volta è andata male: si prepara. Il numero di serie, se c'è già, resta quello.
@@ -217,7 +220,7 @@ async function preparaWallet(req: Request, sessione: Sessione, r: RichiestaPanne
       throw new Error("Biglietto non salvabile");
     }
 
-    return rispostaPronta(req, r, serial, token);
+    return rispostaPronta(r, serial, token);
   } catch (causa) {
     // Il dettaglio resta nei log del server; a chi guarda il pannello basta sapere che si può riprovare.
     console.error(`Wallet non preparato per la richiesta ${r.id}:`, causa);

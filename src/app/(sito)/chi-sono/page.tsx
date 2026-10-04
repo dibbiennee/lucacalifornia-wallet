@@ -21,46 +21,45 @@ export default function PaginaChiSono() {
     <>
       <DatiBriciole voci={[{ nome: "Home", percorso: "/" }, { nome: "Chi è Luca California", percorso: "/chi-sono" }]} />
       <Indietro testo="Home" dove="/" />
-      <TestaPagina
-        occhiello="Chi sono"
-        titoloLungo
-        righe={["Non importa", "chi tu sia,", "importa", "che ti sappia", "divertire"]}
-      />
+      <div className={`wrap ${stili.duo}`}>
+        <TestaPagina
+          occhiello="Chi sono"
+          titoloLungo
+          righe={["Non importa", "chi tu sia,", "importa", "che ti sappia", "divertire"]}
+          senzaColonna
+        />
 
-      <section className="wrap" style={{ paddingBottom: 56 }}>
-        <div className={`${stili.corpo} ${stili.corpoCentro}`}>
-          <Image
-            src="/foto/luca-ritratto.webp"
-            alt="Luca California"
-            width={1066}
-            height={1600}
-            sizes="(min-width: 900px) 520px, 100vw"
-            className={`${stili.foto} ${stili.fotoLuca}`}
-            priority
-          />
+        <Image
+          src="/foto/luca-ritratto.webp"
+          alt="Luca California"
+          width={1066}
+          height={1600}
+          sizes="(min-width: 900px) 520px, 100vw"
+          className={`${stili.foto} ${stili.fotoLuca}`}
+          priority
+        />
 
-          <div className={stili.corpoTesto}>
-            <Introduzione>Sono Luca California, PR e organizzatore di eventi a Roma. Ogni stagione scelgo un locale
-              solo e ci porto tutta la mia passione: d&apos;inverno il ROOM26, d&apos;estate il Ninfeo e
-              il Morgan Beach Club.</Introduzione>
+        <div className={stili.corpoTesto}>
+          <Introduzione>Sono Luca California, PR e organizzatore di eventi a Roma. Ogni stagione scelgo un locale
+            solo e ci porto tutta la mia passione: d&apos;inverno il ROOM26, d&apos;estate il Ninfeo e
+            il Morgan Beach Club.</Introduzione>
 
-            <div style={{ marginTop: 16 }}>
-              <Introduzione>Con me prenoti liste, tavoli e bracciali per le serate del ROOM26, e se vieni da fuori
-                Roma organizzo la navetta su richiesta.</Introduzione>
-            </div>
+          <div style={{ marginTop: 16 }}>
+            <Introduzione>Con me prenoti liste, tavoli e bracciali per le serate del ROOM26, e se vieni da fuori
+              Roma organizzo la navetta su richiesta.</Introduzione>
+          </div>
 
-            <p className="nota" style={{ marginTop: 16 }}>
-              Guarda <Link href="/serate">le&nbsp;serate</Link> oppure <Link href="/tavoli">come prenotare un&nbsp;tavolo</Link>.
-            </p>
+          <p className="nota" style={{ marginTop: 16 }}>
+            Guarda <Link href="/serate">le&nbsp;serate</Link> oppure <Link href="/tavoli">come prenotare un&nbsp;tavolo</Link>.
+          </p>
 
-            <div style={{ marginTop: 24 }}>
-              <Bottone href={INSTAGRAM_URL} aspetto="contorno" esterno>
-                Segui @{INSTAGRAM}
-              </Bottone>
-            </div>
+          <div style={{ marginTop: 24 }}>
+            <Bottone href={INSTAGRAM_URL} aspetto="contorno" esterno>
+              Segui @{INSTAGRAM}
+            </Bottone>
           </div>
         </div>
-      </section>
+      </div>
     </>
   );
 }

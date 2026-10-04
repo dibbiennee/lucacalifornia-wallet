@@ -16,12 +16,19 @@ export function FoglioInferiore({
   aperto,
   chiudi,
   titolo,
+  focusIniziale = "campo",
   children,
 }: {
   readonly aperto: boolean;
   readonly chiudi: () => void;
   /** Il nome della finestra per chi legge con la voce: non si vede a schermo. */
   readonly titolo: string;
+  /**
+   * Dove va il fuoco quando si apre. "campo" (predefinito): nel primo campo di testo, e sul telefono
+   * si apre la tastiera: giusto per un modulo che si compila (Nuovo PR). "finestra": nella finestra stessa,
+   * senza tastiera: giusto per un foglio di azioni (Gestisci PR), dove il campo c'è ma non è la prima cosa.
+   */
+  readonly focusIniziale?: "campo" | "finestra";
   readonly children: ReactNode;
 }) {
   const finestra = useRef<HTMLDivElement | null>(null);
@@ -42,10 +49,12 @@ export function FoglioInferiore({
         ) ?? [],
       );
 
-    // Il primo campo di testo, se c'è (la tastiera si apre da sola); altrimenti la finestra
+    // Il primo campo di testo, se serve (la tastiera si apre da sola); altrimenti la finestra
     // stessa: il lettore di schermo la annuncia, e non compare un anello di fuoco sulla
     // prima riga a chi ha aperto il foglio con un tocco.
-    (finestra.current?.querySelector<HTMLElement>("input") ?? finestra.current)?.focus();
+    (focusIniziale === "campo" ? (finestra.current?.querySelector<HTMLElement>("input") ?? finestra.current) : finestra.current)?.focus({
+      preventScroll: true,
+    });
 
     function tasti(e: KeyboardEvent) {
       if (e.key === "Escape") {
@@ -81,6 +90,7 @@ export function FoglioInferiore({
       document.removeEventListener("keydown", tasti);
       precedente?.focus();
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [aperto, chiudi]);
 
   if (!aperto) {

@@ -687,3 +687,109 @@
   font-weight: 800;
   overflow-wrap: anywhere;
 }
+
+/* ===== Dal computer in su: meno gigante, testo in alto, colonne che si riempiono ===== */
+
+@media (min-width: 900px) {
+  /* Un titolo di pagina non deve occupare metà schermo: misura contenuta, a due righe. */
+  .testa h1 {
+    font-size: clamp(34px, 5cqi, 58px);
+  }
+
+  .testaLunga h1 {
+    font-size: clamp(34px, 4.6cqi, 52px);
+  }
+
+  /* La foto più stretta (4 colonne su 11, non 5) e meno alta: accompagna il testo, non lo schiaccia. */
+  .corpo {
+    grid-template-columns: minmax(0, 4fr) minmax(0, 7fr);
+    gap: 56px;
+  }
+
+  .corpo .foto {
+    max-height: 520px;
+  }
+
+  /* Il testo sta in alto, allineato al bordo alto della foto (non a metà, né in fondo). */
+  .corpoCentro {
+    align-items: start;
+  }
+
+  .corpoTesto {
+    max-width: 640px;
+  }
+
+  /* I riquadri dei punti, meno alti: cinque in fila non devono sembrare un muro. */
+  .punti {
+    gap: 8px;
+  }
+
+  .punti li {
+    padding: 12px 16px;
+  }
+
+  /* Le sezioni sotto la scheda: tutta la larghezza, e le domande su due colonne invece di una striscia stretta con il vuoto a destra. */
+  .serataSezioni {
+    max-width: none;
+  }
+
+  .domande {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px 16px;
+    align-items: start;
+    max-width: none;
+  }
+}
+
+/*
+ * Pagina a due colonne con il titolo dentro la colonna del testo (Chi sono): a sinistra
+ * titolo e testo, a destra la foto, tutti e due agganciati al bordo alto. Sul telefono
+ * l'ordine è titolo, foto, testo.
+ */
+.duo {
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 56px;
+}
+
+.duo .foto {
+  max-height: none;
+}
+
+@media (min-width: 900px) {
+  .duo {
+    display: grid;
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+    grid-template-rows: auto 1fr;
+    column-gap: 72px;
+    align-items: start;
+  }
+
+  .duo > :nth-child(1) {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .duo > :nth-child(2) {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+    position: sticky;
+    top: 96px;
+    aspect-ratio: 4 / 5;
+    max-height: 600px;
+    margin-bottom: 0;
+  }
+
+  .duo > :nth-child(3) {
+    grid-column: 1;
+    grid-row: 2;
+    max-width: 560px;
+  }
+}
+
+@media (min-width: 900px) {
+  /* Nella colonna di sinistra di "Chi sono" il titolo si misura sulla colonna (circa 640 px): grande abbastanza da reggere la foto accanto. */
+  .duo .testaLunga h1 {
+    font-size: clamp(34px, 8cqi, 54px);
+  }
+}

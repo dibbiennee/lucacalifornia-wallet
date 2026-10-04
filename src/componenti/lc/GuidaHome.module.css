@@ -1,0 +1,182 @@
+/* Il riquadro in cima alla pagina, finché la guida non è stata chiusa con "Fatto". */
+.riquadro {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin: 16px 0 4px;
+  padding: 14px 16px;
+  border-radius: 18px;
+  border: 1px solid var(--lc-line-strong);
+  background: var(--lc-surface);
+}
+
+.riquadroTesto {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: 13px;
+  color: var(--lc-muted);
+}
+
+.riquadroTesto strong {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--lc-text);
+}
+
+.riquadroTasto {
+  flex: none;
+  appearance: none;
+  min-height: 44px;
+  padding: 0 16px;
+  border: 1px solid var(--lc-line-strong);
+  border-radius: 14px;
+  background: transparent;
+  color: var(--lc-text);
+  font: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+/* Il foglio con la guida. */
+.guida {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 0 8px 4px;
+}
+
+.testa {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.titolo {
+  margin: 0;
+  font-family: var(--lc-display);
+  font-stretch: 125%;
+  font-weight: 800;
+  font-size: 22px;
+  text-transform: uppercase;
+}
+
+.testo {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--lc-muted);
+  text-wrap: pretty;
+}
+
+.scelta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.pillola {
+  appearance: none;
+  min-height: 44px;
+  padding: 0 18px;
+  border-radius: 999px;
+  border: 1px solid var(--lc-line-strong);
+  background: transparent;
+  color: var(--lc-text);
+  font: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.pillola[aria-pressed="true"] {
+  background: var(--lc-text);
+  border-color: var(--lc-text);
+  color: var(--lc-accent-ink);
+}
+
+.passi {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.passi li {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 16px;
+  border-radius: 16px;
+  background: var(--lc-surface);
+  border: 1px solid var(--lc-line);
+}
+
+.numero {
+  flex: none;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: var(--lc-accent);
+  color: var(--lc-accent-ink);
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.passoTesto {
+  flex: 1;
+  min-width: 0;
+  font-size: 14.5px;
+  line-height: 1.45;
+  color: var(--lc-text);
+  text-wrap: pretty;
+}
+
+.icona {
+  flex: none;
+  color: var(--lc-muted);
+}
+
+.nota {
+  margin: 0;
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: var(--lc-muted);
+  text-wrap: pretty;
+}
+
+.azioni {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.primario,
+.secondario {
+  appearance: none;
+  min-height: 52px;
+  border-radius: 16px;
+  font: inherit;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.primario {
+  border: 0;
+  background: var(--lc-accent);
+  color: var(--lc-accent-ink);
+}
+
+.secondario {
+  border: 1px solid var(--lc-line-strong);
+  background: transparent;
+  color: var(--lc-text);
+}

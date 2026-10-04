@@ -2,6 +2,7 @@ import Image from "next/image";
 
 import { Bottone } from "@/componenti/sito/Bottone";
 import { VideoApertura } from "@/componenti/VideoApertura";
+import { legaParole } from "@/lib/tipografia";
 import { HERO_VIDEO } from "@/contenuti/hero-video";
 
 import stili from "./Apertura.module.css";
@@ -74,6 +75,15 @@ export function Apertura() {
               Entra in lista
             </Bottone>
           </div>
+
+          {/* Solo dal computer: lì sotto i tre pulsanti c'è il vuoto, e questo dice che più giù c'è altro e dove. */}
+          <a href="#testa-serate" className={stili.scorri}>
+            <span>{legaParole("4 serate a settimana", { vedova: false })}</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden focusable="false">
+              <path d="M12 5v14" />
+              <path d="M6 13l6 6 6-6" />
+            </svg>
+          </a>
         </div>
       </div>
     </section>

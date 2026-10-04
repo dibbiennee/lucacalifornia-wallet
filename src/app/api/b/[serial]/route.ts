@@ -31,8 +31,8 @@ const ANTEPRIME = /whatsapp|facebookexternalhit|facebot|twitterbot|telegrambot|s
 
 function paginaAnteprima(origine: string, indirizzo: string): Response {
   const titolo = "Il tuo biglietto, Luca California";
-  const descrizione = "Aprilo dal tuo iPhone per aggiungerlo ad Apple Wallet.";
-  const immagine = `${origine}/anteprima-biglietto.png`;
+  const descrizione = "Il biglietto della tua serata, da aggiungere al Wallet.";
+  const immagine = `${origine}/anteprima-biglietto-2.png`;
 
   const html = `<!doctype html>
 <html lang="it">
@@ -47,8 +47,8 @@ function paginaAnteprima(origine: string, indirizzo: string): Response {
 <meta property="og:description" content="${descrizione}">
 <meta property="og:url" content="${indirizzo}">
 <meta property="og:image" content="${immagine}">
-<meta property="og:image:width" content="800">
-<meta property="og:image:height" content="800">
+<meta property="og:image:width" content="256">
+<meta property="og:image:height" content="256">
 <meta property="og:image:alt" content="Il marchio Luca California">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="${titolo}">

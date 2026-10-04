@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useId, useState, type FormEvent } from "react";
 
 import { cambiaCodice, riaccendiPr, rigeneraPassword, spegniPr, type CredenzialiPr } from "@/app/pannello/azioni";
+import { messaggioAccesso } from "@/lib/pannello/messaggi";
 import { legaParole } from "@/lib/tipografia";
 
 import { negliAppunti } from "./appunti";
@@ -61,13 +62,7 @@ export function GestisciPr({
   }
 
   async function copiaAccesso(c: CredenzialiPr) {
-    const testo =
-      `Ciao ${c.nome.split(/\s+/)[0] ?? c.nome}, ecco il tuo accesso al pannello di Luca California.\n` +
-      `Indirizzo: ${indirizzo}/pannello/accesso\n` +
-      `Nome: ${c.codice}\nPassword: ${c.password}\n\n` +
-      `Il tuo link per le prenotazioni: ${c.link}`;
-
-    toast((await negliAppunti(testo)) ? "Accesso copiato" : "Non riesco a copiare, selezionalo a mano");
+    toast((await negliAppunti(messaggioAccesso(c, indirizzo))) ? "Messaggio copiato" : "Non riesco a copiare, selezionalo a mano");
   }
 
   async function nuovaPassword(p: PrGestito) {
@@ -135,13 +130,13 @@ export function GestisciPr({
   }
 
   return (
-    <FoglioInferiore aperto={pr !== null} chiudi={finito} titolo={pr === null ? "Gestisci PR" : `Gestisci ${pr.nome}`}>
+    <FoglioInferiore aperto={pr !== null} chiudi={finito} titolo={pr === null ? "Gestisci PR" : `Gestisci ${pr.nome}`} focusIniziale="finestra">
       {pr !== null && credenziali !== null ? (
         <div className={stili.modulo}>
           <div className={stili.testa}>
             <h2 className={stili.titolo}>Nuova password di {pr.nome.split(/\s+/)[0] ?? pr.nome}</h2>
             <p className={stili.testo}>
-              {legaParole("Copia l'accesso adesso e mandalo a lui: la password non si potrà più rivedere. La vecchia non vale più.", { vedova: true })}
+              {legaParole("Copia il messaggio e mandalo a lui su WhatsApp: dentro ci sono link, nome e password, e la password non si potrà più rivedere. La vecchia non vale più.", { vedova: true })}
             </p>
           </div>
           <div className={stili.anteprima}>
@@ -154,7 +149,7 @@ export function GestisciPr({
           </div>
           <div className={stili.azioni}>
             <button type="button" className={`lc-press ${stili.aggiungi}`} onClick={() => void copiaAccesso(credenziali)}>
-              Copia l&apos;accesso
+              Copia il messaggio per {pr.nome.split(/\s+/)[0] ?? pr.nome}
             </button>
           </div>
           <div className={stili.azioni}>

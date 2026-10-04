@@ -196,7 +196,7 @@ export default async function PaginaSerata({ params }: { params: Promise<{ codic
           <Punti voci={comeEntri(prezzo)} />
           <p className="nota">
             Vuoi sapere come funzionano i&nbsp;tavoli?{" "}
-            <Link href="/tavoli">Guarda qui</Link>.
+            <Link href="/tavoli">Guarda&nbsp;qui</Link>.
           </p>
           <div>
             <Bottone href={perPrenotare(serata.codice)} classe="cta-prenota">

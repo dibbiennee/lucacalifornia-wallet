@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import type { CSSProperties, ReactNode } from "react";
 
+import { GuidaHome } from "./GuidaHome";
 import { IconaCasa, IconaEsci, IconaRichieste } from "./Icone";
 import stili from "./GuscioPr.module.css";
 import { ToastProvider } from "./Toast";
@@ -99,6 +100,7 @@ export function GuscioPr({
         </header>
 
         <main id="principale" className={stili.contenuto} tabIndex={-1}>
+          {!dentroDettaglio && <GuidaHome />}
           {children}
         </main>
 
