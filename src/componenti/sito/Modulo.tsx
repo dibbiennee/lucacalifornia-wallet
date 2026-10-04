@@ -601,7 +601,7 @@ export function Modulo({ codicePr, testata }: { readonly codicePr?: string; read
         </BottoneAzione>
 
         <p id={`${id}-mancano`} className={stili.mancano} aria-live="polite">
-          {incompleto ? `Per inviare mi servono ancora: ${elenco(mancanti)}.` : "Tutto pronto: puoi inviare la richiesta."}
+          {legaParole(incompleto ? `Per inviare mi servono ancora: ${elenco(mancanti)}.` : "Tutto pronto: puoi inviare la richiesta.", { vedova: true })}
         </p>
       </div>
 
