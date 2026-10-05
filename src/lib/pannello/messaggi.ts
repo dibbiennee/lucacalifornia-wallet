@@ -66,7 +66,12 @@ function dettagli(d: { readonly serata: string; readonly data: string | null }, 
 }
 
 export function messaggioConferma(d: DatiConferma): string {
-  const biglietto = `Il tuo biglietto, da aggiungere al Wallet:\n${d.linkBiglietto ?? ""}`;
+  // Il link sceglie da solo: Wallet su iPhone e Mac, PDF su Android e computer. La seconda riga è per chi ha un iPhone
+  // ma preferisce il PDF (il link corto con /pdf in fondo dà sempre il PDF). La navetta non ha biglietto: non passa di qui.
+  const biglietto =
+    d.linkBiglietto === null
+      ? ""
+      : `Il tuo biglietto (Wallet su iPhone):\n${d.linkBiglietto}\n\nHai Android o preferisci il PDF? Scaricalo qui:\n${d.linkBiglietto}/pdf`;
   const saluto = `Ciao ${d.nome}!`;
 
   switch (d.tipo) {

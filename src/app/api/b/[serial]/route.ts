@@ -31,7 +31,7 @@ const ANTEPRIME = /whatsapp|facebookexternalhit|facebot|twitterbot|telegrambot|s
 
 function paginaAnteprima(origine: string, indirizzo: string): Response {
   const titolo = "Il tuo biglietto, Luca California";
-  const descrizione = "Il biglietto della tua serata, da aggiungere al Wallet.";
+  const descrizione = "Il biglietto della tua serata, in Wallet o in PDF.";
   const immagine = `${origine}/anteprima-biglietto-2.png`;
 
   const html = `<!doctype html>
