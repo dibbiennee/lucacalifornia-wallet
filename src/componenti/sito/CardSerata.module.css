@@ -331,7 +331,7 @@
   display: block;
   padding: 0;
   min-height: 0;
-  aspect-ratio: 1936 / 425;
+  aspect-ratio: 1936 / 403;
   background-color: transparent;
   background-image: var(--foto, none);
   background-size: cover;

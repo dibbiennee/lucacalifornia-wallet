@@ -143,7 +143,7 @@ export const SERATE: readonly SerataSito[] = [
     alt: "Il volantino Drip del venerdì, con gli occhiali a specchio",
     etichetta: "Disponibilità limitata",
     copertina: "/foto/serate/venerdi.jpg",
-    badge: "/foto/serate/venerdi-riga-2.jpg",
+    badge: "/foto/serate/venerdi-riga-3.jpg",
     badgeConTesto: true,
     descrizione:
       "Il venerdì si balla commerciale e reggaeton. Prenota qui e ti ricontatto io con disponibilità e prezzo.",
