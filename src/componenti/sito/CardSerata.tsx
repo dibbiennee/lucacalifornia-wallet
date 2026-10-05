@@ -109,17 +109,6 @@ function RigheSerate({ serate }: { readonly serate: readonly SerataSito[] }) {
       {serate.map((s) => {
         const conFoto = s.badge !== undefined;
 
-        // Card intera: l'immagine ha già tutto scritto dentro, e occupa la riga com'è.
-        if (s.badgeConTesto === true) {
-          return (
-            <Link key={s.codice} href={percorsoSerata(s)} className={`${stili.riga} ${stili.rigaIntera}`} data-sfondo={s.badge}>
-              <span className={stili.soloLettori}>
-                {s.nome}, {s.giorno}, {s.genere}
-              </span>
-            </Link>
-          );
-        }
-
         return (
           <Link
             key={s.codice}

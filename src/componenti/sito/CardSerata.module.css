@@ -322,32 +322,3 @@
     transition: none;
   }
 }
-
-/*
- * La riga che è una card intera (Drip): l'immagine ha già nome, giorno, genere e logo dentro, e prende la riga
- * com'è, con la sua proporzione, senza velo e senza il testo sopra (sarebbe doppio). Niente freccia: coprirebbe il logo.
- */
-.rigaIntera {
-  display: block;
-  padding: 0;
-  min-height: 0;
-  aspect-ratio: 1936 / 417;
-  background-color: transparent;
-  background-image: var(--foto, none);
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-}
-
-/* Il testo della card intera, solo per chi legge con la voce. */
-.soloLettori {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  margin: -1px;
-  padding: 0;
-  overflow: hidden;
-  clip-path: inset(50%);
-  white-space: nowrap;
-  border: 0;
-}
