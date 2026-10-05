@@ -9,6 +9,7 @@ import { MENU, percorsoSerata, SERATE } from "@/contenuti/sito";
 import { Bottone } from "./Bottone";
 import { Marchio } from "./Marchio";
 import stili from "./Menu.module.css";
+import { tornaInCima } from "./torna-in-cima";
 
 /** Quanto dura la dissolvenza: dopo questo tempo, chiuso, il menu esce dalla pagina. */
 const DURATA_MS = 340;
@@ -126,7 +127,15 @@ export function Menu({ aperto, chiudi }: { readonly aperto: boolean; readonly ch
       ref={finestra}
     >
       <div className={stili.testa}>
-        <Link href="/" className={stili.marchio} onClick={chiudi}>
+        <Link
+          href="/"
+          className={stili.marchio}
+          onClick={(e) => {
+            chiudi();
+            // 400 ms: il menu si dissolve in 340 e solo allora la pagina sotto torna a scorrere.
+            tornaInCima(e, percorso, 400);
+          }}
+        >
           <Marchio />
           <span>
             LUCA

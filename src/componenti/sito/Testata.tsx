@@ -10,6 +10,7 @@ import { Bottone, BottoneAzione } from "./Bottone";
 import { Marchio } from "./Marchio";
 import { Menu } from "./Menu";
 import stili from "./Testata.module.css";
+import { tornaInCima } from "./torna-in-cima";
 
 /**
  * La testata, appiccicata in alto.
@@ -29,7 +30,7 @@ export function Testata() {
     <>
       <header className={stili.top}>
         <div className={`wrap ${stili.riga}`}>
-          <Link href="/" className={stili.marchio} aria-label="Luca California, home">
+          <Link href="/" className={stili.marchio} aria-label="Luca California, home" onClick={(e) => tornaInCima(e, percorso)}>
             <Marchio />
             <span>
               LUCA
