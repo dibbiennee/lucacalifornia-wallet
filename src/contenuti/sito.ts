@@ -92,6 +92,11 @@ export interface SerataSito {
    */
   readonly badgePosizione?: string;
   /**
+   * Vero quando l'immagine del badge è già una card intera, con nome, giorno, genere e logo dentro:
+   * in home si mostra così com'è (senza il testo sopra, che sarebbe doppio) e il testo resta solo per chi legge con la voce.
+   */
+  readonly badgeConTesto?: boolean;
+  /**
    * Dove inquadrare la copertina intera nella pagina della serata: la foto
    * è quasi quadrata ma il riquadro no, e "cover" da solo può tagliare una
    * scritta vicina al bordo. Senza, l'inquadratura resta centrata.
@@ -138,8 +143,8 @@ export const SERATE: readonly SerataSito[] = [
     alt: "Il volantino Drip del venerdì, con gli occhiali a specchio",
     etichetta: "Disponibilità limitata",
     copertina: "/foto/serate/venerdi.jpg",
-    badge: "/foto/serate/venerdi-riga.jpg",
-    badgePosizione: "center",
+    badge: "/foto/serate/venerdi-riga-2.jpg",
+    badgeConTesto: true,
     descrizione:
       "Il venerdì si balla commerciale e reggaeton. Prenota qui e ti ricontatto io con disponibilità e prezzo.",
     presentazione:
